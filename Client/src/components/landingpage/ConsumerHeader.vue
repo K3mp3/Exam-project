@@ -1,4 +1,24 @@
 <script setup lang="ts">
+     import { onMounted, ref } from 'vue';
+
+    const navTablet = ref(false)
+
+    let width = document.documentElement.clientWidth;
+
+    function updateScreenSize() {
+        window.addEventListener("resize", updateScreenSize);
+        width = document.documentElement.clientWidth;
+
+        if (width > 699) {
+            navTablet.value = true;
+        } else {
+            navTablet.value = false;
+        }
+    }
+
+    onMounted(() => {
+        updateScreenSize();
+    })
 </script>
 
 <template>

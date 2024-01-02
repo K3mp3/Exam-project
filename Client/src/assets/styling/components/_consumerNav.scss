@@ -54,7 +54,7 @@ nav {
             .router-link {
                 transition: all 0.2s ease-in-out;
                 border: 2px solid $el-white-main;
-                padding: 2px 20px;
+                padding: 1px 20px;
                 border-radius: 10px;
 
                 &:hover {
@@ -90,14 +90,31 @@ nav {
 }
 
 @media screen and (min-width: 700px) {
-    main {
+    nav {
+        padding: 20px 32px;
 
-        .night-sky-img {
-            height: 907px;
-        }
+        .nav-parent-container {
     
-        .background-container {
-            height: 907px;
+            .nav-child-container {
+    
+                .nav-hamburger-icon {
+
+                    button {
+                        gap: 6px;
+                    }
+    
+                    span {
+                        width: 30px;
+                        height: 5px;
+                        border-radius: 5px;
+                        background-color: $el-white-main;
+                    }
+                }
+            }
         }
+    }
+
+    h1 {
+        font-size: 2.3rem;
     }
 }
