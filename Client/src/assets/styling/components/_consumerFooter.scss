@@ -30,3 +30,9 @@ footer {
         }
     }
 }
+
+@media screen and (min-width: 700px) {
+    footer {
+        padding: 60px 32px;
+    }
+}

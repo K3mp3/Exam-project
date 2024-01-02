@@ -230,3 +230,86 @@ main {
         }
     }
 }
+
+@media screen and (min-width: 700px) {
+    main {
+    
+        .background-container {
+            padding: 32px;
+    
+            .vertical-line {
+                width: 1px;
+            }
+    
+            .info-container {
+    
+                .step-container {
+                    display: flex;
+                    gap: 16px;
+    
+                    .text-containers {
+                        gap: 70px;
+                    }
+                }
+    
+                h2 {
+                    font-size: 1.5rem;
+                }
+    
+                li {
+                    font-size: 1rem;
+                }
+    
+    
+                .text-container {
+    
+                    p {
+                        font-size: 1rem;
+                    }
+    
+                    a {
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+    
+        .promotion-container {
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            max-width: 872px;
+            margin: auto;
+
+            .text {
+                margin-right: 15px;
+                width: 100%;
+            }
+
+            .interactive {
+                width: 100%;
+                max-width: 293px;
+                margin-left: 15px;
+            }
+            
+            p {
+                font-size: 1rem;
+            } 
+    
+            input {
+                width: 100%;
+                font-size: 0.9rem;
+            }
+    
+            button {
+                font-size: 0.9rem;
+                width: 100%;
+            }
+        }
+        
+        .blue-line {
+            margin-top: 30px;
+        }
+    }
+}
