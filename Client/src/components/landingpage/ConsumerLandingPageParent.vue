@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import ConsumerHeading from "./ConsumerHeading.vue";
-import ConsumerNav from "./ConsumerNav.vue";
+    import ConsumerHeader from "./ConsumerHeader.vue";
+    import ConsumerNav from "./ConsumerNav.vue";
 
 
 </script>
@@ -10,6 +10,6 @@ import ConsumerNav from "./ConsumerNav.vue";
         <nav>
             <ConsumerNav></ConsumerNav>
         </nav>
-        <ConsumerHeading></ConsumerHeading>
+        <ConsumerHeader></ConsumerHeader>
     </header>
 </template>
