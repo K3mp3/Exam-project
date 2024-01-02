@@ -11,5 +11,8 @@
             <input type="text" placeholder="namn@domän.com">
             <button type="button">Registrera</button>
         </div>
+        <div class="fade-container">
+            
+        </div>
     </div>
 </template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
     import ConsumerHeader from "./ConsumerHeader.vue";
-    import ConsumerNav from "./ConsumerNav.vue";
-
+    import ConsumerNav from "../nav/ConsumerNav.vue";
+    import ConsumerMain from "./ConsumerMain.vue";
+    import ConsumerFooter from "../footer/ConsumerFooter.vue";
 
 </script>
 
@@ -12,4 +13,10 @@
         </nav>
         <ConsumerHeader></ConsumerHeader>
     </header>
+    <main>
+        <ConsumerMain></ConsumerMain>
+    </main>
+    <footer>
+        <ConsumerFooter></ConsumerFooter>
+    </footer>
 </template>
