@@ -166,71 +166,6 @@ main {
     }
 }
 
-@media screen and (min-width: 295px) {
-    main {
-
-        .night-sky-img {
-            height: 907px;
-        }
-    
-        .background-container {
-            height: 907px;
-        }
-    }
-}
-
-@media screen and (min-width: 324px) {
-    main {
-
-        .night-sky-img {
-            height: 880px;
-        }
-    
-        .background-container {
-            height: 880px;
-        }
-    }
-}
-
-@media screen and (min-width: 341px) {
-    main {
-
-        .night-sky-img {
-            height: 856px;
-        }
-    
-        .background-container {
-            height: 856px;
-        }
-    }
-}
-
-@media screen and (min-width: 345px) {
-    main {
-
-        .night-sky-img {
-            height: 832px;
-        }
-    
-        .background-container {
-            height: 832px;
-        }
-    }
-}
-
-@media screen and (min-width: 393px) {
-    main {
-
-        .night-sky-img {
-            height: 796px;
-        }
-    
-        .background-container {
-            height: 796px;
-        }
-    }
-}
-
 @media screen and (min-width: 700px) {
     main {
     
@@ -273,6 +208,13 @@ main {
                 }
             }
         }
+
+        .stressed-man-img {
+            margin-top: 30px;
+            min-width: 100vw;
+            height: 550px;
+            object-fit: cover;
+        }
     
         .promotion-container {
             padding: 40px 32px;
@@ -310,6 +252,79 @@ main {
         
         .blue-line {
             margin-top: 30px;
+        }
+    }
+}
+
+@media screen and (min-width: 1482px) {
+    main {
+    
+        .background-container {
+            padding: 64px;
+    
+            .vertical-line {
+               display: none;
+            }
+    
+            .info-container {
+
+                .top-container {
+                    
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    ul {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        gap: 90px;
+                    }
+                }
+    
+                .step-container {
+                    margin-top: 100px;
+
+                    .text-containers {
+                        width: 100%;
+
+                        .text-child-containers {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            margin: auto;
+                            gap: 100px;
+                            margin: auto;
+                            max-width: 1200px;
+                        }
+                    }
+                    
+                }
+
+                .text-container {
+                    width: 333px;
+    
+                    p {
+                        font-size: 1rem;
+                    }
+    
+                    a {
+                        font-size: 1rem;
+                    }
+                }
+    
+                h2 {
+                    font-size: 1.5rem;
+                }
+    
+                li {
+                    font-size: 1rem;
+                }
+            }
+        }
+        
+        .blue-line {
+            margin-top: 40px;
         }
     }
 }

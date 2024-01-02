@@ -5,7 +5,7 @@ nav {
     width: 100vw;
     padding: 10px 16px;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
 
     .nav-parent-container {
         display: flex;
@@ -110,6 +110,92 @@ nav {
                         background-color: $el-white-main;
                     }
                 }
+            }
+        }
+    }
+
+    h1 {
+        font-size: 2.3rem;
+    }
+}
+
+@media screen and (min-width: 1482px) {
+    nav {
+        padding: 20px 32px;
+
+        .nav-parent-container {
+    
+            .nav-child-container {
+    
+                .nav-hamburger-icon {
+
+                    button {
+                        gap: 6px;
+                    }
+    
+                    span {
+                        width: 30px;
+                        height: 5px;
+                        border-radius: 5px;
+                        background-color: $el-white-main;
+                    }
+                }
+            }
+        }
+
+        .center {
+            display: flex;
+            gap: 30px;
+
+            .router-link {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                transition: all 0.2s ease-in-out;
+
+                &:hover {
+                    transition: all 0.2s ease-in-out;
+                    color: $el-active-blue;
+                }
+            }
+
+            a {
+                color: $text-main;
+                text-decoration: none;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
+            }
+        }
+
+        .right {
+            display: flex;
+            gap: 30px;
+            
+            .router-link-register, .router-link-sign-in {
+                transition: all 0.2s ease-in-out;
+                padding: 2px 20px;
+                border-radius: 10px;
+
+                &:hover {
+                    transition: all 0.2s ease-in-out;
+                    border: 2px solid $el-active-blue;
+                }
+            }
+
+            .router-link-register {
+                border: 2px solid $el-white-main;
+            }
+
+            .router-link-sign-in {
+                color: $text-secondary;
+                background-color: $el-white-main;
+            }
+
+            a {
+                color: $text-main;
+                text-decoration: none;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
             }
         }
     }

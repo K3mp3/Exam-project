@@ -2,10 +2,10 @@
 </script>
 
 <template>
-    <img src="../../assets/img/mainNightSky.jpg" class="night-sky-img">
+    <img src="" class="night-sky-img">
     <div class="background-container">
         <div class="info-container">
-            <div class="text-parent-container">
+            <div class="text-parent-container top-container">
                 <h2>Varför borde du använda vår tjänst?</h2>
                 <ul>
                     <li><span>Smidigt - </span>Allt sammlat på ett ställe</li>
@@ -17,30 +17,32 @@
                 <div class="vertical-line"></div>
 
                 <div class="text-containers">
-                    <div class="text-parent-container">
-                    <div class="text-container">
-                        <fontAwesome :icon="['fas', 'user-plus']" style="color: #fff;" />            
-                        <h2>1. Skapa ett konto</h2>
-                        <p>Fyll i dina uppgifter för att skapa ett konto</p>
-                        <RouterLink to="register" class="router-link">Skapa konto</RouterLink>
-                    </div>
-                </div>
+                    <div class="text-child-containers">
+                        <div class="text-parent-container">
+                            <div class="text-container">
+                                <fontAwesome :icon="['fas', 'user-plus']" style="color: #fff;" />            
+                                <h2>1. Skapa ett konto</h2>
+                                <p>Fyll i dina uppgifter för att skapa ett konto</p>
+                                <RouterLink to="register" class="router-link">Skapa konto</RouterLink>
+                            </div>
+                        </div>
 
-                <div class="text-parent-container">
-                    <div class="text-container">
-                        <fontAwesome :icon="['fas', 'keyboard']" style="color: #fff;" />            
-                        <h2>2. Kontakta verkstäder</h2>
-                        <p>Skriv lite kort info om vad som är fel på bilen. Skicka sedan det till olika verkstäder</p>
-                    </div>
-                </div>
+                        <div class="text-parent-container">
+                            <div class="text-container">
+                                <fontAwesome :icon="['fas', 'keyboard']" style="color: #fff;" />            
+                                <h2>2. Kontakta verkstäder</h2>
+                                <p>Skriv lite kort info om vad som är fel på bilen. Skicka sedan det till olika verkstäder</p>
+                            </div>
+                        </div>
 
-                <div class="text-parent-container">
-                    <div class="text-container">
-                        <fontAwesome :icon="['fas', 'message']" style="color: #fff;" />            
-                        <h2>3. Få svar</h2>
-                        <p>Sedan får du svar i din inkorg från olika verkstäder</p>
+                        <div class="text-parent-container">
+                            <div class="text-container">
+                                <fontAwesome :icon="['fas', 'message']" style="color: #fff;" />            
+                                <h2>3. Få svar</h2>
+                                <p>Sedan får du svar i din inkorg från olika verkstäder</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
         </div>

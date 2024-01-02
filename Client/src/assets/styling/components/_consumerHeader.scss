@@ -138,3 +138,52 @@ header {
         }
     }
 }
+
+@media screen and (min-width: 1482px) {
+    header {
+    
+        img {
+            max-height: 600px;
+        }
+    
+        .header-parent-container {
+            max-height: 600px;
+            align-items: center;
+            justify-content: center;
+            padding: 64px;
+    
+            .register-tab {
+                width: 600px;
+                gap: 7px;
+                text-align: center;
+    
+                h2 {
+                   font-size: 3.4rem;
+                }
+    
+                p {
+                    font-size: 1.3rem;
+                }
+    
+                input {
+                    width: 240px;
+                    margin: 5px auto 15px auto;
+                }
+    
+                button {
+                    width: 240px;
+                    margin: auto;
+                }
+            }
+    
+            .fade-container {
+                left: 0;
+                bottom: 0;
+                position: absolute;
+                width: 100vw;
+                height: 100px;
+                background: linear-gradient(182deg, rgba(9, 9, 9, 0.00) 20.95%, #090909 98.41%);
+            }
+        }
+    }
+}
