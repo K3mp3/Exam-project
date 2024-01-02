@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
 import LayoutVue from '@/views/Layout.vue'
 
 const router = createRouter({
@@ -11,7 +11,7 @@ const router = createRouter({
       component: LayoutVue,
       children: [
         {
-          path: '/home',
+          path: '/',
           name: "home page",
           component: HomeView,
           meta: {index: true}
