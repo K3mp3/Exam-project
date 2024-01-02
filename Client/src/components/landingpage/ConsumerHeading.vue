@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
-    hello
+    <img src="../../assets/img/headerCar.png">
 </template>

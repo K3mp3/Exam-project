@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
+import ConsumerLandingView from '@/views/ConsumerLandingView.vue'
 import LayoutVue from '@/views/Layout.vue'
 
 const router = createRouter({
@@ -12,8 +12,8 @@ const router = createRouter({
       children: [
         {
           path: '/',
-          name: "home page",
-          component: HomeView,
+          name: "landing page",
+          component: ConsumerLandingView,
           meta: {index: true}
         }
       ]
