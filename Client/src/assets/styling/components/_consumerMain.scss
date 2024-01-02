@@ -170,29 +170,63 @@ main {
     main {
 
         .night-sky-img {
-            height: 861px;
+            height: 907px;
         }
     
         .background-container {
-            height: 861px;
+            height: 907px;
         }
     }
 }
 
-// @media screen and (min-width: 325px) {
-//     main {
-//         height: 881px;
-//     }
-// }
+@media screen and (min-width: 324px) {
+    main {
 
-// @media screen and (min-width: 345px) {
-//     main {
-//         height: 832px;
-//     }
-// }
+        .night-sky-img {
+            height: 880px;
+        }
+    
+        .background-container {
+            height: 880px;
+        }
+    }
+}
 
-// @media screen and (min-width: 402px) {
-//     main {
-//         height: 746px;
-//     }
-// }
+@media screen and (min-width: 341px) {
+    main {
+
+        .night-sky-img {
+            height: 856px;
+        }
+    
+        .background-container {
+            height: 856px;
+        }
+    }
+}
+
+@media screen and (min-width: 345px) {
+    main {
+
+        .night-sky-img {
+            height: 832px;
+        }
+    
+        .background-container {
+            height: 832px;
+        }
+    }
+}
+
+@media screen and (min-width: 393px) {
+    main {
+
+        .night-sky-img {
+            height: 796px;
+        }
+    
+        .background-container {
+            height: 796px;
+        }
+    }
+}
