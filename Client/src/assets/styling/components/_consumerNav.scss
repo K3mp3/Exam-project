@@ -19,11 +19,6 @@ nav {
             display: flex;
             align-items: center;
 
-            .right {
-                display: flex;
-                justify-content: end;
-            }
-
             .nav-hamburger-icon {
                 display: flex;
                 flex-direction: column;
@@ -55,6 +50,30 @@ nav {
         .left {
             display: flex;
             justify-content: start;
+
+            .router-link {
+                transition: all 0.2s ease-in-out;
+                border: 2px solid $el-white-main;
+                padding: 2px 20px;
+                border-radius: 10px;
+
+                &:hover {
+                    transition: all 0.2s ease-in-out;
+                    background-color: $el-active-blue;
+                }
+            }
+
+            a {
+                color: $text-main;
+                text-decoration: none;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
+            }
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
         }
 
         h1 {
@@ -66,6 +85,19 @@ nav {
         .right {
             display: flex;
             justify-content: end;
+        }
+    }
+}
+
+@media screen and (min-width: 700px) {
+    main {
+
+        .night-sky-img {
+            height: 907px;
+        }
+    
+        .background-container {
+            height: 907px;
         }
     }
 }
