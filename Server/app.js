@@ -13,8 +13,6 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
-const server = require('http').Server(app);
-
 async function init() {
     try {
         const options = {useNewUrlParser: true, useUnifiedTopology: true};

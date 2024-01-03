@@ -19,7 +19,11 @@ router.post("/createUser", async(req, res) => {
       return;
     }
 
+    console.log(magicToken)
+
     const { email } = req.body;
+
+    console.log(email)
 
 
     try {
@@ -37,6 +41,8 @@ router.post("/createUser", async(req, res) => {
           password: hashedPassword,
           magicToken: magicToken,
         })
+
+        console.log(newUser);
 
         res.status(201).json(newUser);
       }

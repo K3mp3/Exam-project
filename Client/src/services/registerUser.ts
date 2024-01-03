@@ -7,6 +7,7 @@ export async function registerUser(user: IUser) {
     console.log(user);
     try {
         const response = await axios.post<IUser>(`${BASE_URL}/users/createUser`, user);
+        console.log(response)
         return response.data;
     } catch (error) {
         return error;
