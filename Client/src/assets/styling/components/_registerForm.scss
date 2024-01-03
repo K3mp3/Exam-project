@@ -67,6 +67,35 @@ form {
         }
     }
 
+    .input-error {
+        transition: all 0.2s ease-in-out;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
+        linear-gradient(
+            to bottom,
+            rgb(241, 13, 13),
+            rgb(241, 13, 13, 0.2)
+          );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+
+        &:focus {
+            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
+            linear-gradient(
+                to bottom,
+                rgb(241, 13, 13),
+                rgb(241, 13, 13, 0.2)
+              );
+        }
+    }
+
+    p {
+        color: $el-error-red;
+        margin-bottom: 20px;
+    }
+
     button {
         transition: all 0.2s ease-in-out;
         background-color: $el-active-blue;
