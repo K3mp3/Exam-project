@@ -1,0 +1,325 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+main {
+    overflow-x: hidden;
+
+    .background-container {
+        width: 100vw;
+        background-color: $bg-main-90;
+        z-index: 1;
+        top: 0;
+        padding: 16px;
+
+        .vertical-line {
+            width: 2px;
+            min-height: 100%;
+            background: linear-gradient(to bottom, #0d3ef100, #A80DF1);
+        }
+
+        .info-container {
+            display: flex;
+            flex-direction: column;
+            gap: 64px;
+
+            .step-container {
+                display: flex;
+                gap: 16px;
+
+                .text-child-containers {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 64px;
+                }
+            }
+
+            h2 {
+                margin-bottom: 20px;
+                color: $text-main;
+                font-family: map-get($font-title-bold, font-family);
+                font-weight: map-get($font-title-bold, font-weight);
+            }
+
+            ul {
+                padding: 0 0 0 25px;
+            }
+
+            li {
+                color: $text-main;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
+                line-height: 27px;
+
+                span {
+                    font-family: map-get($font-title-bold, font-family);
+                    font-weight: map-get($font-title-bold, font-weight);
+                }
+            }
+
+
+            .text-container {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                align-items: start;
+
+                h2 {
+                    margin: 0;
+                }
+
+                p {
+                    color: $text-main;
+                    font-family: map-get($font-text-light, font-family);
+                    font-weight: map-get($font-text-light, font-weight);  
+                    margin-top: -5px;
+                }
+
+                .router-link {
+                    transition: all 0.2s ease-in-out;
+                    border: 2px solid $el-active-blue;
+                    padding: 6px 20px;
+                    border-radius: 20px;
+
+                    &:hover {
+                        transition: all 0.2s ease-in-out;
+                        background-color: $el-active-blue;
+                    }
+                }
+
+                a {
+                    color: $text-main;
+                    text-decoration: none;
+                    font-family: map-get($font-text-light, font-family);
+                    font-weight: map-get($font-text-light, font-weight);
+                }
+            }
+        }
+    }
+
+    .blue-line {
+        margin-top: 60px;
+        width: 100vw;
+        height: 2px;
+        background: linear-gradient(to right, #0d3ef100, #0D31F1, #0d3ef100);
+    }
+
+    .stressed-man-img {
+        margin-top: 30px;
+        max-width: 100vw;
+    }
+
+    .promotion-container {
+        padding: 30px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        
+        p {
+            color: $text-main;
+            font-family: map-get($font-title-bold, font-family);
+            font-weight: map-get($font-title-bold, font-weight);
+        } 
+
+        .interactive {
+            display: flex;
+            flex-direction: column;
+
+            input {
+                transition: all 0.2s ease-in-out;
+                margin: 10px 0 15px 0;
+                padding: 10px;
+                border: none;
+                outline: 2px solid $el-white-main;
+                border-radius: 6px;
+                height: 35px;
+                background: transparent;
+                color: $text-main;
+    
+                &:focus {
+                    transition: all 0.2s ease-in-out;
+                    outline: 2px solid $el-active-blue;
+                }
+            }
+    
+            button {
+                transition: all 0.2s ease-in-out;
+                background-color: $el-active-blue;
+                border: none;
+                color: $text-main;
+                font-family: map-get($font-title-bold, font-family);
+                font-weight: map-get($font-title-bold, font-weight);
+                height: 35px;
+                border-radius: 50px;
+    
+                &:hover {
+                    transition: all 0.2s ease-in-out;
+                    cursor: pointer;
+                    background-color: $el-active-blue-hover;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 700px) {
+    main {
+    
+        .background-container {
+            padding: 32px;
+    
+            .vertical-line {
+                width: 1px;
+            }
+    
+            .info-container {
+    
+                .step-container {
+                    display: flex;
+                    gap: 16px;
+    
+                    .text-containers {
+                        gap: 70px;
+                    }
+                }
+    
+                h2 {
+                    font-size: 1.5rem;
+                }
+    
+                li {
+                    font-size: 1rem;
+                }
+    
+    
+                .text-container {
+    
+                    p {
+                        font-size: 1rem;
+                    }
+    
+                    a {
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+
+        .stressed-man-img {
+            margin-top: 30px;
+            min-width: 100vw;
+            height: 550px;
+            object-fit: cover;
+        }
+    
+        .promotion-container {
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            max-width: 872px;
+            margin: auto;
+
+            .text {
+                margin-right: 15px;
+                width: 100%;
+            }
+
+            .interactive {
+                width: 100%;
+                max-width: 293px;
+                margin-left: 15px;
+            }
+            
+            p {
+                font-size: 1rem;
+            } 
+    
+            input {
+                width: 100%;
+                font-size: 0.9rem;
+            }
+    
+            button {
+                font-size: 0.9rem;
+                width: 100%;
+            }
+        }
+        
+        .blue-line {
+            margin-top: 30px;
+        }
+    }
+}
+
+@media screen and (min-width: 1482px) {
+    main {
+    
+        .background-container {
+            padding: 64px;
+    
+            .vertical-line {
+               display: none;
+            }
+    
+            .info-container {
+
+                .top-container {
+                    
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    ul {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        gap: 90px;
+                    }
+                }
+    
+                .step-container {
+                    margin-top: 100px;
+
+                    .text-containers {
+                        width: 100%;
+
+                        .text-child-containers {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            margin: auto;
+                            gap: 100px;
+                            margin: auto;
+                            max-width: 1200px;
+                        }
+                    }
+                    
+                }
+
+                .text-container {
+                    width: 333px;
+    
+                    p {
+                        font-size: 1rem;
+                    }
+    
+                    a {
+                        font-size: 1rem;
+                    }
+                }
+    
+                h2 {
+                    font-size: 1.5rem;
+                }
+    
+                li {
+                    font-size: 1rem;
+                }
+            }
+        }
+        
+        .blue-line {
+            margin-top: 40px;
+        }
+    }
+}
