@@ -1,9 +1,49 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const bcrypt = require("bcrypt"); 
+const nodeMailer = require("nodemailer");
+
+const userModel = require ("../models/user_model");
+
+let magicToken = ""; 
+let foundToken = "";
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.post("/createUser", async(req, res) => {
+  async function generateUniqueToken() {
+    magicToken = Math.random().toString(36).substring(2, 7);
+    foundToken = await userModel.findOne({ magicToken: magicToken });
+
+    if (foundToken) {
+      generateUniqueToken();
+      return;
+    }
+
+    const { email } = req.body;
+
+
+    try {
+      const foundUser = await userModel.findOne({ email: email });
+
+      if (foundUser) {
+        return res.status(400).json({ message: "Email is already registered." });
+      } else {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+        const newUser = await userModel.create({
+          name: req.body.name,
+          email: req.body.email,
+          password: hashedPassword,
+          magicToken: magicToken,
+        })
+
+        res.status(201).json(newUser);
+      }
+    } catch (error) {
+      res.json(error);
+    }
+  }
+})
 
 module.exports = router;
