@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ConsumerLandingView from '@/views/ConsumerLandingView.vue'
 import LayoutVue from '@/views/Layout.vue'
+import RegisterViewVue from '@/views/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,12 @@ const router = createRouter({
           path: '/',
           name: "landing page",
           component: ConsumerLandingView,
+          meta: {index: true}
+        },
+        {
+          path: '/register',
+          name: "register form",
+          component: RegisterViewVue,
           meta: {index: true}
         }
       ]
