@@ -3,19 +3,10 @@
 
 main {
     overflow-x: hidden;
-    position: relative;
-
-    .night-sky-img {
-        min-width: 100%;
-        height: 935px;
-        object-fit: cover;
-    }
 
     .background-container {
-        position: absolute;
         width: 100vw;
-        height: 935px;
-        background-color: $bg-main-40;
+        background-color: $bg-main-90;
         z-index: 1;
         top: 0;
         padding: 16px;
@@ -29,17 +20,16 @@ main {
         .info-container {
             display: flex;
             flex-direction: column;
-            gap: 60px;
-            margin-top: 30px;
+            gap: 64px;
 
             .step-container {
                 display: flex;
-                gap: 15px;
+                gap: 16px;
 
-                .text-containers {
+                .text-child-containers {
                     display: flex;
                     flex-direction: column;
-                    gap: 60px;
+                    gap: 64px;
                 }
             }
 
@@ -130,37 +120,42 @@ main {
             font-weight: map-get($font-title-bold, font-weight);
         } 
 
-        input {
-            transition: all 0.2s ease-in-out;
-            margin: 10px 0 15px 0;
-            padding: 10px;
-            border: none;
-            outline: 2px solid $el-white-main;
-            border-radius: 6px;
-            height: 35px;
-            background: transparent;
-            color: $text-main;
+        .interactive {
+            display: flex;
+            flex-direction: column;
 
-            &:focus {
+            input {
                 transition: all 0.2s ease-in-out;
-                outline: 2px solid $el-active-blue;
+                margin: 10px 0 15px 0;
+                padding: 10px;
+                border: none;
+                outline: 2px solid $el-white-main;
+                border-radius: 6px;
+                height: 35px;
+                background: transparent;
+                color: $text-main;
+    
+                &:focus {
+                    transition: all 0.2s ease-in-out;
+                    outline: 2px solid $el-active-blue;
+                }
             }
-        }
-
-        button {
-            transition: all 0.2s ease-in-out;
-            background-color: $el-active-blue;
-            border: none;
-            color: $text-main;
-            font-family: map-get($font-title-bold, font-family);
-            font-weight: map-get($font-title-bold, font-weight);
-            height: 35px;
-            border-radius: 50px;
-
-            &:hover {
+    
+            button {
                 transition: all 0.2s ease-in-out;
-                cursor: pointer;
-                background-color: $el-active-blue-hover;
+                background-color: $el-active-blue;
+                border: none;
+                color: $text-main;
+                font-family: map-get($font-title-bold, font-family);
+                font-weight: map-get($font-title-bold, font-weight);
+                height: 35px;
+                border-radius: 50px;
+    
+                &:hover {
+                    transition: all 0.2s ease-in-out;
+                    cursor: pointer;
+                    background-color: $el-active-blue-hover;
+                }
             }
         }
     }

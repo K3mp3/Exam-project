@@ -1,6 +1,8 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
+@import './consumerNavMobileMenu';
+
 nav {
     width: 100vw;
     padding: 10px 16px;

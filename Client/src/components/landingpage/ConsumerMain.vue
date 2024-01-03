@@ -2,7 +2,6 @@
 </script>
 
 <template>
-    <img src="" class="night-sky-img">
     <div class="background-container">
         <div class="info-container">
             <div class="text-parent-container top-container">

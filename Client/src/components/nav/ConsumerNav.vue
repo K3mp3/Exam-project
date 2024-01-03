@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue';
     import ConsumerNavMobile from "./ConsumerNavMobile.vue";
-import type { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
     const navMobile = ref(true)
     const navTablet = ref(false)
@@ -15,6 +14,9 @@ import type { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
         if (width < 700) {
             navMobile.value = true;
+
+            navTablet.value = false;
+            navDesktop.value = false;
             return;
         }
 
