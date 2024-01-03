@@ -1,7 +1,8 @@
 <script setup lang="ts">
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import { computed, ref } from 'vue';
     import { registerUser } from '@/services/registerUser'; 
+    import DialogBox from "../popup/DialogBox.vue";
+    import { useShowPopUp } from '@/stores/ShowPopUpStore';
 
     const name = ref("");
     const email = ref("");
@@ -11,6 +12,8 @@
 
     const isEmailWrong = ref(false);
     const isPasswordWrong = ref(false);
+
+    const isDialog = computed(() => useShowPopUp().showPopUp)
 
     const newUser = computed(() => {
         return {
@@ -86,4 +89,6 @@
         <p>Har du redan ett konto? <RouterLink to="/" class="router-link-text">Logga in här</RouterLink></p>
     <p>Har du en verkstad och vill registrera dig? <RouterLink to="/" class="router-link-text">Klicka här</RouterLink></p>
     </div>
+    
+    <DialogBox v-if="isDialog"></DialogBox>
 </template>

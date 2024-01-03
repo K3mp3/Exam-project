@@ -1,0 +1,70 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+.dialog-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: $bg-main;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+
+    .dialog-box {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        p {
+            color: $text-main;
+            font-family: map-get($font-text-light, font-family);
+            font-weight: map-get($font-text-light, font-weight);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-evenly;
+
+            .router-link-register, .close-dialog-btn{
+                transition: all 0.2s ease-in-out;
+                padding: 2px 20px;
+                border-radius: 20px;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
+            }
+
+            .router-link-register {
+                border: 2px solid $el-white-main;
+
+                &:hover {
+                    transition: all 0.2s ease-in-out;
+                    border: 2px solid $el-active-blue;
+                }
+            }
+
+            .close-dialog-btn {
+                transition: all 0.2s ease-in-out;
+                color: $text-secondary;
+                background-color: $el-white-main;
+                border: none;
+
+                &:hover {
+                    color: $text-main;
+                    transition: all 0.2s ease-in-out;
+                    background-color:  $el-active-blue;
+                    cursor: pointer;
+                }
+            }
+
+            a {
+                color: $text-main;
+                text-decoration: none;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
+            }
+        }
+    }
+}

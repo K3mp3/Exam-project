@@ -50,6 +50,8 @@ router.post("/createUser", async(req, res) => {
       res.json(error);
     }
   }
+
+  generateUniqueToken();
 })
 
 module.exports = router;
