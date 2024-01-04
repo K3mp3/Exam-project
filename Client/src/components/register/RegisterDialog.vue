@@ -13,6 +13,7 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
 
     const isEmailWrong = ref(false);
     const isPasswordWrong = ref(false);
+    const isNotBothNames = ref(false);
 
     const isDialog = computed(() => useShowPopUp().showPopUp)
 
@@ -27,19 +28,18 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
     })
 
     function checkInputData() {
-        if (email.value === confirmEmail.value) {
-            console.log("hej")
-        } else {
-            console.log("nej");
+        if (!email.value === !confirmEmail.value) {
             isEmailWrong.value = true;
-            return false;
-        }
+        } 
 
-        if (password.value === confirmPassword.value) {
-            console.log("hej då")
-        } else {
-            console.log("nej då");
+        if (!password.value === !confirmPassword.value) {
             isPasswordWrong.value = true;
+            console.log(isPasswordWrong.value)
+        } 
+
+        const nameRegex = /^[\p{L}]+ [\p{L}]+$/u;
+        if (!nameRegex.test(name.value)) {
+            isNotBothNames.value = true;
             return false;
         }
 
@@ -52,7 +52,6 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
         if (checkInputData()) {
             const response = await registerUser(newUser.value)
         } else {
-            console.log("duiban");
             
         }
     }
@@ -73,25 +72,25 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
             <form @submit.prevent="handleRegistration" class="desktop-register-form">
                 <div class="input-container-left">
                     <label for="name">För- och efternamn</label>
-                    <input type="text" name="name" placeholder="För- och efternammn" v-model="name">
+                    <input type="text" name="name" placeholder="För- och efternammn" v-model="name" :class="isNotBothNames ? 'input-error' : ''">
+                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både för- och efternamn finns med!</p>
 
                     <label for="email">Email adress</label>
                     <input type="email" name="email" placeholder="namn@mail.com" v-model="email" :class="isEmailWrong ? 'input-error' : ''">
-                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen</p>
+                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!</p>
          
                     <label for="email">Bekräfta email adress</label>
                     <input type="email" name="email" placeholder="namn@mail.com" v-model="confirmEmail" :class="isEmailWrong ? 'input-error' : ''">
-                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen</p>
+                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!</p>
                 </div>
                
                 <div class="input-container-right">
                     <label for="password">Lösenord</label>
                     <input type="password" name="password" placeholder="Lösenord" v-model="password" :class="isPasswordWrong ? 'input-error' : ''">
-                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen</p>
-
+                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenordet!</p>
                     <label for="password">Bekräfta lösenord</label>
                     <input type="password" name="password" placeholder="Lösenord" v-model="confirmPassword" :class="isPasswordWrong ? 'input-error' : ''">
-                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen</p>
+                    <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenordet!</p>
 
                     <button type="submit" class="desktop-register-btn">Registrera</button>
                 </div>
