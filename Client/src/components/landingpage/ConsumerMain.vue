@@ -60,7 +60,7 @@
         </div>
         <div class="interactive">
             <input type="text" placeholder="namn@domän.com">
-            <button type="button">Registrera</button>
+            <button type="button" class="main-register-btn">Registrera</button>
         </div>
     </div>
 

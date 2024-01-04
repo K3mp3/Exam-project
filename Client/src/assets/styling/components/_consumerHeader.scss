@@ -50,10 +50,9 @@ header {
 
             input {
                 transition: all 0.2s ease-in-out;
-                margin: 10px 0 15px 0;
+                margin-bottom: 15px;
                 padding: 10px;
-                border: none;
-                outline: 2px solid $el-white-main;
+                border: 2px solid $el-white-main;
                 border-radius: 6px;
                 height: 35px;
                 background: transparent;
@@ -61,11 +60,12 @@ header {
 
                 &:focus {
                     transition: all 0.2s ease-in-out;
-                    outline: 2px solid $el-active-blue;
+                    border: 2px solid $el-active-blue;
+                    outline: none;
                 }
             }
 
-            button {
+            .header-register-btn {
                 transition: all 0.2s ease-in-out;
                 background-color: $el-active-blue;
                 border: none;

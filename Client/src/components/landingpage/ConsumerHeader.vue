@@ -29,7 +29,7 @@
             <h2>Jämför och <span>spara</span></h2>
             <p>Hitta prisvärda verkstäder</p>
             <input type="text" placeholder="namn@domän.com">
-            <button type="button">Registrera</button>
+            <button type="button" class="header-register-btn">Registrera</button>
         </div>
         <div class="fade-container">
             
