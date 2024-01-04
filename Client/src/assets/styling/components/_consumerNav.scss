@@ -173,31 +173,42 @@ nav {
             display: flex;
             gap: 30px;
             
-            .router-link-register, .router-link-sign-in {
+            .btn-register, .btn-sign-in {
                 transition: all 0.2s ease-in-out;
                 padding: 2px 20px;
                 border-radius: 10px;
+                color: $text-main;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .btn-register {
+                background: transparent;
+                border: 2px solid $el-white-main;
 
                 &:hover {
                     transition: all 0.2s ease-in-out;
                     border: 2px solid $el-active-blue;
+                    color: $el-active-blue;
                 }
             }
 
-            .router-link-register {
-                border: 2px solid $el-white-main;
-            }
-
-            .router-link-sign-in {
+            .btn-sign-in {
+                transition: all 0.2s ease-in-out;
                 color: $text-secondary;
                 background-color: $el-white-main;
-            }
+                border: 2px solid $el-white-main;
 
-            a {
-                color: $text-main;
-                text-decoration: none;
-                font-family: map-get($font-text-light, font-family);
-                font-weight: map-get($font-text-light, font-weight);
+                &:hover {
+                    transition: all 0.2s ease-in-out;
+                    border: 2px solid $el-active-blue;
+                    background-color: $el-active-blue;
+                    color: $text-main;
+                }
             }
         }
     }

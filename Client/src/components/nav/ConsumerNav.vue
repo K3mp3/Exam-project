@@ -1,11 +1,15 @@
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue';
+    import { computed, onMounted, ref } from 'vue';
     import ConsumerNavMobile from "./ConsumerNavMobile.vue";
     import ConsumerNavTablet from './ConsumerNavTablet.vue';
+    import RegisterDialog from '../register/RegisterDialog.vue';
+    import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
 
-    const navMobile = ref(true)
-    const navTablet = ref(false)
-    const navDesktop = ref(false)
+    const navMobile = ref(true);
+    const navTablet = ref(false);
+    const navDesktop = ref(false);
+
+    const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 
     let width = document.documentElement.clientWidth;
 
@@ -38,6 +42,15 @@
         }
     }
 
+    function showRegisterForm() {
+        const showRegisterDialog = useShowRegisterDialog();
+        showRegisterDialog.showRegisterDialogForm(!isRegister.value);
+    }
+
+    function showSignInForm() {
+       
+    }
+
     onMounted(() => {
         updateScreenSize();
     })
@@ -58,8 +71,9 @@
             <RouterLink to="register" class="router-link"><fontAwesome :icon="['fas', 'question']" /> FAQ</RouterLink>
         </div>
         <div class="nav-child-container right">
-            <RouterLink to="register" class="router-link-register">Registrera</RouterLink>
-            <RouterLink to="register" class="router-link-sign-in">Logga in</RouterLink>
+            <button type="button" class="btn-register" @click="showRegisterForm">Registrera</button>
+            <button type="button" class="btn-sign-in" @click="showSignInForm">Logga in</button>
         </div>
     </div>
+    <RegisterDialog v-if="isRegister"></RegisterDialog>
 </template>
