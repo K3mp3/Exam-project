@@ -1,38 +1,58 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
-.mobile-form-background {
-    padding: 16px;
+.tablet-form-background {
+    padding: 32px;
+    margin: auto;
+    max-width: 700px;
 
-    .mobile-form-nav {
+    .tablet-form-nav {
         display: flex;
         align-items: center;
         gap: 20px;
         padding: 0;
+        margin-bottom: 32px;
 
-        .router-link {
+        .btn-back {
+            background: transparent;
             color: $text-main;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 12px;
             border: 2px solid $el-border-gray;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5rem;
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: $text-main;
             font-family: map-get($font-title-black, font-family);
             font-weight: map-get($font-title-black, font-weight);
         }
     }
 
-    .mobile-register-form {
-        margin-top: 50px;
+    .tablet-register-form {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        gap: 60px;
+        background-color: $bg-main;
+        max-width: 700px;
+        margin-bottom: 32px;
+
+        .tablet-input-container-left {
+            width: 538px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tablet-input-container-right {
+            width: 538px;
+            display: flex;
+            flex-direction: column;
+        }
 
         label {
             color: $text-main;
@@ -43,8 +63,8 @@
         input {
             position: relative;
             transition: all 0.2s ease-in-out;
-            margin: 10px 0 20px 0;
-            width: calc(100vw - 32px);
+            margin: 5px 0 10px 0;
+            max-width: 100%;
             height: 42px;
             background-color: $el-bg-gray;
             color: $text-main;
@@ -63,7 +83,7 @@
                     to bottom,
                     rgb(13, 63, 241),
                     rgb(13, 63, 241, 0.2)
-                  );
+                    );
                 background-origin: border-box;
                 background-clip: padding-box, border-box;
             }
@@ -79,7 +99,7 @@
                 to bottom,
                 rgb(241, 13, 13),
                 rgb(241, 13, 13, 0.2)
-              );
+                );
             background-origin: border-box;
             background-clip: padding-box, border-box;
     
@@ -89,7 +109,7 @@
                     to bottom,
                     rgb(241, 13, 13),
                     rgb(241, 13, 13, 0.2)
-                  );
+                    );
             }
         }
 
@@ -98,17 +118,17 @@
             margin-bottom: 20px;
             margin-top: -10px;
         }
-    
-        .register-mobile-button {
+
+        .tablet-register-btn {
             transition: all 0.2s ease-in-out;
             background-color: $el-active-blue;
             border: none;
             color: $text-main;
             font-family: map-get($font-title-bold, font-family);
             font-weight: map-get($font-title-bold, font-weight);
-            height: 35px;
+            height: 42px;
             border-radius: 50px;
-            margin: 10px 0 32px 0;
+            margin-top: 29px;
     
             &:hover {
                 transition: all 0.2s ease-in-out;
@@ -118,8 +138,8 @@
         }
     }
 
-    .text-form-container {
-        padding: 32px 0;
+    .tablet-text-form-container {
+        margin-top: 32px;
     
         .router-link-text, p {
             color: $text-main;

@@ -64,13 +64,13 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
 </script>
 
 <template>
-    <div class="register-dialog-background">
-        <div class="register-dialog-container">
-            <nav class="register-dialog-nav">
+    <div class="desktop-form-background">
+        <div class="desktop-dialog-container">
+            <div class="desktop-dialog-nav">
                 <button type="button" class="btn-back" @click="closeRegisterDialog"><fontAwesome :icon="['fas', 'chevron-left']" /></button>
-                <h1>Registrera dig</h1>
-            </nav>
-            <form @submit.prevent="handleRegistration" class="register-dialog-form">
+                <h2>Registrera dig</h2>
+            </div>
+            <form @submit.prevent="handleRegistration" class="desktop-register-form">
                 <div class="input-container-left">
                     <label for="name">För- och efternamn</label>
                     <input type="text" name="name" placeholder="För- och efternammn" v-model="name">
@@ -93,7 +93,7 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
                     <input type="password" name="password" placeholder="Lösenord" v-model="confirmPassword" :class="isPasswordWrong ? 'input-error' : ''">
                     <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen</p>
 
-                    <button type="submit">Registrera</button>
+                    <button type="submit" class="desktop-register-btn">Registrera</button>
                 </div>
             </form>
             <div class="dialog-blue-line"></div>

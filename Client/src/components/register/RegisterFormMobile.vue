@@ -56,7 +56,7 @@
 </script>   
 
 <template>
-    <div class="form-background">
+    <div class="mobile-form-background">
         <div class="mobile-form-nav">
             <RouterLink to="/" class="router-link"><fontAwesome :icon="['fas', 'chevron-left']" /></RouterLink>
             <h2>Registrera dig</h2>

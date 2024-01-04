@@ -1,7 +1,7 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
-.register-dialog-background {
+.desktop-form-background {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,12 +12,12 @@
     justify-content: center;
     align-items: center;
 
-    .register-dialog-container {
-        width: 1200px;
+    .desktop-dialog-container {
+        max-width: 1200px;
         background-color: $bg-main;
         padding: 32px;
 
-        .register-dialog-nav {
+        .desktop-dialog-nav {
             display: flex;
             align-items: center;
             gap: 20px;
@@ -27,13 +27,14 @@
                 transition: all 0.2s ease-in-out;
                 background: transparent;
                 color: $text-main;
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
                 border-radius: 12px;
                 border: 2px solid $el-border-gray;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                font-size: 2rem;
         
                 &:hover {
                     transition: all 0.2s ease-in-out;
@@ -43,27 +44,32 @@
                 }
             }
 
-            h1 {
+            h2 {
+                font-size: 2.5rem;
                 color: $text-main;
                 font-family: map-get($font-title-black, font-family);
                 font-weight: map-get($font-title-black, font-weight);
             }
         }
 
-        .register-dialog-form {
+        .desktop-register-form {
             padding: 32px;
             display: flex;
             flex-direction: row;
             gap: 60px;
             background-color: $bg-main;
-            width: 1200px;
+            max-width: 1200px;
 
             .input-container-left {
                 width: 538px;
+                display: flex;
+                flex-direction: column;
             }
 
             .input-container-right {
                 width: 538px;
+                display: flex;
+                flex-direction: column;
             }
         
             label {
@@ -130,16 +136,16 @@
                 margin-bottom: 20px;
             }
         
-            button {
+            .desktop-register-btn {
                 transition: all 0.2s ease-in-out;
                 background-color: $el-active-blue;
                 border: none;
                 color: $text-main;
                 font-family: map-get($font-title-bold, font-family);
                 font-weight: map-get($font-title-bold, font-weight);
-                height: 44px;
+                height: 42px;
                 border-radius: 50px;
-                margin-top: 28px;
+                margin-top: 29px;
                 width: 100%;
         
                 &:hover {

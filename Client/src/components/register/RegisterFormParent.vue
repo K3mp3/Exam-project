@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue';
     import RegisterFormMobile from './RegisterFormMobile.vue';
+    import RegisterFormTablet from './RegisterFormTablet.vue';
 
     const isMobileForm = ref(false);
     const isTabletForm = ref(false)
@@ -11,7 +12,7 @@
         window.addEventListener("resize", updateScreenSize);
         width = document.documentElement.clientWidth;
 
-        if (width < 1000) {
+        if (width < 700) {
             isMobileForm.value = true;
             isTabletForm.value = false
         } else {
@@ -27,4 +28,5 @@
 
 <template>
     <RegisterFormMobile v-if="isMobileForm"></RegisterFormMobile>
+    <RegisterFormTablet v-if="isTabletForm"></RegisterFormTablet>
 </template>
