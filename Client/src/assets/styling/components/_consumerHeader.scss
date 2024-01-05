@@ -26,13 +26,13 @@ header {
             width: 190px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
             z-index:1;
 
             h2 {
                 color: $text-main;
                 font-family: map-get($font-title-black, font-family);
                 font-weight: map-get($font-title-black, font-weight);
+                margin-bottom: 8px;
 
                 span {
                     background: linear-gradient(to right, #0D3FF1, #0D31F1);
@@ -50,13 +50,14 @@ header {
 
             input {
                 transition: all 0.2s ease-in-out;
-                margin-bottom: 15px;
+                margin-bottom: 16px;
                 padding: 10px;
                 border: 2px solid $el-white-main;
                 border-radius: 10px;
                 height: 35px;
                 background: transparent;
                 color: $text-main;
+                margin-top: 4px;
 
                 &:focus {
                     transition: all 0.2s ease-in-out;
@@ -65,7 +66,7 @@ header {
                 }
             }
 
-            .header-register-btn {
+            .header-register-link {
                 transition: all 0.2s ease-in-out;
                 background-color: $el-active-blue;
                 border: none;
@@ -74,6 +75,11 @@ header {
                 font-weight: map-get($font-title-bold, font-weight);
                 height: 35px;
                 border-radius: 50px;
+                max-width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
 
                 &:hover {
                     transition: all 0.2s ease-in-out;
@@ -166,12 +172,12 @@ header {
                 }
     
                 input {
-                    width: 240px;
+                    width: 250px;
                     margin: 5px auto 15px auto;
                 }
     
-                button {
-                    width: 240px;
+                .header-register-link {
+                    width: 250px;
                     margin: auto;
                 }
             }

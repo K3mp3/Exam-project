@@ -9,7 +9,7 @@ main {
         background-color: $bg-main-90;
         z-index: 1;
         top: 0;
-        padding: 16px;
+        padding: 64px 16px;
 
         .vertical-line {
             width: 2px;
@@ -34,21 +34,21 @@ main {
             }
 
             h2 {
-                margin-bottom: 20px;
+                margin-bottom: 16px;
                 color: $text-main;
                 font-family: map-get($font-title-bold, font-family);
                 font-weight: map-get($font-title-bold, font-weight);
             }
 
             ul {
-                padding: 0 0 0 25px;
+                padding: 0 0 0 20px;
             }
 
             li {
                 color: $text-main;
                 font-family: map-get($font-text-light, font-family);
                 font-weight: map-get($font-text-light, font-weight);
-                line-height: 27px;
+                margin-bottom: 8px;
 
                 span {
                     font-family: map-get($font-title-bold, font-family);
@@ -97,7 +97,7 @@ main {
     }
 
     .stressed-man-img {
-        margin-top: 30px;
+        margin-top: 16px;
         max-width: 100vw;
     }
 
@@ -105,12 +105,13 @@ main {
         padding: 16px 16px 64px 16px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 24px;
         
         p {
             color: $text-main;
             font-family: map-get($font-title-bold, font-family);
             font-weight: map-get($font-title-bold, font-weight);
+            margin-bottom: 8px;
         } 
 
         .interactive {
@@ -142,7 +143,7 @@ main {
                 font-weight: map-get($font-title-bold, font-weight);
                 height: 35px;
                 border-radius: 50px;
-                margin-top: 20px;
+                margin-top: 16px;
     
                 &:hover {
                     transition: all 0.2s ease-in-out;

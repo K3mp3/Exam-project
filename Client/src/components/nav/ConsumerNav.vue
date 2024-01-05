@@ -69,7 +69,7 @@
             <h1>Ways</h1>
         </div>
         <div class="nav-child-container center">
-            <RouterLink to="register" class="router-link"><fontAwesome :icon="['fas', 'house']" /> Registrera</RouterLink>
+            <RouterLink to="/" class="router-link"><fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink>
             <RouterLink to="register" class="router-link"><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink>
             <RouterLink to="register" class="router-link"><fontAwesome :icon="['fas', 'address-card']" /> Om oss</RouterLink>
             <RouterLink to="register" class="router-link"><fontAwesome :icon="['fas', 'question']" /> FAQ</RouterLink>

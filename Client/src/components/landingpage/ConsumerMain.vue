@@ -53,7 +53,7 @@
         <div class="text">
             <p>
                 Vi vet alla hur jobbigt det kan vara att ringa runt till olika verkstäder för att se vart man kan spara mest pengar. 
-            </p><br>
+            </p>
             <p>
                 Därför har vi skapat denna tjänst där vi samlar alla verkstäder på ett ställe. Allt du behöver göra är att boka en felsökning eller beskriva vad som är fel på din bil. Du får sedan svar från olika verkstäder för att se vad dom kan erbjuda dig för pris. 
             </p>
