@@ -4,12 +4,15 @@
     import ConsumerNavTablet from './ConsumerNavTablet.vue';
     import RegisterDialog from '../register/RegisterDialog.vue';
     import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
+    import SignInDialog from '../signIn/SignInDialog.vue';
+    import { useShowSignInDialog } from '../../stores/showSignInDialog';
 
     const navMobile = ref(true);
     const navTablet = ref(false);
     const navDesktop = ref(false);
 
     const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
+    const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
     let width = document.documentElement.clientWidth;
 
@@ -48,7 +51,8 @@
     }
 
     function showSignInForm() {
-       
+        const showSignInDialog = useShowSignInDialog();
+        showSignInDialog.showSignInDialogForm(!isSignIn.value);
     }
 
     onMounted(() => {
@@ -76,4 +80,5 @@
         </div>
     </div>
     <RegisterDialog v-if="isRegister"></RegisterDialog>
+    <SignInDialog v-if="isSignIn"></SignInDialog>
 </template>

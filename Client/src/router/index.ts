@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConsumerLandingView from '@/views/ConsumerLandingView.vue'
 import LayoutVue from '@/views/Layout.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
+import SignInViewVue from '@/views/SignInView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,8 +22,12 @@ const router = createRouter({
           path: '/register',
           name: "register form",
           component: RegisterViewVue,
-          meta: {index: true}
-        }
+        },
+        {
+          path: '/sign-in',
+          name: "sign in form",
+          component: SignInViewVue,
+        },
       ]
     },
   ]

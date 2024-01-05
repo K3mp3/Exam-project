@@ -15,7 +15,7 @@
     .desktop-dialog-container {
         max-width: 1200px;
         background-color: $bg-main;
-        padding: 32px;
+        padding: 64px;
 
         .desktop-dialog-nav {
             display: flex;
@@ -53,7 +53,7 @@
         }
 
         .desktop-register-form {
-            padding: 32px;
+            padding: 32px 0;
             display: flex;
             flex-direction: row;
             gap: 60px;
