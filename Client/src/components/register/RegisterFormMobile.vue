@@ -20,7 +20,8 @@
         return {
             name: name.value,
             email: email.value,
-            password: password.value
+            password: password.value,
+            repairShop: false,
         }
     })
 

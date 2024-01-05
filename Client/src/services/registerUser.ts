@@ -1,12 +1,13 @@
-import type { IUser } from "@/models/IUser";
+import type { IUserRegistration } from "@/models/IUserRegistration";
 import { useShowPopUp } from "@/stores/ShowPopUpStore";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3000";
 
-export async function registerUser(user: IUser) {
+export async function registerUser(user: IUserRegistration) {
     try {
-        const response = await axios.post<IUser>(`${BASE_URL}/users/createUser`, user);
+        console.log(user)
+        const response = await axios.post<IUserRegistration>(`${BASE_URL}/users/createUser`, user);
         console.log(response);      
         return response.data;
     } catch (error: any) {

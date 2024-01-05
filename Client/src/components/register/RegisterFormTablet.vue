@@ -1,74 +1,41 @@
 <script setup lang="ts">
     import { computed, ref } from 'vue';
-    import { registerUser } from '@/services/registerUser'; 
     import DialogBox from "../popup/DialogBox.vue";
     import { useShowPopUp } from '@/stores/ShowPopUpStore';
-import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
+    import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
+    import { signInUser } from '@/services/signInUser';
 
-    const name = ref("");
     const email = ref("");
-    const confirmEmail = ref("");
     const password = ref("");
-    const confirmPassword = ref("");
 
     const isEmailWrong = ref(false);
     const isPasswordWrong = ref(false);
-    const isNotBothNames = ref(false);
 
     const isDialog = computed(() => useShowPopUp().showPopUp)
 
-    const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
-
-    const newUser = computed(() => {
+    const user = computed(() => {
         return {
-            name: name.value,
             email: email.value,
             password: password.value
         }
     })
 
-    function checkInputData() {
-        if (!email.value === !confirmEmail.value) {
-            isEmailWrong.value = true;
-        } 
-
-        if (!password.value === !confirmPassword.value) {
-            isPasswordWrong.value = true;
-            console.log(isPasswordWrong.value)
-        } 
-
-        const nameRegex = /^[\p{L}]+ [\p{L}]+$/u;
-        if (!nameRegex.test(name.value)) {
-            isNotBothNames.value = true;
-            return false;
-        }
-
-        return true;
+    async function handleSignIn() {
+        console.log(user.value)
+        const response = await signInUser(user.value)
+        console.log(response);
     }
 
-    async function handleRegistration() {
-        checkInputData()
 
-        if (checkInputData()) {
-            const response = await registerUser(newUser.value)
-        } else {
-            
-        }
-    }
-
-    function closeRegisterDialog() {
-        const showRegisterDialog = useShowRegisterDialog();
-        showRegisterDialog.showRegisterDialogForm(!isRegister.value);
-    }
 </script>
 
 <template>
     <div class="tablet-form-background">
         <div class="tablet-form-nav">
-            <button type="button" class="btn-back" @click="closeRegisterDialog"><fontAwesome :icon="['fas', 'chevron-left']" /></button>
+            <RouterLink to="/" class="router-link"><fontAwesome :icon="['fas', 'chevron-left']" /></RouterLink>
             <h2>Registrera dig</h2>
         </div>
-        <form @submit.prevent="handleRegistration" class="tablet-register-form">
+        <form @submit.prevent="handleSignIn" class="tablet-register-form">
             <div class="tablet-input-container-left">
                 <label for="name">För- och efternamn</label>
                 <input type="text" name="name" placeholder="För- och efternammn" v-model="name" :class="isNotBothNames ? 'input-error' : ''">

@@ -12,7 +12,7 @@
     const isPasswordWrong = ref(false);
     const isNotBothNames = ref(false);
 
-    const isSignIn = computed(() => useSignInDialog().isSignInDialog)
+    const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
 
     const newUser = computed(() => {
@@ -81,7 +81,7 @@
                     </div>
                     
                     <div class="sign-in-desktop-form-bottom-container">
-                        <button type="submit" class="sign-in-desktop-btn" @click="closeDialog">Logga in</button>
+                        <button type="submit" class="sign-in-desktop-btn" @click="closeSignInDialog">Logga in</button>
                     </div>
                 </form>
             <div class="blue-line"></div>

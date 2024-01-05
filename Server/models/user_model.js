@@ -1,9 +1,10 @@
 const { default: mongoose } = require("mongoose");
 
 const storedUser = mongoose.Schema({
-    userame: String,
+    name: String,
     email: String,
     password: String,
+    repairShop: Boolean,
     magicToken: String,
 });
 

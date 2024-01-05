@@ -3,7 +3,7 @@
     import { registerUser } from '@/services/registerUser'; 
     import DialogBox from "../popup/DialogBox.vue";
     import { useShowPopUp } from '@/stores/ShowPopUpStore';
-import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
+    import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
 
     const name = ref("");
     const email = ref("");
