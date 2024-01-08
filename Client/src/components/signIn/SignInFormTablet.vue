@@ -1,51 +1,23 @@
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+    import { signInUser } from '@/services/signInUser';
+import { computed, ref } from 'vue';
 
-    const name = ref("");
     const email = ref("");
-    const confirmEmail = ref("");
     const password = ref("");
-    const confirmPassword = ref("");
 
     const isEmailWrong = ref(false);
     const isPasswordWrong = ref(false);
-    const isNotBothNames = ref(false);
 
-    const newUser = computed(() => {
+    const user = computed(() => {
         return {
-            name: name.value,
             email: email.value,
             password: password.value
         }
     })
 
-    function checkInputData() {
-        if (!email.value === !confirmEmail.value) {
-            isEmailWrong.value = true;
-        } 
-
-        if (!password.value === !confirmPassword.value) {
-            isPasswordWrong.value = true;
-            console.log(isPasswordWrong.value)
-        } 
-
-        const nameRegex = /^[\p{L}]+ [\p{L}]+$/u;
-        if (!nameRegex.test(name.value)) {
-            isNotBothNames.value = true;
-            return false;
-        }
-
-        return true;
-    }
-
     async function handleRegistration() {
-        checkInputData()
-
-        // if (checkInputData()) {
-        //     const response = await registerUser(newUser.value)
-        // } else {
-            
-        // }
+        const response = await signInUser(user.value)
+        console.log(response);
     }
 </script>   
 
@@ -71,7 +43,7 @@
             </div>
             
             <div class="sign-in-tablet-form-bottom-container">
-                <button type="submit" class="sign-in-tablet-btn">Registrera</button>
+                <button type="submit" class="sign-in-tablet-btn">Logga in</button>
             </div>
         </form>
 

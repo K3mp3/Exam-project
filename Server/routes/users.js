@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const nodeMailer = require("nodemailer");
 
 const userModel = require ("../models/user_model");
+const repairShopModel = require ("../models/repair_shop_model");
 
 let magicToken = ""; 
 let foundToken = "";
@@ -31,7 +32,7 @@ router.post("/createUser", async(req, res) => {
       console.log(foundUser);
 
       if (foundUser) {
-        return res.status(400).json({ message: "Email is already registered." });
+        return res.status(400).json({ message: "Email is already in use!" });
       } else {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
@@ -52,7 +53,49 @@ router.post("/createUser", async(req, res) => {
       res.json(error);
     }
   }
+  generateUniqueToken();
+})
 
+router.post("/createRepairShopUser", async(req, res) => {
+  async function generateUniqueToken() {
+    magicToken = Math.random().toString(36).substring(2, 7);
+    foundToken = await userModel.findOne({ magicToken: magicToken });
+
+    if (foundToken) {
+      generateUniqueToken();
+      return;
+    }
+
+    console.log(magicToken);
+    const { email } = req.body;
+
+    try {
+      const foundUser = await repairShopModel.findOne({ email: email });
+
+      if (foundUser) {
+        return res.status(400).json({ message: "Email is already in use!"})
+      } else {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+        const newUser = await repairShopModel.create({
+          name: req.body.name,
+          location: req.body.location,
+          phoneNumber: req.body.phoneNumber,
+          email: req.body.email,
+          password: hashedPassword,
+          repairShop: req.body.repairShop,
+          magicToken: magicToken,
+        })
+
+        console.log(newUser);
+
+        res.status(201).json(newUser);
+      }
+    } catch (error) {
+      res.json(error);
+    }
+  }
   generateUniqueToken();
 })
 

@@ -3,6 +3,7 @@ import ConsumerLandingView from '@/views/ConsumerLandingView.vue'
 import LayoutVue from '@/views/Layout.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
 import SignInViewVue from '@/views/SignInView.vue'
+import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,11 @@ const router = createRouter({
           path: '/register',
           name: "register form",
           component: RegisterViewVue,
+        },
+        {
+          path: '/register-repair-shop',
+          name: "register repair shop form",
+          component: RegisterRepairShopView,
         },
         {
           path: '/sign-in',

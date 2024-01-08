@@ -15,8 +15,7 @@ const app = express();
 
 async function init() {
     try {
-        const options = {useNewUrlParser: true, useUnifiedTopology: true};
-        await mongoose.connect(process.env.MONGODB_URI, options);
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log("connected!");
     } catch (error) {
         console.log(error);

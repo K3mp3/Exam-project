@@ -1,55 +1,27 @@
 <script setup lang="ts">
     import { computed, ref } from 'vue';
     import { useShowSignInDialog } from '@/stores/showSignInDialog';
+import { signInUser } from '@/services/signInUser';
 
-    const name = ref("");
     const email = ref("");
-    const confirmEmail = ref("");
     const password = ref("");
-    const confirmPassword = ref("");
 
     const isEmailWrong = ref(false);
     const isPasswordWrong = ref(false);
-    const isNotBothNames = ref(false);
 
     const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
 
-    const newUser = computed(() => {
+    const user = computed(() => {
         return {
-            name: name.value,
             email: email.value,
             password: password.value
         }
     })
 
-    function checkInputData() {
-        if (!email.value === !confirmEmail.value) {
-            isEmailWrong.value = true;
-        } 
-
-        if (!password.value === !confirmPassword.value) {
-            isPasswordWrong.value = true;
-            console.log(isPasswordWrong.value)
-        } 
-
-        const nameRegex = /^[\p{L}]+ [\p{L}]+$/u;
-        if (!nameRegex.test(name.value)) {
-            isNotBothNames.value = true;
-            return false;
-        }
-
-        return true;
-    }
-
     async function handleRegistration() {
-        checkInputData()
-
-        // if (checkInputData()) {
-        //     const response = await registerUser(newUser.value)
-        // } else {
-            
-        // }
+        const response = await signInUser(user.value)
+        console.log(response);
     }
 
     function closeSignInDialog() {
@@ -81,7 +53,7 @@
                     </div>
                     
                     <div class="sign-in-desktop-form-bottom-container">
-                        <button type="submit" class="sign-in-desktop-btn" @click="closeSignInDialog">Logga in</button>
+                        <button type="submit" class="sign-in-desktop-btn">Logga in</button>
                     </div>
                 </form>
             <div class="blue-line"></div>
