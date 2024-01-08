@@ -18,6 +18,7 @@
     const isConfirmPasswordWeak = ref(false);
 
     const isDialog = computed(() => useShowPopUp().showPopUp)
+    console.log(isDialog)
 
     const newUser = computed(() => {
         return {
@@ -29,38 +30,44 @@
     })
 
     function checkInputData() {
-        console.log("hello")
+        checkInputName();
+        checkInputEmail();
+
         if (name.value === "" || email.value === "" || confirmEmail.value === "" || password.value === "" || confirmPassword.value === "") {
             disableRegisterBtn.value = true;
-            return;
+            return false;
         } else {
             disableRegisterBtn.value = false;
+            return true;
         }
+    }
 
+    function checkInputName() {
+        const nameRegex = /^[\p{L}]+ [\p{L}]+$/u;
+        if (nameRegex.test(name.value)) {
+            return isNotBothNames.value = false;
+        } else {
+           isNotBothNames.value = true; 
+        }
+    }
+
+    function checkInputEmail() {
         if (email.value === confirmEmail.value) {
             isEmailWrong.value = false;
         } else {
-            return isEmailWrong.value = true;
+            isEmailWrong.value = true;
         }
+    }
 
+    function checkInputPassword() {
         if (password.value === confirmPassword.value) {
             isPasswordWrong.value = false;
-            console.log(isPasswordWrong.value)
         } else {
-            return isPasswordWrong.value = true;
+           isPasswordWrong.value = true;
         }
-
-        const nameRegex = /^[\p{L}]+ [\p{L}]+$/u;
-        if (!nameRegex.test(name.value)) {
-            isNotBothNames.value = true;
-            return false;
-        }
-
-        return true;
     }
 
     function checkPasswordStrength(type: string) {
-
         if (type === "password") {
             isPasswordWeak.value = password.value.length < 5;
         } else {
@@ -87,24 +94,24 @@
         </div>
         <form @submit.prevent="handleRegistration" class="mobile-register-form">
             <label for="name">För- och efternamn</label>
-            <input type="text" name="name" placeholder="För- och efternammn" v-model="name" :onChange="checkInputData" :class="isNotBothNames ? 'input-error' : ''">
-            <!-- <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både för- och efternamn finns med!</p> -->
+            <input type="text" name="name" placeholder="För- och efternammn" v-model="name" @change="checkInputData" :class="isNotBothNames ? 'input-error' : ''">
+            <p v-if="isNotBothNames"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både för- och efternamn finns med!</p>
 
             <label for="email">Email adress</label>
-            <input type="email" name="email" placeholder="namn@mail.com" v-model="email" :onChange="checkInputData" :class="isEmailWrong ? 'input-error' : ''">
+            <input type="email" name="email" placeholder="namn@mail.com" v-model="email" :class="isEmailWrong ? 'input-error' : ''">
             <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!</p>
 
             <label for="email">Bekräfta email adress</label>
-            <input type="email" name="email" placeholder="namn@mail.com" v-model="confirmEmail" :onChange="checkInputData" :class="isEmailWrong ? 'input-error' : ''">
+            <input type="email" name="email" placeholder="namn@mail.com" v-model="confirmEmail" @blur="checkInputData" :class="isEmailWrong ? 'input-error' : ''">
             <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!</p>
 
             <label for="password">Lösenord</label>
-            <input type="password" name="password" placeholder="Lösenord" v-model="password" @onChange="checkInputData" @input="checkPasswordStrength('password')" :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }">
+            <input type="password" name="password" placeholder="Lösenord" v-model="password" @input="checkPasswordStrength('password')" :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }">
             <p class="warning-text" v-if="isPasswordWeak"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att använda ett säkrare</p>
             <p v-if="isPasswordWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!</p>
 
             <label for="password">Bekräfta lösenord</label>
-            <input type="password" name="password" placeholder="Lösenord" v-model="confirmPassword" @onChange="checkInputData" @input="checkPasswordStrength('confirmPassword')" :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isConfirmPasswordWeak }">
+            <input type="password" name="password" placeholder="Lösenord" v-model="confirmPassword" @blur="checkInputPassword" @input="checkPasswordStrength('confirmPassword')" :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isConfirmPasswordWeak }">
             <p class="warning-text" v-if="isConfirmPasswordWeak"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att använda ett säkrare</p>
             <p v-if="isPasswordWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!</p>
 

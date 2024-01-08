@@ -6,13 +6,17 @@
     import { useShowRegisterDialog } from '@/stores/showRegisterDialog';
     import SignInDialog from '../signIn/SignInDialog.vue';
     import { useShowSignInDialog } from '../../stores/showSignInDialog';
+import RegisterRepairShopDialog from '../registerRepairShop/RegisterRepairShopDialog.vue';
+import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog';
 
     const navMobile = ref(true);
     const navTablet = ref(false);
     const navDesktop = ref(false);
 
-    const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
-    const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
+    const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog);
+    const isSignIn = computed(() => useShowSignInDialog().isSignInDialog);
+    const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog);
+
 
     let width = document.documentElement.clientWidth;
 
@@ -80,5 +84,6 @@
         </div>
     </div>
     <RegisterDialog v-if="isRegister"></RegisterDialog>
+    <RegisterRepairShopDialog v-if="isRepairShopDialog"></RegisterRepairShopDialog>
     <SignInDialog v-if="isSignIn"></SignInDialog>
 </template>

@@ -60,6 +60,35 @@
             font-weight: map-get($font-text-light, font-weight);
         }
 
+        .mobile-register-form-select {
+            position: relative;
+            transition: all 0.2s ease-in-out;
+            margin: 5px 0 10px 0;
+            max-width: 100%;
+            height: 42px;
+            background-color: $el-bg-gray;
+            color: $text-main;
+            border: 2px solid $el-border-gray;
+            padding: 10px;
+            border-radius: 10px;
+            z-index: 1;
+
+            &:focus {
+                transition: all 0.2s ease-in-out;
+                outline: none;
+                border: 2px solid transparent;
+                border-radius: 10px;
+                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
+                linear-gradient(
+                    to bottom,
+                    rgb(13, 63, 241),
+                    rgb(13, 63, 241, 0.2)
+                  );
+                background-origin: border-box;
+                background-clip: padding-box, border-box;
+            }
+        }
+
         input {
             position: relative;
             transition: all 0.2s ease-in-out;
@@ -113,10 +142,50 @@
             }
         }
 
+        .input-password-weak {
+            transition: all 0.2s ease-in-out;
+            outline: none;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
+            linear-gradient(
+                to bottom,
+                rgb(241, 85, 13),
+                rgb(241, 85, 13, 0.2)
+              );
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+    
+            &:focus {
+                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
+                linear-gradient(
+                    to bottom,
+                    rgb(241, 85, 13),
+                    rgb(241, 85, 13, 0.2)
+                  );
+            }
+        }
+
+        .warning-text {
+            color: $el-warning-orange;
+        }
+
         p {
             color: $el-error-red;
             margin-bottom: 20px;
             margin-top: -10px;
+        }
+
+        .register-tablet-button-disable {
+            transition: all 0.2s ease-in-out;
+            background-color: $el-inactive-blue;
+            border: none;
+            color: $text-disabled;
+            font-family: map-get($font-title-bold, font-family);
+            font-weight: map-get($font-title-bold, font-weight);
+            height: 42px;
+            border-radius: 50px;
+            margin-top: 29px;
         }
 
         .tablet-register-btn {

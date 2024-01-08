@@ -9,7 +9,6 @@ const repairShopModel = require ("../models/repair_shop_model");
 let magicToken = ""; 
 let foundToken = "";
 
-/* GET users listing. */
 router.post("/createUser", async(req, res) => {
   async function generateUniqueToken() {
     magicToken = Math.random().toString(36).substring(2, 7);
@@ -26,13 +25,12 @@ router.post("/createUser", async(req, res) => {
 
     console.log(email)
 
-
     try {
       const foundUser = await userModel.findOne({ email: email });
       console.log(foundUser);
 
       if (foundUser) {
-        return res.status(400).json({ message: "Email is already in use!" });
+         return res.status(400).json({ message: "Email is already in use!" });
       } else {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);

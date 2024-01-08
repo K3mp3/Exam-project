@@ -1,8 +1,9 @@
 <script setup lang="ts">
     import { computed, ref } from 'vue';
-    import { registerRepairShop } from '../../services/registerUser'; 
+    import { registerUser } from '@/services/registerUser'; 
     import DialogBox from "../popup/DialogBox.vue";
     import { useShowPopUp } from '@/stores/ShowPopUpStore';
+    import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog';
 
     const name = ref("");
     const location = ref("");
@@ -84,27 +85,32 @@
         checkInputData()
 
         if (checkInputData()) {
-            const response = await registerRepairShop(newUser.value)
-            console.log(response);
+            const response = await registerUser(newUser.value)
         } else {
-            console.log("error");
+            
         }
     }
-</script>   
+
+    function closeRegisterDialog() {
+        const showRepairShopRegisterDialog = useShowRepairShopDialog();
+        showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value);
+    }
+</script>
 
 <template>
-    <div class="tablet-form-background">
-        <div class="tablet-form-nav">
-            <RouterLink to="/" class="router-link"><fontAwesome :icon="['fas', 'chevron-left']" /></RouterLink>
-            <h2>Registrera din verkstad</h2>
-        </div>
-        <form @submit.prevent="handleRegistration" class="tablet-register-form">
-            <div class="tablet-input-container-left">
-                <label for="name">Namn</label>
+    <div class="desktop-form-background">
+        <div class="desktop-dialog-container">
+            <div class="desktop-dialog-nav">
+                <button type="button" class="btn-back" @click="closeRegisterDialog"><fontAwesome :icon="['fas', 'chevron-left']" /></button>
+                <h2>Registrera din verkstad</h2>
+            </div>
+            <form @submit.prevent="handleRegistration" class="desktop-register-form">
+                <div class="input-container-left">
+                    <label for="name">Namn</label>
                 <input type="text" name="name" placeholder="Namn på verkstaden" v-model="name" @change="checkInputData">
 
                 <label for="location">Kommun</label>
-                <select name="location" class="mobile-register-form-select" v-model="location" :key="location" @change="checkInputData">
+                <select name="location" class="desktop-register-form-select" v-model="location" :key="location" @change="checkInputData">
                     <option value="Sundsvall">Sundsvall</option>
                 </select>
 
@@ -114,10 +120,10 @@
                 <label for="email">Email adress</label>
                 <input type="email" name="email" placeholder="namn@mail.com" v-model="email" :class="isEmailWrong ? 'input-error' : ''">
                 <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!</p>
-            </div>
-
-            <div class="tablet-input-container-right">
-                <label for="email">Bekräfta email adress</label>
+                </div>
+               
+                <div class="input-container-right">
+                    <label for="email">Bekräfta email adress</label>
                 <input type="email" name="email" placeholder="namn@mail.com" v-model="confirmEmail" @blur="checkInputData" :class="isEmailWrong ? 'input-error' : ''">
                 <p v-if="isEmailWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!</p>
                 
@@ -131,17 +137,17 @@
                 <p class="warning-text" v-if="isConfirmPasswordWeak"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att använda ett säkrare</p>
                 <p v-if="isPasswordWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!</p>
 
-                <button type="submit"  :disabled="disableRegisterBtn" :class="disableRegisterBtn ? 'register-tablet-button-disable' : 'tablet-register-btn'">Registrera</button>
-            </div>
+                    <button type="submit" :disabled="disableRegisterBtn" :class="disableRegisterBtn ? 'register-desktop-button-disable' : 'desktop-register-btn'">Registrera</button>
+                </div>
             </form>
+            <div class="dialog-blue-line"></div>
 
-        <div class="blue-line"></div>
-
-        <div class="tablet-text-form-container">
-            <p>Har du redan ett konto? <RouterLink to="/" class="router-link-text">Logga in här</RouterLink></p>
-            <p>Har du en verkstad och vill registrera dig? <RouterLink to="/" class="router-link-text">Klicka här</RouterLink></p>
+            <div class="dialog-text-form-container">
+                <p>Har du redan ett konto? <RouterLink to="/" class="router-link-text">Logga in här</RouterLink></p>
+                <p>Har du en verkstad och vill registrera dig? <RouterLink to="/" class="router-link-text">Klicka här</RouterLink></p>
+            </div>
+            
+            <DialogBox v-if="isDialog"></DialogBox>
         </div>
-        
-        <DialogBox v-if="isDialog"></DialogBox>
     </div>
 </template>

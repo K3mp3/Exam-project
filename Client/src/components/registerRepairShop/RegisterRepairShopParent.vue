@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue';
-    // import RegisterFormTablet from './RegisterFormTablet.vue';
     import RegisterRepairShopMobile from './RegisterRepairShopMobile.vue';
+    import RegisterRepairShopTablet from './RegisterRepairShopTablet.vue';
 
     const isMobileForm = ref(false);
     const isTabletForm = ref(false)
@@ -28,5 +28,5 @@
 
 <template>
     <RegisterRepairShopMobile v-if="isMobileForm"></RegisterRepairShopMobile>
-    <!-- <RegisterFormTablet v-if="isTabletForm"></RegisterFormTablet> -->
+    <RegisterRepairShopTablet v-if="isTabletForm"></RegisterRepairShopTablet>
 </template>
