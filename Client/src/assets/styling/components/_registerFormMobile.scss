@@ -122,10 +122,50 @@
             }
         }
 
+        .input-password-weak {
+            transition: all 0.2s ease-in-out;
+            outline: none;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
+            linear-gradient(
+                to bottom,
+                rgb(241, 13, 13),
+                rgb(241, 13, 13, 0.2)
+              );
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+    
+            &:focus {
+                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
+                linear-gradient(
+                    to bottom,
+                    rgb(241, 85, 13),
+                    rgb(241, 85, 13, 0.2)
+                  );
+            }
+        }
+
+        .warning-text {
+            color: $el-warning-orange;
+        }
+
         p {
             color: $el-error-red;
             margin-bottom: 20px;
             margin-top: -10px;
+        }
+
+        .register-mobile-button-disable {
+            transition: all 0.2s ease-in-out;
+            background-color: $el-inactive-blue;
+            border: none;
+            color: $text-disabled;
+            font-family: map-get($font-title-bold, font-family);
+            font-weight: map-get($font-title-bold, font-weight);
+            height: 35px;
+            border-radius: 50px;
+            margin: 10px 0 32px 0;
         }
     
         .register-mobile-button {
