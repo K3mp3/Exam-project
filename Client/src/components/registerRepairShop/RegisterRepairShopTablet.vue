@@ -109,7 +109,8 @@
                 </select>
 
                 <label for="phone-number">Telefonnummer</label>
-                <input type="tel" name="phone-number" placeholder="Telefonnummer till din verkstad" v-model="phoneNumber" @input="checkInputPhoneNumber" :class="isPhoneNumberWrong ? 'input-error' : ''">
+                <input type="tel" name="phone-number" placeholder="Telefonnummer till din verkstad" v-model="phoneNumber" @blur="checkInputPhoneNumber" :class="isPhoneNumberWrong ? 'input-error' : ''">
+                <p v-if="isPhoneNumberWrong"><fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen skriv ett telefon / mobilnummer!</p>
 
                 <label for="email">Email adress</label>
                 <input type="email" name="email" placeholder="namn@mail.com" v-model="email" :class="isEmailWrong ? 'input-error' : ''">
