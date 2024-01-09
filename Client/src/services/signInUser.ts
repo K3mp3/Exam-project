@@ -30,6 +30,7 @@ export async function checkMagicToken(user: IUserToken) {
     const response = await axios.post<IUserToken>(`${BASE_URL}/users/checkMagicToken`, user)
     console.log(response.data.repairShop)
     return {
+      name: response.data.name,
       repairShop: response.data.repairShop,
       status: response.status
     }

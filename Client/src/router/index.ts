@@ -1,9 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
 import ConsumerLandingView from '@/views/ConsumerLandingView.vue'
 import LayoutVue from '@/views/Layout.vue'
+import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
 import SignInViewVue from '@/views/SignInView.vue'
-import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
+import UserHomeLandingViewVue from '@/views/UserHomeLandingView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,27 +16,32 @@ const router = createRouter({
       children: [
         {
           path: '/',
-          name: "landing page",
+          name: 'landing page',
           component: ConsumerLandingView,
-          meta: {index: true}
+          meta: { index: true }
         },
         {
           path: '/register',
-          name: "register form",
-          component: RegisterViewVue,
+          name: 'register form',
+          component: RegisterViewVue
         },
         {
           path: '/register-repair-shop',
-          name: "register repair shop form",
-          component: RegisterRepairShopView,
+          name: 'register repair shop form',
+          component: RegisterRepairShopView
         },
         {
           path: '/sign-in',
-          name: "sign in form",
-          component: SignInViewVue,
+          name: 'sign in form',
+          component: SignInViewVue
         },
+        {
+          path: '/user-home',
+          name: 'user landing view',
+          component: UserHomeLandingViewVue
+        }
       ]
-    },
+    }
   ]
 })
 

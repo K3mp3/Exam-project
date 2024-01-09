@@ -196,6 +196,7 @@ router.post("/checkMagicToken", async (req, res) => {
     if (foundUser && magicToken === foundUser.magicToken) {
       await foundUser.save();
       res.status(201).json({
+        name: foundUser.name,
         message: "Authentication successful",
         repairShop: foundUser.repairShop,
       });

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { computed, ref } from 'vue'
 import { checkMagicToken } from '../../services/signInUser'
@@ -8,6 +9,7 @@ const writtenToken = ref('')
 const isMagicTokenWrong = ref(false)
 
 const userEmail = computed(() => useShowMagicTokenDialog().userEmail)
+const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
 
 const user = computed(() => {
   return {
@@ -18,17 +20,40 @@ const user = computed(() => {
 
 async function handleSignIn() {
   const response = await checkMagicToken(user.value)
-  console.log(response.repairShop)
+
+  const expirationDate = new Date()
+  expirationDate.setDate(expirationDate.getDate() + 60.8)
 
   if (response.status === 201 && response.repairShop === false) {
-    // router.push({ name: 'user-admin-page' })
+    document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
+    document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
+    document.cookie = `repairShop=${
+      response.repairShop
+    }; expires=${expirationDate.toUTCString()}; path=/`
+
+    closeDialog()
+
+    router.push({ name: 'user landing view' })
   } else if (response.status === 201 && response.repairShop === true) {
-    // router.push({ name: 'repair-shop-admin-page' })
+    document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
+    document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
+    document.cookie = `repairShop=${
+      response.repairShop
+    }; expires=${expirationDate.toUTCString()}; path=/`
+
+    closeDialog()
+
+    // router.push({ name: 'repair-shop-home' })
   }
 
   if (response === 'Unauthorized') {
     isMagicTokenWrong.value = true
   }
+}
+
+function closeDialog() {
+  const closeMagicTokenDialog = useShowMagicTokenDialog()
+  closeMagicTokenDialog.showMagicTokenInput(false)
 }
 </script>
 
