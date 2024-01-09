@@ -1,32 +1,37 @@
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue';
-    import SignInFormTablet from './SignInFormTablet.vue'
-    import SignInFormMobile from './SignInFormMobile.vue';
+import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
+import { computed, onMounted, ref } from 'vue'
+import MagicTokenDialog from '../dialogs/MagicTokenDialog.vue'
+import SignInFormMobile from './SignInFormMobile.vue'
+import SignInFormTablet from './SignInFormTablet.vue'
 
-    const isMobileForm = ref(false);
-    const isTabletForm = ref(false)
+const isMobileForm = ref(false)
+const isTabletForm = ref(false)
 
-    let width = document.documentElement.clientWidth;
+let width = document.documentElement.clientWidth
 
-    function updateScreenSize() {
-        window.addEventListener("resize", updateScreenSize);
-        width = document.documentElement.clientWidth;
+const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
 
-        if (width < 700) {
-            isMobileForm.value = true;
-            isTabletForm.value = false
-        } else {
-            isMobileForm.value = false;
-            isTabletForm.value = true
-        }
-    }    
+function updateScreenSize() {
+  window.addEventListener('resize', updateScreenSize)
+  width = document.documentElement.clientWidth
 
-    onMounted(() => {
-        updateScreenSize();
-    })
+  if (width < 700) {
+    isMobileForm.value = true
+    isTabletForm.value = false
+  } else {
+    isMobileForm.value = false
+    isTabletForm.value = true
+  }
+}
+
+onMounted(() => {
+  updateScreenSize()
+})
 </script>
 
 <template>
-    <SignInFormMobile v-if="isMobileForm"></SignInFormMobile>
-    <SignInFormTablet v-if="isTabletForm"></SignInFormTablet>
+  <MagicTokenDialog v-if="isMagicTokenDialog"></MagicTokenDialog>
+  <SignInFormMobile v-if="isMobileForm"></SignInFormMobile>
+  <SignInFormTablet v-if="isTabletForm"></SignInFormTablet>
 </template>

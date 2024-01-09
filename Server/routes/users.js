@@ -1,15 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt"); 
+const bcrypt = require("bcrypt");
 const nodeMailer = require("nodemailer");
 
-const userModel = require ("../models/user_model");
-const repairShopModel = require ("../models/repair_shop_model");
+const userModel = require("../models/user_model");
+const repairShopModel = require("../models/repair_shop_model");
 
-let magicToken = ""; 
+let magicToken = "";
 let foundToken = "";
 
-router.post("/createUser", async(req, res) => {
+router.post("/createUser", async (req, res) => {
   async function generateUniqueToken() {
     magicToken = Math.random().toString(36).substring(2, 7);
     foundToken = await userModel.findOne({ magicToken: magicToken });
@@ -19,18 +19,18 @@ router.post("/createUser", async(req, res) => {
       return;
     }
 
-    console.log(magicToken)
+    console.log(magicToken);
 
     const { email } = req.body;
 
-    console.log(email)
+    console.log(email);
 
     try {
       const foundUser = await userModel.findOne({ email: email });
       console.log(foundUser);
 
       if (foundUser) {
-         return res.status(400).json({ message: "Email is already in use!" });
+        return res.status(400).json({ message: "Email is already in use!" });
       } else {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
@@ -41,7 +41,7 @@ router.post("/createUser", async(req, res) => {
           password: hashedPassword,
           repairShop: req.body.repairShop,
           magicToken: magicToken,
-        })
+        });
 
         console.log(newUser);
 
@@ -52,9 +52,9 @@ router.post("/createUser", async(req, res) => {
     }
   }
   generateUniqueToken();
-})
+});
 
-router.post("/createRepairShopUser", async(req, res) => {
+router.post("/createRepairShopUser", async (req, res) => {
   async function generateUniqueToken() {
     magicToken = Math.random().toString(36).substring(2, 7);
     foundToken = await userModel.findOne({ magicToken: magicToken });
@@ -71,7 +71,7 @@ router.post("/createRepairShopUser", async(req, res) => {
       const foundUser = await repairShopModel.findOne({ email: email });
 
       if (foundUser) {
-        return res.status(400).json({ message: "Email is already in use!"})
+        return res.status(400).json({ message: "Email is already in use!" });
       } else {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
@@ -84,7 +84,7 @@ router.post("/createRepairShopUser", async(req, res) => {
           password: hashedPassword,
           repairShop: req.body.repairShop,
           magicToken: magicToken,
-        })
+        });
 
         console.log(newUser);
 
@@ -95,9 +95,9 @@ router.post("/createRepairShopUser", async(req, res) => {
     }
   }
   generateUniqueToken();
-})
+});
 
-router.post("/signIn", async(req, res) => {
+router.post("/signIn", async (req, res) => {
   async function signInUser() {
     magicToken = Math.random().toString(36).substring(2, 7);
     const foundToken = await userModel.findOne({ magicToken, magicToken });
@@ -114,14 +114,14 @@ router.post("/signIn", async(req, res) => {
       const match = await bcrypt.compare(password, foundUser.password);
 
       if (!foundUser || !match) {
-        res.status(400).json({ message: "Wrong email or password" });
+        res.status(400).json({ message: "Wrong email or password!" });
         return;
       }
 
       const magicTokenTimeout = 60 * 60 * 1000;
 
       if (match) {
-        console.log(match)
+        console.log(match);
         foundUser.magicToken = magicToken;
         await foundUser.save();
 
@@ -131,9 +131,9 @@ router.post("/signIn", async(req, res) => {
           service: "Gmail",
           auth: {
             user: "k3mp314@gmail.com",
-            pass: "vuzs xrnz zxrd mujz"
-          }
-        })
+            pass: "vuzs xrnz zxrd mujz",
+          },
+        });
 
         const mailOptions = {
           from: "k3mp314@gmail.com",
@@ -147,8 +147,8 @@ router.post("/signIn", async(req, res) => {
                 <div style="max-width: 100vw; height: 2px; background: #0D31F1"></div>
               </div>
             </div>
-          `
-        }
+          `,
+        };
 
         console.log(mailOptions);
 
@@ -156,22 +156,24 @@ router.post("/signIn", async(req, res) => {
           if (error) {
             res.status(500).json("Error sending verifaction code");
           } else {
-            res.status(201).json({ email: userEmail});
+            res.status(201).json({ email: userEmail });
 
             setTimeout(async () => {
               async function generateUniqueTokenTimer() {
                 magicToken = Math.random().toString(36).substring(2, 7);
-                foundToken = await userModel.findOne({ magicToken: magicToken });
+                foundToken = await userModel.findOne({
+                  magicToken: magicToken,
+                });
 
                 if (foundToken) {
-                  generateUniqueTokenTimer()
+                  generateUniqueTokenTimer();
                 }
               }
               generateUniqueTokenTimer();
 
               foundUser.magicToken = magicToken;
               await foundUser.save();
-            }, magicTokenTimeout)
+            }, magicTokenTimeout);
           }
         });
       } else {
@@ -182,6 +184,23 @@ router.post("/signIn", async(req, res) => {
     }
   }
   signInUser();
-})
+});
+
+router.post("/checkMagicToken", async (req, res) => {
+  const { token, email } = req.body;
+
+  try {
+    const foundUser = await userModel.findOne({ email: email });
+
+    if (token === foundUser.magicToken) {
+      await foundUser.save();
+      res.status(201).json({ message: "Authentication successful" });
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
+    }
+  } catch (error) {
+    res.status(500);
+  }
+});
 
 module.exports = router;

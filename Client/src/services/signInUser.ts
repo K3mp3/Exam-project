@@ -1,15 +1,40 @@
-import type { IUserSignIn } from "@/models/IUserSignIn";
-import axios from "axios";
+import type { IUserSignIn } from '@/models/IUserSignIn'
+import type { IUserToken } from '@/models/IUserToken'
+import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
+import axios from 'axios'
 
-
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = 'http://localhost:3000'
 
 export async function signInUser(user: IUserSignIn) {
-    try {
-        console.log(user);
-        const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signIn`, user);
-        return response.data;
-    } catch (error) {
-        console.log(error);
+  try {
+    console.log(user)
+    const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signIn`, user)
+
+    const showMagicTokenDialog = useShowMagicTokenDialog()
+    showMagicTokenDialog.showMagicTokenInput(true, response.data.email)
+
+    return response.data
+  } catch (error: any) {
+    if (
+      error.response &&
+      error.response.status === 400 &&
+      error.response.data.message === 'Wrong email or password!'
+    ) {
+      return error.response.data.message
     }
+  }
+}
+
+export async function checkMagicToken(user: IUserToken) {
+  try {
+    const response = await axios.post<IUserToken>(`${BASE_URL}/users/checkMagicToken`, user)
+  } catch (error: any) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      error.response.data.message === 'Wrong verifaction code'
+    ) {
+      return error.response.data.message
+    }
+  }
 }

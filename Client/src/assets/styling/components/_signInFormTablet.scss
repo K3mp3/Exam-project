@@ -2,146 +2,145 @@
 @use '../abstracts/fonts' as *;
 
 .sign-in-tablet-form-background {
-    padding: 32px;
-    margin: auto;
-    max-width: 700px;
+  padding: 32px;
+  margin: auto;
+  max-width: 700px;
 
-    .sign-in-tablet-form-nav {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding: 0;
-        margin-bottom: 32px;
+  .sign-in-tablet-form-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0;
+    margin-bottom: 32px;
 
-        .sign-in-form-back-link {
-            color: $text-main;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            border: 2px solid $el-border-gray;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-            color: $text-main;
-            font-family: map-get($font-title-black, font-family);
-            font-weight: map-get($font-title-black, font-weight);
-        }
+    .sign-in-form-back-link {
+      color: $text-main;
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      border: 2px solid $el-border-gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
     }
 
-    .sign-in-tablet-form {
+    h2 {
+      font-size: 2rem;
+      color: $text-main;
+      font-family: map-get($font-title-black, font-family);
+      font-weight: map-get($font-title-black, font-weight);
+    }
+  }
+
+  .sign-in-tablet-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background-color: $bg-main;
+    max-width: 700px;
+    margin-bottom: 32px;
+
+    .sign-in-tablet-form-top-container {
+      max-width: 700px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 20px;
+
+      .input-container {
+        width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 32px;
-        background-color: $bg-main;
-        max-width: 700px;
-        margin-bottom: 32px;
 
-        .sign-in-tablet-form-top-container {
-            max-width: 700px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 20px;
-
-            .input-container {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-
-                label {
-                    color: $text-main;
-                    font-family: map-get($font-text-light, font-family);
-                    font-weight: map-get($font-text-light, font-weight);
-                }
-        
-                input {
-                    position: relative;
-                    transition: all 0.2s ease-in-out;
-                    margin-top: 5px;
-                    max-width: 100%;
-                    height: 42px;
-                    background-color: $el-bg-gray;
-                    color: $text-main;
-                    border: 2px solid $el-border-gray;
-                    padding: 10px;
-                    border-radius: 10px;
-                    z-index: 1;
-            
-                    &:focus {
-                        transition: all 0.2s ease-in-out;
-                        outline: none;
-                        border: 2px solid transparent;
-                        border-radius: 10px;
-                        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                        linear-gradient(
-                            to bottom,
-                            rgb(13, 63, 241),
-                            rgb(13, 63, 241, 0.2)
-                            );
-                        background-origin: border-box;
-                        background-clip: padding-box, border-box;
-                    }
-                }
-        
-                .input-error {
-                    transition: all 0.2s ease-in-out;
-                    outline: none;
-                    border: 2px solid transparent;
-                    border-radius: 10px;
-                    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                    linear-gradient(
-                        to bottom,
-                        rgb(241, 13, 13),
-                        rgb(241, 13, 13, 0.2)
-                        );
-                    background-origin: border-box;
-                    background-clip: padding-box, border-box;
-            
-                    &:focus {
-                        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                        linear-gradient(
-                            to bottom,
-                            rgb(241, 13, 13),
-                            rgb(241, 13, 13, 0.2)
-                            );
-                    }
-                }
-
-                p {
-                    color: $el-error-red;
-                    margin-bottom: 20px;
-                    margin-top: -10px;
-                }
-            }
-        }                          
-
-        .sign-in-tablet-form-bottom-container {
-            max-width: 700px;
-            display: row;
-            flex-direction: column;
-            
-            .sign-in-tablet-btn {
-                transition: all 0.2s ease-in-out;
-                background-color: $el-active-blue;
-                border: none;
-                color: $text-main;
-                font-family: map-get($font-title-bold, font-family);
-                font-weight: map-get($font-title-bold, font-weight);
-                width: 100%;
-                height: 42px;
-                border-radius: 50px;
-        
-                &:hover {
-                    transition: all 0.2s ease-in-out;
-                    cursor: pointer;
-                    background-color: $el-active-blue-hover;
-                }
-            }
+        label {
+          color: $text-main;
+          font-family: map-get($font-text-light, font-family);
+          font-weight: map-get($font-text-light, font-weight);
         }
+
+        input {
+          position: relative;
+          transition: all 0.2s ease-in-out;
+          margin-top: 5px;
+          max-width: 100%;
+          height: 42px;
+          background-color: $el-bg-gray;
+          color: $text-main;
+          border: 2px solid $el-border-gray;
+          padding: 10px;
+          border-radius: 10px;
+          z-index: 1;
+
+          &:focus {
+            transition: all 0.2s ease-in-out;
+            outline: none;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+              linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+          }
+        }
+
+        .input-error {
+          transition: all 0.2s ease-in-out;
+          outline: none;
+          border: 2px solid transparent;
+          border-radius: 10px;
+          background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+            linear-gradient(to bottom, rgb(241, 13, 13), rgb(241, 13, 13, 0.2));
+          background-origin: border-box;
+          background-clip: padding-box, border-box;
+
+          &:focus {
+            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+              linear-gradient(to bottom, rgb(241, 13, 13), rgb(241, 13, 13, 0.2));
+          }
+        }
+
+        p {
+          color: $el-error-red;
+          margin-bottom: 20px;
+        }
+      }
     }
+
+    .sign-in-tablet-form-bottom-container {
+      max-width: 700px;
+      display: row;
+      flex-direction: column;
+
+      .sign-in-tablet-btn-disable {
+        transition: all 0.2s ease-in-out;
+        background-color: $el-inactive-blue;
+        border: none;
+        color: $text-disabled;
+        font-family: map-get($font-title-bold, font-family);
+        font-weight: map-get($font-title-bold, font-weight);
+        width: 100%;
+        height: 42px;
+        border-radius: 50px;
+      }
+
+      .sign-in-tablet-btn {
+        transition: all 0.2s ease-in-out;
+        background-color: $el-active-blue;
+        border: none;
+        color: $text-main;
+        font-family: map-get($font-title-bold, font-family);
+        font-weight: map-get($font-title-bold, font-weight);
+        width: 100%;
+        height: 42px;
+        border-radius: 50px;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          cursor: pointer;
+          background-color: $el-active-blue-hover;
+        }
+      }
+    }
+  }
 }
