@@ -22,7 +22,7 @@
     input {
       position: relative;
       transition: all 0.2s ease-in-out;
-      margin: 10px 0 20px 0;
+      margin-bottom: 8px;
       width: calc(100vw - 32px);
       height: 42px;
       background-color: $el-bg-gray;
@@ -64,6 +64,7 @@
       color: $text-error-red;
       font-family: map-get($font-text-light, font-family);
       font-weight: map-get($font-text-light, font-weight);
+      margin-bottom: 32px;
     }
 
     p {

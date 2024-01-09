@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
+import { computed, ref } from 'vue'
 import { checkMagicToken } from '../../services/signInUser'
 
 const writtenToken = ref('')
@@ -15,10 +16,17 @@ const user = computed(() => {
   }
 })
 
-function handleSignIn() {
+async function handleSignIn() {
   const response = await checkMagicToken(user.value)
+  console.log(response.repairShop)
 
-  if (response === 'Wrong verifaction code') {
+  if (response.status === 201 && response.repairShop === false) {
+    // router.push({ name: 'user-admin-page' })
+  } else if (response.status === 201 && response.repairShop === true) {
+    // router.push({ name: 'repair-shop-admin-page' })
+  }
+
+  if (response === 'Unauthorized') {
     isMagicTokenWrong.value = true
   }
 }

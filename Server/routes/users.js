@@ -187,16 +187,20 @@ router.post("/signIn", async (req, res) => {
 });
 
 router.post("/checkMagicToken", async (req, res) => {
-  const { token, email } = req.body;
+  const { magicToken, email, repairShop } = req.body;
+  console.log(magicToken, email, repairShop);
 
   try {
     const foundUser = await userModel.findOne({ email: email });
 
-    if (token === foundUser.magicToken) {
+    if (foundUser && magicToken === foundUser.magicToken) {
       await foundUser.save();
-      res.status(201).json({ message: "Authentication successful" });
+      res.status(201).json({
+        message: "Authentication successful",
+        repairShop: foundUser.repairShop,
+      });
     } else {
-      res.status(401).json({ message: "Unauthorized" });
+      res.status(400).json({ message: "Unauthorized" });
     }
   } catch (error) {
     res.status(500);
