@@ -1,3 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import UserHomeParent from '../components/userHome/UserHomeParent.vue'
+</script>
 
-<template>hello</template>
+<template>
+  <UserHomeParent></UserHomeParent>
+</template>

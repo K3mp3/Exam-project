@@ -1,4 +1,5 @@
-@use '../styling/abstracts/colors' as *;
+@use './abstracts/colors' as *;
+@use './abstracts/fonts' as *;
 
 *,
 *::before,
@@ -33,4 +34,16 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h2 {
+  color: $text-main;
+  font-family: map-get($font-title-black, font-family);
+  font-weight: map-get($font-title-black, font-weight);
+}
+
+h3 {
+  color: $text-main;
+  font-family: map-get($font-title-black, font-family);
+  font-weight: map-get($font-title-black, font-weight);
 }
