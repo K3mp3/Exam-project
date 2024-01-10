@@ -21,8 +21,8 @@
   .signed-in-contact-form-select {
     position: relative;
     transition: all 0.2s ease-in-out;
-    margin: 10px 0 20px 0;
-    width: calc(100vw - 32px);
+    margin: 8px 0 16px 0;
+    width: 100%;
     height: 42px;
     background-color: $el-bg-gray;
     color: $text-main;
@@ -53,7 +53,7 @@
     position: relative;
     transition: all 0.2s ease-in-out;
     margin: 8px 0 16px 0;
-    width: calc(100vw - 32px);
+    width: 100%;
     height: 42px;
     background-color: $el-bg-gray;
     color: $text-main;
@@ -110,7 +110,7 @@
     font-family: map-get($font-title-bold, font-family);
     font-weight: map-get($font-title-bold, font-weight);
     font-size: 0.9rem;
-    height: 35px;
+    height: 42px;
     border-radius: 50px;
     margin: 32px 0;
     width: 100%;
@@ -130,7 +130,7 @@
     font-family: map-get($font-title-bold, font-family);
     font-weight: map-get($font-title-bold, font-weight);
     font-size: 0.9rem;
-    height: 35px;
+    height: 42px;
     border-radius: 50px;
     margin: 32px 0;
     width: 100%;
@@ -166,7 +166,7 @@
       .signed-in-contact-form-select {
         margin: 8px 0 16px 0;
         width: 100%;
-        height: 42px;
+        height: 45px;
         padding: 8px;
         font-size: 1rem;
 
@@ -178,7 +178,7 @@
       input {
         margin: 8px 0 16px 0;
         width: 100%;
-        height: 42px;
+        height: 45px;
         font-size: 1rem;
 
         &:focus {
@@ -194,16 +194,9 @@
       }
 
       .user-home-send-btn {
-        transition: all 0.2s ease-in-out;
-        background-color: $el-active-blue;
-        border: none;
-        color: $text-main;
-        font-family: map-get($font-title-bold, font-family);
-        font-weight: map-get($font-title-bold, font-weight);
-        font-size: 0.9rem;
-        height: 35px;
-        border-radius: 50px;
-        margin: 15px 0;
+        font-size: 1rem;
+        height: 45px;
+        margin: 7px 0;
         width: 100%;
 
         &:hover {
@@ -216,7 +209,97 @@
       .user-home-send-btn-disabled {
         font-size: 1rem;
         height: 45px;
-        margin: 15px 0;
+        margin: 7px 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1482px) {
+  .signed-in-header {
+    padding: 64px;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .signed-in-main {
+    padding: 0px 64px;
+    max-width: 1200px;
+    margin: auto;
+
+    form {
+      max-width: 1482px;
+      display: flex;
+      gap: 64px;
+      justify-content: center;
+
+      .right-side-contact-form {
+        width: 100%;
+        order: 2;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .left-side-contact-form {
+        width: 100%;
+        order: 1;
+      }
+
+      .signed-in-contact-form-select {
+        margin: 8px 0 24px 0;
+        width: 100%;
+        height: 45px;
+        padding: 8px;
+        font-size: 1rem;
+
+        &:focus {
+          font-size: 1rem;
+        }
+      }
+
+      input {
+        margin: 8px 0 24px 0;
+        width: 100%;
+        height: 45px;
+        font-size: 1rem;
+
+        &:focus {
+          font-size: 1rem;
+        }
+      }
+
+      .text-editor {
+        width: 100%;
+        height: 324px;
+        font-size: 1rem;
+        margin-bottom: 64px;
+      }
+
+      .user-home-send-btn {
+        transition: all 0.2s ease-in-out;
+        background-color: $el-active-blue;
+        border: none;
+        color: $text-main;
+        font-family: map-get($font-title-bold, font-family);
+        font-weight: map-get($font-title-bold, font-weight);
+        font-size: 0.9rem;
+        height: 45px;
+        border-radius: 50px;
+        margin: 8px 0;
+        width: 100%;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          cursor: pointer;
+          background-color: $el-active-blue-hover;
+        }
+      }
+
+      .user-home-send-btn-disabled {
+        font-size: 1rem;
+        height: 45px;
+        margin: 8px 0;
         width: 100%;
       }
     }
