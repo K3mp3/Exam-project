@@ -30,6 +30,9 @@
     padding: 10px;
     border-radius: 10px;
     z-index: 1;
+    font-family: map-get($font-text-light, font-family);
+    font-weight: map-get($font-text-light, font-weight);
+    font-size: 0.9rem;
 
     &:focus {
       transition: all 0.2s ease-in-out;
@@ -40,6 +43,9 @@
         linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
       background-origin: border-box;
       background-clip: padding-box, border-box;
+      font-family: map-get($font-text-light, font-family);
+      font-weight: map-get($font-text-light, font-weight);
+      font-size: 0.9rem;
     }
   }
 
@@ -55,6 +61,9 @@
     padding: 10px;
     border-radius: 10px;
     z-index: 1;
+    font-family: map-get($font-text-light, font-family);
+    font-weight: map-get($font-text-light, font-weight);
+    font-size: 0.9rem;
 
     &:focus {
       transition: all 0.2s ease-in-out;
@@ -86,7 +95,6 @@
       transition: all 0.2s ease-in-out;
       outline: none;
       border: 2px solid transparent;
-      border-radius: 10px;
       background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
         linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
       background-origin: border-box;
@@ -101,6 +109,7 @@
     color: $text-main;
     font-family: map-get($font-title-bold, font-family);
     font-weight: map-get($font-title-bold, font-weight);
+    font-size: 0.9rem;
     height: 35px;
     border-radius: 50px;
     margin: 32px 0;
@@ -120,9 +129,96 @@
     color: $text-disabled;
     font-family: map-get($font-title-bold, font-family);
     font-weight: map-get($font-title-bold, font-weight);
+    font-size: 0.9rem;
     height: 35px;
     border-radius: 50px;
     margin: 32px 0;
     width: 100%;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .signed-in-header {
+    padding: 32px;
+  }
+
+  .signed-in-main {
+    padding: 16px 32px;
+
+    form {
+      max-width: 700px;
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+
+      .right-side-contact-form {
+        width: 100%;
+        order: 2;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .left-side-contact-form {
+        width: 100%;
+        order: 1;
+      }
+
+      .signed-in-contact-form-select {
+        margin: 8px 0 16px 0;
+        width: 100%;
+        height: 42px;
+        padding: 8px;
+        font-size: 1rem;
+
+        &:focus {
+          font-size: 1rem;
+        }
+      }
+
+      input {
+        margin: 8px 0 16px 0;
+        width: 100%;
+        height: 42px;
+        font-size: 1rem;
+
+        &:focus {
+          font-size: 1rem;
+        }
+      }
+
+      .text-editor {
+        width: 100%;
+        height: 300px;
+        font-size: 1rem;
+        margin-bottom: 64px;
+      }
+
+      .user-home-send-btn {
+        transition: all 0.2s ease-in-out;
+        background-color: $el-active-blue;
+        border: none;
+        color: $text-main;
+        font-family: map-get($font-title-bold, font-family);
+        font-weight: map-get($font-title-bold, font-weight);
+        font-size: 0.9rem;
+        height: 35px;
+        border-radius: 50px;
+        margin: 15px 0;
+        width: 100%;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          cursor: pointer;
+          background-color: $el-active-blue-hover;
+        }
+      }
+
+      .user-home-send-btn-disabled {
+        font-size: 1rem;
+        height: 45px;
+        margin: 15px 0;
+        width: 100%;
+      }
+    }
   }
 }

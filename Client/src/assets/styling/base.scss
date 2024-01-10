@@ -47,3 +47,7 @@ h3 {
   font-family: map-get($font-title-black, font-family);
   font-weight: map-get($font-title-black, font-weight);
 }
+
+.hidden {
+  display: none;
+}
