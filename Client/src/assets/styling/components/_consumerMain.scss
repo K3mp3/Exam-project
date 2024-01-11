@@ -9,7 +9,7 @@ main {
         background-color: $bg-main-90;
         z-index: 1;
         top: 0;
-        padding: 16px;
+        padding: 64px 16px;
 
         .vertical-line {
             width: 2px;
@@ -34,21 +34,21 @@ main {
             }
 
             h2 {
-                margin-bottom: 20px;
+                margin-bottom: 16px;
                 color: $text-main;
                 font-family: map-get($font-title-bold, font-family);
                 font-weight: map-get($font-title-bold, font-weight);
             }
 
             ul {
-                padding: 0 0 0 25px;
+                padding: 0 0 0 20px;
             }
 
             li {
                 color: $text-main;
                 font-family: map-get($font-text-light, font-family);
                 font-weight: map-get($font-text-light, font-weight);
-                line-height: 27px;
+                margin-bottom: 8px;
 
                 span {
                     font-family: map-get($font-title-bold, font-family);
@@ -96,28 +96,22 @@ main {
         }
     }
 
-    .blue-line {
-        margin-top: 60px;
-        width: 100vw;
-        height: 2px;
-        background: linear-gradient(to right, #0d3ef100, #0D31F1, #0d3ef100);
-    }
-
     .stressed-man-img {
-        margin-top: 30px;
+        margin-top: 16px;
         max-width: 100vw;
     }
 
     .promotion-container {
-        padding: 30px 16px;
+        padding: 16px 16px 64px 16px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 24px;
         
         p {
             color: $text-main;
             font-family: map-get($font-title-bold, font-family);
             font-weight: map-get($font-title-bold, font-weight);
+            margin-bottom: 8px;
         } 
 
         .interactive {
@@ -126,22 +120,21 @@ main {
 
             input {
                 transition: all 0.2s ease-in-out;
-                margin: 10px 0 15px 0;
                 padding: 10px;
-                border: none;
-                outline: 2px solid $el-white-main;
-                border-radius: 6px;
+                border: 2px solid $el-white-main; 
+                border-radius: 10px;
                 height: 35px;
                 background: transparent;
                 color: $text-main;
     
                 &:focus {
                     transition: all 0.2s ease-in-out;
-                    outline: 2px solid $el-active-blue;
+                    border: 2px solid $el-active-blue;
+                    outline: none;
                 }
             }
     
-            button {
+            .main-register-btn {
                 transition: all 0.2s ease-in-out;
                 background-color: $el-active-blue;
                 border: none;
@@ -150,6 +143,7 @@ main {
                 font-weight: map-get($font-title-bold, font-weight);
                 height: 35px;
                 border-radius: 50px;
+                margin-top: 16px;
     
                 &:hover {
                     transition: all 0.2s ease-in-out;
@@ -212,7 +206,7 @@ main {
         }
     
         .promotion-container {
-            padding: 40px 32px;
+            padding: 32px 32px 64px 32px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -245,9 +239,6 @@ main {
             }
         }
         
-        .blue-line {
-            margin-top: 30px;
-        }
     }
 }
 
@@ -278,7 +269,7 @@ main {
                 }
     
                 .step-container {
-                    margin-top: 100px;
+                    margin-top: 128px;
 
                     .text-containers {
                         width: 100%;
@@ -315,11 +306,11 @@ main {
                 li {
                     font-size: 1rem;
                 }
-            }
+            } 
         }
-        
-        .blue-line {
-            margin-top: 40px;
+
+        .promotion-container {
+            padding: 32px 64px 64px 64px;
         }
     }
 }
