@@ -33,7 +33,7 @@ async function handleSignIn() {
 
     closeDialog()
 
-    router.push({ name: 'user landing view' })
+    router.push({ name: 'user home view' })
   } else if (response.status === 201 && response.repairShop === true) {
     document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
     document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
@@ -43,7 +43,7 @@ async function handleSignIn() {
 
     closeDialog()
 
-    // router.push({ name: 'repair-shop-home' })
+    router.push({ name: 'repair shop home view' })
   }
 
   if (response === 'Unauthorized') {

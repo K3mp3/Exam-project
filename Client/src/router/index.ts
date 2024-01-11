@@ -2,8 +2,9 @@ import ConsumerLandingView from '@/views/ConsumerLandingView.vue'
 import LayoutVue from '@/views/Layout.vue'
 import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
+import RepairShopHomeViewVue from '@/views/RepairShopHomeView.vue'
 import SignInViewVue from '@/views/SignInView.vue'
-import UserHomeLandingViewVue from '@/views/UserHomeLandingView.vue'
+import UserHomeLandingViewVue from '@/views/UserHomeHomeView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -37,8 +38,13 @@ const router = createRouter({
         },
         {
           path: '/user-home',
-          name: 'user landing view',
+          name: 'user home view',
           component: UserHomeLandingViewVue
+        },
+        {
+          path: '/repair-shop-home',
+          name: 'repair shop home view',
+          component: RepairShopHomeViewVue
         }
       ]
     }
