@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { signInUser } from '@/services/signInUser'
+import { useShowSignInDialog } from '@/stores/showSignInDialog'
+import { computed, ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
@@ -29,7 +29,7 @@ function checkInputData() {
   }
 }
 
-async function handleRegistration() {
+async function handleSignIn() {
   const response = await signInUser(user.value)
   console.log(response)
 }
@@ -49,7 +49,7 @@ function closeSignInDialog() {
         </button>
         <h2>Logga in</h2>
       </div>
-      <form @submit.prevent="handleRegistration" class="sign-in-desktop-form">
+      <form @submit.prevent="handleSignIn" class="sign-in-desktop-form">
         <div class="sign-in-desktop-form-top-container">
           <div class="sign-in-dialog-input-container">
             <label for="email">Email adress</label>

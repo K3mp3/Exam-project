@@ -5,6 +5,7 @@ const nodeMailer = require("nodemailer");
 
 const userModel = require("../models/user_model");
 const repairShopModel = require("../models/repair_shop_model");
+const contactRepairShopModel = require("../models/contact_repair_shop_model");
 
 let magicToken = "";
 let foundToken = "";
@@ -205,6 +206,25 @@ router.post("/checkMagicToken", async (req, res) => {
     }
   } catch (error) {
     res.status(500);
+  }
+});
+
+router.post("/contactRepairShops", async (req, res) => {
+  try {
+    const newMessage = await contactRepairShopModel.create({
+      name: req.body.name,
+      email: req.body.email,
+      location: req.body.location,
+      registrationNumber: req.body.registrationNumber,
+      troubleshootTime: req.body.troubleshootTime,
+      message: req.body.message,
+    });
+
+    console.log(newMessage);
+
+    res.status(201).json(newMessage);
+  } catch (error) {
+    res.json(error);
   }
 });
 

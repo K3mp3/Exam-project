@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { contactRepairShops } from '@/services/userContact'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 const location = ref('')
 const registrationNumber = ref('')
-const troubleShootTime = ref('')
+const troubleshootTime = ref('')
 const message = ref('')
 
 const isLocation = ref(false)
-const isTroubleShootTime = ref(false)
+const isTroubleshootTime = ref(false)
 const isRegistrationNumber = ref(false)
 const isMessage = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
-  { key: 'isTroubleShootTime', value: false },
+  { key: 'isTroubleshootTime', value: false },
   { key: 'isRegistrationNumber', value: false },
   { key: 'isMessage', value: false }
 ]
@@ -36,14 +37,14 @@ function checkInputDataSelect1() {
     } else {
       isLocation.value = true
 
-      // Find the index of isTroubleShootTime in inputsArray
+      // Find the index of isTroubleshootTime in inputsArray
       const index = inputsArray.findIndex((field) => field.key === 'isLocation')
 
       if (index !== -1) {
-        // If isTroubleShootTime is found, update its value at the specific index
+        // If isTroubleshootTime is found, update its value at the specific index
         inputsArray[index].value = isLocation.value
       } else {
-        // If isTroubleShootTime is not found, push it into the array
+        // If isTroubleshootTime is not found, push it into the array
         inputsArray.push({ key: 'isLocation', value: isLocation.value })
       }
 
@@ -54,20 +55,20 @@ function checkInputDataSelect1() {
 
 function checkInputDataSelect2() {
   nextTick(() => {
-    if (troubleShootTime.value === '') {
+    if (troubleshootTime.value === '') {
       return
     } else {
-      isTroubleShootTime.value = true
+      isTroubleshootTime.value = true
 
-      // Find the index of isTroubleShootTime in inputsArray
-      const index = inputsArray.findIndex((field) => field.key === 'isTroubleShootTime')
+      // Find the index of isTroubleshootTime in inputsArray
+      const index = inputsArray.findIndex((field) => field.key === 'isTroubleshootTime')
 
       if (index !== -1) {
-        // If isTroubleShootTime is found, update its value at the specific index
-        inputsArray[index].value = isTroubleShootTime.value
+        // If isTroubleshootTime is found, update its value at the specific index
+        inputsArray[index].value = isTroubleshootTime.value
       } else {
-        // If isTroubleShootTime is not found, push it into the array
-        inputsArray.push({ key: 'isTroubleShootTime', value: isTroubleShootTime.value })
+        // If isTroubleshootTime is not found, push it into the array
+        inputsArray.push({ key: 'isTroubleshootTime', value: isTroubleshootTime.value })
       }
 
       checkInputData()
@@ -82,14 +83,14 @@ function checkInputDataRegistrationNumber() {
     } else {
       isRegistrationNumber.value = true
 
-      // Find the index of isTroubleShootTime in inputsArray
+      // Find the index of isTroubleshootTime in inputsArray
       const index = inputsArray.findIndex((field) => field.key === 'isRegistrationNumber')
 
       if (index !== -1) {
-        // If isTroubleShootTime is found, update its value at the specific index
+        // If isTroubleshootTime is found, update its value at the specific index
         inputsArray[index].value = isRegistrationNumber.value
       } else {
-        // If isTroubleShootTime is not found, push it into the array
+        // If isTroubleshootTime is not found, push it into the array
         inputsArray.push({ key: 'isRegistrationNumber', value: isRegistrationNumber.value })
       }
 
@@ -105,14 +106,14 @@ function checkInputDataMessage() {
     } else {
       isMessage.value = true
 
-      // Find the index of isTroubleShootTime in inputsArray
+      // Find the index of isTroubleshootTime in inputsArray
       const index = inputsArray.findIndex((field) => field.key === 'isMessage')
 
       if (index !== -1) {
-        // If isTroubleShootTime is found, update its value at the specific index
+        // If isTroubleshootTime is found, update its value at the specific index
         inputsArray[index].value = isMessage.value
       } else {
-        // If isTroubleShootTime is not found, push it into the array
+        // If isTroubleshootTime is not found, push it into the array
         inputsArray.push({ key: 'isMessage', value: isMessage.value })
       }
 
@@ -132,29 +133,55 @@ function updateScreenSize() {
   }
 }
 
-onMounted(() => {
-  updateScreenSize()
-})
-
 function formatRegistrationNumber() {
-  // Remove spaces and convert to uppercase
   let formattedValue = registrationNumber.value.replace(/\s/g, '').toUpperCase()
 
-  // Insert a space after the first 3 characters
   if (formattedValue.length > 3) {
     formattedValue = formattedValue.slice(0, 3) + ' ' + formattedValue.slice(3)
   }
 
-  // Update the registrationNumber value
   registrationNumber.value = formattedValue
 
-  // Check input data after formatting
   checkInputData()
 }
 
-function handleMessage() {
-  console.log(location, registrationNumber, troubleShootTime, message)
+function getCookie(cookieName: string) {
+  const cookiesArray = document.cookie.split(';')
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    let cookie = cookiesArray[i].trim()
+
+    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
+  }
+
+  return null
 }
+
+const fullname = getCookie('name')
+const email = getCookie('email')
+
+const messageData = computed(() => {
+  const nonNullName = fullname || ''
+  const nonNullEmaik = email || ''
+
+  return {
+    name: nonNullName,
+    email: nonNullEmaik,
+    location: location.value,
+    registrationNumber: registrationNumber.value,
+    troubleshootTime: troubleshootTime.value,
+    message: message.value
+  }
+})
+
+async function handleMessage() {
+  console.log(location, registrationNumber, troubleshootTime, message)
+  const response = await contactRepairShops(messageData.value)
+}
+
+onMounted(() => {
+  updateScreenSize()
+})
 </script>
 
 <template>
@@ -183,11 +210,11 @@ function handleMessage() {
         maxlength="7"
       />
 
-      <label for="troubleShootTime">Felsökningstid</label>
+      <label for="troubleshootTime">Felsökningstid</label>
       <select
-        name="troubleShootTime"
+        name="troubleshootTime"
         class="signed-in-contact-form-select"
-        v-model="troubleShootTime"
+        v-model="troubleshootTime"
         @input="checkInputDataSelect2"
       >
         <option value="1 timme">1 timme</option>
