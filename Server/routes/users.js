@@ -209,6 +209,15 @@ router.post("/checkMagicToken", async (req, res) => {
   }
 });
 
+router.get("/contactRepairShops", async (req, res) => {
+  try {
+    const allMessages = await contactRepairShopModel.find();
+    res.status(200).json(allMessages);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.post("/contactRepairShops", async (req, res) => {
   try {
     const newMessage = await contactRepairShopModel.create({

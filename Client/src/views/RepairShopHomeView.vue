@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import UserHomeParent from '../components/userHome/UserHomeParent.vue'
+import RepairShopHomeParent from '../components/repairShopHome/RepairShopHomeParent.vue'
 </script>
 
 <template>
-  <UserHomeParent></UserHomeParent>
+  <RepairShopHomeParent></RepairShopHomeParent>
 </template>
