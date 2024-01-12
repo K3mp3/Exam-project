@@ -114,6 +114,9 @@ router.post("/signIn", async (req, res) => {
       const foundUser = await userModel.findOne({ email: email });
       const match = await bcrypt.compare(password, foundUser.password);
 
+      console.log(foundUser);
+      console.log(match);
+
       if (!foundUser || !match) {
         res.status(400).json({ message: "Wrong email or password!" });
         return;

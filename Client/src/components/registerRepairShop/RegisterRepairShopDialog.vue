@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { registerUser } from '@/services/registerUser'
+import { registerRepairShop } from '@/services/registerUser'
 import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog'
 import { computed, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
@@ -92,7 +92,8 @@ async function handleRegistration() {
   checkInputData()
 
   if (checkInputData()) {
-    const response = await registerUser(newUser.value)
+    const response = await registerRepairShop(newUser.value)
+    console.log(response)
   } else {
   }
 }
@@ -230,10 +231,6 @@ function closeRegisterDialog() {
         <p>
           Har du redan ett konto?
           <RouterLink to="/" class="router-link-text">Logga in här</RouterLink>
-        </p>
-        <p>
-          Har du en verkstad och vill registrera dig?
-          <RouterLink to="/" class="router-link-text">Klicka här</RouterLink>
         </p>
       </div>
 

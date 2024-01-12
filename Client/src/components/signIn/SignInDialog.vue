@@ -30,6 +30,7 @@ function checkInputData() {
 }
 
 async function handleSignIn() {
+  console.log(user.value)
   const response = await signInUser(user.value)
   console.log(response)
 }
