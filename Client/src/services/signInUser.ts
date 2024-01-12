@@ -8,7 +8,7 @@ const BASE_URL = 'http://localhost:3000'
 export async function signInUser(user: IUserSignIn) {
   try {
     console.log(user)
-    const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signIn`, user)
+    const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
 
     const showMagicTokenDialog = useShowMagicTokenDialog()
     showMagicTokenDialog.showMagicTokenInput(true, response.data.email)

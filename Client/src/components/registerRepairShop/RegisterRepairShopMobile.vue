@@ -217,11 +217,7 @@ async function handleRegistration() {
     <div class="text-form-container">
       <p>
         Har du redan ett konto?
-        <RouterLink to="/" class="router-link-text">Logga in här</RouterLink>
-      </p>
-      <p>
-        Har du en verkstad och vill registrera dig?
-        <RouterLink to="/" class="router-link-text">Klicka här</RouterLink>
+        <RouterLink to="/sign-in" class="router-link-text">Logga in här</RouterLink>
       </p>
     </div>
 

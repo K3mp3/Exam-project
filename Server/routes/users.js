@@ -69,7 +69,7 @@ router.post("/createRepairShopUser", async (req, res) => {
     const { email } = req.body;
 
     try {
-      const foundUser = await repairShopModel.findOne({ email: email });
+      const foundUser = await userModel.findOne({ email: email });
 
       if (foundUser) {
         return res.status(400).json({ message: "Email is already in use!" });
@@ -77,7 +77,7 @@ router.post("/createRepairShopUser", async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
-        const newUser = await repairShopModel.create({
+        const newUser = await userModel.create({
           name: req.body.name,
           location: req.body.location,
           phoneNumber: req.body.phoneNumber,
@@ -98,10 +98,12 @@ router.post("/createRepairShopUser", async (req, res) => {
   generateUniqueToken();
 });
 
-router.post("/signIn", async (req, res) => {
+router.post("/signin", async (req, res) => {
   async function signInUser() {
     magicToken = Math.random().toString(36).substring(2, 7);
+    console.log("magictoken:", magicToken);
     const foundToken = await userModel.findOne({ magicToken, magicToken });
+    console.log("foundtoken:", foundToken);
 
     if (foundToken) {
       signInUser();
@@ -110,8 +112,11 @@ router.post("/signIn", async (req, res) => {
 
     const { password, email } = req.body;
 
+    console.log("email, password:", email, password);
+
     try {
       const foundUser = await userModel.findOne({ email: email });
+      console.log("founduser", foundUser);
       const match = await bcrypt.compare(password, foundUser.password);
 
       console.log(foundUser);
