@@ -4,6 +4,7 @@ import { computed, nextTick, ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
+const repairShop = ref('')
 
 const isEmail = ref(false)
 const isPassword = ref(false)
@@ -27,6 +28,7 @@ const user = computed(() => {
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
   console.log(isBtnDisabled.value)
+  console.log(inputsArray)
 }
 
 function checkInputDataEmail() {
@@ -68,6 +70,10 @@ function checkInputDataPassword() {
       checkInputData()
     }
   })
+}
+
+function checkSelectValue() {
+  console.log(repairShop.value)
 }
 
 async function handleSignIn() {
@@ -116,7 +122,16 @@ async function handleSignIn() {
       </p>
 
       <label for="isRepairShop">Verkstad</label>
-      <input type="checkbox" name="isRepairShop" class="form-mobile-checkbox" />
+      <select
+        name="isRepairShop"
+        class="mobile-sign-in-form-select"
+        v-model="repairShop"
+        :key="repairShop"
+        @input="checkSelectValue"
+      >
+        <option value="" selected>Nej</option>
+        <option value="">Ja</option>
+      </select>
 
       <button
         type="submit"
