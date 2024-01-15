@@ -51,6 +51,7 @@ function updateScreenSize() {
 
 onMounted(() => {
   updateScreenSize()
+  console.log(isRepairShopDialog)
 })
 </script>
 

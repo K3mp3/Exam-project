@@ -4,7 +4,6 @@ import { computed, nextTick, ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
-const repairShop = ref('')
 
 const isEmail = ref(false)
 const isPassword = ref(false)
@@ -72,10 +71,6 @@ function checkInputDataPassword() {
   })
 }
 
-function checkSelectValue() {
-  console.log(repairShop.value)
-}
-
 async function handleSignIn() {
   const response = await signInUser(user.value)
 
@@ -120,18 +115,6 @@ async function handleSignIn() {
       <p v-if="isEmailWrong">
         <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
       </p>
-
-      <label for="isRepairShop">Verkstad</label>
-      <select
-        name="isRepairShop"
-        class="mobile-sign-in-form-select"
-        v-model="repairShop"
-        :key="repairShop"
-        @input="checkSelectValue"
-      >
-        <option value="" selected>Nej</option>
-        <option value="">Ja</option>
-      </select>
 
       <button
         type="submit"

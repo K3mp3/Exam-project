@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { registerRepairShop } from '../../services/registerUser'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -12,12 +12,32 @@ const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
+const isName = ref(false)
+const isLocation = ref(false)
+const isPhoneNumber = ref(false)
+const isEmail = ref(false)
+const isConfirmEmail = ref(false)
+const isPassword = ref(false)
+const isConfirmPassword = ref(false)
+
 const isPhoneNumberWrong = ref(false)
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
-const disableRegisterBtn = ref(true)
+const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
+
+const inputsArray: { key: string; value: boolean }[] = [
+  { key: 'isName', value: false },
+  { key: 'isLocation', value: false },
+  { key: 'isPhoneNumber', value: false },
+  { key: 'isEmail', value: false },
+  { key: 'isConfirmEmail', value: false },
+  { key: 'isPassword', value: false },
+  { key: 'isConfirmPassword', value: false }
+]
+
+console.log(inputsArray)
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
@@ -33,54 +53,155 @@ const newUser = computed(() => {
 })
 
 function checkInputData() {
-  checkInputEmail()
-
-  if (
-    name.value === '' ||
-    location.value === '' ||
-    phoneNumber.value === '' ||
-    email.value === '' ||
-    confirmEmail.value === '' ||
-    password.value === '' ||
-    confirmPassword.value === ''
-  ) {
-    disableRegisterBtn.value = true
-    return false
-  } else {
-    disableRegisterBtn.value = false
-    return true
-  }
+  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  console.log(isBtnDisabled.value)
 }
 
-function checkInputPhoneNumber() {
-  const numberRegex = /^[0-9\s]+$/
+function checkInputDataName() {
+  nextTick(() => {
+    if (name.value === '') {
+      return
+    } else {
+      isName.value = true
+      console.log(isName.value)
 
-  if (numberRegex.test(phoneNumber.value)) {
-    return (isPhoneNumberWrong.value = false)
-  } else {
-    isPhoneNumberWrong.value = true
-  }
+      const index = inputsArray.findIndex((field) => field.key === 'isName')
+
+      if (index !== -1) {
+        inputsArray[index].value = isName.value
+      } else {
+        inputsArray.push({ key: 'isName', value: isName.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
-function checkInputEmail() {
-  if (email.value === confirmEmail.value) {
-    isEmailWrong.value = false
-  } else {
-    isEmailWrong.value = true
-  }
+function checkInputDataLocation() {
+  nextTick(() => {
+    if (location.value === '') {
+      return
+    } else {
+      isLocation.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isLocation')
+
+      if (index !== -1) {
+        inputsArray[index].value = isLocation.value
+      } else {
+        inputsArray.push({ key: 'isLocation', value: isLocation.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
-function checkInputPassword() {
-  if (password.value === confirmPassword.value) {
-    isPasswordWrong.value = false
-  } else {
-    isPasswordWrong.value = true
-  }
+function checkInputDataPhone() {
+  nextTick(() => {
+    if (phoneNumber.value === '') {
+      return
+    } else {
+      isPhoneNumber.value = true
+      console.log(isName.value)
+
+      const index = inputsArray.findIndex((field) => field.key === 'isPhoneNumber')
+
+      if (index !== -1) {
+        inputsArray[index].value = isPhoneNumber.value
+      } else {
+        inputsArray.push({ key: 'isPhoneNumber', value: isPhoneNumber.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataEmail() {
+  nextTick(() => {
+    if (email.value === '') {
+      return
+    } else {
+      isEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isEmail.value
+      } else {
+        inputsArray.push({ key: 'isEmail', value: isEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataConfirmEmail() {
+  nextTick(() => {
+    if (confirmEmail.value === '') {
+      return
+    } else {
+      isConfirmEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isConfirmEmail.value
+      } else {
+        inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataPassword() {
+  checkPasswordStrength('password')
+  nextTick(() => {
+    if (password.value === '') {
+      return
+    } else {
+      isPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isPassword.value
+      } else {
+        inputsArray.push({ key: 'isPassword', value: isPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataConfirmPassword() {
+  checkPasswordStrength('confirmPassword')
+  nextTick(() => {
+    if (confirmPassword.value === '') {
+      return
+    } else {
+      isConfirmPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isConfirmPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isConfirmPassword.value
+      } else {
+        inputsArray.push({ key: 'isConfirmPassword', value: isConfirmPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
 function checkPasswordStrength(type: string) {
-  checkInputData()
-
   if (type === 'password') {
     isPasswordWeak.value = password.value.length < 5
   } else {
@@ -89,14 +210,8 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
-  checkInputData()
-
-  if (checkInputData()) {
-    const response = await registerRepairShop(newUser.value)
-    console.log(response)
-  } else {
-    console.log('error')
-  }
+  const response = await registerRepairShop(newUser.value)
+  console.log(response)
 }
 </script>
 
@@ -115,7 +230,7 @@ async function handleRegistration() {
         name="name"
         placeholder="Namn på verkstaden"
         v-model="name"
-        @change="checkInputData"
+        @input="checkInputDataName"
       />
 
       <label for="location">Kommun</label>
@@ -124,7 +239,7 @@ async function handleRegistration() {
         class="mobile-register-form-select"
         v-model="location"
         :key="location"
-        @change="checkInputData"
+        @input="checkInputDataLocation"
       >
         <option value="Sundsvall">Sundsvall</option>
       </select>
@@ -135,7 +250,7 @@ async function handleRegistration() {
         name="phone-number"
         placeholder="Telefonnummer till din verkstad"
         v-model="phoneNumber"
-        @blur="checkInputPhoneNumber"
+        @input="checkInputDataPhone"
         :class="isPhoneNumberWrong ? 'input-error' : ''"
       />
       <p v-if="isPhoneNumberWrong">
@@ -149,6 +264,7 @@ async function handleRegistration() {
         name="email"
         placeholder="namn@mail.com"
         v-model="email"
+        @input="checkInputDataEmail"
         :class="isEmailWrong ? 'input-error' : ''"
       />
       <p v-if="isEmailWrong">
@@ -160,7 +276,7 @@ async function handleRegistration() {
         type="email"
         name="email"
         placeholder="namn@mail.com"
-        @blur="checkInputData"
+        @input="checkInputDataConfirmEmail"
         v-model="confirmEmail"
         :class="isEmailWrong ? 'input-error' : ''"
       />
@@ -173,7 +289,7 @@ async function handleRegistration() {
         type="password"
         name="password"
         placeholder="Lösenord"
-        @input="checkPasswordStrength('password')"
+        @input="checkInputDataPassword"
         v-model="password"
         :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }"
       />
@@ -191,8 +307,7 @@ async function handleRegistration() {
         name="password"
         placeholder="Lösenord"
         v-model="confirmPassword"
-        @blur="checkInputPassword"
-        @input="checkPasswordStrength('confirmPassword')"
+        @input="checkInputDataConfirmPassword"
         :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isConfirmPasswordWeak }"
       />
       <p class="warning-text" v-if="isConfirmPasswordWeak">
@@ -205,8 +320,8 @@ async function handleRegistration() {
 
       <button
         type="submit"
-        :disabled="disableRegisterBtn"
-        :class="disableRegisterBtn ? 'register-mobile-button-disable' : 'register-mobile-button'"
+        :disabled="isBtnDisabled"
+        :class="isBtnDisabled ? 'register-mobile-button-disable' : 'register-mobile-button'"
       >
         Registrera
       </button>
