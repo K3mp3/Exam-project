@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
 import type { IUserContact } from '@/models/IUserContact'
+import { answerFromRepairShop } from '@/services/RepariShopAnswer'
 import { getContactRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import RepairShopMessageContent from './RepairShopMessageContent.vue'
@@ -13,7 +15,17 @@ async function getMessages() {
   console.log(response)
 }
 
+async function handleAnswer(answerData: Object) {
+  const castedAnswerData = answerData as IRepairShopAnswer
+
+  console.log('Answer received from child:', castedAnswerData)
+
+  // Now you can pass castedAnswerData to the service function
+  const response = await answerFromRepairShop(castedAnswerData)
+}
+
 onMounted(() => {
+  console.log(messages.value)
   getMessages()
 })
 </script>
@@ -21,11 +33,12 @@ onMounted(() => {
 <template>
   <h3>Dina förfrågningar</h3>
 
-  <form>
+  <form @submit.prevent="handleAnswer">
     <RepairShopMessageContent
       v-for="index in messages"
       :key="index._id"
-      :index="messages"
+      :index="index"
+      :onAnswer="handleAnswer"
     ></RepairShopMessageContent>
   </form>
 

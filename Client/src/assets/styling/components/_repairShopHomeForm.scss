@@ -2,6 +2,10 @@
 @use '../abstracts/fonts' as *;
 
 form {
+  .customer-name {
+    color: $text-main;
+  }
+
   .repair-shop-form-text-container {
     position: relative;
     transition: all 0.2s ease-in-out;
