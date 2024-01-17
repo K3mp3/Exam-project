@@ -17,10 +17,12 @@ const fullname = getCookie('name')
 </script>
 
 <template>
-  <div class="signed-in-header">
-    <h2>Hej {{ fullname }}</h2>
-  </div>
-  <div class="signed-in-main">
-    <RepairShopForm></RepairShopForm>
+  <div class="repair-shop-home-parent">
+    <div class="repair-shop-signed-in-header">
+      <h2>Hej {{ fullname }}</h2>
+    </div>
+    <div class="repair-shop-signed-in-main">
+      <RepairShopForm></RepairShopForm>
+    </div>
   </div>
 </template>

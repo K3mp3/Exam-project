@@ -8,13 +8,6 @@ nav {
   position: fixed;
   z-index: 2;
 
-  h1 {
-    color: $text-main;
-    font-family: map-get($font-title-black, font-family);
-    font-weight: map-get($font-title-black, font-weight);
-    font-size: 1.5rem;
-  }
-
   .nav-parent-container {
     display: flex;
     justify-content: space-between;

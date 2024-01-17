@@ -32,7 +32,7 @@ onMounted(() => {
     :style="{ backgroundColor: navScroll ? '#090909de' : 'transparent' }"
   >
     <div class="nav-child-container left">
-      <h1>Ways</h1>
+      <h1 class="O15rem text-main font-title-black">Ways</h1>
     </div>
     <div class="nav-child-container right">
       <div class="nav-hamburger-icon">
