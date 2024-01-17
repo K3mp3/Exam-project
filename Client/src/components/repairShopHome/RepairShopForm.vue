@@ -33,11 +33,12 @@ onMounted(() => {
 <template>
   <h3>Dina förfrågningar</h3>
 
-  <form @submit.prevent="handleAnswer">
+  <form @submit.prevent="handleAnswer" class="repair-shop-requests-form">
     <RepairShopMessageContent
       v-for="index in messages"
       :key="index._id"
       :index="index"
+      class="repair-shop-message-content-component"
       :onAnswer="handleAnswer"
     ></RepairShopMessageContent>
   </form>

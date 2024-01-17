@@ -1,0 +1,17 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+.message-dialog-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vw;
+  z-index: 2;
+  background-color: $bg-main-90;
+
+  .message-dialog-content-container {
+    padding: 32px;
+    background-color: blueviolet;
+  }
+}
