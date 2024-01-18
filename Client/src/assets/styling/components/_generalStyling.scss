@@ -81,6 +81,10 @@
   font-weight: map-get($font-text-light, font-weight);
 }
 
+.text-deco-none {
+  text-decoration: none;
+}
+
 .O9rem {
   font-size: 0.9rem;
 }
@@ -98,4 +102,93 @@
 }
 .O35rem {
   font-size: 3.5rem;
+}
+
+.width-100vw {
+  width: 100vw;
+}
+
+.m-width-320px {
+  max-width: 320px;
+}
+
+.height-100vh {
+  height: 100vh;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.z-index-2 {
+  z-index: 2;
+}
+
+.margin-auto {
+  margin: auto;
+}
+
+.padding-16 {
+  padding: 16px;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.flex-dir-col {
+  flex-direction: column;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.outline-btn {
+  transition: all 0.2s ease-in-out;
+  padding: 2px 20px;
+  border-radius: 20px;
+  width: 100%;
+  background: transparent;
+  border: 2px solid $el-white-main;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid $el-active-blue;
+  }
+}
+
+.filled-btn {
+  transition: all 0.2s ease-in-out;
+  padding: 2px 20px;
+  border-radius: 20px;
+  width: 100%;
+  transition: all 0.2s ease-in-out;
+  color: $text-secondary;
+  border: none;
+
+  &:hover {
+    color: $text-main;
+    transition: all 0.2s ease-in-out;
+    background-color: $el-active-blue;
+    cursor: pointer;
+  }
+}
+
+.gap-16 {
+  gap: 16px;
 }

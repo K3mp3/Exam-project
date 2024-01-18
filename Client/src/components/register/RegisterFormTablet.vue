@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
+import { useShowUserEmail } from '@/stores/showUserEmail'
 import { computed, nextTick, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -34,6 +35,8 @@ const inputsArray: { key: string; value: boolean }[] = [
 console.log(inputsArray)
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
+const filledEmail = computed(() => useShowUserEmail().userEmail)
+const isFilledEmail = computed(() => useShowUserEmail().isEmail)
 
 const newUser = computed(() => {
   return {
@@ -199,6 +202,7 @@ async function handleRegistration() {
           v-model="email"
           @input="checkInputDataEmail"
           :class="isEmailWrong ? 'input-error' : ''"
+          :value="isFilledEmail ? filledEmail : email"
         />
         <p v-if="isEmailWrong">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att email

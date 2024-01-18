@@ -3,6 +3,7 @@ import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
+import { useShowUserEmail } from '@/stores/showUserEmail'
 import { computed, nextTick, ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
 import DialogBox from '../dialogs/DialogBox.vue'
@@ -35,6 +36,8 @@ const inputsArray: { key: string; value: boolean }[] = [
 ]
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
+const filledEmail = computed(() => useShowUserEmail().userEmail)
+const isFilledEmail = computed(() => useShowUserEmail().isEmail)
 
 const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
@@ -226,6 +229,7 @@ function showRegisterRepairShopDialog() {
             v-model="email"
             @input="checkInputDataEmail"
             :class="isEmailWrong ? 'input-error' : ''"
+            :value="isFilledEmail ? filledEmail : email"
           />
           <p v-if="isEmailWrong">
             <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att email

@@ -203,7 +203,7 @@ onMounted(() => {
         v-model="email"
         @input="checkInputDataEmail"
         :class="isEmailWrong ? 'input-error' : ''"
-        :value="useShowUserEmail().userEmail"
+        :value="isFilledEmail ? filledEmail : email"
       />
       <p v-if="isEmailWrong">
         <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!

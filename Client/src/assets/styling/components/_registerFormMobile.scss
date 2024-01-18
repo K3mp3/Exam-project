@@ -139,9 +139,10 @@
       color: $text-disabled;
       font-family: map-get($font-title-bold, font-family);
       font-weight: map-get($font-title-bold, font-weight);
-      height: 35px;
+      height: 42px;
       border-radius: 50px;
       margin: 10px 0 32px 0;
+      font-size: 0.9rem;
     }
 
     .register-mobile-button {
@@ -151,9 +152,10 @@
       color: $text-main;
       font-family: map-get($font-title-bold, font-family);
       font-weight: map-get($font-title-bold, font-weight);
-      height: 35px;
+      height: 42px;
       border-radius: 50px;
       margin: 10px 0 32px 0;
+      font-size: 0.9rem;
 
       &:hover {
         transition: all 0.2s ease-in-out;
