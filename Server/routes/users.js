@@ -265,4 +265,13 @@ router.post("/answerFromRepairShop", async (req, res) => {
   }
 });
 
+router.get("/answerFromRepairShop", async (req, res) => {
+  try {
+    const allMessages = await repairShopAnswerModel.find();
+    res.status(200).json(allMessages);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

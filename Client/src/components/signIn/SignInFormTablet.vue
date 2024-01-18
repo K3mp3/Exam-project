@@ -36,7 +36,6 @@ function checkInputDataEmail() {
       return
     } else {
       isEmail.value = true
-      console.log(isEmail.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isEmail')
 

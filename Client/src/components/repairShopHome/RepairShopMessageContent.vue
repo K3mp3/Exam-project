@@ -78,6 +78,7 @@ function showMessageBox() {
 }
 
 function sendAnswer() {
+  console.log(answerData.value)
   props.onAnswer(answerData.value)
 }
 </script>

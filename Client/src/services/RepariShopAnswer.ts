@@ -4,15 +4,23 @@ import axios from 'axios'
 const BASE_URL = 'http://localhost:3000'
 
 export async function answerFromRepairShop(messageData: IRepairShopAnswer) {
-  console.log(messageData)
+  // console.log(messageData)
   try {
-    console.log(messageData)
+    // console.log(messageData)
     const response = await axios.post<IRepairShopAnswer>(
       `${BASE_URL}/users/answerFromRepairShop`,
       messageData
     )
+    // console.log(response.data)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
 
-    console.log(response.data)
+export async function removedAnsweredRequests() {
+  try {
+    const response = await axios.get(`${BASE_URL}/users/answerFromRepairShop`)
     return response.data
   } catch (error) {
     return error
