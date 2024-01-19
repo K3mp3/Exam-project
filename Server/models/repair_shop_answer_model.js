@@ -5,7 +5,9 @@ const repairShopAnswer = mongoose.Schema({
   customerId: String,
   customerEmail: String,
   repairShopEmail: String,
+  repairShopName: String,
   customerMessage: String,
+  repairShopAnswer: String,
   registrationNumber: String,
   priceOffer: String,
 });

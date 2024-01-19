@@ -1,0 +1,37 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+.bottom-nav-parent-container {
+  width: calc(100% - 32px);
+  background-color: $bg-secondary;
+  padding: 8px 16px;
+  margin: auto;
+  margin-bottom: 16px;
+  border-radius: 10px;
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+
+    li {
+      list-style: none;
+
+      .bottom-nav-router-link {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: $text-main;
+        font-family: map-get($font-text-light, font-family);
+        font-weight: map-get($font-text-light, font-weight);
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+
+      .active-url {
+        color: $el-active-blue;
+      }
+    }
+  }
+}

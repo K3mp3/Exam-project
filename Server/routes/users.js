@@ -252,7 +252,9 @@ router.post("/answerFromRepairShop", async (req, res) => {
       customerId: req.body.customerId,
       customerEmail: req.body.customerEmail,
       repairShopEmail: req.body.repairShopEmail,
+      repairShopName: req.body.repairShopName,
       customerMessage: req.body.customerMessage,
+      repairShopAnswer: req.body.repairShopAnswer,
       priceOffer: req.body.priceOffer,
       registrationNumber: req.body.registrationNumber,
     });

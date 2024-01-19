@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BottomNavParent from '../bottomNav/BottomNavParent.vue'
 import UserContactPage from '../userHome/UserContactPage.vue'
 
 function getCookie(cookieName: string) {
@@ -25,4 +26,5 @@ const firstName = fullname ? fullname.split(' ')[0] : ''
   <div class="signed-in-main">
     <UserContactPage></UserContactPage>
   </div>
+  <BottomNavParent></BottomNavParent>
 </template>
