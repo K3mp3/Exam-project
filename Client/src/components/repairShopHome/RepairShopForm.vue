@@ -8,6 +8,22 @@ import RepairShopMessageContent from './RepairShopMessageContent.vue'
 
 const unansweredMessages = ref<IUserContact[]>([])
 const answeredMessages = ref<IRepairShopAnswer[]>([])
+const filteredMessages = ref<IUserContact[]>([])
+
+  function getCookie(cookieName: string) {
+  const cookiesArray = document.cookie.split(';')
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    let cookie = cookiesArray[i].trim()
+
+    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
+  }
+
+  return null
+}
+
+const repairShopEmail = getCookie('email')
+const repairShopName = getCookie('name')
 
 async function getMessages() {
   const response = await getContactRepairShops()
@@ -16,19 +32,21 @@ async function getMessages() {
   const answeredResponse = await removedAnsweredRequests()
   answeredMessages.value = answeredResponse
 
-  unansweredMessages.value = unansweredMessages.value.filter((unansweredMessage) => {
-    const hasAnsweredMessage = answeredMessages.value.find(
-      (answeredMessage) => answeredMessage.customerId === unansweredMessage._id
-    )
+  // Filtering logic
+  const filtered = unansweredMessages.value.filter((unansweredMessage) => {
+    const matchingAnswer = answeredMessages.value.find(
+      (answeredMessage) =>
+        unansweredMessage._id === answeredMessage.customerId &&
+        repairShopEmail === answeredMessage.repairShopEmail &&
+        repairShopName === answeredMessage.repairShopName
+    );
 
-    const shouldInclude = !(
-      hasAnsweredMessage && hasAnsweredMessage.repairShopEmail === repairShopEmail
-    )
+    return !matchingAnswer;
+  });
 
-    return shouldInclude
-  })
+  filteredMessages.value = filtered;
 
-  console.log(unansweredMessages.value)
+  console.log(filteredMessages.value);
 }
 
 async function handleAnswer(answerData: Object) {
@@ -43,22 +61,10 @@ async function handleAnswer(answerData: Object) {
   }
 }
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const repairShopEmail = getCookie('email')
-
 onMounted(() => {
   getMessages()
+
+  console.log(repairShopEmail, repairShopName)
 })
 </script>
 
@@ -67,7 +73,7 @@ onMounted(() => {
 
   <form @submit.prevent="handleAnswer" class="repair-shop-requests-form">
     <RepairShopMessageContent
-      v-for="index in unansweredMessages"
+      v-for="index in filteredMessages"
       :key="index._id"
       :index="index"
       class="repair-shop-message-content-component"
