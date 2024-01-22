@@ -10,7 +10,7 @@ const unansweredMessages = ref<IUserContact[]>([])
 const answeredMessages = ref<IRepairShopAnswer[]>([])
 const filteredMessages = ref<IUserContact[]>([])
 
-  function getCookie(cookieName: string) {
+function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
 
   for (let i = 0; i < cookiesArray.length; i++) {
@@ -39,19 +39,20 @@ async function getMessages() {
         unansweredMessage._id === answeredMessage.customerId &&
         repairShopEmail === answeredMessage.repairShopEmail &&
         repairShopName === answeredMessage.repairShopName
-    );
+    )
 
-    return !matchingAnswer;
-  });
+    return !matchingAnswer
+  })
 
-  filteredMessages.value = filtered;
+  filteredMessages.value = filtered
 
-  console.log(filteredMessages.value);
+  console.log(filteredMessages.value)
 }
 
 async function handleAnswer(answerData: Object) {
   const castedAnswerData = answerData as IRepairShopAnswer
   const response = await answerFromRepairShop(castedAnswerData)
+
   const answeredMessageIndex = unansweredMessages.value.findIndex(
     (message) => message._id === castedAnswerData.customerId
   )

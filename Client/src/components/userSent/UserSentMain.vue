@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
 import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
+import { answerRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import UserSentAnswerForm from './UserSentAnswerForm.vue'
 
 const allRepairShopAnswers = ref<IRepairShopAnswer[]>([])
-const correctRepairShopAnswers = ref<IRepairShopAnswer[]>([])
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -42,7 +42,18 @@ function calculateTotalAnswers() {
   return count
 }
 
-function handleAnswer() {}
+async function handleAnswer(answerData: Object) {
+  const castedAnswerData = answerData as IRepairShopAnswer
+  const response = await answerRepairShops(castedAnswerData)
+
+  const answeredMessageIndex = allRepairShopAnswers.value.findIndex(
+    (message) => message.customerId === castedAnswerData.customerId
+  )
+
+  if (answeredMessageIndex !== -1) {
+    const [answeredMessage] = allRepairShopAnswers.value.splice(answeredMessageIndex, 1)
+  }
+}
 
 onMounted(() => {
   getAnswers()
