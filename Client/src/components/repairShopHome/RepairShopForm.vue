@@ -7,7 +7,7 @@ import { onMounted, ref } from 'vue'
 import RepairShopMessageContent from './RepairShopMessageContent.vue'
 
 const unansweredMessages = ref<IUserContact[]>([])
-const answeredMessages = ref<IRepairShopAnswer[]>([])
+const answeredMessages = ref<IUserContact[]>([])
 const filteredMessages = ref<IUserContact[]>([])
 
 function getCookie(cookieName: string) {
@@ -32,12 +32,21 @@ async function getMessages() {
   const answeredResponse = await removedAnsweredRequests()
   answeredMessages.value = answeredResponse
 
+  // Filtering logic
   const filtered = unansweredMessages.value.filter((unansweredMessage) => {
-    return (
-      unansweredMessage.answeredByRepairShop === false &&
-      unansweredMessage.repairShopEmail === repairShopEmail
+    const matchingAnswer = answeredMessages.value.find(
+      (answeredMessage) =>
+        unansweredMessage._id === answeredMessage.customerId &&
+        repairShopEmail === answeredMessage.repairShopEmail &&
+        repairShopName === answeredMessage.repairShopName
     )
+
+    console.log(unansweredMessage._id)
+
+    return !matchingAnswer
   })
+
+  console.log(filteredMessages.value)
 
   filteredMessages.value = filtered
 
@@ -45,10 +54,15 @@ async function getMessages() {
 }
 
 async function handleAnswer(answerData: Object) {
-  const castedAnswerData = answerData as IUserContact
+  const castedAnswerData = answerData as IRepairShopAnswer
   const response = await answerFromRepairShop(castedAnswerData)
+  const answeredMessageIndex = unansweredMessages.value.findIndex(
+    (message) => message._id === castedAnswerData.customerId
+  )
 
-  getMessages()
+  if (answeredMessageIndex !== -1) {
+    const [answeredMessage] = unansweredMessages.value.splice(answeredMessageIndex, 1)
+  }
 }
 
 onMounted(() => {

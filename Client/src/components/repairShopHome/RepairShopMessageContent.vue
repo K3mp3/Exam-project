@@ -39,17 +39,15 @@ const repairName = getCookie('name')
 
 const answerData = computed(() => {
   return {
-    customerName: props.index.customerName,
+    customerName: props.index.name,
     customerId: props.index.customerId,
-    customerEmail: props.index.customerEmail,
+    customerEmail: props.index.email,
     repairShopEmail: repairShopEmail,
     repairShopName: repairName,
-    customerMessage: props.index.customerMessage,
+    customerMessage: props.index.message,
     repairShopAnswer: messageAnswer.value,
     priceOffer: priceOffer.value,
-    registrationNumber: props.index.registrationNumber,
-    answeredByRepairShop: true,
-    answeredByCustomer: false
+    registrationNumber: props.index.registrationNumber
   }
 })
 
@@ -90,7 +88,7 @@ function sendAnswer() {
 
 <template>
   <div class="request-container">
-    <p class="customer-name">{{ props.index.customerName }}</p>
+    <p class="customer-name">{{ props.index.name }}</p>
 
     <div class="message-content-parent-container">
       <div class="message-content-top-nav">
@@ -102,7 +100,7 @@ function sendAnswer() {
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
-        <p>{{ props.index.customerMessage.join('\n') }}</p>
+        <p>{{ props.index.message }}</p>
         <hr />
       </div>
       <div class="message-content-answer">

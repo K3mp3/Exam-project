@@ -22,22 +22,17 @@ const isBtnDisabled = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
-console.log(props.index)
-
 const answerData = computed(() => {
   return {
-    customerName: props.index.customerName,
-    customerId: props.index.customerId,
-    customerEmail: props.index.customerEmail,
-    repairShopEmail: props.index.repairShopEmail,
-    repairShopName: props.index.repairShopName,
-    customerMessage: props.index.customerMessage,
-    customerAnswer: messageAnswer.value,
-    repairShopAnswer: props.index.repairShopAnswer,
+    customerName: props.index.name,
+    customerId: props.index._id,
+    customerEmail: props.index.email,
+    repairShopEmail: repairShopEmail,
+    repairShopName: repairName,
+    customerMessage: props.index.message,
+    repairShopAnswer: messageAnswer.value,
     priceOffer: priceOffer.value,
-    registrationNumber: props.index.registrationNumber,
-    answeredByRepairShop: false,
-    answeredByCustomer: true
+    registrationNumber: props.index.registrationNumber
   }
 })
 
@@ -125,6 +120,17 @@ function sendAnswer() {
         ></textarea>
       </div>
     </div>
+    <label for="user-sent-priceOffer" v-if="isMessageBox">Prisförslag</label>
+    <input
+      v-if="isMessageBox"
+      type="text"
+      name="priceOffer"
+      placeholder="500 kr"
+      v-model="priceOffer"
+      maxlength="7"
+      class="user-sent-price-offer-input"
+    />
+
     <button
       v-if="isMessageBox"
       type="submit"

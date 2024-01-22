@@ -6,8 +6,6 @@ const nodeMailer = require("nodemailer");
 const userModel = require("../models/user_model");
 const repairShopAnswerModel = require("../models/repair_shop_answer_model");
 const contactRepairShopModel = require("../models/contact_repair_shop_model");
-const answerRepairShopModel = require("../models/answer_repair_shop_model");
-const messageModel = require("../models/message_model");
 
 let magicToken = "";
 let foundToken = "";
@@ -221,17 +219,8 @@ router.post("/checkMagicToken", async (req, res) => {
 
 router.get("/contactRepairShops", async (req, res) => {
   try {
-    const messageData = await contactRepairShopModel.find();
-    res.status(200).json(messageData);
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-router.get("/contactRepairShopsMessages", async (req, res) => {
-  try {
-    const messages = await messageModel.find();
-    res.status(200).json(messages);
+    const allMessages = await contactRepairShopModel.find();
+    res.status(200).json(allMessages);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -241,96 +230,39 @@ router.post("/contactRepairShops", async (req, res) => {
   try {
     const randomId = Math.random().toString(36).substring(2, 10);
 
-    const newMessageData = await contactRepairShopModel.create({
+    const newMessage = await contactRepairShopModel.create({
       customerId: randomId,
-      customerName: req.body.name,
-      customerEmail: req.body.email,
-      customerMessage: [req.body.customerMessage],
+      name: req.body.customerName,
+      email: req.body.customerEmail,
       location: req.body.location,
       registrationNumber: req.body.registrationNumber,
       troubleshootTime: req.body.troubleshootTime,
-      answeredByRepairShop: req.body.answeredByRepairShop,
-      answeredByCustomer: req.body.answeredByCustomer,
+      message: req.body.customerMessage,
     });
 
-    console.log(newMessageData);
+    console.log(newMessage);
 
-    res
-      .status(201)
-      .json({ ...newMessageData.toObject(), messages: [newMessage] });
+    res.status(201).json(newMessage);
   } catch (error) {
     res.json(error);
   }
 });
 
-router.post("/answerRepairShops", async (req, res) => {
-  try {
-    const customerId = req.body.customerId;
-    const customerAnswer = req.body.customerAnswer;
-
-    console.log("Customer ID:", customerId);
-
-    const existingRequest = await contactRepairShopModel.findOne({
-      customerId: customerId,
-    });
-
-    console.log("Existing Request:", existingRequest);
-
-    if (existingRequest) {
-      if (existingRequest.customerMessage) {
-        existingRequest.customerMessage.push(customerAnswer);
-      } else {
-        existingRequest.customerMessage = [customerAnswer];
-      }
-
-      existingRequest.answeredByRepairShop = req.body.answeredByRepairShop;
-      existingRequest.answeredByCustomer = req.body.answeredByCustomer;
-
-      await existingRequest.save();
-      res.status(200).json(existingRequest);
-    } else {
-      console.log("Request not found for Customer ID:", customerId);
-      debugging;
-      res.status(404).json({ error: "Request not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-router.get("/answerRepairShops", async (req, res) => {
-  try {
-    const allMessages = await answerRepairShopModel.find();
-    res.status(200).json(allMessages);
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
 router.post("/answerFromRepairShop", async (req, res) => {
   try {
-    const customerId = req.body.customerId;
-
-    const existingRequest = await contactRepairShopModel.findOne({
-      customerId: customerId,
+    const newMessage = await repairShopAnswerModel.create({
+      customerName: req.body.customerName,
+      customerId: req.body.customerId,
+      customerEmail: req.body.customerEmail,
+      repairShopEmail: req.body.repairShopEmail,
+      repairShopName: req.body.repairShopName,
+      customerMessage: [req.body.customerMessage],
+      repairShopAnswer: req.body.repairShopAnswer,
+      priceOffer: req.body.priceOffer,
+      registrationNumber: req.body.registrationNumber,
     });
 
-    if (existingRequest) {
-      existingRequest.customerName = req.body.customerName;
-      existingRequest.customerId = req.body.customerId;
-      existingRequest.customerEmail = req.body.customerEmail;
-      existingRequest.repairShopEmail = req.body.repairShopEmail;
-      existingRequest.repairShopName = req.body.repairShopName;
-      existingRequest.customerMessage = req.body.customerMessage;
-      existingRequest.repairShopAnswer = req.body.repairShopAnswer;
-      existingRequest.priceOffer = req.body.priceOffer;
-      existingRequest.registrationNumber = req.body.registrationNumber;
-      existingRequest.answeredByRepairShop = req.body.answeredByRepairShop;
-      existingRequest.answeredByCustomer = req.body.answeredByCustomer;
-    }
-
-    await existingRequest.save();
+    console.log(newMessage);
 
     res.status(201).json(newMessage);
   } catch (error) {
@@ -340,8 +272,8 @@ router.post("/answerFromRepairShop", async (req, res) => {
 
 router.get("/answerFromRepairShop", async (req, res) => {
   try {
-    const messageData = await repairShopAnswerModel.find();
-    res.status(200).json(messageData);
+    const allMessages = await repairShopAnswerModel.find();
+    res.status(200).json(allMessages);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

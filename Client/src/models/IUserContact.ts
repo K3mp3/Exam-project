@@ -1,5 +1,3 @@
-import type { IMessage } from './IMessage'
-
 export interface IUserContact {
   _id?: string
   customerId?: String
@@ -10,10 +8,8 @@ export interface IUserContact {
   location: string
   registrationNumber: string
   troubleshootTime: string
-  customerMessage: IMessage[]
+  customerMessage: string
   repairShopAnswer?: string
   customerAnswer?: string
   priceOffer?: string
-  answeredByRepairShop: boolean
-  answeredByCustomer: boolean
 }

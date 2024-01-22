@@ -2,18 +2,12 @@ const { default: mongoose } = require("mongoose");
 
 const contactRepairShops = mongoose.Schema({
   customerId: String,
-  customerName: String,
-  customerEmail: String,
-  repairShopEmail: String,
-  repairShopName: String,
+  name: String,
+  email: String,
   location: String,
   registrationNumber: String,
   troubleshootTime: String,
-  customerMessage: [String],
-  repairShopAnswer: String,
-  priceOffer: String,
-  answeredByRepairShop: Boolean,
-  answeredByCustomer: Boolean,
+  message: String,
 });
 
 module.exports = mongoose.model("contactRepairShops", contactRepairShops);

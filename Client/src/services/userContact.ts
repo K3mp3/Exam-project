@@ -18,44 +18,9 @@ export async function contactRepairShops(messageData: IUserContact) {
   }
 }
 
-export async function answerRepairShops(messageData: IUserContact) {
-  try {
-    console.log(messageData)
-    const response = await axios.post<IUserContact>(
-      `${BASE_URL}/users/answerRepairShops`,
-      messageData
-    )
-
-    console.log(response.data)
-    return response.data
-  } catch (error) {
-    return error
-  }
-}
-
 export async function getContactRepairShops() {
   try {
     const response = await axios.get(`${BASE_URL}/users/contactRepairShops`)
-    console.log(response.data)
-    return response.data
-  } catch (error) {
-    return error
-  }
-}
-
-export async function getContactRepairShopsMessages() {
-  try {
-    const response = await axios.get(`${BASE_URL}/users/contactRepairShopsMessages`)
-    console.log(response.data)
-    return response.data
-  } catch (error) {
-    return error
-  }
-}
-
-export async function getAnswerRepairShops() {
-  try {
-    const response = await axios.get(`${BASE_URL}/users/answerRepairShops`)
     return response.data
   } catch (error) {
     return error
