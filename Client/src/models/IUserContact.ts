@@ -5,7 +5,7 @@ export interface IUserContact {
   customerId?: String
   customerName: string
   customerEmail: string
-  repariShopEmail?: string
+  repairShopEmail?: string
   repairShopName?: string
   location: string
   registrationNumber: string

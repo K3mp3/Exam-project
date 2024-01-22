@@ -33,7 +33,10 @@ async function getMessages() {
   answeredMessages.value = answeredResponse
 
   const filtered = unansweredMessages.value.filter((unansweredMessage) => {
-    return unansweredMessage.answeredByRepairShop === false
+    return (
+      unansweredMessage.answeredByRepairShop === false &&
+      unansweredMessage.repairShopEmail === repairShopEmail
+    )
   })
 
   filteredMessages.value = filtered
