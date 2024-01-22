@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
 import type { IUserContact } from '@/models/IUserContact'
 import {
   answerRepairShops,
@@ -9,9 +8,9 @@ import {
 import { onMounted, ref } from 'vue'
 import UserSentAnswerForm from './UserSentAnswerForm.vue'
 
-const allRepairShopAnswers = ref<IRepairShopAnswer[]>([])
-const userAnswers = ref<IRepairShopAnswer[]>([])
-const filteredMessages = ref<IRepairShopAnswer[]>([])
+const allRepairShopAnswers = ref<IUserContact[]>([])
+const userAnswers = ref<IUserContact[]>([])
+const filteredMessages = ref<IUserContact[]>([])
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -36,23 +35,17 @@ async function getAnswers() {
 
   console.log(allRepairShopAnswers)
 
-  // const filtered = allRepairShopAnswers.value.filter(
-  //   (answer) => answer.customerEmail === customerEmail
-  // )
-
-  const filtered = allRepairShopAnswers.value.filter((answeredMessage) => {
-    const matchingAnswer = userAnswers.value.find(
-      (answer) => answeredMessage.customerId === answer.customerId
-    )
+  const filtered = allRepairShopAnswers.value.filter((unansweredMessage) => {
+    return unansweredMessage.answeredByCustomer === false
   })
 
-  console.log(allRepairShopAnswers.value)
+  filteredMessages.value = filtered
 }
 
 function calculateTotalAnswers() {
   let count = 0
 
-  for (let i = 0; i < allRepairShopAnswers.value.length; i++) {
+  for (let i = 0; i < filteredMessages.value.length; i++) {
     count++
   }
 
@@ -63,13 +56,7 @@ async function handleAnswer(answerData: Object) {
   const castedAnswerData = answerData as IUserContact
   const response = await answerRepairShops(castedAnswerData)
 
-  const answeredMessageIndex = allRepairShopAnswers.value.findIndex(
-    (message) => message.customerId === castedAnswerData.customerId
-  )
-
-  if (answeredMessageIndex !== -1) {
-    const [answeredMessage] = allRepairShopAnswers.value.splice(answeredMessageIndex, 1)
-  }
+  getAnswers()
 }
 
 onMounted(() => {
@@ -83,8 +70,8 @@ onMounted(() => {
 
     <form @submit.prevent="handleAnswer" class="user-sent-answer-form">
       <UserSentAnswerForm
-        v-for="index in allRepairShopAnswers"
-        :key="index.customerId"
+        v-for="index in filteredMessages"
+        :key="index._id"
         :index="index"
         :onAnswer="handleAnswer"
       ></UserSentAnswerForm>

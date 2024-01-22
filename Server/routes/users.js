@@ -283,6 +283,9 @@ router.post("/answerRepairShops", async (req, res) => {
         existingRequest.customerMessage = [customerAnswer];
       }
 
+      existingRequest.answeredByRepairShop = req.body.answeredByRepairShop;
+      existingRequest.answeredByCustomer = req.body.answeredByCustomer;
+
       await existingRequest.save();
       res.status(200).json(existingRequest);
     } else {
@@ -319,7 +322,7 @@ router.post("/answerFromRepairShop", async (req, res) => {
       existingRequest.customerEmail = req.body.customerEmail;
       existingRequest.repairShopEmail = req.body.repairShopEmail;
       existingRequest.repairShopName = req.body.repairShopName;
-      existingRequest.customerMessage = [req.body.customerMessage];
+      existingRequest.customerMessage = req.body.customerMessage;
       existingRequest.repairShopAnswer = req.body.repairShopAnswer;
       existingRequest.priceOffer = req.body.priceOffer;
       existingRequest.registrationNumber = req.body.registrationNumber;
