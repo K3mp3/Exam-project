@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
-import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
-import { answerRepairShops, getAnswerRepairShops } from '@/services/userContact'
+import type { IUserContact } from '@/models/IUserContact'
+import {
+  answerRepairShops,
+  getAnswerRepairShops,
+  getContactRepairShops
+} from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import UserSentAnswerForm from './UserSentAnswerForm.vue'
 
@@ -24,11 +28,13 @@ function getCookie(cookieName: string) {
 const customerEmail = getCookie('email')
 
 async function getAnswers() {
-  const allResponses = await removedAnsweredRequests()
+  const allResponses = await getContactRepairShops()
   allRepairShopAnswers.value = allResponses
 
   const userAnswer = await getAnswerRepairShops()
   userAnswers.value = userAnswer
+
+  console.log(allRepairShopAnswers)
 
   // const filtered = allRepairShopAnswers.value.filter(
   //   (answer) => answer.customerEmail === customerEmail
@@ -54,7 +60,7 @@ function calculateTotalAnswers() {
 }
 
 async function handleAnswer(answerData: Object) {
-  const castedAnswerData = answerData as IRepairShopAnswer
+  const castedAnswerData = answerData as IUserContact
   const response = await answerRepairShops(castedAnswerData)
 
   const answeredMessageIndex = allRepairShopAnswers.value.findIndex(

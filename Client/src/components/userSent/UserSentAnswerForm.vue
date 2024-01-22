@@ -26,15 +26,18 @@ console.log(props.index)
 
 const answerData = computed(() => {
   return {
-    customerName: props.index.name,
-    customerId: props.index._id,
-    customerEmail: props.index.email,
+    customerName: props.index.customerName,
+    customerId: props.index.customerId,
+    customerEmail: props.index.customerEmail,
     repairShopEmail: props.index.repairShopEmail,
     repairShopName: props.index.repairShopName,
-    customerMessage: props.index.message,
-    repairShopAnswer: messageAnswer.value,
+    customerMessage: props.index.customerMessage,
+    customerAnswer: messageAnswer.value,
+    repairShopAnswer: props.index.repairShopAnswer,
     priceOffer: priceOffer.value,
-    registrationNumber: props.index.registrationNumber
+    registrationNumber: props.index.registrationNumber,
+    answeredByRepairShop: false,
+    answeredByCustomer: true
   }
 })
 

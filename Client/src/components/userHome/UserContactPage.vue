@@ -162,12 +162,12 @@ const messageData = computed(() => {
   const nonNullEmaik = email || ''
 
   return {
-    name: nonNullName,
-    email: nonNullEmaik,
+    customerName: nonNullName,
+    customerEmail: nonNullEmaik,
     location: location.value,
     registrationNumber: registrationNumber.value,
     troubleshootTime: troubleshootTime.value,
-    message: message.value,
+    customerMessage: message.value,
     answeredByRepairShop: false,
     answeredByCustomer: true
   }

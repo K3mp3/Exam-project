@@ -7,6 +7,7 @@ const userModel = require("../models/user_model");
 const repairShopAnswerModel = require("../models/repair_shop_answer_model");
 const contactRepairShopModel = require("../models/contact_repair_shop_model");
 const answerRepairShopModel = require("../models/answer_repair_shop_model");
+const messageModel = require("../models/message_model");
 
 let magicToken = "";
 let foundToken = "";
@@ -220,8 +221,17 @@ router.post("/checkMagicToken", async (req, res) => {
 
 router.get("/contactRepairShops", async (req, res) => {
   try {
-    const allMessages = await contactRepairShopModel.find();
-    res.status(200).json(allMessages);
+    const messageData = await contactRepairShopModel.find();
+    res.status(200).json(messageData);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/contactRepairShopsMessages", async (req, res) => {
+  try {
+    const messages = await messageModel.find();
+    res.status(200).json(messages);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -231,21 +241,23 @@ router.post("/contactRepairShops", async (req, res) => {
   try {
     const randomId = Math.random().toString(36).substring(2, 10);
 
-    const newMessage = await contactRepairShopModel.create({
+    const newMessageData = await contactRepairShopModel.create({
       customerId: randomId,
       customerName: req.body.name,
       customerEmail: req.body.email,
+      customerMessage: [req.body.customerMessage],
       location: req.body.location,
       registrationNumber: req.body.registrationNumber,
       troubleshootTime: req.body.troubleshootTime,
-      customerMessage: req.body.message,
       answeredByRepairShop: req.body.answeredByRepairShop,
       answeredByCustomer: req.body.answeredByCustomer,
     });
 
-    console.log(newMessage);
+    console.log(newMessageData);
 
-    res.status(201).json(newMessage);
+    res
+      .status(201)
+      .json({ ...newMessageData.toObject(), messages: [newMessage] });
   } catch (error) {
     res.json(error);
   }
@@ -253,23 +265,34 @@ router.post("/contactRepairShops", async (req, res) => {
 
 router.post("/answerRepairShops", async (req, res) => {
   try {
-    const newMessage = await contactRepairShopModel.create({
-      customerName: req.body.customerName,
-      customerId: req.body.customerId,
-      customerEmail: req.body.customerEmail,
-      repairShopEmail: req.body.repairShopEmail,
-      repairShopName: req.body.repairShopName,
-      customerMessage: req.body.customerMessage,
-      repairShopAnswer: req.body.repairShopAnswer,
-      priceOffer: req.body.priceOffer,
-      registrationNumber: req.body.registrationNumber,
+    const customerId = req.body.customerId;
+    const customerAnswer = req.body.customerAnswer;
+
+    console.log("Customer ID:", customerId);
+
+    const existingRequest = await contactRepairShopModel.findOne({
+      customerId: customerId,
     });
 
-    console.log(newMessage);
+    console.log("Existing Request:", existingRequest);
 
-    res.status(201).json(newMessage);
+    if (existingRequest) {
+      if (existingRequest.customerMessage) {
+        existingRequest.customerMessage.push(customerAnswer);
+      } else {
+        existingRequest.customerMessage = [customerAnswer];
+      }
+
+      await existingRequest.save();
+      res.status(200).json(existingRequest);
+    } else {
+      console.log("Request not found for Customer ID:", customerId);
+      debugging;
+      res.status(404).json({ error: "Request not found" });
+    }
   } catch (error) {
-    res.json(error);
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -291,15 +314,17 @@ router.post("/answerFromRepairShop", async (req, res) => {
     });
 
     if (existingRequest) {
-      existingRecord.customerName = req.body.customerName;
-      existingRecord.customerId = req.body.customerId;
-      existingRecord.customerEmail = req.body.customerEmail;
-      existingRecord.repairShopEmail = req.body.repairShopEmail;
-      existingRecord.repairShopName = req.body.repairShopName;
-      existingRecord.customerMessage = req.body.customerMessage;
-      existingRecord.repairShopAnswer = req.body.repairShopAnswer;
-      existingRecord.priceOffer = req.body.priceOffer;
-      existingRecord.registrationNumber = req.body.registrationNumber;
+      existingRequest.customerName = req.body.customerName;
+      existingRequest.customerId = req.body.customerId;
+      existingRequest.customerEmail = req.body.customerEmail;
+      existingRequest.repairShopEmail = req.body.repairShopEmail;
+      existingRequest.repairShopName = req.body.repairShopName;
+      existingRequest.customerMessage = [req.body.customerMessage];
+      existingRequest.repairShopAnswer = req.body.repairShopAnswer;
+      existingRequest.priceOffer = req.body.priceOffer;
+      existingRequest.registrationNumber = req.body.registrationNumber;
+      existingRequest.answeredByRepairShop = req.body.answeredByRepairShop;
+      existingRequest.answeredByCustomer = req.body.answeredByCustomer;
     }
 
     await existingRequest.save();
@@ -312,8 +337,8 @@ router.post("/answerFromRepairShop", async (req, res) => {
 
 router.get("/answerFromRepairShop", async (req, res) => {
   try {
-    const allMessages = await repairShopAnswerModel.find();
-    res.status(200).json(allMessages);
+    const messageData = await repairShopAnswerModel.find();
+    res.status(200).json(messageData);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

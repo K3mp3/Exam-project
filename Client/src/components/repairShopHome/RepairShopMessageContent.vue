@@ -102,7 +102,7 @@ function sendAnswer() {
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
-        <p>{{ props.index.customerMessage }}</p>
+        <p>{{ props.index.customerMessage.join('\n') }}</p>
         <hr />
       </div>
       <div class="message-content-answer">

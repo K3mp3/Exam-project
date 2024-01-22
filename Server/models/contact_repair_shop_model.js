@@ -9,7 +9,7 @@ const contactRepairShops = mongoose.Schema({
   location: String,
   registrationNumber: String,
   troubleshootTime: String,
-  customerMessage: String,
+  customerMessage: [String],
   repairShopAnswer: String,
   priceOffer: String,
   answeredByRepairShop: Boolean,
