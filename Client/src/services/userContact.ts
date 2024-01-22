@@ -42,3 +42,12 @@ export async function getContactRepairShops() {
     return error
   }
 }
+
+export async function getAnswerRepairShops() {
+  try {
+    const response = await axios.get(`${BASE_URL}/users/answerRepairShops`)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}

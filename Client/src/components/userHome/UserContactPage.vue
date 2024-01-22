@@ -167,7 +167,9 @@ const messageData = computed(() => {
     location: location.value,
     registrationNumber: registrationNumber.value,
     troubleshootTime: troubleshootTime.value,
-    message: message.value
+    message: message.value,
+    answeredByRepairShop: false,
+    answeredByCustomer: true
   }
 })
 

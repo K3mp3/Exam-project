@@ -229,13 +229,18 @@ router.get("/contactRepairShops", async (req, res) => {
 
 router.post("/contactRepairShops", async (req, res) => {
   try {
+    const randomId = Math.random().toString(36).substring(2, 10);
+
     const newMessage = await contactRepairShopModel.create({
-      name: req.body.name,
-      email: req.body.email,
+      customerId: randomId,
+      customerName: req.body.name,
+      customerEmail: req.body.email,
       location: req.body.location,
       registrationNumber: req.body.registrationNumber,
       troubleshootTime: req.body.troubleshootTime,
-      message: req.body.message,
+      customerMessage: req.body.message,
+      answeredByRepairShop: req.body.answeredByRepairShop,
+      answeredByCustomer: req.body.answeredByCustomer,
     });
 
     console.log(newMessage);
@@ -248,7 +253,7 @@ router.post("/contactRepairShops", async (req, res) => {
 
 router.post("/answerRepairShops", async (req, res) => {
   try {
-    const newMessage = await answerRepairShopModel.create({
+    const newMessage = await contactRepairShopModel.create({
       customerName: req.body.customerName,
       customerId: req.body.customerId,
       customerEmail: req.body.customerEmail,
@@ -268,21 +273,36 @@ router.post("/answerRepairShops", async (req, res) => {
   }
 });
 
+router.get("/answerRepairShops", async (req, res) => {
+  try {
+    const allMessages = await answerRepairShopModel.find();
+    res.status(200).json(allMessages);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.post("/answerFromRepairShop", async (req, res) => {
   try {
-    const newMessage = await repairShopAnswerModel.create({
-      customerName: req.body.customerName,
-      customerId: req.body.customerId,
-      customerEmail: req.body.customerEmail,
-      repairShopEmail: req.body.repairShopEmail,
-      repairShopName: req.body.repairShopName,
-      customerMessage: req.body.customerMessage,
-      repairShopAnswer: req.body.repairShopAnswer,
-      priceOffer: req.body.priceOffer,
-      registrationNumber: req.body.registrationNumber,
+    const customerId = req.body.customerId;
+
+    const existingRequest = await contactRepairShopModel.findOne({
+      customerId: customerId,
     });
 
-    console.log(newMessage);
+    if (existingRequest) {
+      existingRecord.customerName = req.body.customerName;
+      existingRecord.customerId = req.body.customerId;
+      existingRecord.customerEmail = req.body.customerEmail;
+      existingRecord.repairShopEmail = req.body.repairShopEmail;
+      existingRecord.repairShopName = req.body.repairShopName;
+      existingRecord.customerMessage = req.body.customerMessage;
+      existingRecord.repairShopAnswer = req.body.repairShopAnswer;
+      existingRecord.priceOffer = req.body.priceOffer;
+      existingRecord.registrationNumber = req.body.registrationNumber;
+    }
+
+    await existingRequest.save();
 
     res.status(201).json(newMessage);
   } catch (error) {
