@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 const props = defineProps({
   index: {
@@ -22,6 +22,8 @@ const showDialog = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
+const messageArray = []
+
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
 
@@ -35,19 +37,23 @@ function getCookie(cookieName: string) {
 }
 
 const repairShopEmail = getCookie('email')
-const repairName = getCookie('name')
+const repairShopName = getCookie('name')
 
 const answerData = computed(() => {
   return {
-    customerName: props.index.name,
+    customerName: props.index.customerName,
     customerId: props.index.customerId,
-    customerEmail: props.index.email,
+    customerEmail: props.index.customerEmail,
     repairShopEmail: repairShopEmail,
-    repairShopName: repairName,
-    customerMessage: props.index.message,
+    repairShopName: repairShopName,
+    customerMessage: props.index.customerMessage[0].message,
+    customerMessageDate: props.index.customerMessage[0].date,
     repairShopAnswer: messageAnswer.value,
     priceOffer: priceOffer.value,
-    registrationNumber: props.index.registrationNumber
+    location: props.index.location,
+    registrationNumber: props.index.registrationNumber,
+    troubleshootTime: props.index.troubleshootTime,
+    answeredByRepairShop: true
   }
 })
 
@@ -84,11 +90,17 @@ function sendAnswer() {
   console.log(answerData.value)
   props.onAnswer(answerData.value)
 }
+
+onMounted(() => {
+  messageArray.push(props.index.customerMessage)
+  messageArray.push(props.index.repairShopAnswer)
+  console.log(props.index.customerMessage[0].message)
+})
 </script>
 
 <template>
   <div class="request-container">
-    <p class="customer-name">{{ props.index.name }}</p>
+    <p class="customer-name">{{ props.index.customerName }}</p>
 
     <div class="message-content-parent-container">
       <div class="message-content-top-nav">
@@ -100,7 +112,7 @@ function sendAnswer() {
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
-        <p>{{ props.index.message }}</p>
+        <p>{{ props.index.customerMessage[0].message }}</p>
         <hr />
       </div>
       <div class="message-content-answer">

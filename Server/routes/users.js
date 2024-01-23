@@ -232,12 +232,17 @@ router.post("/contactRepairShops", async (req, res) => {
 
     const newMessage = await contactRepairShopModel.create({
       customerId: randomId,
-      name: req.body.customerName,
-      email: req.body.customerEmail,
+      customerName: req.body.customerName,
+      customerEmail: req.body.customerEmail,
       location: req.body.location,
       registrationNumber: req.body.registrationNumber,
       troubleshootTime: req.body.troubleshootTime,
-      message: req.body.customerMessage,
+      customerMessage: [
+        {
+          message: req.body.customerMessage,
+          date: Date.now(),
+        },
+      ],
     });
 
     console.log(newMessage);
@@ -248,18 +253,72 @@ router.post("/contactRepairShops", async (req, res) => {
   }
 });
 
+router.post("/answerRepairShops", async (req, res) => {
+  try {
+    const customerId = req.body.customerId;
+    const customerAnswer = req.body.customerAnswer;
+
+    console.log("Customer ID:", customerId);
+
+    const existingRequest = await contactRepairShopModel.findOne({
+      customerId: customerId,
+    });
+
+    console.log("Existing Request:", existingRequest);
+
+    if (existingRequest) {
+      if (existingRequest.customerMessage) {
+        existingRequest.customerMessage.push(customerAnswer);
+      } else {
+        existingRequest.customerMessage = [customerAnswer];
+      }
+
+      existingRequest.answeredByRepairShop = req.body.answeredByRepairShop;
+      existingRequest.answeredByCustomer = req.body.answeredByCustomer;
+
+      await existingRequest.save();
+      res.status(200).json(existingRequest);
+    } else {
+      console.log("Request not found for Customer ID:", customerId);
+      debugging;
+      res.status(404).json({ error: "Request not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.post("/answerFromRepairShop", async (req, res) => {
+  const repairShopAnswer = {
+    repairShopAnswer: req.body.repairShopAnswer,
+    date: Date.now(),
+  };
+
   try {
     const newMessage = await repairShopAnswerModel.create({
-      customerName: req.body.customerName,
       customerId: req.body.customerId,
+      customerName: req.body.customerName,
       customerEmail: req.body.customerEmail,
       repairShopEmail: req.body.repairShopEmail,
       repairShopName: req.body.repairShopName,
-      customerMessage: [req.body.customerMessage],
-      repairShopAnswer: req.body.repairShopAnswer,
-      priceOffer: req.body.priceOffer,
+      location: req.body.location,
       registrationNumber: req.body.registrationNumber,
+      troubleshootTime: req.body.troubleshootTime,
+      customerMessage: [
+        {
+          message: req.body.customerMessage,
+          date: req.body.customerMessageDate,
+        },
+      ],
+      repairShopAnswer: [
+        {
+          message: req.body.repairShopAnswer,
+          date: Date.now(),
+        },
+      ],
+      priceOffer: req.body.priceOffer,
+      answeredByRepairShop: req.body.answeredByRepairShop,
     });
 
     console.log(newMessage);

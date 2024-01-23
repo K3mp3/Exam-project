@@ -6,7 +6,7 @@ const BASE_URL = 'http://localhost:3000'
 export async function answerFromRepairShop(messageData: IUserContact) {
   // console.log(messageData)
   try {
-    // console.log(messageData)
+    console.log(messageData)
     const response = await axios.post<IUserContact>(
       `${BASE_URL}/users/answerFromRepairShop`,
       messageData

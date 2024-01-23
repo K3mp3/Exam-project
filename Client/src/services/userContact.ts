@@ -26,3 +26,16 @@ export async function getContactRepairShops() {
     return error
   }
 }
+
+export async function answerRepairShops(messageData: IUserContact) {
+  try {
+    console.log(messageData)
+    const response = await axios.post<IUserContact>(
+      `${BASE_URL}/users/answerRepairShops`,
+      messageData
+    )
+    return response.data
+  } catch (error) {
+    return error
+  }
+}

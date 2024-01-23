@@ -24,15 +24,18 @@ const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer'
 
 const answerData = computed(() => {
   return {
-    customerName: props.index.name,
-    customerId: props.index._id,
-    customerEmail: props.index.email,
-    repairShopEmail: repairShopEmail,
-    repairShopName: repairName,
-    customerMessage: props.index.message,
-    repairShopAnswer: messageAnswer.value,
+    customerName: props.index.customerName,
+    customerId: props.index.customerId,
+    customerEmail: props.index.customerEmail,
+    repairShopEmail: props.index.repairShopEmail,
+    repairShopName: props.index.repairShopName,
+    customerMessage: props.index.customerMessage,
+    customerAnswer: messageAnswer.value,
+    repairShopAnswer: props.index.repairShopAnswer,
     priceOffer: priceOffer.value,
-    registrationNumber: props.index.registrationNumber
+    registrationNumber: props.index.registrationNumber,
+    troubleshootTime: props.index.troubleshootTime,
+    answeredByRepairShop: false
   }
 })
 
@@ -85,8 +88,10 @@ function sendAnswer() {
         </button>
       </div>
       <div class="user-sent-old-message-content-text" v-if="isMessageBox">
-        <p v-if="isShortMessage">{{ `${props.index.customerMessage.slice(0, 100)}...` }}</p>
-        <p v-if="!isShortMessage">{{ props.index.customerMessage }}</p>
+        <p v-if="isShortMessage">
+          {{ `${props.index.customerMessage[0].message.slice(0, 100)}...` }}
+        </p>
+        <p v-if="!isShortMessage">{{ props.index.customerMessage[0].message }}</p>
         <button
           v-if="isShortMessage"
           type="button"
@@ -106,7 +111,7 @@ function sendAnswer() {
         <hr />
       </div>
       <div class="repair-shop-sent-message-content-text" v-if="isMessageBox">
-        <p>{{ props.index.repairShopAnswer }}</p>
+        <p>{{ props.index.repairShopAnswer[0].message }}</p>
         <hr />
       </div>
       <div class="user-sent-message-content-answer">

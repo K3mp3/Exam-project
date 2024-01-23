@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
 import type { IUserContact } from '@/models/IUserContact'
 import { answerFromRepairShop, removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { getContactRepairShops } from '@/services/userContact'
@@ -36,17 +35,13 @@ async function getMessages() {
   const filtered = unansweredMessages.value.filter((unansweredMessage) => {
     const matchingAnswer = answeredMessages.value.find(
       (answeredMessage) =>
-        unansweredMessage._id === answeredMessage.customerId &&
+        unansweredMessage.customerId === answeredMessage.customerId &&
         repairShopEmail === answeredMessage.repairShopEmail &&
         repairShopName === answeredMessage.repairShopName
     )
 
-    console.log(unansweredMessage._id)
-
     return !matchingAnswer
   })
-
-  console.log(filteredMessages.value)
 
   filteredMessages.value = filtered
 
@@ -54,15 +49,11 @@ async function getMessages() {
 }
 
 async function handleAnswer(answerData: Object) {
-  const castedAnswerData = answerData as IRepairShopAnswer
+  const castedAnswerData = answerData as IUserContact
+  console.log(castedAnswerData)
   const response = await answerFromRepairShop(castedAnswerData)
-  const answeredMessageIndex = unansweredMessages.value.findIndex(
-    (message) => message._id === castedAnswerData.customerId
-  )
 
-  if (answeredMessageIndex !== -1) {
-    const [answeredMessage] = unansweredMessages.value.splice(answeredMessageIndex, 1)
-  }
+  getMessages()
 }
 
 onMounted(() => {

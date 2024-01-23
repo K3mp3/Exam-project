@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
+import type { IUserContact } from '@/models/IUserContact'
 import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
+import { answerRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import UserSentAnswerForm from './UserSentAnswerForm.vue'
 
-const allRepairShopAnswers = ref<IRepairShopAnswer[]>([])
-const correctRepairShopAnswers = ref<IRepairShopAnswer[]>([])
+const allRepairShopAnswers = ref<IUserContact[]>([])
+const correctRepairShopAnswers = ref<IUserContact[]>([])
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -42,7 +43,9 @@ function calculateTotalAnswers() {
   return count
 }
 
-function handleAnswer() {}
+async function handleAnswer(answerData: object) {
+  const response = await answerRepairShops(answerData as IUserContact)
+}
 
 onMounted(() => {
   getAnswers()
@@ -56,7 +59,7 @@ onMounted(() => {
     <form @submit.prevent="handleAnswer" class="user-sent-answer-form">
       <UserSentAnswerForm
         v-for="index in allRepairShopAnswers"
-        :key="index.customerId"
+        :key="index._id"
         :index="index"
         :onAnswer="handleAnswer"
       ></UserSentAnswerForm>
