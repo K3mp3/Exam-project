@@ -252,11 +252,16 @@ router.post("/contactRepairShops", async (req, res) => {
           subject: "Verification code",
           html: `
                 <div style="padding: 32px; background-color: #090909; display: flex; flex-direction: column; border-radius: 15px; border: 1px solid #232323">
-                <div style="display: flex; align-items: center; margin-bottom: 32px;">
-                <h1 style="color: #d9d9d9; font-size: 1rem;">Registreringsnummer:</h1>
-                <p style="color: #d9d9d9; margin-left: 16px; font-size: 1rem;">${req.body.registrationNumber}</p>
+                <div style="display: flex; align-items: center;">
+                  <h1 style="color: #d9d9d9; font-size: 1.1rem;">Registreringsnummer:</h1>
+                  <p style="color: #d9d9d9; margin-left: 16px; font-size: 1.1rem;">${req.body.registrationNumber}</p>
                 </div>
-                <p>${req.body.customerMessage}</p>
+                <div style="display: flex; align-items: center;">
+                  <h2  style="color: #d9d9d9; font-size: 1rem;">Max önskad felsökningstid:</h2>
+                  <p style="color: #d9d9d9; margin-left: 16px; font-size: 1rem;">${req.body.troubleshootTime}</p>
+                </div>
+                <p style="margin-bottom: 16px;">${req.body.customerMessage}</p>
+                
                 <div style="width: 100%; height: 2px; background: #0D31F1;"></div>
                 </div>
               `,
