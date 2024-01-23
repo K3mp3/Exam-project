@@ -228,26 +228,70 @@ router.get("/contactRepairShops", async (req, res) => {
 
 router.post("/contactRepairShops", async (req, res) => {
   try {
-    const randomId = Math.random().toString(36).substring(2, 10);
+    const existingRequest = await userModel.find({ repairShop: true });
 
-    const newMessage = await contactRepairShopModel.create({
-      customerId: randomId,
-      customerName: req.body.customerName,
-      customerEmail: req.body.customerEmail,
-      location: req.body.location,
-      registrationNumber: req.body.registrationNumber,
-      troubleshootTime: req.body.troubleshootTime,
-      customerMessage: [
-        {
-          message: req.body.customerMessage,
-          date: Date.now(),
-        },
-      ],
-    });
+    console.log("existingRequest:", existingRequest);
 
-    console.log(newMessage);
+    if (existingRequest) {
+      for (let i = 0; i < existingRequest.length; i++) {
+        const email = existingRequest[i].email;
 
-    res.status(201).json(newMessage);
+        const transporter = nodeMailer.createTransport({
+          service: "Gmail",
+          auth: {
+            user: "k3mp314@gmail.com",
+            pass: "vuzs xrnz zxrd mujz",
+          },
+        });
+
+        console.log(req.body.registrationNumber);
+
+        const mailOptions = {
+          from: "k3mp314@gmail.com",
+          to: email,
+          subject: "Verification code",
+          html: `
+                <div style="padding: 32px; background-color: #090909; display: flex; flex-direction: column; border-radius: 15px; border: 1px solid #232323">
+                <div style="display: flex; align-items: center; margin-bottom: 32px;">
+                <h1 style="color: #d9d9d9; font-size: 1rem;">Registreringsnummer:</h1>
+                <p style="color: #d9d9d9; margin-left: 16px; font-size: 1rem;">${req.body.registrationNumber}</p>
+                </div>
+                <p>${req.body.customerMessage}</p>
+                <div style="width: 100%; height: 2px; background: #0D31F1;"></div>
+                </div>
+              `,
+        };
+
+        transporter.sendMail(mailOptions, (error) => {
+          if (error) {
+            res.status(500).json("Error sending verifaction code");
+          } else {
+            res.status(201).json({ email: userEmail });
+          }
+        });
+      }
+    }
+
+    // const randomId = Math.random().toString(36).substring(2, 10);
+
+    // const newMessage = await contactRepairShopModel.create({
+    //   customerId: randomId,
+    //   customerName: req.body.customerName,
+    //   customerEmail: req.body.customerEmail,
+    //   location: req.body.location,
+    //   registrationNumber: req.body.registrationNumber,
+    //   troubleshootTime: req.body.troubleshootTime,
+    //   customerMessage: [
+    //     {
+    //       message: req.body.customerMessage,
+    //       date: Date.now(),
+    //     },
+    //   ],
+    // });
+
+    // console.log(newMessage);
+
+    // res.status(201).json(newMessage);
   } catch (error) {
     res.json(error);
   }
