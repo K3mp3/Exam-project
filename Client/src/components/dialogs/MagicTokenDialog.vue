@@ -33,7 +33,7 @@ async function handleSignIn() {
 
     closeDialog()
 
-    router.push({ name: 'user landing view' })
+    router.push({ name: 'user home view' })
   } else if (response.status === 201 && response.repairShop === true) {
     document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
     document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
@@ -43,7 +43,7 @@ async function handleSignIn() {
 
     closeDialog()
 
-    // router.push({ name: 'repair-shop-home' })
+    router.push({ name: 'repair shop home view' })
   }
 
   if (response === 'Unauthorized') {
@@ -58,8 +58,8 @@ function closeDialog() {
 </script>
 
 <template>
-  <div class="dialog-container">
-    <div class="dialog-box">
+  <div class="magic-token-dialog-container">
+    <div class="magic-token-dialog-box">
       <input
         type="text"
         placeholder="veriferings kod"
@@ -71,7 +71,7 @@ function closeDialog() {
         verifieringskoden!
       </p>
 
-      <div class="button-container">
+      <div class="magic-token-button-container">
         <button type="button" class="filled-btn" @click="handleSignIn">Logga in</button>
         <button type="button" class="outline-btn" @click="closeDialog">Tillbaka</button>
       </div>

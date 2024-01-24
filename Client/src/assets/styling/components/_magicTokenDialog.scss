@@ -1,29 +1,31 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
-.dialog-container {
+.magic-token-dialog-container {
   width: 100vw;
   height: 100vh;
   background-color: $bg-main;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   padding: 16px;
   display: flex;
   align-items: center;
 
-  .dialog-box {
+  .magic-token-dialog-box {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
+    gap: 16px;
+    width: 100%;
+    max-width: 320px;
     margin: auto;
 
     input {
       position: relative;
       transition: all 0.2s ease-in-out;
       margin-bottom: 16px;
-      width: calc(100vw - 32px);
+      width: 100%;
       height: 42px;
       background-color: $el-bg-gray;
       color: $text-main;
@@ -67,13 +69,7 @@
       margin-bottom: 32px;
     }
 
-    p {
-      color: $text-main;
-      font-family: map-get($font-text-light, font-family);
-      font-weight: map-get($font-text-light, font-weight);
-    }
-
-    .button-container {
+    .magic-token-button-container {
       display: flex;
       gap: 16px;
       justify-content: space-between;
@@ -83,6 +79,7 @@
         transition: all 0.2s ease-in-out;
         padding: 2px 20px;
         border-radius: 20px;
+        height: 35px;
         width: 100%;
         font-family: map-get($font-text-light, font-family);
         font-weight: map-get($font-text-light, font-weight);
@@ -92,6 +89,7 @@
         color: $text-main;
         background: transparent;
         border: 2px solid $el-white-main;
+        text-align: center;
 
         &:hover {
           cursor: pointer;

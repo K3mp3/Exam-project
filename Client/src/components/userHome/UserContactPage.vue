@@ -37,14 +37,11 @@ function checkInputDataSelect1() {
     } else {
       isLocation.value = true
 
-      // Find the index of isTroubleshootTime in inputsArray
       const index = inputsArray.findIndex((field) => field.key === 'isLocation')
 
       if (index !== -1) {
-        // If isTroubleshootTime is found, update its value at the specific index
         inputsArray[index].value = isLocation.value
       } else {
-        // If isTroubleshootTime is not found, push it into the array
         inputsArray.push({ key: 'isLocation', value: isLocation.value })
       }
 
@@ -165,12 +162,13 @@ const messageData = computed(() => {
   const nonNullEmaik = email || ''
 
   return {
-    name: nonNullName,
-    email: nonNullEmaik,
+    customerName: nonNullName,
+    customerEmail: nonNullEmaik,
     location: location.value,
     registrationNumber: registrationNumber.value,
     troubleshootTime: troubleshootTime.value,
-    message: message.value
+    customerMessage: message.value,
+    answeredByRepairShop: false
   }
 })
 

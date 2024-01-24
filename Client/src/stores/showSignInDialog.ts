@@ -1,12 +1,13 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useShowSignInDialog = defineStore('signInDialog', () => {
-    const isSignInDialog = ref(false);
+  const isSignInDialog = ref(false)
 
-    function showSignInDialogForm(show: boolean) {
-        isSignInDialog.value = show;
-    }
+  function showSignInDialogForm(show: boolean) {
+    isSignInDialog.value = show
+    console.log(isSignInDialog.value)
+  }
 
-    return { isSignInDialog, showSignInDialogForm };
+  return { isSignInDialog, showSignInDialogForm }
 })

@@ -2,44 +2,45 @@
 @use '../abstracts/fonts' as *;
 
 .menu-container {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    background-color: $bg-main-90;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: $bg-main-90;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  padding: 10px 16px;
+
+  button {
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: 2rem;
+    padding: 0;
+    color: $text-main;
+  }
+
+  ul {
     display: flex;
     flex-direction: column;
-    gap: 64px;
-    padding: 10px 16px;
+    gap: 32px;
+    padding: 0;
 
-    button {
-        background: transparent;
-        border: none;
-        text-align: left;
-        font-size: 2rem;
-        padding: 0;
-        color: $text-main
-    }
+    li {
+      list-style: none;
 
-    ul {
+      .router-link {
         display: flex;
-        flex-direction: column;
-        gap: 32px;
-        padding: 0;
-
-        li {
-            list-style: none;
-
-            .router-link {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                color: $text-main;
-                text-decoration: none;
-                font-family: map-get($font-text-light, font-family);
-                font-weight: map-get($font-text-light, font-weight);
-            }
-        }
+        gap: 10px;
+        align-items: center;
+        color: $text-main;
+        text-decoration: none;
+        font-family: map-get($font-text-light, font-family);
+        font-weight: map-get($font-text-light, font-weight);
+        font-size: 0.9rem;
+      }
     }
+  }
 }

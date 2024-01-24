@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { registerUser } from '@/services/registerUser'
-import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog'
-import { computed, ref } from 'vue'
-import DialogBox from '../dialogs/DialogBox.vue'
+import { registerRepairShop } from '@/services/registerUser';
+import { useShowPopUp } from '@/stores/ShowPopUpStore';
+import { useShowSignInDialog } from '@/stores/showSignInDialog';
+import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog';
+import { computed, nextTick, ref } from 'vue';
+import DialogBox from '../dialogs/DialogBox.vue';
 
 const name = ref('')
 const location = ref('')
@@ -12,14 +14,34 @@ const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
+const isName = ref(false)
+const isLocation = ref(false)
+const isPhoneNumber = ref(false)
+const isEmail = ref(false)
+const isConfirmEmail = ref(false)
+const isPassword = ref(false)
+const isConfirmPassword = ref(false)
+
 const isPhoneNumberWrong = ref(false)
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
-const disableRegisterBtn = ref(true)
+const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
 
+const inputsArray: { key: string; value: boolean }[] = [
+  { key: 'isName', value: false },
+  { key: 'isLocation', value: false },
+  { key: 'isPhoneNumber', value: false },
+  { key: 'isEmail', value: false },
+  { key: 'isConfirmEmail', value: false },
+  { key: 'isPassword', value: false },
+  { key: 'isConfirmPassword', value: false }
+]
+
 const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
+const isDialog = computed(() => useShowPopUp().showPopUp)
+const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
 const newUser = computed(() => {
   return {
@@ -33,54 +55,156 @@ const newUser = computed(() => {
 })
 
 function checkInputData() {
-  checkInputEmail()
-
-  if (
-    name.value === '' ||
-    location.value === '' ||
-    phoneNumber.value === '' ||
-    email.value === '' ||
-    confirmEmail.value === '' ||
-    password.value === '' ||
-    confirmPassword.value === ''
-  ) {
-    disableRegisterBtn.value = true
-    return false
-  } else {
-    disableRegisterBtn.value = false
-    return true
-  }
+  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  console.log(isBtnDisabled.value)
 }
 
-function checkInputPhoneNumber() {
-  const numberRegex = /^[0-9\s]+$/
+function checkInputDataName() {
+  nextTick(() => {
+    if (name.value === '') {
+      return
+    } else {
+      isName.value = true
+      console.log(isName.value)
 
-  if (numberRegex.test(phoneNumber.value)) {
-    return (isPhoneNumberWrong.value = false)
-  } else {
-    isPhoneNumberWrong.value = true
-  }
+      const index = inputsArray.findIndex((field) => field.key === 'isName')
+
+      if (index !== -1) {
+        inputsArray[index].value = isName.value
+      } else {
+        inputsArray.push({ key: 'isName', value: isName.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
-function checkInputEmail() {
-  if (email.value === confirmEmail.value) {
-    isEmailWrong.value = false
-  } else {
-    isEmailWrong.value = true
-  }
+function checkInputDataLocation() {
+  nextTick(() => {
+    if (location.value === '') {
+      return
+    } else {
+      isLocation.value = true
+      console.log(isName.value)
+
+      const index = inputsArray.findIndex((field) => field.key === 'isLocation')
+
+      if (index !== -1) {
+        inputsArray[index].value = isLocation.value
+      } else {
+        inputsArray.push({ key: 'isLocation', value: isLocation.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
-function checkInputPassword() {
-  if (password.value === confirmPassword.value) {
-    isPasswordWrong.value = false
-  } else {
-    isPasswordWrong.value = true
-  }
+function checkInputDataPhone() {
+  nextTick(() => {
+    if (phoneNumber.value === '') {
+      return
+    } else {
+      isPhoneNumber.value = true
+      console.log(isName.value)
+
+      const index = inputsArray.findIndex((field) => field.key === 'isPhoneNumber')
+
+      if (index !== -1) {
+        inputsArray[index].value = isPhoneNumber.value
+      } else {
+        inputsArray.push({ key: 'isPhoneNumber', value: isPhoneNumber.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataEmail() {
+  nextTick(() => {
+    if (email.value === '') {
+      return
+    } else {
+      isEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isEmail.value
+      } else {
+        inputsArray.push({ key: 'isEmail', value: isEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataConfirmEmail() {
+  nextTick(() => {
+    if (confirmEmail.value === '') {
+      return
+    } else {
+      isConfirmEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isConfirmEmail.value
+      } else {
+        inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataPassword() {
+  checkPasswordStrength('password')
+  nextTick(() => {
+    if (password.value === '') {
+      return
+    } else {
+      isPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isPassword.value
+      } else {
+        inputsArray.push({ key: 'isPassword', value: isPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataConfirmPassword() {
+  checkPasswordStrength('confirmPassword')
+  nextTick(() => {
+    if (confirmPassword.value === '') {
+      return
+    } else {
+      isConfirmPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isConfirmPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isConfirmPassword.value
+      } else {
+        inputsArray.push({ key: 'isConfirmPassword', value: isConfirmPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
 function checkPasswordStrength(type: string) {
-  checkInputData()
-
   if (type === 'password') {
     isPasswordWeak.value = password.value.length < 5
   } else {
@@ -89,12 +213,16 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
-  checkInputData()
+  const response = await registerRepairShop(newUser.value)
+  console.log(response)
+}
 
-  if (checkInputData()) {
-    const response = await registerUser(newUser.value)
-  } else {
-  }
+function showSignInDialog() {
+  const showRepairShopRegisterDialog = useShowRepairShopDialog()
+  showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value)
+
+  const showSignInDialog = useShowSignInDialog()
+  showSignInDialog.showSignInDialogForm(!isSignIn.value)
 }
 
 function closeRegisterDialog() {
@@ -120,7 +248,7 @@ function closeRegisterDialog() {
             name="name"
             placeholder="Namn på verkstaden"
             v-model="name"
-            @change="checkInputData"
+            @input="checkInputDataName"
           />
 
           <label for="location">Kommun</label>
@@ -129,7 +257,7 @@ function closeRegisterDialog() {
             class="desktop-register-form-select"
             v-model="location"
             :key="location"
-            @change="checkInputData"
+            @input="checkInputDataLocation""
           >
             <option value="Sundsvall">Sundsvall</option>
           </select>
@@ -140,7 +268,7 @@ function closeRegisterDialog() {
             name="phone-number"
             placeholder="Telefonnummer till din verkstad"
             v-model="phoneNumber"
-            @blur="checkInputPhoneNumber"
+            @input="checkInputDataPhone"
             :class="isPhoneNumberWrong ? 'input-error' : ''"
           />
           <p v-if="isPhoneNumberWrong">
@@ -154,6 +282,7 @@ function closeRegisterDialog() {
             name="email"
             placeholder="namn@mail.com"
             v-model="email"
+            @input="checkInputDataEmail"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -169,7 +298,7 @@ function closeRegisterDialog() {
             name="email"
             placeholder="namn@mail.com"
             v-model="confirmEmail"
-            @blur="checkInputData"
+            @input="checkInputDataConfirmEmail"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -183,7 +312,7 @@ function closeRegisterDialog() {
             name="password"
             placeholder="Lösenord"
             v-model="password"
-            @input="checkPasswordStrength('password')"
+            @input="checkInputDataPassword"
             :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }"
           />
           <p class="warning-text" v-if="isPasswordWeak">
@@ -200,8 +329,7 @@ function closeRegisterDialog() {
             name="password"
             placeholder="Lösenord"
             v-model="confirmPassword"
-            @blur="checkInputPassword"
-            @input="checkPasswordStrength('confirmPassword')"
+            @input="checkInputDataConfirmPassword"
             :class="{
               'input-error': isPasswordWrong,
               'input-password-weak': isConfirmPasswordWeak
@@ -217,8 +345,8 @@ function closeRegisterDialog() {
 
           <button
             type="submit"
-            :disabled="disableRegisterBtn"
-            :class="disableRegisterBtn ? 'register-desktop-button-disable' : 'desktop-register-btn'"
+            :disabled="isBtnDisabled"
+            :class="isBtnDisabled ? 'register-desktop-button-disable' : 'desktop-register-btn'"
           >
             Registrera
           </button>
@@ -229,11 +357,9 @@ function closeRegisterDialog() {
       <div class="dialog-text-form-container">
         <p>
           Har du redan ett konto?
-          <RouterLink to="/" class="router-link-text">Logga in här</RouterLink>
-        </p>
-        <p>
-          Har du en verkstad och vill registrera dig?
-          <RouterLink to="/" class="router-link-text">Klicka här</RouterLink>
+          <button type="button" class="router-link-text" @click="showSignInDialog">
+            Logga in här
+          </button>
         </p>
       </div>
 

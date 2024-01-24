@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import { signInUser } from '@/services/signInUser'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
 
+const isEmail = ref(false)
+const isPassword = ref(false)
+
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
-const disableRegisterBtn = ref(true)
+const isBtnDisabled = ref(true)
+
+const inputsArray: { key: string; value: boolean }[] = [
+  { key: 'isEmail', value: false },
+  { key: 'isPassword', value: false }
+]
 
 const user = computed(() => {
   return {
@@ -17,13 +25,50 @@ const user = computed(() => {
 })
 
 function checkInputData() {
-  if (email.value === '' || password.value === '') {
-    disableRegisterBtn.value = true
-    return false
-  } else {
-    disableRegisterBtn.value = false
-    return true
-  }
+  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  console.log(isBtnDisabled.value)
+  console.log(inputsArray)
+}
+
+function checkInputDataEmail() {
+  nextTick(() => {
+    if (email.value === '') {
+      return
+    } else {
+      isEmail.value = true
+      console.log(isEmail.value)
+
+      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isEmail.value
+      } else {
+        inputsArray.push({ key: 'isEmail', value: isEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataPassword() {
+  nextTick(() => {
+    if (password.value === '') {
+      return
+    } else {
+      isPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isPassword.value
+      } else {
+        inputsArray.push({ key: 'isPassword', value: isPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
 async function handleSignIn() {
@@ -44,7 +89,7 @@ async function handleSignIn() {
       /></RouterLink>
       <h2>Logga in</h2>
     </div>
-    <form @submit.prevent="handleSignIn" class="mobile-register-form">
+    <form @submit.prevent="handleSignIn" class="mobile-sign-in-form">
       <label for="email">Email adress</label>
       <input
         type="email"
@@ -52,7 +97,7 @@ async function handleSignIn() {
         placeholder="namn@mail.com"
         v-model="email"
         :class="isEmailWrong ? 'input-error' : ''"
-        @input="checkInputData"
+        @input="checkInputDataEmail"
       />
       <p v-if="isEmailWrong">
         <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!
@@ -65,7 +110,7 @@ async function handleSignIn() {
         placeholder="Lösenord"
         v-model="password"
         :class="isPasswordWrong ? 'input-error' : ''"
-        @input="checkInputData"
+        @input="checkInputDataPassword"
       />
       <p v-if="isEmailWrong">
         <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
@@ -73,8 +118,8 @@ async function handleSignIn() {
 
       <button
         type="submit"
-        :disabled="disableRegisterBtn"
-        :class="disableRegisterBtn ? 'register-mobile-button-disable' : 'register-mobile-button'"
+        :disabled="isBtnDisabled"
+        :class="isBtnDisabled ? 'sign-in-mobile-button-disable' : 'sign-in-mobile-button'"
       >
         Logga in
       </button>

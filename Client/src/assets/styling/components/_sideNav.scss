@@ -1,0 +1,59 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+.side-nav-parent-container {
+  height: calc(100vh - 64px);
+  background-color: $el-bg-gray;
+  border: 1px solid $el-border-gray;
+  position: fixed;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  margin: 32px;
+  border-radius: 15px;
+
+  ul {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: start;
+
+    li {
+      list-style: none;
+    }
+  }
+
+  .side-nav-router-link {
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: $text-main;
+    font-family: map-get($font-text-light, font-family);
+    font-weight: map-get($font-text-light, font-weight);
+    font-size: 0.9rem;
+    text-decoration: none;
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+      color: $el-active-blue;
+    }
+  }
+
+  .active-url {
+    color: $el-active-blue;
+  }
+}
+
+@media screen and (min-width: 1482px) {
+  .side-nav-parent-container {
+    padding: 64px;
+
+    ul {
+      gap: 64px;
+    }
+  }
+}

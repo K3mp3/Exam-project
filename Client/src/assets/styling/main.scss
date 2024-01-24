@@ -1,5 +1,6 @@
 @use './base.scss';
 
+@import './components/generalStyling';
 @import './components/consumerNav';
 @import './components/consumerHeader';
 @import './components/consumerMain';
@@ -7,8 +8,15 @@
 @import './components/registerFormMobile';
 @import './components/registerFormTablet';
 @import './components/registerDialog';
+@import './components/signInFormMobile';
 @import './components/signInFormTablet';
 @import './components/signInDialog';
 @import './components/userHome';
-@import './components/dialog';
+@import './components/repairShopHomeForm';
+@import './components/bottomNav';
+@import './components/userSent';
+@import './components/sideNav';
+
+@import './components/magicTokenDialog';
+@import './components/messageDialog';
 @import './components/blueLine';

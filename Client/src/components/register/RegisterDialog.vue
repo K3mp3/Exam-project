@@ -2,7 +2,9 @@
 import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
-import { computed, ref } from 'vue'
+import { useShowSignInDialog } from '@/stores/showSignInDialog'
+import { useShowUserEmail } from '@/stores/showUserEmail'
+import { computed, nextTick, ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -12,17 +14,34 @@ const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
+const isName = ref(false)
+const isEmail = ref(false)
+const isConfirmEmail = ref(false)
+const isPassword = ref(false)
+const isConfirmPassword = ref(false)
+
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
 const isNotBothNames = ref(false)
-const disableRegisterBtn = ref(true)
+const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
 
+const inputsArray: { key: string; value: boolean }[] = [
+  { key: 'isName', value: false },
+  { key: 'isEmail', value: false },
+  { key: 'isConfirmEmail', value: false },
+  { key: 'isPassword', value: false },
+  { key: 'isConfirmPassword', value: false }
+]
+
 const isDialog = computed(() => useShowPopUp().showPopUp)
+const filledEmail = computed(() => useShowUserEmail().userEmail)
+const isFilledEmail = computed(() => useShowUserEmail().isEmail)
 
 const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
+const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
 const newUser = computed(() => {
   return {
@@ -34,47 +53,111 @@ const newUser = computed(() => {
 })
 
 function checkInputData() {
-  checkInputName()
-  checkInputEmail()
-
-  if (
-    name.value === '' ||
-    email.value === '' ||
-    confirmEmail.value === '' ||
-    password.value === '' ||
-    confirmPassword.value === ''
-  ) {
-    disableRegisterBtn.value = true
-    return false
-  } else {
-    disableRegisterBtn.value = false
-    return true
-  }
+  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  console.log(isBtnDisabled.value)
 }
 
-function checkInputName() {
-  const nameRegex = /^[\p{L}]+ [\p{L}]+$/u
-  if (nameRegex.test(name.value)) {
-    return (isNotBothNames.value = false)
-  } else {
-    isNotBothNames.value = true
-  }
+function checkInputDataName() {
+  nextTick(() => {
+    if (name.value === '') {
+      return
+    } else {
+      isName.value = true
+      console.log(isName.value)
+
+      const index = inputsArray.findIndex((field) => field.key === 'isName')
+
+      if (index !== -1) {
+        inputsArray[index].value = isName.value
+      } else {
+        inputsArray.push({ key: 'isName', value: isName.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
-function checkInputEmail() {
-  if (email.value === confirmEmail.value) {
-    isEmailWrong.value = false
-  } else {
-    isEmailWrong.value = true
-  }
+function checkInputDataEmail() {
+  nextTick(() => {
+    if (email.value === '') {
+      return
+    } else {
+      isEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isEmail.value
+      } else {
+        inputsArray.push({ key: 'isEmail', value: isEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
-function checkInputPassword() {
-  if (password.value === confirmPassword.value) {
-    isPasswordWrong.value = false
-  } else {
-    isPasswordWrong.value = true
-  }
+function checkInputDataConfirmEmail() {
+  nextTick(() => {
+    if (confirmEmail.value === '') {
+      return
+    } else {
+      isConfirmEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isConfirmEmail.value
+      } else {
+        inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataPassword() {
+  checkPasswordStrength('password')
+  nextTick(() => {
+    if (password.value === '') {
+      return
+    } else {
+      isPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isPassword.value
+      } else {
+        inputsArray.push({ key: 'isPassword', value: isPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataConfirmPassword() {
+  checkPasswordStrength('confirmPassword')
+  nextTick(() => {
+    if (confirmPassword.value === '') {
+      return
+    } else {
+      isConfirmPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isConfirmPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isConfirmPassword.value
+      } else {
+        inputsArray.push({ key: 'isConfirmPassword', value: isConfirmPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
 function checkPasswordStrength(type: string) {
@@ -88,17 +171,20 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
-  checkInputData()
-
-  if (checkInputData()) {
-    const response = await registerUser(newUser.value)
-  } else {
-  }
+  const response = await registerUser(newUser.value)
 }
 
 function closeRegisterDialog() {
   const showRegisterDialog = useShowRegisterDialog()
   showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+}
+
+function showSignInDialog() {
+  const showRegisterDialog = useShowRegisterDialog()
+  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+
+  const showSignInDialog = useShowSignInDialog()
+  showSignInDialog.showSignInDialogForm(!isSignIn.value)
 }
 
 function showRegisterRepairShopDialog() {
@@ -127,7 +213,7 @@ function showRegisterRepairShopDialog() {
             name="name"
             placeholder="För- och efternammn"
             v-model="name"
-            @change="checkInputData"
+            @input="checkInputDataName"
             :class="isNotBothNames ? 'input-error' : ''"
           />
           <p v-if="isNotBothNames">
@@ -141,7 +227,9 @@ function showRegisterRepairShopDialog() {
             name="email"
             placeholder="namn@mail.com"
             v-model="email"
+            @input="checkInputDataEmail"
             :class="isEmailWrong ? 'input-error' : ''"
+            :value="isFilledEmail ? filledEmail : email"
           />
           <p v-if="isEmailWrong">
             <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att email
@@ -154,7 +242,7 @@ function showRegisterRepairShopDialog() {
             name="email"
             placeholder="namn@mail.com"
             v-model="confirmEmail"
-            @blur="checkInputData"
+            @input="checkInputDataConfirmEmail"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -170,7 +258,7 @@ function showRegisterRepairShopDialog() {
             name="password"
             placeholder="Lösenord"
             v-model="password"
-            @input="checkPasswordStrength('password')"
+            @input="checkInputDataPassword"
             :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }"
           />
           <p class="warning-text" v-if="isPasswordWeak">
@@ -188,8 +276,7 @@ function showRegisterRepairShopDialog() {
             name="password"
             placeholder="Lösenord"
             v-model="confirmPassword"
-            @blur="checkInputPassword"
-            @input="checkPasswordStrength('confirmPassword')"
+            @input="checkInputDataConfirmPassword"
             :class="{
               'input-error': isPasswordWrong,
               'input-password-weak': isConfirmPasswordWeak
@@ -206,8 +293,8 @@ function showRegisterRepairShopDialog() {
 
           <button
             type="submit"
-            :disabled="disableRegisterBtn"
-            :class="disableRegisterBtn ? 'register-desktop-button-disable' : 'desktop-register-btn'"
+            :disabled="isBtnDisabled"
+            :class="isBtnDisabled ? 'register-desktop-button-disable' : 'desktop-register-btn'"
           >
             Registrera
           </button>
@@ -218,7 +305,9 @@ function showRegisterRepairShopDialog() {
       <div class="dialog-text-form-container">
         <p>
           Har du redan ett konto?
-          <RouterLink to="/" class="router-link-text">Logga in här</RouterLink>
+          <button type="button" class="router-link-text" @click="showSignInDialog">
+            Logga in här
+          </button>
         </p>
         <p>
           Har du en verkstad och vill registrera dig?

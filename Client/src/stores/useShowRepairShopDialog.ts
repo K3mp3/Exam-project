@@ -1,13 +1,13 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useShowRepairShopDialog = defineStore('repairShopRegisterDialog', () => {
-    console.log()
-    const isRepairShopDialog = ref(false);
+  const isRepairShopDialog = ref(false)
 
-    function showRepairShopRegisterDialogForm(show: boolean) {
-        isRepairShopDialog.value = show;
-    }
+  function showRepairShopRegisterDialogForm(show: boolean) {
+    isRepairShopDialog.value = show
+    console.log(isRepairShopDialog.value)
+  }
 
-    return { isRepairShopDialog, showRepairShopRegisterDialogForm };
+  return { isRepairShopDialog, showRepairShopRegisterDialogForm }
 })

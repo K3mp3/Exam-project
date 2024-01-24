@@ -1,0 +1,355 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+.repair-shop-home-parent {
+  padding: 16px;
+
+  .repair-shop-signed-in-header {
+    h2 {
+      font-size: 1.4rem;
+      color: $text-main;
+      font-family: map-get($font-title-black, font-family);
+      font-weight: map-get($font-title-black, font-weight);
+    }
+  }
+
+  .repair-shop-signed-in-main {
+    margin-top: 16px;
+
+    h3 {
+      font-size: 1.2rem;
+      color: $text-main;
+      font-family: map-get($font-title-bold, font-family);
+      font-weight: map-get($font-title-bold, font-weight);
+      margin-bottom: 16px;
+    }
+
+    .repair-shop-requests-form {
+      margin: 8px 0 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+
+      .request-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .customer-name {
+          font-size: 0.9rem;
+          color: $text-main;
+          font-family: map-get($font-text-light, font-family);
+          font-weight: map-get($font-text-light, font-weight);
+        }
+
+        .message-content-parent-container {
+          width: 100%;
+          margin-top: -14px;
+          border-radius: 15px;
+          border: 2px solid $el-border-gray;
+          padding: 8px 8px 0 8px;
+
+          .message-content-top-nav {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+
+            p,
+            span {
+              font-size: 0.9rem;
+              color: $text-main;
+              font-family: map-get($font-text-light, font-family);
+              font-weight: map-get($font-text-light, font-weight);
+            }
+
+            span {
+              font-family: map-get($font-title-bold, font-family);
+              font-weight: map-get($font-title-bold, font-weight);
+            }
+
+            .show-more-btn {
+              background: transparent;
+              border: none;
+              color: $text-main;
+              position: absolute;
+              border-bottom: 15px;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              text-align: right;
+
+              &:hover {
+                cursor: pointer;
+                color: $el-active-blue;
+              }
+            }
+          }
+
+          .message-content-text {
+            width: 100%;
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            p {
+              font-size: 0.9rem;
+              color: $text-main;
+              font-family: map-get($font-text-light, font-family);
+              font-weight: map-get($font-text-light, font-weight);
+            }
+          }
+
+          .message-content-answer {
+            width: 100%;
+            margin-top: 8px;
+          }
+
+          .text-editor-answer {
+            width: 100%;
+            height: 300px;
+            color: $text-main;
+            border: none;
+            background: transparent;
+            resize: none;
+            font-size: 0.9rem;
+            font-family: map-get($font-text-light, font-family);
+            font-weight: map-get($font-text-light, font-weight);
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+
+        .price-offer-input {
+          margin: 8px 0 16px 0;
+          width: 100%;
+          height: 42px;
+          background-color: $el-bg-gray;
+          font-size: 0.9rem;
+          color: $text-main;
+          font-family: map-get($font-text-light, font-family);
+          font-weight: map-get($font-text-light, font-weight);
+          border: 2px solid $el-border-gray;
+          padding: 10px;
+          border-radius: 10px;
+          z-index: 1;
+          margin-top: -14px;
+
+          &:focus {
+            transition: all 0.2s ease-in-out;
+            outline: none;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+              linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+          }
+        }
+
+        .repair-shop-home-send-btn-disabled {
+          transition: all 0.2s ease-in-out;
+          background-color: $el-inactive-blue;
+          border: none;
+          color: $text-disabled;
+          font-family: map-get($font-title-bold, font-family);
+          font-weight: map-get($font-title-bold, font-weight);
+          font-size: 0.9rem;
+          height: 42px;
+          border-radius: 50px;
+          width: 100%;
+        }
+
+        .repair-shop-home-send-btn {
+          transition: all 0.2s ease-in-out;
+          background-color: $el-active-blue;
+          border: none;
+          color: $text-main;
+          font-family: map-get($font-title-bold, font-family);
+          font-weight: map-get($font-title-bold, font-weight);
+          font-size: 0.9rem;
+          height: 42px;
+          border-radius: 50px;
+          width: 100%;
+
+          &:hover {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            background-color: $el-active-blue-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .repair-shop-home-parent {
+    padding: 16px;
+    max-width: 1200px;
+    margin: auto;
+
+    .repair-shop-signed-in-header {
+      h2 {
+        font-size: 1.4rem;
+        color: $text-main;
+        font-family: map-get($font-title-black, font-family);
+        font-weight: map-get($font-title-black, font-weight);
+      }
+    }
+
+    .repair-shop-signed-in-main {
+      margin-top: 16px;
+
+      h3 {
+        font-size: 1.2rem;
+        color: $text-main;
+        font-family: map-get($font-title-bold, font-family);
+        font-weight: map-get($font-title-bold, font-weight);
+      }
+
+      .repair-shop-requests-form {
+        margin: 8px 0 32px 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 32px;
+
+        .request-container {
+          max-width: calc(50% - 16px);
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+
+          .customer-name {
+            font-size: 0.9rem;
+            color: $text-main;
+            font-family: map-get($font-text-light, font-family);
+            font-weight: map-get($font-text-light, font-weight);
+          }
+
+          .message-content-parent-container {
+            width: 100%;
+            margin-top: -14px;
+            border-radius: 15px;
+            border: 2px solid $el-border-gray;
+            padding: 8px 8px 0 8px;
+
+            .message-content-top-nav {
+              display: flex;
+              justify-content: space-between;
+              position: relative;
+
+              .show-more-btn {
+                background: transparent;
+                border: none;
+                color: $text-main;
+                position: absolute;
+                border-bottom: 15px;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                text-align: right;
+
+                &:hover {
+                  cursor: pointer;
+                  color: $el-active-blue;
+                }
+              }
+            }
+
+            .message-content-text {
+              width: 100%;
+              margin-top: 8px;
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+            }
+
+            .message-content-answer {
+              width: 100%;
+              margin-top: 8px;
+            }
+
+            .text-editor-answer {
+              width: 100%;
+              height: 300px;
+              color: $text-main;
+              border: none;
+              background: transparent;
+              resize: none;
+              font-size: 0.9rem;
+              font-family: map-get($font-text-light, font-family);
+              font-weight: map-get($font-text-light, font-weight);
+
+              &:focus {
+                outline: none;
+              }
+            }
+          }
+
+          .price-offer-input {
+            margin: 8px 0 16px 0;
+            width: 100%;
+            height: 42px;
+            background-color: $el-bg-gray;
+            color: $text-main;
+            border: 2px solid $el-border-gray;
+            padding: 10px;
+            border-radius: 10px;
+            z-index: 1;
+            margin-top: -14px;
+
+            &:focus {
+              transition: all 0.2s ease-in-out;
+              outline: none;
+              border: 2px solid transparent;
+              border-radius: 10px;
+              background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+                linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+              background-origin: border-box;
+              background-clip: padding-box, border-box;
+            }
+          }
+
+          .repair-shop-home-send-btn-disabled {
+            transition: all 0.2s ease-in-out;
+            background-color: $el-inactive-blue;
+            border: none;
+            color: $text-disabled;
+            font-family: map-get($font-title-bold, font-family);
+            font-weight: map-get($font-title-bold, font-weight);
+            font-size: 0.9rem;
+            height: 42px;
+            border-radius: 50px;
+            width: 100%;
+          }
+
+          .repair-shop-home-send-btn {
+            transition: all 0.2s ease-in-out;
+            background-color: $el-active-blue;
+            border: none;
+            color: $text-main;
+            font-family: map-get($font-title-bold, font-family);
+            font-weight: map-get($font-title-bold, font-weight);
+            font-size: 0.9rem;
+            height: 42px;
+            border-radius: 50px;
+            width: 100%;
+
+            &:hover {
+              transition: all 0.2s ease-in-out;
+              cursor: pointer;
+              background-color: $el-active-blue-hover;
+            }
+          }
+        }
+      }
+    }
+  }
+}

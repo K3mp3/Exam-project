@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import { signInUser } from '@/services/signInUser'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
 
+const isEmail = ref(false)
+const isPassword = ref(false)
+
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
-const disableRegisterBtn = ref(true)
+const isBtnDisabled = ref(true)
+
+const inputsArray: { key: string; value: boolean }[] = [
+  { key: 'isEmail', value: false },
+  { key: 'isPassword', value: false }
+]
 
 const user = computed(() => {
   return {
@@ -17,13 +25,72 @@ const user = computed(() => {
 })
 
 function checkInputData() {
-  if (email.value === '' || password.value === '') {
-    disableRegisterBtn.value = true
-    return false
-  } else {
-    disableRegisterBtn.value = false
-    return true
-  }
+  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  console.log(isBtnDisabled.value)
+  console.log(inputsArray)
+}
+
+function checkInputDataEmail() {
+  nextTick(() => {
+    if (email.value === '') {
+      return
+    } else {
+      isEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+      if (index !== -1) {
+        inputsArray[index].value = isEmail.value
+      } else {
+        inputsArray.push({ key: 'isEmail', value: isEmail.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkInputDataPassword() {
+  nextTick(() => {
+    if (password.value === '') {
+      return
+    } else {
+      isPassword.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
+
+      if (index !== -1) {
+        inputsArray[index].value = isPassword.value
+      } else {
+        inputsArray.push({ key: 'isPassword', value: isPassword.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+function checkSelectValue() {
+  nextTick(() => {
+    if (repairShop.value === '') {
+      console.log(repairShop.value)
+      return
+    } else {
+      console.log(repairShop.value)
+      isRepairShop.value = true
+      console.log(isRepairShop.value)
+
+      const index = inputsArray.findIndex((field) => field.key === 'isRepairShop')
+
+      if (index !== -1) {
+        inputsArray[index].value = isRepairShop.value
+      } else {
+        inputsArray.push({ key: 'isRepairShop', value: isRepairShop.value })
+      }
+
+      checkInputData()
+    }
+  })
 }
 
 async function handleRegistration() {
@@ -53,7 +120,7 @@ async function handleRegistration() {
             name="email"
             placeholder="namn@mail.com"
             v-model="email"
-            @input="checkInputData"
+            @input="checkInputDataEmail"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -69,7 +136,7 @@ async function handleRegistration() {
             name="password"
             placeholder="Lösenord"
             v-model="password"
-            @input="checkInputData"
+            @input="checkInputDataPassword"
             :class="isPasswordWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -81,8 +148,8 @@ async function handleRegistration() {
       <div class="sign-in-tablet-form-bottom-container">
         <button
           type="submit"
-          :disabled="disableRegisterBtn"
-          :class="disableRegisterBtn ? 'sign-in-tablet-btn-disable' : 'sign-in-tablet-btn'"
+          :disabled="isBtnDisabled"
+          :class="isBtnDisabled ? 'sign-in-tablet-btn-disable' : 'sign-in-tablet-btn'"
         >
           Logga in
         </button>
