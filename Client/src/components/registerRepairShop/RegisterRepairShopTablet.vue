@@ -46,7 +46,8 @@ const newUser = computed(() => {
     phoneNumber: phoneNumber.value,
     email: email.value,
     password: password.value,
-    repairShop: true
+    repairShop: true,
+    signedIn: false
   }
 })
 

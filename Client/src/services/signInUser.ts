@@ -1,9 +1,13 @@
 import type { IUserSignIn } from '@/models/IUserSignIn'
 import type { IUserToken } from '@/models/IUserToken'
+import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
+import { useSignInStore } from '@/stores/signInStore'
 import axios from 'axios'
+import { computed } from 'vue'
 
 const BASE_URL = 'http://localhost:3000'
+const isDialog = computed(() => useShowPopUp().showPopUp)
 
 export async function signInUser(user: IUserSignIn) {
   try {
@@ -17,10 +21,16 @@ export async function signInUser(user: IUserSignIn) {
   } catch (error: any) {
     if (
       error.response &&
-      error.response.status === 400 &&
+      error.response.status === 401 &&
       error.response.data.message === 'Wrong email or password!'
     ) {
       return error.response.data.message
+    } else if (error.response && error.response.status === 500) {
+      const showErrorDialog = useShowPopUp()
+      showErrorDialog.showPopUpTab(
+        true,
+        'Whoops, tyvärr fungerade inte inloggningen på grund av ett fel. Vänligen försök igen eller vänta en liten stund.'
+      )
     }
   }
 }
@@ -28,11 +38,25 @@ export async function signInUser(user: IUserSignIn) {
 export async function checkMagicToken(user: IUserToken) {
   try {
     const response = await axios.post<IUserToken>(`${BASE_URL}/users/checkMagicToken`, user)
-    console.log(response.data.repairShop)
-    return {
-      name: response.data.name,
-      repairShop: response.data.repairShop,
-      status: response.status
+    console.log('response.data.signedIn:', response.data.signedIn)
+
+    if (response.data.signedIn) {
+      console.log(response.data.signedIn)
+
+      const isSignedIn = useSignInStore()
+      isSignedIn.signInUser(true)
+
+      return {
+        name: response.data.name,
+        repairShop: response.data.repairShop,
+        status: response.status
+      }
+    } else {
+      const showErrorDialog = useShowPopUp()
+      showErrorDialog.showPopUpTab(
+        true,
+        'Whoops, tyvärr fungerade inte inloggningen på grund av ett fel. Vänligen försök igen eller vänta en liten stund.'
+      )
     }
   } catch (error: any) {
     if (

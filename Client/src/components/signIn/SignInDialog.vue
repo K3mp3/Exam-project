@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { signInUser } from '@/services/signInUser'
+import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, ref } from 'vue'
+import DialogBox from '../dialogs/DialogBox.vue'
 
 const email = ref('')
 const password = ref('')
@@ -11,11 +13,13 @@ const isPasswordWrong = ref(false)
 const disableRegisterBtn = ref(true)
 
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
+const isDialog = computed(() => useShowPopUp().showPopUp)
 
 const user = computed(() => {
   return {
     email: email.value,
-    password: password.value
+    password: password.value,
+    signedIn: true
   }
 })
 
@@ -32,6 +36,11 @@ function checkInputData() {
 async function handleSignIn() {
   const response = await signInUser(user.value)
   console.log(response)
+
+  if (response === 'Wrong email or password!') {
+    isEmailWrong.value = true
+    isPasswordWrong.value = true
+  }
 }
 
 function closeSignInDialog() {
@@ -42,6 +51,7 @@ function closeSignInDialog() {
 
 <template>
   <div class="sign-in-desktop-dialog-background">
+    <DialogBox v-if="isDialog"></DialogBox>
     <div class="sign-in-desktop-dialog-container">
       <div class="sign-in-desktop-form-nav">
         <button type="button" class="sign-in-form-back-link" @click="closeSignInDialog">
@@ -79,7 +89,7 @@ function closeSignInDialog() {
             />
             <p v-if="isEmailWrong">
               <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera
-              lösenorder!
+              lösenordet!
             </p>
           </div>
         </div>

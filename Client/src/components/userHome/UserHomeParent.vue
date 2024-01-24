@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import router from '@/router'
+import { useSignInStore } from '@/stores/signInStore'
+import { computed, onMounted, ref } from 'vue'
 import BottomNavParent from '../bottomNav/BottomNavParent.vue'
 import SideNavParent from '../sideNav/SideNavParent.vue'
 import UserContactPage from '../userHome/UserContactPage.vue'
 
 const isSideNav = ref(false)
+
+const isSignedIn = computed(() => useSignInStore().signedIn)
 
 let width = document.documentElement.clientWidth
 
@@ -37,6 +41,10 @@ const firstName = fullname ? fullname.split(' ')[0] : ''
 
 onMounted(() => {
   updateScreenSize()
+
+  if (!isSignedIn.value) {
+    router.push({ name: 'landing page' })
+  }
 })
 </script>
 

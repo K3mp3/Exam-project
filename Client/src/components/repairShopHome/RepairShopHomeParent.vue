@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import router from '@/router'
+import { useSignInStore } from '@/stores/signInStore'
+import { computed, onMounted } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
+
+const isSignedIn = computed(() => useSignInStore().signedIn)
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -14,6 +19,12 @@ function getCookie(cookieName: string) {
 }
 
 const fullname = getCookie('name')
+
+onMounted(() => {
+  if (!isSignedIn.value) {
+    router.push({ name: 'landing page' })
+  }
+})
 </script>
 
 <template>

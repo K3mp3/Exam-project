@@ -42,6 +42,7 @@ router.post("/createUser", async (req, res) => {
           password: hashedPassword,
           repairShop: req.body.repairShop,
           magicToken: magicToken,
+          signedIn: req.body.signedIn,
         });
 
         console.log(newUser);
@@ -85,6 +86,7 @@ router.post("/createRepairShopUser", async (req, res) => {
           password: hashedPassword,
           repairShop: req.body.repairShop,
           magicToken: magicToken,
+          signedIn: req.body.signedIn,
         });
 
         console.log(newUser);
@@ -110,20 +112,18 @@ router.post("/signin", async (req, res) => {
       return;
     }
 
-    const { password, email } = req.body;
-
-    console.log("email, password:", email, password);
-
     try {
-      const foundUser = await userModel.findOne({ email: email });
-      console.log("founduser", foundUser);
-      const match = await bcrypt.compare(password, foundUser.password);
+      const foundUser = await userModel.findOne({ email: req.body.email });
+      if (!foundUser) {
+        console.log("User not found");
+        res.status(401).json({ message: "Wrong email or password!" });
+        return;
+      }
 
-      console.log(foundUser);
-      console.log(match);
-
-      if (!foundUser || !match) {
-        res.status(400).json({ message: "Wrong email or password!" });
+      const match = await bcrypt.compare(req.body.password, foundUser.password);
+      if (!match) {
+        console.log("Password does not match");
+        res.status(401).json({ message: "Wrong email or password!" });
         return;
       }
 
@@ -203,11 +203,15 @@ router.post("/checkMagicToken", async (req, res) => {
     const foundUser = await userModel.findOne({ email: email });
 
     if (foundUser && magicToken === foundUser.magicToken) {
+      const isSignedIn = !foundUser.signedIn;
+
+      foundUser.signedIn = isSignedIn;
       await foundUser.save();
       res.status(201).json({
         name: foundUser.name,
         message: "Authentication successful",
         repairShop: foundUser.repairShop,
+        signedIn: foundUser.signedIn,
       });
     } else {
       res.status(400).json({ message: "Unauthorized" });

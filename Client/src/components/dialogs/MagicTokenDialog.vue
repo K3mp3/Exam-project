@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import router from '@/router'
+import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { computed, ref } from 'vue'
 import { checkMagicToken } from '../../services/signInUser'
+import DialogBox from '../dialogs/DialogBox.vue'
 
 const writtenToken = ref('')
 
@@ -10,6 +12,7 @@ const isMagicTokenWrong = ref(false)
 
 const userEmail = computed(() => useShowMagicTokenDialog().userEmail)
 const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
+const isDialog = computed(() => useShowPopUp().showPopUp)
 
 const user = computed(() => {
   return {
@@ -59,6 +62,7 @@ function closeDialog() {
 
 <template>
   <div class="magic-token-dialog-container">
+    <DialogBox v-if="isDialog"></DialogBox>
     <div class="magic-token-dialog-box">
       <input
         type="text"
