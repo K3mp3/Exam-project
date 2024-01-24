@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog'
 import { computed, onMounted, ref } from 'vue'
+import MagicTokenDialog from '../dialogs/MagicTokenDialog.vue'
 import RegisterDialog from '../register/RegisterDialog.vue'
 import RegisterRepairShopDialog from '../registerRepairShop/RegisterRepairShopDialog.vue'
 import SignInDialog from '../signIn/SignInDialog.vue'
@@ -17,7 +19,7 @@ const navDesktop = ref(false)
 const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
 const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
-
+const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
 let width = document.documentElement.clientWidth
 
 function updateScreenSize() {
@@ -51,11 +53,12 @@ function updateScreenSize() {
 
 onMounted(() => {
   updateScreenSize()
-  console.log(isRepairShopDialog)
+  console.log(isMagicTokenDialog)
 })
 </script>
 
 <template>
+  <MagicTokenDialog v-if="isMagicTokenDialog"></MagicTokenDialog>
   <ConsumerNavMobile v-if="navMobile"></ConsumerNavMobile>
   <ConsumerNavTablet v-if="navTablet"></ConsumerNavTablet>
   <ConsumerNavDesktop v-if="navDesktop"></ConsumerNavDesktop>

@@ -249,7 +249,7 @@ router.post("/contactRepairShops", async (req, res) => {
         const mailOptions = {
           from: "k3mp314@gmail.com",
           to: email,
-          subject: "Verification code",
+          subject: "Kundförfrågan",
           html: `
                 <div style="padding: 32px; background-color: #090909; display: flex; flex-direction: column; border-radius: 15px; border: 1px solid #232323">
                 <div style="display: flex; align-items: center;">
@@ -259,6 +259,10 @@ router.post("/contactRepairShops", async (req, res) => {
                 <div style="display: flex; align-items: center;">
                   <h2  style="color: #d9d9d9; font-size: 1rem;">Max önskad felsökningstid:</h2>
                   <p style="color: #d9d9d9; margin-left: 16px; font-size: 1rem;">${req.body.troubleshootTime}</p>
+                </div>
+                <div style="display: flex; align-items: center;">
+                  <h2  style="color: #d9d9d9; font-size: 1rem;">Svara till:</h2>
+                  <p style="color: #d9d9d9; margin-left: 16px; font-size: 1rem;">${req.body.customerEmail}</p>
                 </div>
                 <p style="margin-bottom: 16px;">${req.body.customerMessage}</p>
                 

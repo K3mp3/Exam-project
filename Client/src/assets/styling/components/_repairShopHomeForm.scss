@@ -21,6 +21,7 @@
       color: $text-main;
       font-family: map-get($font-title-bold, font-family);
       font-weight: map-get($font-title-bold, font-weight);
+      margin-bottom: 16px;
     }
 
     .repair-shop-requests-form {

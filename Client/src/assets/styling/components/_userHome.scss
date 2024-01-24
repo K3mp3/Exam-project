@@ -216,17 +216,100 @@
   }
 }
 
+@media screen and (min-width: 900px) {
+  .signed-in-header {
+    padding: 32px;
+    margin-left: 174px;
+    max-width: 700px;
+  }
+
+  .signed-in-main {
+    padding: 16px 32px;
+    margin-left: 174px;
+    max-width: 700px;
+
+    form {
+      max-width: 700px;
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+
+      .right-side-contact-form {
+        width: 100%;
+        order: 2;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .left-side-contact-form {
+        width: 100%;
+        order: 1;
+      }
+
+      .signed-in-contact-form-select {
+        margin: 8px 0 16px 0;
+        width: 100%;
+        height: 45px;
+        padding: 8px;
+        font-size: 1rem;
+
+        &:focus {
+          font-size: 1rem;
+        }
+      }
+
+      input {
+        margin: 8px 0 16px 0;
+        width: 100%;
+        height: 45px;
+        font-size: 1rem;
+
+        &:focus {
+          font-size: 1rem;
+        }
+      }
+
+      .text-editor {
+        width: 100%;
+        height: 300px;
+        font-size: 1rem;
+        margin-bottom: 64px;
+      }
+
+      .user-home-send-btn {
+        font-size: 1rem;
+        height: 45px;
+        margin: 7px 0;
+        width: 100%;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          cursor: pointer;
+          background-color: $el-active-blue-hover;
+        }
+      }
+
+      .user-home-send-btn-disabled {
+        font-size: 1rem;
+        height: 45px;
+        margin: 7px 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
 @media screen and (min-width: 1482px) {
   .signed-in-header {
     padding: 64px;
     max-width: 1200px;
-    margin: auto;
+    margin-left: 233px;
   }
 
   .signed-in-main {
     padding: 0px 64px;
     max-width: 1200px;
-    margin: auto;
+    margin-left: 233px;
 
     form {
       max-width: 1482px;
@@ -303,5 +386,15 @@
         width: 100%;
       }
     }
+  }
+}
+
+@media screen and (min-width: 1665px) {
+  .signed-in-header {
+    margin: auto;
+  }
+
+  .signed-in-main {
+    margin: auto;
   }
 }

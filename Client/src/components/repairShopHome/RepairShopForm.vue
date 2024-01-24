@@ -3,7 +3,6 @@ import type { IUserContact } from '@/models/IUserContact'
 import { answerFromRepairShop, removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { getContactRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
-import RepairShopMessageContent from './RepairShopMessageContent.vue'
 
 const unansweredMessages = ref<IUserContact[]>([])
 const answeredMessages = ref<IUserContact[]>([])
@@ -64,7 +63,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <h3>Dina förfrågningar</h3>
+  <h3>
+    Här är det än så länge tomt. Men ora dig inte, inom snar framtid kommer du att kunna se alla
+    förfrågningar här
+  </h3>
+  <!-- <h3>Dina förfrågningar</h3>
 
   <form @submit.prevent="handleAnswer" class="repair-shop-requests-form">
     <RepairShopMessageContent
@@ -74,7 +77,7 @@ onMounted(() => {
       class="repair-shop-message-content-component"
       :onAnswer="handleAnswer"
     ></RepairShopMessageContent>
-  </form>
+  </form> -->
 
   <div class="blue-line"></div>
 </template>
