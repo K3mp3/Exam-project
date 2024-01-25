@@ -38,7 +38,9 @@ onMounted(() => {
     :style="{ backgroundColor: navScroll ? '#090909de' : 'transparent' }"
   >
     <div class="nav-child-container left">
-      <h1>Ways</h1>
+      <RouterLink to="/" class="text-deco-none"
+        ><p class="text-deco-none O15rem text-main font-title-black">Ways</p></RouterLink
+      >
     </div>
     <div class="nav-child-container center">
       <RouterLink to="/" class="router-link"

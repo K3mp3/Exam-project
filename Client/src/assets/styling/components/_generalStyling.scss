@@ -17,6 +17,10 @@
   color: $text-error-red;
 }
 
+.text-active-blue {
+  color: $el-active-blue;
+}
+
 .el-white-main {
   background-color: $el-white-main;
 }
@@ -154,6 +158,10 @@
 
 .align-items-center {
   align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
 }
 
 .justify-between {
