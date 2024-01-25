@@ -279,7 +279,7 @@ async function handleRegistration() {
       </p>
       <p>
         Har du en verkstad och vill registrera dig?
-        <RouterLink to="/" class="router-link-text">Klicka här</RouterLink>
+        <RouterLink to="/register-repair-shop" class="router-link-text">Klicka här</RouterLink>
       </p>
     </div>
 

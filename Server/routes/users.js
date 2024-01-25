@@ -221,6 +221,26 @@ router.post("/checkMagicToken", async (req, res) => {
   }
 });
 
+router.post("/signOutUser", async (req, res) => {
+  try {
+    console.log(req.body.email);
+    console.log(req.body.signedIn);
+
+    const foundUser = await userModel.findOne({ email: req.body.email });
+    console.log(foundUser);
+
+    if (foundUser) {
+      foundUser.signedIn = req.body.signedIn;
+      await foundUser.save();
+      res.status(201).json({ message: "Signed out successfully " });
+    } else {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.get("/contactRepairShops", async (req, res) => {
   try {
     const allMessages = await contactRepairShopModel.find();
