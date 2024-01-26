@@ -370,7 +370,7 @@ router.post("/contactRepairShops", async (req, res) => {
                   <p style="color: #d9d9d9; margin-left: 16px; font-size: 1rem;">${req.body.customerEmail}</p>
                 </div>
                 <p style="margin-bottom: 16px;">${req.body.customerMessage}</p>
-                
+
                 <div style="width: 100%; height: 2px; background: #0D31F1;"></div>
                 </div>
               `,
@@ -385,30 +385,32 @@ router.post("/contactRepairShops", async (req, res) => {
         });
       }
     }
-
-    // const randomId = Math.random().toString(36).substring(2, 10);
-
-    // const newMessage = await contactRepairShopModel.create({
-    //   customerId: randomId,
-    //   customerName: req.body.customerName,
-    //   customerEmail: req.body.customerEmail,
-    //   location: req.body.location,
-    //   registrationNumber: req.body.registrationNumber,
-    //   troubleshootTime: req.body.troubleshootTime,
-    //   customerMessage: [
-    //     {
-    //       message: req.body.customerMessage,
-    //       date: Date.now(),
-    //     },
-    //   ],
-    // });
-
-    // console.log(newMessage);
-
-    // res.status(201).json(newMessage);
   } catch (error) {
     res.json(error);
   }
+
+  // try {
+  //   const randomId = Math.random().toString(36).substring(2, 10);
+
+  //   const newMessage = await contactRepairShopModel.create({
+  //     customerId: randomId,
+  //     customerName: req.body.customerName,
+  //     customerEmail: req.body.customerEmail,
+  //     location: req.body.location,
+  //     registrationNumber: req.body.registrationNumber,
+  //     troubleshootTime: req.body.troubleshootTime,
+  //     customerMessage: [
+  //       {
+  //         message: req.body.customerMessage,
+  //         date: Date.now(),
+  //       },
+  //     ],
+  //   });
+
+  //   console.log(newMessage);
+
+  //   res.status(201).json(newMessage);
+  // } catch (error) {}
 });
 
 router.post("/answerRepairShops", async (req, res) => {
