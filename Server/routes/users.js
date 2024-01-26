@@ -104,7 +104,7 @@ router.post("/signin", async (req, res) => {
   async function signInUser() {
     magicToken = Math.random().toString(36).substring(2, 7);
     console.log("magictoken:", magicToken);
-    const foundToken = await userModel.findOne({ magicToken, magicToken });
+    const foundToken = await userModel.findOne({ magicToken: magicToken });
     console.log("foundtoken:", foundToken);
 
     if (foundToken) {
@@ -174,9 +174,7 @@ router.post("/signin", async (req, res) => {
                   magicToken: magicToken,
                 });
 
-                if (foundToken) {
-                  generateUniqueTokenTimer();
-                }
+                if (foundToken) generateUniqueTokenTimer();
               }
               generateUniqueTokenTimer();
 
@@ -193,6 +191,89 @@ router.post("/signin", async (req, res) => {
     }
   }
   signInUser();
+});
+
+router.post("/automaticSignIn", async (req, res) => {
+  async function automaticSignInUser() {
+    const magicToken = Math.random().toString(36).substring(2, 7);
+    const foundToken = await userModel.findOne({ magicToken: magicToken });
+    console.log(magicToken);
+
+    if (foundToken) {
+      automaticSignInUser();
+      return;
+    }
+
+    try {
+      const foundUser = await userModel.findOne({ email: req.body.email });
+      console.log("foundUser:", foundUser);
+
+      if (foundUser) {
+        foundUser.signedIn = false;
+        foundUser.magicToken = magicToken;
+        console.log("magicToken:", magicToken);
+
+        await foundUser.save();
+
+        console.log("hejsan");
+
+        const userEmail = foundUser.email;
+
+        const transporter = nodeMailer.createTransport({
+          service: "Gmail",
+          auth: {
+            user: "k3mp314@gmail.com",
+            pass: "vuzs xrnz zxrd mujz",
+          },
+        });
+
+        const mailOptions = {
+          from: "k3mp314@gmail.com",
+          to: userEmail,
+          subject: "Verification code",
+          html: `
+                  <div style="padding: 32px; background-color: #090909; display: flex; justify-content: center; align-items: center;">
+                    <div style="text-align: center">
+                      <h1 style="color: #d9d9d9;">Here is your verification code:</h1>
+                      <h2 style="color: #d9d9d9;">${foundUser.magicToken}</h2>
+                      <div style="max-width: 100vw; height: 2px; background: #0D31F1"></div>
+                    </div>
+                  </div>
+                `,
+        };
+
+        transporter.sendMail(mailOptions, (error) => {
+          if (error) {
+            res.status(500).json("Error sending verifaction code");
+          } else {
+            res.status(201).json({ message: "Email sent successfully" });
+
+            const magicTokenTimeout = 60 * 60 * 1000;
+
+            setTimeout(async () => {
+              let uniqueTokenGenerated = false;
+              while (!uniqueTokenGenerated) {
+                const newToken = Math.random().toString(36).substring(2, 7);
+                const existingToken = await userModel.findOne({
+                  magicToken: newToken,
+                });
+                if (!existingToken) {
+                  foundUser.magicToken = newToken;
+                  await foundUser.save();
+                  uniqueTokenGenerated = true;
+                }
+              }
+            }, magicTokenTimeout);
+          }
+        });
+      } else {
+        res.status(400).json({ message: "Automatic sign in not successfull" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  automaticSignInUser();
 });
 
 router.post("/checkMagicToken", async (req, res) => {
