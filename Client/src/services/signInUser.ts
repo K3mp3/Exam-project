@@ -2,6 +2,7 @@ import type { IUserSignIn } from '@/models/IUserSignIn'
 import type { IUserToken } from '@/models/IUserToken'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
+import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { useSignInStore } from '@/stores/signInStore'
 import axios from 'axios'
 import { computed } from 'vue'
@@ -41,7 +42,9 @@ export async function checkMagicToken(user: IUserToken) {
     console.log('response.data.signedIn:', response.data.signedIn)
 
     if (response.data.signedIn) {
-      console.log(response.data.signedIn)
+      const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
+      const showSignInDialog = useShowSignInDialog()
+      showSignInDialog.showSignInDialogForm(!isSignIn.value)
 
       const isSignedIn = useSignInStore()
       isSignedIn.signInUser(true)

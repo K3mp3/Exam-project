@@ -3,6 +3,7 @@ import router from '@/router'
 import { signOutUser } from '@/services/signInUser'
 import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted } from 'vue'
+import { removeCookies } from '../cookies/RemoveCookies'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
@@ -38,15 +39,16 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(!isSignedIn.value)
 
     if (!isSignedIn.value) {
+      removeCookies()
       router.push({ name: 'landing page' })
     }
   }
 }
 
 onMounted(() => {
-  // if (!isSignedIn.value) {
-  //   router.push({ name: 'landing page' })
-  // }
+  if (!isSignedIn.value) {
+    router.push({ name: 'landing page' })
+  }
 })
 </script>
 
