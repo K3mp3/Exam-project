@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useShowUserEmail } from '@/stores/showUserEmail'
 import { onMounted, ref } from 'vue'
+import FaqParent from '../FAQ/FaqParent.vue'
+import GraphVisual from '../graph/GraphVisual.vue'
 
 const userEmail = ref('')
 const desktopView = ref(false)
@@ -83,27 +85,12 @@ onMounted(() => {
     </div>
   </div>
 
-  <img src="../../assets/img/stressedMan.jpg" class="stressed-man-img" />
+  <div class="graph-parent-container">
+    <GraphVisual> </GraphVisual>
+  </div>
 
-  <div class="promotion-container">
-    <div class="text">
-      <p>
-        Vi vet alla hur jobbigt det kan vara att ringa runt till olika verkstäder för att se vart
-        man kan spara mest pengar.
-      </p>
-      <p>
-        Därför har vi skapat denna tjänst där vi samlar alla verkstäder på ett ställe. Allt du
-        behöver göra är att boka en felsökning eller beskriva vad som är fel på din bil. Du får
-        sedan svar från olika verkstäder för att se vad dom kan erbjuda dig för pris.
-      </p>
-    </div>
-    <div class="interactive">
-      <input type="text" placeholder="namn@domän.com" v-model="userEmail" />
-      <RouterLink v-if="!desktopView" to="register" class="main-register-btn" @click="saveUserEmail"
-        >Registrera</RouterLink
-      >
-      <button v-if="desktopView" type="button" class="main-register-btn">Registrera</button>
-    </div>
+  <div class="faq-container">
+    <FaqParent id="faq-component"></FaqParent>
   </div>
 
   <div class="blue-line"></div>

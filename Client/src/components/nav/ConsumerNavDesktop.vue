@@ -2,7 +2,7 @@
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { handleAutomaticSignIn } from '../signIn/automaticSignIn.ts'
 
 const navScroll = ref(false)
@@ -48,8 +48,20 @@ function changeNavColor() {
   }
 }
 
+function scrollToFaqSection() {
+  if (faqSection) {
+    console.log('qawbejid')
+    faqSection.scrollIntoView({ behavior: 'smooth' })
+  }
+}
+
 onMounted(() => {
   changeNavColor()
+
+  nextTick(() => {
+    const faqSection = document.getElementById('faq-component')
+    console.log(faqSection)
+  })
 })
 </script>
 
@@ -72,9 +84,6 @@ onMounted(() => {
       >
       <RouterLink to="register" class="router-link"
         ><fontAwesome :icon="['fas', 'address-card']" /> Om oss</RouterLink
-      >
-      <RouterLink to="register" class="router-link"
-        ><fontAwesome :icon="['fas', 'question']" /> FAQ</RouterLink
       >
     </div>
     <div class="nav-child-container right">

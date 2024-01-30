@@ -1,0 +1,35 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+.faq-dropdown {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid $el-border-gray;
+  padding: 8px 8px 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  justify-content: center;
+  position: relative;
+
+  .faq-dropdown-btn {
+    transition: all 0.2s ease-in-out;
+    background: transparent;
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    width: 100%;
+    height: 39px;
+    text-align: end;
+    padding: 8px;
+    color: $text-main;
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+      color: $el-active-blue;
+    }
+  }
+}
