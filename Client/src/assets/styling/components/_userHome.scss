@@ -3,6 +3,24 @@
 
 .signed-in-header {
   padding: 16px;
+  display: flex;
+  justify-content: space-between;
+
+  .user-home-sign-out-btn {
+    background: transparent;
+    transition: all 0.2s ease-in-out;
+    padding: 2px 16px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid $el-white-main;
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      border: 2px solid $el-active-blue;
+    }
+  }
 }
 
 .signed-in-main {

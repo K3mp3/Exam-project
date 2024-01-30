@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, onMounted, ref } from 'vue'
+import { handleAutomaticSignIn } from '../signIn/automaticSignIn.ts'
 
 const navScroll = ref(false)
 
@@ -13,9 +15,28 @@ function showRegisterForm() {
   showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
 
-function showSignInForm() {
-  const showSignInDialog = useShowSignInDialog()
-  showSignInDialog.showSignInDialogForm(!isSignIn.value)
+function getCookie(cookieName: string) {
+  const cookiesArray = document.cookie.split(';')
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    let cookie = cookiesArray[i].trim()
+
+    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
+  }
+
+  return null
+}
+
+const userEmail = getCookie('email') || ''
+
+async function showSignInForm() {
+  if (await handleAutomaticSignIn()) {
+    const showMagicTokenDialog = useShowMagicTokenDialog()
+    showMagicTokenDialog.showMagicTokenInput(true, userEmail)
+  } else {
+    const showSignInDialog = useShowSignInDialog()
+    showSignInDialog.showSignInDialogForm(!isSignIn.value)
+  }
 }
 
 window.addEventListener('scroll', changeNavColor)
@@ -38,7 +59,9 @@ onMounted(() => {
     :style="{ backgroundColor: navScroll ? '#090909de' : 'transparent' }"
   >
     <div class="nav-child-container left">
-      <h1>Ways</h1>
+      <RouterLink to="/" class="text-deco-none"
+        ><p class="text-deco-none O15rem text-main font-title-black">Ways</p></RouterLink
+      >
     </div>
     <div class="nav-child-container center">
       <RouterLink to="/" class="router-link"
@@ -60,3 +83,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
+../signIn/automaticSignIn.ts

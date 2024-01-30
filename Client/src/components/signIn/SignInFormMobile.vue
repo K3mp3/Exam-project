@@ -20,7 +20,8 @@ const inputsArray: { key: string; value: boolean }[] = [
 const user = computed(() => {
   return {
     email: email.value,
-    password: password.value
+    password: password.value,
+    signedIn: true
   }
 })
 

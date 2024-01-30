@@ -46,7 +46,8 @@ const newUser = computed(() => {
     phoneNumber: phoneNumber.value,
     email: email.value,
     password: password.value,
-    repairShop: true
+    repairShop: true,
+    signedIn: false
   }
 })
 
@@ -337,7 +338,7 @@ async function handleRegistration() {
     <div class="tablet-text-form-container">
       <p>
         Har du redan ett konto?
-        <RouterLink to="/" class="router-link-text">Logga in här</RouterLink>
+        <RouterLink to="/sign-in" class="router-link-text">Logga in här</RouterLink>
       </p>
     </div>
 

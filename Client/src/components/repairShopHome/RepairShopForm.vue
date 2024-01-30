@@ -65,7 +65,8 @@ onMounted(() => {
 <template>
   <h3>
     Här är det än så länge tomt. Men ora dig inte, inom snar framtid kommer du att kunna se alla
-    förfrågningar här
+    förfrågningar här.<br />
+    Tillsvidare ser du dom på din mail!
   </h3>
   <!-- <h3>Dina förfrågningar</h3>
 

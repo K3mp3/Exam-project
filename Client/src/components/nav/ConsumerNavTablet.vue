@@ -35,7 +35,9 @@ onMounted(() => {
       <RouterLink to="register" class="router-link">Registrera</RouterLink>
     </div>
     <div class="nav-child-container center">
-      <h1>Ways</h1>
+      <RouterLink to="/" class="text-deco-none"
+        ><p class="text-deco-none O15rem text-main font-title-black">Ways</p></RouterLink
+      >
     </div>
     <div class="nav-child-container right">
       <div class="nav-hamburger-icon">

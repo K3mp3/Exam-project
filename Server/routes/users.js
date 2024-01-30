@@ -42,6 +42,7 @@ router.post("/createUser", async (req, res) => {
           password: hashedPassword,
           repairShop: req.body.repairShop,
           magicToken: magicToken,
+          signedIn: req.body.signedIn,
         });
 
         console.log(newUser);
@@ -85,6 +86,7 @@ router.post("/createRepairShopUser", async (req, res) => {
           password: hashedPassword,
           repairShop: req.body.repairShop,
           magicToken: magicToken,
+          signedIn: req.body.signedIn,
         });
 
         console.log(newUser);
@@ -102,7 +104,7 @@ router.post("/signin", async (req, res) => {
   async function signInUser() {
     magicToken = Math.random().toString(36).substring(2, 7);
     console.log("magictoken:", magicToken);
-    const foundToken = await userModel.findOne({ magicToken, magicToken });
+    const foundToken = await userModel.findOne({ magicToken: magicToken });
     console.log("foundtoken:", foundToken);
 
     if (foundToken) {
@@ -110,20 +112,18 @@ router.post("/signin", async (req, res) => {
       return;
     }
 
-    const { password, email } = req.body;
-
-    console.log("email, password:", email, password);
-
     try {
-      const foundUser = await userModel.findOne({ email: email });
-      console.log("founduser", foundUser);
-      const match = await bcrypt.compare(password, foundUser.password);
+      const foundUser = await userModel.findOne({ email: req.body.email });
+      if (!foundUser) {
+        console.log("User not found");
+        res.status(401).json({ message: "Wrong email or password!" });
+        return;
+      }
 
-      console.log(foundUser);
-      console.log(match);
-
-      if (!foundUser || !match) {
-        res.status(400).json({ message: "Wrong email or password!" });
+      const match = await bcrypt.compare(req.body.password, foundUser.password);
+      if (!match) {
+        console.log("Password does not match");
+        res.status(401).json({ message: "Wrong email or password!" });
         return;
       }
 
@@ -174,9 +174,7 @@ router.post("/signin", async (req, res) => {
                   magicToken: magicToken,
                 });
 
-                if (foundToken) {
-                  generateUniqueTokenTimer();
-                }
+                if (foundToken) generateUniqueTokenTimer();
               }
               generateUniqueTokenTimer();
 
@@ -195,6 +193,89 @@ router.post("/signin", async (req, res) => {
   signInUser();
 });
 
+router.post("/automaticSignIn", async (req, res) => {
+  async function automaticSignInUser() {
+    const magicToken = Math.random().toString(36).substring(2, 7);
+    const foundToken = await userModel.findOne({ magicToken: magicToken });
+    console.log(magicToken);
+
+    if (foundToken) {
+      automaticSignInUser();
+      return;
+    }
+
+    try {
+      const foundUser = await userModel.findOne({ email: req.body.email });
+      console.log("foundUser:", foundUser);
+
+      if (foundUser) {
+        foundUser.signedIn = false;
+        foundUser.magicToken = magicToken;
+        console.log("magicToken:", magicToken);
+
+        await foundUser.save();
+
+        console.log("hejsan");
+
+        const userEmail = foundUser.email;
+
+        const transporter = nodeMailer.createTransport({
+          service: "Gmail",
+          auth: {
+            user: "k3mp314@gmail.com",
+            pass: "vuzs xrnz zxrd mujz",
+          },
+        });
+
+        const mailOptions = {
+          from: "k3mp314@gmail.com",
+          to: userEmail,
+          subject: "Verification code",
+          html: `
+                  <div style="padding: 32px; background-color: #090909; display: flex; justify-content: center; align-items: center;">
+                    <div style="text-align: center">
+                      <h1 style="color: #d9d9d9;">Here is your verification code:</h1>
+                      <h2 style="color: #d9d9d9;">${foundUser.magicToken}</h2>
+                      <div style="max-width: 100vw; height: 2px; background: #0D31F1"></div>
+                    </div>
+                  </div>
+                `,
+        };
+
+        transporter.sendMail(mailOptions, (error) => {
+          if (error) {
+            res.status(500).json("Error sending verifaction code");
+          } else {
+            res.status(201).json({ message: "Email sent successfully" });
+
+            const magicTokenTimeout = 60 * 60 * 1000;
+
+            setTimeout(async () => {
+              let uniqueTokenGenerated = false;
+              while (!uniqueTokenGenerated) {
+                const newToken = Math.random().toString(36).substring(2, 7);
+                const existingToken = await userModel.findOne({
+                  magicToken: newToken,
+                });
+                if (!existingToken) {
+                  foundUser.magicToken = newToken;
+                  await foundUser.save();
+                  uniqueTokenGenerated = true;
+                }
+              }
+            }, magicTokenTimeout);
+          }
+        });
+      } else {
+        res.status(400).json({ message: "Automatic sign in not successfull" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  automaticSignInUser();
+});
+
 router.post("/checkMagicToken", async (req, res) => {
   const { magicToken, email, repairShop } = req.body;
   console.log(magicToken, email, repairShop);
@@ -203,17 +284,41 @@ router.post("/checkMagicToken", async (req, res) => {
     const foundUser = await userModel.findOne({ email: email });
 
     if (foundUser && magicToken === foundUser.magicToken) {
+      const isSignedIn = !foundUser.signedIn;
+
+      foundUser.signedIn = isSignedIn;
       await foundUser.save();
       res.status(201).json({
         name: foundUser.name,
         message: "Authentication successful",
         repairShop: foundUser.repairShop,
+        signedIn: foundUser.signedIn,
       });
     } else {
       res.status(400).json({ message: "Unauthorized" });
     }
   } catch (error) {
     res.status(500);
+  }
+});
+
+router.post("/signOutUser", async (req, res) => {
+  try {
+    console.log(req.body.email);
+    console.log(req.body.signedIn);
+
+    const foundUser = await userModel.findOne({ email: req.body.email });
+    console.log(foundUser);
+
+    if (foundUser) {
+      foundUser.signedIn = req.body.signedIn;
+      await foundUser.save();
+      res.status(201).json({ message: "Signed out successfully " });
+    } else {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -265,7 +370,7 @@ router.post("/contactRepairShops", async (req, res) => {
                   <p style="color: #d9d9d9; margin-left: 16px; font-size: 1rem;">${req.body.customerEmail}</p>
                 </div>
                 <p style="margin-bottom: 16px;">${req.body.customerMessage}</p>
-                
+
                 <div style="width: 100%; height: 2px; background: #0D31F1;"></div>
                 </div>
               `,
@@ -280,30 +385,32 @@ router.post("/contactRepairShops", async (req, res) => {
         });
       }
     }
-
-    // const randomId = Math.random().toString(36).substring(2, 10);
-
-    // const newMessage = await contactRepairShopModel.create({
-    //   customerId: randomId,
-    //   customerName: req.body.customerName,
-    //   customerEmail: req.body.customerEmail,
-    //   location: req.body.location,
-    //   registrationNumber: req.body.registrationNumber,
-    //   troubleshootTime: req.body.troubleshootTime,
-    //   customerMessage: [
-    //     {
-    //       message: req.body.customerMessage,
-    //       date: Date.now(),
-    //     },
-    //   ],
-    // });
-
-    // console.log(newMessage);
-
-    // res.status(201).json(newMessage);
   } catch (error) {
     res.json(error);
   }
+
+  // try {
+  //   const randomId = Math.random().toString(36).substring(2, 10);
+
+  //   const newMessage = await contactRepairShopModel.create({
+  //     customerId: randomId,
+  //     customerName: req.body.customerName,
+  //     customerEmail: req.body.customerEmail,
+  //     location: req.body.location,
+  //     registrationNumber: req.body.registrationNumber,
+  //     troubleshootTime: req.body.troubleshootTime,
+  //     customerMessage: [
+  //       {
+  //         message: req.body.customerMessage,
+  //         date: Date.now(),
+  //       },
+  //     ],
+  //   });
+
+  //   console.log(newMessage);
+
+  //   res.status(201).json(newMessage);
+  // } catch (error) {}
 });
 
 router.post("/answerRepairShops", async (req, res) => {

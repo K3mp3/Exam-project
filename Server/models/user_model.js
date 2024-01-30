@@ -8,6 +8,7 @@ const storedUser = mongoose.Schema({
   password: String,
   repairShop: Boolean,
   magicToken: String,
+  signedIn: Boolean,
 });
 
 module.exports = mongoose.model("storedUser", storedUser);

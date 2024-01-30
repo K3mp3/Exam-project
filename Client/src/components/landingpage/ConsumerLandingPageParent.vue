@@ -1,22 +1,23 @@
 <script setup lang="ts">
-    import ConsumerHeader from "./ConsumerHeader.vue";
-    import ConsumerNav from "../nav/ConsumerNav.vue";
-    import ConsumerMain from "./ConsumerMain.vue";
-    import ConsumerFooter from "../footer/ConsumerFooter.vue";
-
+import ConsumerFooter from '../footer/ConsumerFooter.vue'
+import ConsumerNav from '../nav/ConsumerNav.vue'
+import ConsumerHeader from './ConsumerHeader.vue'
+import ConsumerMain from './ConsumerMain.vue'
 </script>
 
 <template>
+  <header>
+    <nav>
+      <ConsumerNav></ConsumerNav>
+    </nav>
     <header>
-        <nav>
-            <ConsumerNav></ConsumerNav>
-        </nav>
-        <ConsumerHeader></ConsumerHeader>
+      <ConsumerHeader></ConsumerHeader>
     </header>
-    <main>
-        <ConsumerMain></ConsumerMain>
-    </main>
-    <footer>
-        <ConsumerFooter></ConsumerFooter>
-    </footer>
+  </header>
+  <main>
+    <ConsumerMain></ConsumerMain>
+  </main>
+  <footer>
+    <ConsumerFooter></ConsumerFooter>
+  </footer>
 </template>

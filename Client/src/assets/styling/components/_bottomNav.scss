@@ -16,22 +16,6 @@
 
     li {
       list-style: none;
-
-      .bottom-nav-router-link {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: $text-main;
-        font-family: map-get($font-text-light, font-family);
-        font-weight: map-get($font-text-light, font-weight);
-        font-size: 0.9rem;
-        text-decoration: none;
-      }
-
-      .active-url {
-        color: $el-active-blue;
-      }
     }
   }
 }

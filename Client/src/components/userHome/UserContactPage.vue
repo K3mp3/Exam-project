@@ -57,14 +57,11 @@ function checkInputDataSelect2() {
     } else {
       isTroubleshootTime.value = true
 
-      // Find the index of isTroubleshootTime in inputsArray
       const index = inputsArray.findIndex((field) => field.key === 'isTroubleshootTime')
 
       if (index !== -1) {
-        // If isTroubleshootTime is found, update its value at the specific index
         inputsArray[index].value = isTroubleshootTime.value
       } else {
-        // If isTroubleshootTime is not found, push it into the array
         inputsArray.push({ key: 'isTroubleshootTime', value: isTroubleshootTime.value })
       }
 
@@ -80,14 +77,11 @@ function checkInputDataRegistrationNumber() {
     } else {
       isRegistrationNumber.value = true
 
-      // Find the index of isTroubleshootTime in inputsArray
       const index = inputsArray.findIndex((field) => field.key === 'isRegistrationNumber')
 
       if (index !== -1) {
-        // If isTroubleshootTime is found, update its value at the specific index
         inputsArray[index].value = isRegistrationNumber.value
       } else {
-        // If isTroubleshootTime is not found, push it into the array
         inputsArray.push({ key: 'isRegistrationNumber', value: isRegistrationNumber.value })
       }
 
@@ -103,14 +97,11 @@ function checkInputDataMessage() {
     } else {
       isMessage.value = true
 
-      // Find the index of isTroubleshootTime in inputsArray
       const index = inputsArray.findIndex((field) => field.key === 'isMessage')
 
       if (index !== -1) {
-        // If isTroubleshootTime is found, update its value at the specific index
         inputsArray[index].value = isMessage.value
       } else {
-        // If isTroubleshootTime is not found, push it into the array
         inputsArray.push({ key: 'isMessage', value: isMessage.value })
       }
 

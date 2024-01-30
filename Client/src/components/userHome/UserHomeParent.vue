@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import router from '@/router'
+import { signOutUser } from '@/services/signInUser'
+import { useShowPopUp } from '@/stores/ShowPopUpStore'
+import { useSignInStore } from '@/stores/signInStore'
+import { computed, onMounted, ref } from 'vue'
 import BottomNavParent from '../bottomNav/BottomNavParent.vue'
+import { removeCookies } from '../cookies/RemoveCookies'
+import DialogBox from '../dialogs/DialogBox.vue'
 import SideNavParent from '../sideNav/SideNavParent.vue'
 import UserContactPage from '../userHome/UserContactPage.vue'
 
 const isSideNav = ref(false)
+
+const isSignedIn = computed(() => useSignInStore().signedIn)
+const isDialog = computed(() => useShowPopUp().showPopUp)
 
 let width = document.documentElement.clientWidth
 
@@ -32,18 +41,55 @@ function getCookie(cookieName: string) {
 }
 
 const fullname = getCookie('name')
+const email = getCookie('email')
 
 const firstName = fullname ? fullname.split(' ')[0] : ''
 
+const user = computed(() => {
+  return {
+    email: email || '',
+    signedIn: false
+  }
+})
+
+async function changeUserSignInStatus() {
+  const response = await signOutUser(user.value)
+  console.log(response)
+
+  if (response) {
+    const isUserSignedIn = useSignInStore()
+    isUserSignedIn.signInUser(!isSignedIn.value)
+
+    if (!isSignedIn.value) {
+      removeCookies()
+      router.push({ name: 'landing page' })
+    }
+  }
+}
+
 onMounted(() => {
   updateScreenSize()
+
+  if (!isSignedIn.value) {
+    router.push({ name: 'landing page' })
+  }
 })
 </script>
 
 <template>
-  <SideNavParent v-if="isSideNav"></SideNavParent>
+  <DialogBox v-if="isDialog"></DialogBox>
+  <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent>
   <div class="signed-in-header">
     <h2>Hej {{ firstName }}</h2>
+    <button
+      v-if="!isSideNav"
+      type="button"
+      class="user-home-sign-out-btn text-main z-index-2"
+      @click="changeUserSignInStatus"
+    >
+      <fontAwesome :icon="['fas', 'gear']" />
+      Logga ut
+    </button>
   </div>
   <div class="signed-in-main">
     <UserContactPage></UserContactPage>

@@ -17,6 +17,10 @@
   color: $text-error-red;
 }
 
+.text-active-blue {
+  color: $el-active-blue;
+}
+
 .el-white-main {
   background-color: $el-white-main;
 }
@@ -128,6 +132,10 @@
   left: 0;
 }
 
+.z-index-1 {
+  z-index: 1;
+}
+
 .z-index-2 {
   z-index: 2;
 }
@@ -150,6 +158,10 @@
 
 .align-items-center {
   align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
 }
 
 .justify-between {

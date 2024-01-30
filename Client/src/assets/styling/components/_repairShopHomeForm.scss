@@ -5,11 +5,30 @@
   padding: 16px;
 
   .repair-shop-signed-in-header {
+    display: flex;
+    justify-content: space-between;
+
     h2 {
       font-size: 1.4rem;
       color: $text-main;
       font-family: map-get($font-title-black, font-family);
       font-weight: map-get($font-title-black, font-weight);
+    }
+
+    .repair-shop-home-sign-out-btn {
+      background: transparent;
+      transition: all 0.2s ease-in-out;
+      padding: 2px 16px;
+      border-radius: 20px;
+      background: transparent;
+      border: 2px solid $el-white-main;
+      text-align: center;
+
+      &:hover {
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        border: 2px solid $el-active-blue;
+      }
     }
   }
 

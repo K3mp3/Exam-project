@@ -21,6 +21,26 @@
 
     li {
       list-style: none;
+
+      .user-home-sign-out-btn {
+        background: transparent;
+        transition: all 0.2s ease-in-out;
+        padding: 2px 16px;
+        height: 36px;
+        border-radius: 20px;
+        background: transparent;
+        border: 2px solid $el-white-main;
+        text-align: center;
+        position: absolute;
+        bottom: 32px;
+        left: 25%;
+
+        &:hover {
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          border: 2px solid $el-active-blue;
+        }
+      }
     }
   }
 
