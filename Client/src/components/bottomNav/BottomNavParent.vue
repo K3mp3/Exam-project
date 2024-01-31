@@ -3,7 +3,7 @@
 <template>
   <div class="bottom-nav-parent-container">
     <ul>
-      <li>
+      <li class="list-style-none">
         <RouterLink
           to="/user-sent"
           class="display-flex flex-dir-col justify-center align-items-center text-main font-text-light O9rem text-deco-none"
@@ -11,7 +11,7 @@
           <fontAwesome :icon="['fas', 'paper-plane']" /> Skickat</RouterLink
         >
       </li>
-      <li class="activeUrl">
+      <li class="list-style-none activeUrl">
         <RouterLink
           to="/user-home"
           class="display-flex flex-dir-col justify-center align-items-center text-main font-text-light O9rem text-deco-none"
@@ -20,7 +20,7 @@
           <p class="text-active-blue">Hem</p></RouterLink
         >
       </li>
-      <li>
+      <li class="list-style-none">
         <RouterLink
           to="/profile"
           class="display-flex flex-dir-col justify-center align-items-center text-main font-text-light O9rem text-deco-none"

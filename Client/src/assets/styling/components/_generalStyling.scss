@@ -69,6 +69,12 @@
   background-color: $bg-secondary;
 }
 
+.t-b-gradient {
+  background: -webkit-linear-gradient(#2c8be2, #0d31f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .font-title-black {
   font-family: map-get($font-title-black, font-family);
   font-weight: map-get($font-title-black, font-weight);
@@ -79,7 +85,6 @@
   font-weight: map-get($font-title-bold, font-weight);
 }
 
-/* Text Font */
 .font-text-light {
   font-family: map-get($font-text-light, font-family);
   font-weight: map-get($font-text-light, font-weight);
@@ -89,21 +94,38 @@
   text-decoration: none;
 }
 
+.list-style-none {
+  list-style: none;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
 .O9rem {
   font-size: 0.9rem;
 }
+
 .O1rem {
   font-size: 1rem;
 }
+
+.O14rem {
+  font-size: 1.4rem;
+}
+
 .O15rem {
   font-size: 1.5rem;
 }
+
 .O2rem {
   font-size: 2rem;
 }
+
 .O25rem {
   font-size: 2.5rem;
 }
+
 .O35rem {
   font-size: 3.5rem;
 }
