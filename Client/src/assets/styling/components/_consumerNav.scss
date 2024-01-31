@@ -4,15 +4,16 @@
 @import './consumerNavMobileMenu';
 
 nav {
-  width: 100vw;
   position: fixed;
   z-index: 2;
 
   .nav-parent-container {
+    width: 100vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
+    background-color: aqua;
 
     .nav-child-container {
       width: 100%;

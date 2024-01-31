@@ -118,6 +118,10 @@
   font-size: 1.5rem;
 }
 
+.O16rem {
+  font-size: 1.6rem;
+}
+
 .O2rem {
   font-size: 2rem;
 }
@@ -164,6 +168,14 @@
 
 .margin-auto {
   margin: auto;
+}
+
+.margin-bm-16 {
+  margin-bottom: 16px;
+}
+
+.margin-bm-32 {
+  margin-bottom: 32px;
 }
 
 .padding-16 {
@@ -225,4 +237,28 @@
 
 .gap-16 {
   gap: 16px;
+}
+
+.blue-line-mb-16 {
+  max-width: 100vw;
+  height: 2px;
+  background: linear-gradient(to right, #0d3ef100, #0d31f1, #0d3ef100);
+  margin: auto;
+  margin-bottom: 16px;
+}
+
+.blue-line-mb-32 {
+  max-width: 100vw;
+  height: 2px;
+  background: linear-gradient(to right, #0d3ef100, #0d31f1, #0d3ef100);
+  margin: auto;
+  margin-bottom: 32px;
+}
+
+.blue-line-mb-64 {
+  max-width: 100vw;
+  height: 2px;
+  background: linear-gradient(to right, #0d3ef100, #0d31f1, #0d3ef100);
+  margin: auto;
+  margin-bottom: 32px;
 }

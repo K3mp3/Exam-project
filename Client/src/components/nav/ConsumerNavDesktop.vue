@@ -79,7 +79,7 @@ onMounted(() => {
       <RouterLink to="/" class="router-link"
         ><fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
       >
-      <RouterLink to="register" class="router-link"
+      <RouterLink to="contact" class="router-link"
         ><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink
       >
       <RouterLink to="register" class="router-link"
