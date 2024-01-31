@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import ContactForm from '@/components/contact/ContactForm.vue'
+import ContactFormParent from '@/components/contact/ContactFormParent.vue'
+import ConsumerFooter from '@/components/footer/ConsumerFooter.vue'
 </script>
 
 <template>
-  <ContactForm></ContactForm>
+  <ContactFormParent></ContactFormParent>
+  <footer>
+    <ConsumerFooter></ConsumerFooter>
+  </footer>
 </template>
