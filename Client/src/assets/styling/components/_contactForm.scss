@@ -2,7 +2,7 @@
 @use '../abstracts/fonts' as *;
 
 .contact-form-container {
-  padding: 16px 16px 0 16px;
+  padding: 105px 16px 0 16px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -14,59 +14,32 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    background-color: aqua;
+  }
 
-    .contact-form-nav-container {
+  .contact-form-nav-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 1200px;
+
+    .contact-form-back-router-link {
+      color: $text-main;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 2px solid $el-border-gray;
       display: flex;
       align-items: center;
-      gap: 16px;
-      width: 100%;
-      max-width: 1200px;
+      justify-content: center;
 
-      .contact-form-back-router-link {
-        color: $text-main;
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        border: 2px solid $el-border-gray;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &:focus,
-        &:active,
-        &:hover {
-          cursor: pointer;
-          color: $el-active-blue;
-          border: 2px solid $el-active-blue;
-        }
-      }
-    }
-
-    .contact-form-nav-hamburger-icon {
-      display: flex;
-      flex-direction: column;
-
-      button {
-        border: none;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        background: transparent;
-        padding: 0;
-        padding: 5px;
-        margin-right: -5px;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      span {
-        width: 25px;
-        height: 4px;
-        border-radius: 5px;
-        background-color: $el-white-main;
+      &:focus,
+      &:active,
+      &:hover {
+        cursor: pointer;
+        color: $el-active-blue;
+        border: 2px solid $el-active-blue;
       }
     }
   }
@@ -179,7 +152,7 @@
 
 @media screen and (min-width: 700px) {
   .contact-form-container {
-    padding: 24px 32px;
+    padding: 137px 32px 0 32px;
     gap: 48px;
 
     .contact-form-nav-container {
@@ -229,7 +202,7 @@
 
 @media screen and (min-width: 1482px) {
   .contact-form-container {
-    padding: 24px 64px;
+    padding: 153px 64px 0 64px;
     gap: 64px;
 
     .contact-form-nav-container {

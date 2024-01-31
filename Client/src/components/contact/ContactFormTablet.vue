@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
+import ConsumerNav from '../nav/ConsumerNav.vue'
 
 const tablet = ref(false)
 const desktop = ref(false)
@@ -114,6 +115,9 @@ onMounted(() => {
 </script>
 
 <template>
+  <nav>
+    <ConsumerNav></ConsumerNav>
+  </nav>
   <div class="contact-form-container">
     <div class="contact-form-nav-container">
       <RouterLink to="/" class="contact-form-back-router-link"

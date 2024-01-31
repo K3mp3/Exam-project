@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { useShowMobileNavMenu } from '@/stores/showMobileNavMenuStore'
-import { computed, nextTick, onMounted, ref } from 'vue'
-import ConsumerNavMobileMenu from '../nav/ConsumerNavMobileMenu.vue'
-
-const isNavOpen = computed(() => useShowMobileNavMenu().showMenu)
+import { nextTick, onMounted, ref } from 'vue'
+import ConsumerNav from '../nav/ConsumerNav.vue'
 
 const mobile = ref(true)
 const isBtnDisabled = ref(true)
@@ -41,11 +38,6 @@ function updateScreenSize() {
   if (width < 700) {
     mobile.value = true
   }
-}
-
-function showMobileNav() {
-  const showMobileNavMenu = useShowMobileNavMenu()
-  showMobileNavMenu.showNavMenu(!isNavOpen.value)
 }
 
 function checkInputData() {
@@ -119,31 +111,23 @@ onMounted(() => {
 </script>
 
 <template>
+  <nav>
+    <ConsumerNav></ConsumerNav>
+  </nav>
   <div class="contact-form-container">
-    <div class="contact-form-nav">
-      <div class="contact-form-nav-container">
-        <RouterLink to="/" class="contact-form-back-router-link"
-          ><fontAwesome :icon="['fas', 'chevron-left']"
-        /></RouterLink>
-        <h1 class="text-main font-title-bold O15rem">Ways</h1>
-      </div>
-      <div class="contact-form-nav-hamburger-icon">
-        <button type="button" @click="showMobileNav">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </div>
-
-    <form class="contact-form">
+    <div class="contact-form-nav-container">
+      <RouterLink to="/" class="contact-form-back-router-link"
+        ><fontAwesome :icon="['fas', 'chevron-left']"
+      /></RouterLink>
       <h2
         :class="{
-          'font-title-bold margin-bm-16 O14rem': mobile
+          'font-title-bold O14rem': mobile
         }"
       >
         Kontakta oss
       </h2>
+    </div>
+    <form class="contact-form">
       <label for="name">För- och efternamn</label>
       <input
         type="text"
@@ -187,6 +171,4 @@ onMounted(() => {
     </form>
     <div class="contact-form-blue-line"></div>
   </div>
-
-  <ConsumerNavMobileMenu></ConsumerNavMobileMenu>
 </template>
