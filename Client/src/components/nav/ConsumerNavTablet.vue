@@ -36,7 +36,7 @@ onMounted(() => {
     </div>
     <div class="nav-child-container center">
       <RouterLink to="/" class="text-deco-none"
-        ><p class="text-deco-none O15rem text-main font-title-black">Ways</p></RouterLink
+        ><p class="text-deco-none O15rem text-main font-title-black">Vibe</p></RouterLink
       >
     </div>
     <div class="nav-child-container right">

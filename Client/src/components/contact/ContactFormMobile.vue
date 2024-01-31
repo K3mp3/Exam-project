@@ -105,6 +105,8 @@ function checkInputDataMessage() {
   })
 }
 
+function handleMessage() {}
+
 onMounted(() => {
   updateScreenSize()
 })
@@ -127,7 +129,7 @@ onMounted(() => {
         Kontakta oss
       </h2>
     </div>
-    <form class="contact-form">
+    <form class="contact-form" @submit.prevent="handleMessage">
       <label for="name">För- och efternamn</label>
       <input
         type="text"
