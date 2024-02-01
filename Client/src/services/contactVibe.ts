@@ -8,8 +8,8 @@ export async function contactVibe(messageData: IMessage) {
     console.log(messageData)
     const response = await axios.post<IMessage>(`${BASE_URL}/contact/contactVibe`, messageData)
 
-    return response.data
-  } catch (error) {
-    return error
+    return response.status
+  } catch (error: any) {
+    return 500
   }
 }

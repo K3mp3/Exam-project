@@ -1,28 +1,15 @@
 <script setup lang="ts">
 import type { IMessage } from '@/models/IMessage'
 import { contactVibe } from '@/services/contactVibe'
-import { nextTick, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ContactFormMobile from './ContactFormMobile.vue'
 import ContactFormTablet from './ContactFormTablet.vue'
 
 const mobile = ref(true)
 const tablet = ref(false)
 const desktop = ref(false)
-const isBtnDisabled = ref(true)
-
-const name = ref('')
-const email = ref('')
-const message = ref('')
-
-const isName = ref(false)
-const isEmail = ref(false)
-const isMessage = ref(false)
-
-const inputsArray: { key: string; value: boolean }[] = [
-  { key: 'isName', value: false },
-  { key: 'isEmail', value: false },
-  { key: 'isMessage', value: false }
-]
+const isConfirmation = ref(false)
+const isConfirmationError = ref(false)
 
 let width = document.documentElement.clientWidth
 
@@ -51,75 +38,25 @@ function updateScreenSize() {
   }
 }
 
-function checkInputData() {
-  isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(isBtnDisabled.value)
-}
-
-function checkInputDataName() {
-  nextTick(() => {
-    if (name.value === '') {
-      return
-    } else {
-      isName.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isName')
-
-      if (index !== -1) {
-        inputsArray[index].value = isName.value
-      } else {
-        inputsArray.push({ key: 'isName', value: isName.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataEmail() {
-  nextTick(() => {
-    if (email.value === '') {
-      return
-    } else {
-      isEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
-
-      if (index !== -1) {
-        inputsArray[index].value = isEmail.value
-      } else {
-        inputsArray.push({ key: 'isEmail', value: isEmail.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataMessage() {
-  nextTick(() => {
-    if (message.value === '') {
-      return
-    } else {
-      isMessage.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isMessage')
-
-      if (index !== -1) {
-        inputsArray[index].value = isMessage.value
-      } else {
-        inputsArray.push({ key: 'isMessage', value: isMessage.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
 async function handleMessage(messageData: Object) {
   console.log('messageData:', messageData)
   const castedMessage = messageData as IMessage
   const response = await contactVibe(castedMessage)
+  console.log(response)
+
+  if (response === 201) {
+    isConfirmation.value = true
+
+    setTimeout(() => {
+      isConfirmation.value = false
+    }, 4000)
+  } else if (response === 500) {
+    isConfirmationError.value = true
+
+    setTimeout(() => {
+      isConfirmationError.value = false
+    }, 4000)
+  }
 }
 
 onMounted(() => {
@@ -130,4 +67,16 @@ onMounted(() => {
 <template>
   <ContactFormMobile v-if="mobile" :userMessage="handleMessage"></ContactFormMobile>
   <ContactFormTablet v-if="tablet || desktop" :userMessage="handleMessage"></ContactFormTablet>
+
+  <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
+    <div class="confirmation-box" v-if="isConfirmation">
+      <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
+      <p class="text-main font-title-bold O1rem">Email skickat!</p>
+    </div>
+
+    <div class="confirmation-box-error" v-if="isConfirmationError">
+      <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
+      <p class="text-main font-title-bold O1rem">Email kunde ej skickas!</p>
+    </div>
+  </div>
 </template>

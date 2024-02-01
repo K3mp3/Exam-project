@@ -1,6 +1,55 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
+.confirmation-box-background {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: $bg-main-90;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmation-box {
+  transition: all 0.2s ease-in-out;
+  border: 2px solid transparent;
+  background-color: $bg-main;
+  background-image: linear-gradient($bg-main, $bg-main),
+    linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  padding: 32px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.confirmation-box-error {
+  transition: all 0.2s ease-in-out;
+  border: 2px solid transparent;
+  background-color: $bg-main;
+  background-image: linear-gradient($bg-main, $bg-main),
+    linear-gradient(to bottom, #f10d0d, #f10d0d44);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  padding: 32px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
 .contact-form-container {
   padding: 105px 16px 0 16px;
   margin: auto;
