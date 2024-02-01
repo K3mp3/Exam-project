@@ -75,7 +75,7 @@ onMounted(() => {
     </div>
 
     <div class="confirmation-box-error" v-if="isConfirmationError">
-      <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
+      <fontAwesome :icon="['fas', 'x']" class="text-main font-title-bold O35rem" />
       <p class="text-main font-title-bold O1rem">Email kunde ej skickas!</p>
     </div>
   </div>

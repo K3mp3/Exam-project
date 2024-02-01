@@ -1,0 +1,37 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+.user-settings-container {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  padding: 64px 16px 16px 16px;
+  background-color: $el-bg-gray;
+  border: 2px solid $el-border-gray;
+  z-index: 2;
+  border-radius: 8px 0 0 8px;
+
+  ul {
+    padding: 0;
+
+    li {
+      list-style: none;
+
+      .user-home-sign-out-btn {
+        background: transparent;
+        transition: all 0.2s ease-in-out;
+        padding: 2px 16px;
+        border-radius: 20px;
+        background: transparent;
+        border: none;
+        text-align: center;
+
+        &:hover {
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          color: $el-active-blue;
+        }
+      }
+    }
+  }
+}

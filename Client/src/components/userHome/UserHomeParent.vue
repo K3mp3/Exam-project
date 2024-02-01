@@ -9,8 +9,10 @@ import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNavParent from '../sideNav/SideNavParent.vue'
 import UserContactPage from '../userHome/UserContactPage.vue'
+import UserSettings from './UserSettings.vue'
 
 const isSideNav = ref(false)
+const isUserSettings = ref(false)
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
@@ -52,6 +54,10 @@ const user = computed(() => {
   }
 })
 
+function showUserSettings() {
+  isUserSettings.value = !isUserSettings.value
+}
+
 async function changeUserSignInStatus() {
   const response = await signOutUser(user.value)
   console.log(response)
@@ -70,13 +76,14 @@ async function changeUserSignInStatus() {
 onMounted(() => {
   updateScreenSize()
 
-  if (!isSignedIn.value) {
-    router.push({ name: 'landing page' })
-  }
+  // if (!isSignedIn.value) {
+  //   router.push({ name: 'landing page' })
+  // }
 })
 </script>
 
 <template>
+  <UserSettings v-if="isUserSettings"></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
   <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent>
   <div class="signed-in-header">
@@ -84,11 +91,10 @@ onMounted(() => {
     <button
       v-if="!isSideNav"
       type="button"
-      class="user-home-sign-out-btn text-main z-index-2"
-      @click="changeUserSignInStatus"
+      class="user-home-profile-btn text-main z-index-2"
+      @click="showUserSettings"
     >
-      <fontAwesome :icon="['fas', 'gear']" />
-      Logga ut
+      <fontAwesome :icon="['fas', 'user']" />
     </button>
   </div>
   <div class="signed-in-main">
