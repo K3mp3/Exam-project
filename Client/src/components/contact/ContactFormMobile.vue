@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import ConsumerNav from '../nav/ConsumerNav.vue'
+
+const props = defineProps({
+  userMessage: {
+    type: Function,
+    required: true
+  }
+})
 
 const mobile = ref(true)
 const isBtnDisabled = ref(true)
@@ -105,7 +112,17 @@ function checkInputDataMessage() {
   })
 }
 
-function handleMessage() {}
+const messageData = computed(() => {
+  return {
+    userName: name.value,
+    userEmail: email.value,
+    userMessage: message.value
+  }
+})
+
+function handleMessage() {
+  props.userMessage(messageData.value)
+}
 
 onMounted(() => {
   updateScreenSize()
@@ -129,7 +146,7 @@ onMounted(() => {
         Kontakta oss
       </h2>
     </div>
-    <form class="contact-form" @submit.prevent="handleMessage">
+    <form @submit.prevent="handleMessage" class="contact-form">
       <label for="name">För- och efternamn</label>
       <input
         type="text"

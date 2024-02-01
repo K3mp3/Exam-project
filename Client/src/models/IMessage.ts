@@ -1,3 +1,5 @@
 export interface IMessage {
-  customerMessage: string
+  userName: string
+  userEmail: string
+  userMessage: string
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { IMessage } from '@/models/IMessage'
+import { contactVibe } from '@/services/contactVibe'
 import { nextTick, onMounted, ref } from 'vue'
 import ContactFormMobile from './ContactFormMobile.vue'
 import ContactFormTablet from './ContactFormTablet.vue'
@@ -114,12 +116,18 @@ function checkInputDataMessage() {
   })
 }
 
+async function handleMessage(messageData: Object) {
+  console.log('messageData:', messageData)
+  const castedMessage = messageData as IMessage
+  const response = await contactVibe(castedMessage)
+}
+
 onMounted(() => {
   updateScreenSize()
 })
 </script>
 
 <template>
-  <ContactFormMobile v-if="mobile"></ContactFormMobile>
-  <ContactFormTablet v-if="tablet || desktop"></ContactFormTablet>
+  <ContactFormMobile v-if="mobile" :userMessage="handleMessage"></ContactFormMobile>
+  <ContactFormTablet v-if="tablet || desktop" :userMessage="handleMessage"></ContactFormTablet>
 </template>

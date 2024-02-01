@@ -115,9 +115,11 @@ main {
       .graph {
         width: 100%;
         border: 2px solid transparent;
-        border-radius: 8px;
+        border-radius: 8px 8px 0 0;
         background-image: linear-gradient($bg-main, $bg-main),
-          linear-gradient(to bottom, rgb(13, 63, 241), rgba(13, 62, 241, 0));
+          linear-gradient(to bottom, #a80df1, #3b178a, #0d3ef100);
+        // background-image: linear-gradient($bg-main, $bg-main),
+        //   linear-gradient(to bottom, #0d3ff1, #0d3ef100);
         background-origin: border-box;
         background-clip: padding-box, border-box;
         border-radius: 8px 8px 0 0;
@@ -248,6 +250,10 @@ main {
       .graph-container {
         gap: 8%;
 
+        .graph {
+          border-radius: 16px 16px 0 0;
+        }
+
         .graph-1 {
           height: 80px;
         }
@@ -306,6 +312,10 @@ main {
     .graph-parent-container {
       .graph-container {
         gap: 9%;
+
+        .graph {
+          border-radius: 24px 24px 0 0;
+        }
       }
     }
   }
