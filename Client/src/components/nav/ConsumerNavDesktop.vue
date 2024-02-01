@@ -72,14 +72,14 @@ onMounted(() => {
   >
     <div class="nav-child-container left">
       <RouterLink to="/" class="text-deco-none"
-        ><p class="text-deco-none O15rem text-main font-title-black">Ways</p></RouterLink
+        ><p class="text-deco-none O15rem text-main font-title-black">Vibe</p></RouterLink
       >
     </div>
     <div class="nav-child-container center">
       <RouterLink to="/" class="router-link"
         ><fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
       >
-      <RouterLink to="register" class="router-link"
+      <RouterLink to="contact" class="router-link"
         ><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink
       >
       <RouterLink to="register" class="router-link"

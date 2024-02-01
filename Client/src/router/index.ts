@@ -1,4 +1,5 @@
 import ConsumerLandingViewVue from '@/views/ConsumerLandingView.vue'
+import ContactViewVue from '@/views/ContactView.vue'
 import LayoutVue from '@/views/Layout.vue'
 import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
@@ -21,6 +22,11 @@ const router = createRouter({
           name: 'landing page',
           component: ConsumerLandingViewVue,
           meta: { index: true }
+        },
+        {
+          path: '/contact',
+          name: 'contact form',
+          component: ContactViewVue
         },
         {
           path: '/register',

@@ -15,17 +15,22 @@ function closeNavMenu() {
     <button type="button" @click="closeNavMenu"><fontAwesome :icon="['fas', 'x']" /></button>
     <ul>
       <li>
-        <RouterLink to="sign-in" class="router-link"
+        <RouterLink to="/" class="router-link" @click="closeNavMenu"
+          ><fontAwesome :icon="['fas', 'house']" /> hem</RouterLink
+        >
+      </li>
+      <li>
+        <RouterLink to="sign-in" class="router-link" @click="closeNavMenu"
           ><fontAwesome :icon="['fas', 'right-to-bracket']" />Logga in</RouterLink
         >
       </li>
       <li>
-        <RouterLink to="register" class="router-link"
+        <RouterLink to="register" class="router-link" @click="closeNavMenu"
           ><fontAwesome :icon="['fas', 'house']" /> Registrera</RouterLink
         >
       </li>
       <li>
-        <RouterLink to="contact" class="router-link"
+        <RouterLink to="contact" class="router-link" @click="closeNavMenu"
           ><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink
         >
       </li>

@@ -2,10 +2,11 @@
 @use '../abstracts/fonts' as *;
 
 footer {
-  padding: 54px 16px;
+  padding: 64px 16px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: -7px;
 
   .footer-text-container {
     h2 {
@@ -36,12 +37,12 @@ footer {
 
 @media screen and (min-width: 700px) {
   footer {
-    padding: 60px 32px;
+    padding: 32px 32px;
   }
 }
 
 @media screen and (min-width: 1482px) {
   footer {
-    padding: 70px 64px;
+    padding: 64px 64px;
   }
 }
