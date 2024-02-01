@@ -8,6 +8,13 @@ import { computed, nextTick, ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
 import DialogBox from '../dialogs/DialogBox.vue'
 
+const props = defineProps({
+  showRepairShopRegisterDialog: {
+    type: Function,
+    required: true
+  }
+})
+
 const name = ref('')
 const email = ref('')
 const confirmEmail = ref('')
@@ -189,11 +196,13 @@ function showSignInDialog() {
 }
 
 function showRegisterRepairShopDialog() {
-  const showRegisterDialog = useShowRegisterDialog()
-  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+  props.showRepairShopRegisterDialog(true)
 
   const showRepairShopRegisterDialog = useShowRepairShopDialog()
   showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value)
+
+  const showRegisterDialog = useShowRegisterDialog()
+  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
 </script>
 

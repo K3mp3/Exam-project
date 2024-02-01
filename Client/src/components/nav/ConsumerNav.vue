@@ -2,7 +2,6 @@
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog'
 import { computed, onMounted, ref } from 'vue'
 import MagicTokenDialog from '../dialogs/MagicTokenDialog.vue'
 import RegisterDialog from '../register/RegisterDialog.vue'
@@ -15,8 +14,8 @@ import ConsumerNavTablet from './ConsumerNavTablet.vue'
 const navMobile = ref(true)
 const navTablet = ref(false)
 const navDesktop = ref(false)
+const isRepairShopDialog = ref(false)
 
-const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
 const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
@@ -51,9 +50,16 @@ function updateScreenSize() {
   }
 }
 
+function changeRepairDialogStatus(showRepairShopRegisterDialog: boolean) {
+  console.log(showRepairShopRegisterDialog)
+  isRepairShopDialog.value = showRepairShopRegisterDialog
+  console
+}
+
 onMounted(() => {
   updateScreenSize()
   console.log(isMagicTokenDialog)
+  console.log('isRepairShopDialog:', isRepairShopDialog.value)
 })
 </script>
 
@@ -63,7 +69,13 @@ onMounted(() => {
   <ConsumerNavTablet v-if="navTablet"></ConsumerNavTablet>
   <ConsumerNavDesktop v-if="navDesktop"></ConsumerNavDesktop>
 
-  <RegisterDialog v-if="isRegister"></RegisterDialog>
-  <RegisterRepairShopDialog v-if="isRepairShopDialog"></RegisterRepairShopDialog>
+  <RegisterDialog
+    v-if="isRegister"
+    :showRepairShopRegisterDialog="changeRepairDialogStatus"
+  ></RegisterDialog>
+  <RegisterRepairShopDialog
+    v-if="isRepairShopDialog"
+    :closeRepairShopRegisterDialog="changeRepairDialogStatus"
+  ></RegisterRepairShopDialog>
   <SignInDialog v-if="isSignIn"></SignInDialog>
 </template>

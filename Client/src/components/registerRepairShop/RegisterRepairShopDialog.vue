@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { registerRepairShop } from '@/services/registerUser';
-import { useShowPopUp } from '@/stores/ShowPopUpStore';
-import { useShowSignInDialog } from '@/stores/showSignInDialog';
-import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog';
-import { computed, nextTick, ref } from 'vue';
-import DialogBox from '../dialogs/DialogBox.vue';
+import { registerRepairShop } from '@/services/registerUser'
+import { useShowPopUp } from '@/stores/ShowPopUpStore'
+import { useShowSignInDialog } from '@/stores/showSignInDialog'
+import { useShowRepairShopDialog } from '@/stores/useShowRepairShopDialog'
+import { computed, nextTick, ref } from 'vue'
+import DialogBox from '../dialogs/DialogBox.vue'
+
+const props = defineProps({
+  closeRepairShopRegisterDialog: {
+    type: Function,
+    required: true
+  }
+})
 
 const name = ref('')
 const location = ref('')
@@ -218,17 +225,18 @@ async function handleRegistration() {
   console.log(response)
 }
 
+function closeRegisterDialog() {
+  props.closeRepairShopRegisterDialog(false)
+}
+
 function showSignInDialog() {
   const showRepairShopRegisterDialog = useShowRepairShopDialog()
   showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value)
 
   const showSignInDialog = useShowSignInDialog()
   showSignInDialog.showSignInDialogForm(!isSignIn.value)
-}
 
-function closeRegisterDialog() {
-  const showRepairShopRegisterDialog = useShowRepairShopDialog()
-  showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value)
+  closeRegisterDialog()
 }
 </script>
 
@@ -258,7 +266,7 @@ function closeRegisterDialog() {
             class="desktop-register-form-select"
             v-model="location"
             :key="location"
-            @input="checkInputDataLocation""
+            @input="checkInputDataLocation"
           >
             <option value="Sundsvall">Sundsvall</option>
           </select>
