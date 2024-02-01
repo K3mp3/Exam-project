@@ -32,8 +32,6 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width = document.documentElement.clientWidth
 
-  console.log(width)
-
   if (width > 1481) {
     mobile.value = false
   }
@@ -49,7 +47,6 @@ function updateScreenSize() {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataName() {
