@@ -19,6 +19,7 @@ const message = ref('')
 const isName = ref(false)
 const isEmail = ref(false)
 const isMessage = ref(false)
+const isEmailReal = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
@@ -67,6 +68,14 @@ function checkInputDataName() {
       checkInputData()
     }
   })
+}
+
+function checkEmail() {
+  checkInputData()
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  isEmailReal.value = emailRegex.test(email.value.trim())
 }
 
 function checkInputDataEmail() {
@@ -161,8 +170,18 @@ onMounted(() => {
         placeholder="namn@mail.se"
         v-model="email"
         @input="checkInputDataEmail"
-        class="contact-form-text-input"
+        @change="checkEmail"
+        :class="isEmailReal ? 'contact-form-text-input' : 'email-fake'"
       />
+      <p
+        class="text-warning-orange font-text-light display-flex gap-16 align-items-center margin-top-n11 margin-bm-16"
+        v-if="!isEmailReal"
+      >
+        <fontAwesome
+          :icon="['fas', 'triangle-exclamation']"
+          class="text-warning-orange"
+        />Kontrollera så att mailadressen stämmer!
+      </p>
 
       <label for="message-input">Meddelande</label>
       <textarea
