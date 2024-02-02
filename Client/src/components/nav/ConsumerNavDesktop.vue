@@ -87,4 +87,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-../signIn/automaticSignIn.ts
