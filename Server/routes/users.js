@@ -247,7 +247,9 @@ router.post("/automaticSignIn", async (req, res) => {
           if (error) {
             res.status(500).json("Error sending verifaction code");
           } else {
-            res.status(201).json({ message: "Email sent successfully" });
+            res
+              .status(201)
+              .json({ message: "Email sent successfully", id: foundUser._id });
 
             const magicTokenTimeout = 60 * 60 * 1000;
 
@@ -305,10 +307,10 @@ router.post("/checkMagicToken", async (req, res) => {
 
 router.post("/signOutUser", async (req, res) => {
   try {
-    console.log(req.body.email);
+    console.log(req.body._id);
     console.log(req.body.signedIn);
 
-    const foundUser = await userModel.findOne({ email: req.body.email });
+    const foundUser = await userModel.findOne({ _id: req.body._id });
     console.log(foundUser);
 
     if (foundUser) {

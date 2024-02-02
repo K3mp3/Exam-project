@@ -30,9 +30,11 @@ function getCookie(cookieName: string) {
 const userEmail = getCookie('email') || ''
 
 async function showSignInForm() {
-  if (await handleAutomaticSignIn()) {
+  const { signIn, id } = await handleAutomaticSignIn()
+  if (signIn && id) {
+    console.log(signIn, id)
     const showMagicTokenDialog = useShowMagicTokenDialog()
-    showMagicTokenDialog.showMagicTokenInput(true, userEmail)
+    showMagicTokenDialog.showMagicTokenInput(true, userEmail, id)
   } else {
     const showSignInDialog = useShowSignInDialog()
     showSignInDialog.showSignInDialogForm(!isSignIn.value)
@@ -45,13 +47,6 @@ function changeNavColor() {
   if (document.documentElement.scrollTop > 200) navScroll.value = true
   else {
     navScroll.value = false
-  }
-}
-
-function scrollToFaqSection() {
-  if (faqSection) {
-    console.log('qawbejid')
-    faqSection.scrollIntoView({ behavior: 'smooth' })
   }
 }
 

@@ -19,15 +19,18 @@ const user = {
 }
 
 export async function handleAutomaticSignIn() {
-  if (userEmail != '') {
-    const response = await automaticSignIn(user)
+  const userEmail = getCookie('email') || ''
+  if (userEmail) {
+    const response = await automaticSignIn({ email: userEmail })
 
-    console.log('response:', response)
+    console.log('response:', response?.userId)
 
-    if (response === 201) {
-      return true
+    if (response?.status === 201) {
+      return {
+        signIn: true,
+        id: response.userId
+      }
     }
-  } else {
-    return false
   }
+  return { signIn: false, id: null }
 }

@@ -44,7 +44,7 @@ const router = createRouter({
           component: SignInViewVue
         },
         {
-          path: '/user-home/:id',
+          path: '/user-home/:userId',
           name: 'user home view',
           component: UserHomeView
         },

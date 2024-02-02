@@ -54,8 +54,13 @@ async function handleSignIn() {
 
     closeDialog()
 
-    console.log(response)
-    router.push(`/user-home/${response.userId}`)
+    console.log(userId)
+    if (setUserId.value) {
+      console.log(userId.value)
+      router.push(`/user-home/${setUserId.value}`)
+    } else {
+      router.push(`/user-home/${response.userId}`)
+    }
   } else if (response.status === 201 && response.repairShop === true) {
     if (isCookieAccepted === 'true') {
       document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`

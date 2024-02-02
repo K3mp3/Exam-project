@@ -1,5 +1,5 @@
 export interface IUserSignIn {
-  email: string
+  email?: string
   password?: string
   signedIn?: boolean
   id?: string

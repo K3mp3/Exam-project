@@ -44,8 +44,11 @@ export async function signInUser(user: IUserSignIn) {
 export async function automaticSignIn(user: IUserSignIn) {
   try {
     const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/automaticSignIn`, user)
-    console.log(response.status)
-    return response.status
+    console.log(response.data)
+    return {
+      status: response.status,
+      userId: response.data.id
+    }
   } catch (error) {
     console.log(error)
   }

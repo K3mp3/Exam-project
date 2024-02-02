@@ -11,6 +11,11 @@ import SideNavParent from '../sideNav/SideNavParent.vue'
 import UserContactPage from '../userHome/UserContactPage.vue'
 import UserSettings from './UserSettings.vue'
 
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
+
 const isSideNav = ref(false)
 const isUserSettings = ref(false)
 
@@ -50,7 +55,7 @@ const firstName = fullname ? fullname.split(' ')[0] : ''
 
 const user = computed(() => {
   return {
-    email: email || '',
+    _id: userId.value || '',
     signedIn: false
   }
 })
@@ -70,15 +75,18 @@ async function changeUserSignInStatus() {
     if (!isSignedIn.value) {
       if (isCookieAccepted === 'true') {
         removeCookies()
+        router.push({ name: 'landing page' })
+      } else {
+        router.push({ name: 'landing page' })
       }
-
-      router.push({ name: 'landing page' })
     }
   }
 }
 
 onMounted(() => {
   updateScreenSize()
+
+  console.log(userId.value)
 
   if (!isSignedIn.value) {
     router.push({ name: 'landing page' })
