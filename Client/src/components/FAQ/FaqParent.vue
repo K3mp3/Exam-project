@@ -29,6 +29,11 @@ const faqTexts: { title: string; type: string; text: string }[] = [
     text: 'Vi använder oss av cookies för att kunna använda funktioner så som halvautomatisk inloggning. När du loggar in sparas ditt namn, email adress samt typ av konto i cookies. Det görs även en notering i databasen om att du är inloggad. Detta görs för att kunna hantera utloggning, visa ditt namn när du är inloggad i form av Hej namn.'
   },
   {
+    title: 'Hur vet jag om ni sparar cookies?',
+    type: 'user data',
+    text: 'När du går in på webbplatsen genom en ny webbläsare så får du frågan om du godkänner cookies eller inte. Klickar du på tillåt så sparas en cookie att du har godkänt detta och du behöver således inte godkänna cookies igen. Klickar du på tillåt inte så sparas inga cookies alls. Du kommer då också få denna fråga varje gång du besöker webbplatsen.'
+  },
+  {
     title: 'Hur sparas min data?',
     type: 'user data',
     text: 'De uppgifter du anger när du skapar ett konto sparas i databasen. Detta görs för att du ska kunna ha ett konto och kontakta verkstäder utan att varje gång skriva in din information.'

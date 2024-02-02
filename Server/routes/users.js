@@ -103,9 +103,9 @@ router.post("/createRepairShopUser", async (req, res) => {
 router.post("/signin", async (req, res) => {
   async function signInUser() {
     magicToken = Math.random().toString(36).substring(2, 7);
-    console.log("magictoken:", magicToken);
+    // console.log("magictoken:", magicToken);
     const foundToken = await userModel.findOne({ magicToken: magicToken });
-    console.log("foundtoken:", foundToken);
+    // console.log("foundtoken:", foundToken);
 
     if (foundToken) {
       signInUser();
@@ -115,14 +115,14 @@ router.post("/signin", async (req, res) => {
     try {
       const foundUser = await userModel.findOne({ email: req.body.email });
       if (!foundUser) {
-        console.log("User not found");
+        // console.log("User not found");
         res.status(401).json({ message: "Wrong email or password!" });
         return;
       }
 
       const match = await bcrypt.compare(req.body.password, foundUser.password);
       if (!match) {
-        console.log("Password does not match");
+        // console.log("Password does not match");
         res.status(401).json({ message: "Wrong email or password!" });
         return;
       }
@@ -130,7 +130,7 @@ router.post("/signin", async (req, res) => {
       const magicTokenTimeout = 60 * 60 * 1000;
 
       if (match) {
-        console.log(match);
+        // console.log(match);
         foundUser.magicToken = magicToken;
         await foundUser.save();
 
@@ -159,13 +159,14 @@ router.post("/signin", async (req, res) => {
           `,
         };
 
-        console.log(mailOptions);
+        // console.log(mailOptions);
 
         transporter.sendMail(mailOptions, (error) => {
           if (error) {
             res.status(500).json("Error sending verifaction code");
           } else {
-            res.status(201).json({ email: userEmail });
+            console.log("foundUser._id:", foundUser._id);
+            res.status(201).json({ email: userEmail, id: foundUser._id });
 
             setTimeout(async () => {
               async function generateUniqueTokenTimer() {

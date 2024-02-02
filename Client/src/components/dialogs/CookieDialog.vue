@@ -1,4 +1,22 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps({
+  hideDialog: Boolean
+})
+
+const emits = defineEmits<{
+  (e: 'cookieDialogClosed', open: Boolean): void
+}>()
+
+function acceptCookies() {
+  document.cookie = `accept=${true}`
+  emits('cookieDialogClosed', false)
+}
+
+function declineCookies() {
+  document.cookie = `accept=${false}`
+  emits('cookieDialogClosed', false)
+}
+</script>
 
 <template>
   <div class="cookie-dialog-background">
@@ -11,8 +29,14 @@
         </p>
       </div>
       <div class="cookie-dialog-button-container">
-        <button type="button" class="filled-btn font-text-light padding-6">Tillåt</button>
-        <button type="button" class="outline-btn text-main font-text-light padding-6">
+        <button type="button" class="filled-btn font-text-light padding-6" @click="acceptCookies">
+          Tillåt
+        </button>
+        <button
+          type="button"
+          class="outline-btn text-main font-text-light padding-6"
+          @click="declineCookies"
+        >
           Tillåt inte
         </button>
       </div>

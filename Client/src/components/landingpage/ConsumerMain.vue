@@ -7,6 +7,7 @@ import GraphVisual from '../graph/GraphVisual.vue'
 
 const userEmail = ref('')
 const desktopView = ref(false)
+const isCookieDialog = ref(true)
 
 let width = document.documentElement.clientWidth
 
@@ -30,8 +31,29 @@ function saveUserEmail() {
   }
 }
 
+function getCookie(cookieName: string) {
+  const cookiesArray = document.cookie.split(';')
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    let cookie = cookiesArray[i].trim()
+
+    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
+  }
+
+  return null
+}
+
+const isCookieAccepted = getCookie('accept')
+
+function closeCookieDialog() {
+  isCookieDialog.value = false
+}
+
 onMounted(() => {
   updateScreenSize()
+
+  if (isCookieAccepted === 'true') isCookieDialog.value = false
+  else isCookieDialog.value = true
 })
 </script>
 
@@ -96,5 +118,5 @@ onMounted(() => {
 
   <div class="blue-line"></div>
 
-  <CookieDialog></CookieDialog>
+  <CookieDialog v-if="isCookieDialog" @cookieDialogClosed="closeCookieDialog"></CookieDialog>
 </template>

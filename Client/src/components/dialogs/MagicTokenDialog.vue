@@ -2,15 +2,17 @@
 import router from '@/router'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { checkMagicToken } from '../../services/signInUser'
 import DialogBox from '../dialogs/DialogBox.vue'
 
 const writtenToken = ref('')
-
+const setUserId = ref('')
 const isMagicTokenWrong = ref(false)
 
 const userEmail = computed(() => useShowMagicTokenDialog().userEmail)
+const userId = computed(() => useShowMagicTokenDialog().userId)
+setUserId.value = userId.value
 const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
@@ -21,6 +23,20 @@ const user = computed(() => {
   }
 })
 
+function getCookie(cookieName: string) {
+  const cookiesArray = document.cookie.split(';')
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    let cookie = cookiesArray[i].trim()
+
+    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
+  }
+
+  return null
+}
+
+const isCookieAccepted = getCookie('accept')
+
 async function handleSignIn() {
   const response = await checkMagicToken(user.value)
 
@@ -28,21 +44,26 @@ async function handleSignIn() {
   expirationDate.setDate(expirationDate.getDate() + 60.8)
 
   if (response.status === 201 && response.repairShop === false) {
-    document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
-    document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
-    document.cookie = `repairShop=${
-      response.repairShop
-    }; expires=${expirationDate.toUTCString()}; path=/`
+    if (isCookieAccepted === 'true') {
+      document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
+      document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
+      document.cookie = `repairShop=${
+        response.repairShop
+      }; expires=${expirationDate.toUTCString()}; path=/`
+    }
 
     closeDialog()
 
-    router.push({ name: 'user home view' })
+    console.log(response)
+    router.push(`/user-home/${response.userId}`)
   } else if (response.status === 201 && response.repairShop === true) {
-    document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
-    document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
-    document.cookie = `repairShop=${
-      response.repairShop
-    }; expires=${expirationDate.toUTCString()}; path=/`
+    if (isCookieAccepted === 'true') {
+      document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
+      document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
+      document.cookie = `repairShop=${
+        response.repairShop
+      }; expires=${expirationDate.toUTCString()}; path=/`
+    }
 
     closeDialog()
 
@@ -58,6 +79,10 @@ function closeDialog() {
   const closeMagicTokenDialog = useShowMagicTokenDialog()
   closeMagicTokenDialog.showMagicTokenInput(false)
 }
+
+onMounted(() => {
+  console.log(userId.value)
+})
 </script>
 
 <template>

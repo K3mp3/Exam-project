@@ -44,6 +44,7 @@ function getCookie(cookieName: string) {
 
 const fullname = getCookie('name')
 const email = getCookie('email')
+const isCookieAccepted = getCookie('accept')
 
 const firstName = fullname ? fullname.split(' ')[0] : ''
 
@@ -67,7 +68,10 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(!isSignedIn.value)
 
     if (!isSignedIn.value) {
-      removeCookies()
+      if (isCookieAccepted === 'true') {
+        removeCookies()
+      }
+
       router.push({ name: 'landing page' })
     }
   }
@@ -76,9 +80,9 @@ async function changeUserSignInStatus() {
 onMounted(() => {
   updateScreenSize()
 
-  // if (!isSignedIn.value) {
-  //   router.push({ name: 'landing page' })
-  // }
+  if (!isSignedIn.value) {
+    router.push({ name: 'landing page' })
+  }
 })
 </script>
 
