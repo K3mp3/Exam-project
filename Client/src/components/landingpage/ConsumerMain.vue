@@ -2,6 +2,7 @@
 import { useShowUserEmail } from '@/stores/showUserEmail'
 import { onMounted, ref } from 'vue'
 import FaqParent from '../FAQ/FaqParent.vue'
+import CookieDialog from '../dialogs/CookieDialog.vue'
 import GraphVisual from '../graph/GraphVisual.vue'
 
 const userEmail = ref('')
@@ -94,4 +95,6 @@ onMounted(() => {
   </div>
 
   <div class="blue-line"></div>
+
+  <CookieDialog></CookieDialog>
 </template>
