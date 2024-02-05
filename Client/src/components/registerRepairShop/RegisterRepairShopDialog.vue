@@ -183,6 +183,7 @@ function checkInputDataConfirmEmail() {
 
         checkInputData()
       }
+    } else {
     }
   })
 }

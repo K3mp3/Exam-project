@@ -7,10 +7,10 @@ import RepairShopHomeViewVue from '@/views/RepairShopHomeView.vue'
 import SignInViewVue from '@/views/SignInView.vue'
 import UserHomeView from '@/views/UserHomeView.vue'
 import UserSentViewVue from '@/views/UserSentView.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
