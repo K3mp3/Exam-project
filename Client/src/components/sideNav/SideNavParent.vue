@@ -9,7 +9,7 @@ const props = defineProps<{
 <template>
   <div class="side-nav-parent-container">
     <ul>
-      <li>
+      <!-- <li>
         <RouterLink to="/user-sent" class="side-nav-router-link">
           <fontAwesome :icon="['fas', 'paper-plane']" /> Skickat</RouterLink
         >
@@ -23,7 +23,7 @@ const props = defineProps<{
         <RouterLink to="/user-profile" class="side-nav-router-link">
           <fontAwesome :icon="['fas', 'user']" /> Profil</RouterLink
         >
-      </li>
+      </li> -->
       <li>
         <button
           type="button"
