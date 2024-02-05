@@ -64,6 +64,7 @@ const newUser = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  console.log('inputsArray:', inputsArray)
   console.log(isBtnDisabled.value)
 }
 
@@ -90,11 +91,12 @@ function checkInputDataName() {
 
 function checkInputDataLocation() {
   nextTick(() => {
+    console.log(location.value)
     if (location.value === '') {
       return
     } else {
       isLocation.value = true
-      console.log(isName.value)
+      console.log(isLocation.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isLocation')
 
@@ -115,7 +117,7 @@ function checkInputDataPhone() {
       return
     } else {
       isPhoneNumber.value = true
-      console.log(isName.value)
+      console.log(isPhoneNumber.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isPhoneNumber')
 
@@ -266,9 +268,9 @@ function showSignInDialog() {
             class="desktop-register-form-select"
             v-model="location"
             :key="location"
-            @input="checkInputDataLocation"
+            @change="checkInputDataLocation"
           >
-            <option value="Sundsvall">Sundsvall</option>
+            <option value="sundsvall">Sundsvall</option>
           </select>
 
           <label for="phone-number">Telefonnummer</label>

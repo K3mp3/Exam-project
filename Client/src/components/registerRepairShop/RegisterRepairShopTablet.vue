@@ -53,6 +53,7 @@ const newUser = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  console.log('inputsArray:', inputsArray)
   console.log(isBtnDisabled.value)
 }
 

@@ -183,7 +183,7 @@ onMounted(() => {
         name="location"
         class="signed-in-contact-form-select"
         v-model="location"
-        @input="checkInputDataSelect1"
+        @change="checkInputDataSelect1"
       >
         <option value="Sundsvall">Sundsvall</option>
       </select>
@@ -204,7 +204,7 @@ onMounted(() => {
         name="troubleshootTime"
         class="signed-in-contact-form-select"
         v-model="troubleshootTime"
-        @input="checkInputDataSelect2"
+        @change="checkInputDataSelect2"
       >
         <option value="1 timme">1 timme</option>
         <option value="2 timme">2 timmar</option>
