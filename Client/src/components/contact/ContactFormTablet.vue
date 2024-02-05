@@ -52,7 +52,6 @@ function updateScreenSize() {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataName() {

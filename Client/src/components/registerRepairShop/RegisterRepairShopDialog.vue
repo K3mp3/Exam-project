@@ -172,6 +172,16 @@ function checkInputDataConfirmEmail() {
   })
 }
 
+function checkEmail() {
+  if (email.value === '') return
+  if (confirmEmail.value === '') return
+
+  if (email.value === confirmEmail.value) return
+  else {
+    isEmailWrong.value = true
+  }
+}
+
 function checkInputDataPassword() {
   checkPasswordStrength('password')
   nextTick(() => {
@@ -212,6 +222,15 @@ function checkInputDataConfirmPassword() {
       checkInputData()
     }
   })
+}
+
+function checkPassword() {
+  if (password.value === '') return
+  if (confirmPassword.value === '') return
+  if (password.value === confirmPassword.value) return
+  else {
+    isPasswordWrong.value = true
+  }
 }
 
 function checkPasswordStrength(type: string) {
@@ -294,6 +313,7 @@ function showSignInDialog() {
             placeholder="namn@mail.com"
             v-model="email"
             @input="checkInputDataEmail"
+            @blur="checkEmail"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -310,6 +330,7 @@ function showSignInDialog() {
             placeholder="namn@mail.com"
             v-model="confirmEmail"
             @input="checkInputDataConfirmEmail"
+            @blur="checkEmail"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -324,6 +345,7 @@ function showSignInDialog() {
             placeholder="Lösenord"
             v-model="password"
             @input="checkInputDataPassword"
+            @blur="checkPassword"
             :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }"
           />
           <p class="warning-text" v-if="isPasswordWeak">
@@ -331,7 +353,7 @@ function showSignInDialog() {
             använda ett säkrare
           </p>
           <p v-if="isPasswordWrong">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenordet!
           </p>
 
           <label for="password">Bekräfta lösenord</label>
@@ -341,6 +363,7 @@ function showSignInDialog() {
             placeholder="Lösenord"
             v-model="confirmPassword"
             @input="checkInputDataConfirmPassword"
+            @blur="checkPassword"
             :class="{
               'input-error': isPasswordWrong,
               'input-password-weak': isConfirmPasswordWeak
@@ -351,7 +374,7 @@ function showSignInDialog() {
             använda ett säkrare
           </p>
           <p v-if="isPasswordWrong">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenordet!
           </p>
 
           <button

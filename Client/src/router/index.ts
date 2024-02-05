@@ -26,37 +26,44 @@ const router = createRouter({
         {
           path: '/contact',
           name: 'contact form',
-          component: ContactViewVue
+          component: ContactViewVue,
+          meta: { index: true }
         },
         {
           path: '/register',
           name: 'register form',
-          component: RegisterViewVue
+          component: RegisterViewVue,
+          meta: { index: true }
         },
         {
           path: '/register-repair-shop',
           name: 'register repair shop form',
-          component: RegisterRepairShopView
+          component: RegisterRepairShopView,
+          meta: { index: true }
         },
         {
           path: '/sign-in',
           name: 'sign in form',
-          component: SignInViewVue
+          component: SignInViewVue,
+          meta: { index: true }
         },
         {
           path: '/user-home/:userId',
           name: 'user home view',
-          component: UserHomeView
+          component: UserHomeView,
+          meta: { index: true }
         },
         {
           path: '/repair-shop-home',
           name: 'repair shop home view',
-          component: RepairShopHomeViewVue
+          component: RepairShopHomeViewVue,
+          meta: { index: true }
         },
         {
           path: '/user-sent',
           name: 'user sent view',
-          component: UserSentViewVue
+          component: UserSentViewVue,
+          meta: { index: true }
         }
       ]
     }
