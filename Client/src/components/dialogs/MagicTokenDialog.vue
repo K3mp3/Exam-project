@@ -2,7 +2,7 @@
 import router from '@/router'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { checkMagicToken } from '../../services/signInUser'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -54,9 +54,7 @@ async function handleSignIn() {
 
     closeDialog()
 
-    console.log(userId)
     if (setUserId.value) {
-      console.log(userId.value)
       router.push(`/user-home/${setUserId.value}`)
     } else {
       router.push(`/user-home/${response.userId}`)
@@ -84,10 +82,6 @@ function closeDialog() {
   const closeMagicTokenDialog = useShowMagicTokenDialog()
   closeMagicTokenDialog.showMagicTokenInput(false)
 }
-
-onMounted(() => {
-  console.log(userId.value)
-})
 </script>
 
 <template>

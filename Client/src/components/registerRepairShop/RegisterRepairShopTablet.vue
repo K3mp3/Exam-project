@@ -241,9 +241,9 @@ async function handleRegistration() {
           class="mobile-register-form-select"
           v-model="location"
           :key="location"
-          @input="checkInputDataLocation"
+          @change="checkInputDataLocation"
         >
-          <option value="Sundsvall">Sundsvall</option>
+          <option value="sundsvall">Sundsvall</option>
         </select>
 
         <label for="phone-number">Telefonnummer</label>
