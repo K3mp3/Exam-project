@@ -15,7 +15,7 @@ function showMobileNav() {
 window.addEventListener('scroll', changeNavColor)
 
 function changeNavColor() {
-  if (document.documentElement.scrollTop > 200) navScroll.value = true
+  if (document.documentElement.scrollTop > 70) navScroll.value = true
   else {
     navScroll.value = false
   }
