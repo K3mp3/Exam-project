@@ -88,13 +88,13 @@ onMounted(() => {
   console.log(userId.value)
 
   if (!isSignedIn.value) {
-    router.push({ name: 'landing page' })
+    router.push('/')
   }
 })
 </script>
 
 <template>
-  <UserSettings v-if="isUserSettings"></UserSettings>
+  <UserSettings v-if="isUserSettings" :signOutFunction="changeUserSignInStatus"></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
   <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent>
   <div class="signed-in-header">
