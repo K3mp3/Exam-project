@@ -7,7 +7,7 @@ import { useSignInStore } from '@/stores/signInStore'
 import axios from 'axios'
 import { computed } from 'vue'
 
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
 let userId = ''

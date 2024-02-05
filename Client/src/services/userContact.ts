@@ -1,7 +1,7 @@
 import type { IUserContact } from '@/models/IUserContact'
 import axios from 'axios'
 
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
 
 export async function contactRepairShops(messageData: IUserContact) {
   try {
