@@ -49,7 +49,6 @@ function updateScreenSize() {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(inputsArray)
 }
 
 function checkInputDataName() {
@@ -72,21 +71,30 @@ function checkInputDataName() {
 
       const index = inputsArray.findIndex((field) => field.key === 'isName')
 
-      if (index !== -1) {
-        inputsArray[index].value = isName.value
+      const nameRegex = /^[^\s]+\s[^\s]+$/
+      isNameCorrect.value = nameRegex.test(name.value)
+
+      if (isNameCorrect.value) {
+        if (index !== -1) {
+          inputsArray[index].value = isName.value
+        } else {
+          inputsArray.push({ key: 'isName', value: isName.value })
+        }
       } else {
-        inputsArray.push({ key: 'isName', value: isName.value })
+        isName.value = false
+
+        const index = inputsArray.findIndex((field) => field.key === 'isName')
+
+        if (index !== -1) {
+          inputsArray[index].value = isName.value
+        } else {
+          inputsArray.push({ key: 'isName', value: isName.value })
+        }
       }
 
       checkInputData()
     }
   })
-}
-
-function checkName() {
-  const nameRegex = /^[^\s]+\s[^\s]+$/
-
-  isNameCorrect.value = nameRegex.test(name.value)
 }
 
 function checkInputDataEmail() {
@@ -109,23 +117,30 @@ function checkInputDataEmail() {
 
       const index = inputsArray.findIndex((field) => field.key === 'isEmail')
 
-      if (index !== -1) {
-        inputsArray[index].value = isEmail.value
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      isEmailReal.value = emailRegex.test(email.value.trim())
+
+      if (isEmailReal.value) {
+        if (index !== -1) {
+          inputsArray[index].value = isEmail.value
+        } else {
+          inputsArray.push({ key: 'isEmail', value: isEmail.value })
+        }
       } else {
-        inputsArray.push({ key: 'isEmail', value: isEmail.value })
+        isEmail.value = false
+
+        const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+        if (index !== -1) {
+          inputsArray[index].value = isEmail.value
+        } else {
+          inputsArray.push({ key: 'isEmail', value: isEmail.value })
+        }
       }
 
       checkInputData()
     }
   })
-}
-
-function checkEmail() {
-  checkInputData()
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-  isEmailReal.value = emailRegex.test(email.value.trim())
 }
 
 function checkInputDataMessage() {
@@ -201,7 +216,6 @@ onMounted(() => {
         placeholder="Förnamn & efternamn"
         v-model="name"
         @input="checkInputDataName"
-        @blur="checkName"
         :class="isNameCorrect ? 'contact-form-text-input' : 'input-warning'"
       />
       <p
@@ -219,7 +233,6 @@ onMounted(() => {
         placeholder="namn@mail.se"
         v-model="email"
         @input="checkInputDataEmail"
-        @change="checkEmail"
         :class="isEmailReal ? 'contact-form-text-input' : 'input-warning'"
       />
       <p
