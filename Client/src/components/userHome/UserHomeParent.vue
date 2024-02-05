@@ -4,10 +4,8 @@ import { signOutUser } from '@/services/signInUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
-import BottomNavParent from '../bottomNav/BottomNavParent.vue'
 import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
-import SideNavParent from '../sideNav/SideNavParent.vue'
 import UserContactPage from '../userHome/UserContactPage.vue'
 import UserSettings from './UserSettings.vue'
 
@@ -97,7 +95,6 @@ onMounted(() => {
 <template>
   <UserSettings v-if="isUserSettings"></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
-  <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent>
   <div class="signed-in-header">
     <h2>Hej {{ firstName }}</h2>
     <button
@@ -112,5 +109,4 @@ onMounted(() => {
   <div class="signed-in-main">
     <UserContactPage></UserContactPage>
   </div>
-  <BottomNavParent v-if="!isSideNav"></BottomNavParent>
 </template>
