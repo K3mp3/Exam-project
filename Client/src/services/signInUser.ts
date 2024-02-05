@@ -10,15 +10,20 @@ import { computed } from 'vue'
 const BASE_URL = 'http://localhost:3000'
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
+let userId = ''
+
 export async function signInUser(user: IUserSignIn) {
   try {
     console.log(user)
     const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
 
     const showMagicTokenDialog = useShowMagicTokenDialog()
-    showMagicTokenDialog.showMagicTokenInput(true, response.data.email)
+    console.log(response.data)
+    showMagicTokenDialog.showMagicTokenInput(true, response.data.email, response.data.id)
 
-    return response.data
+    userId = response.data.id || ''
+
+    return response
   } catch (error: any) {
     if (
       error.response &&
@@ -39,8 +44,11 @@ export async function signInUser(user: IUserSignIn) {
 export async function automaticSignIn(user: IUserSignIn) {
   try {
     const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/automaticSignIn`, user)
-    console.log(response.status)
-    return response.status
+    console.log(response.data)
+    return {
+      status: response.status,
+      userId: response.data.id
+    }
   } catch (error) {
     console.log(error)
   }
@@ -62,7 +70,8 @@ export async function checkMagicToken(user: IUserToken) {
       return {
         name: response.data.name,
         repairShop: response.data.repairShop,
-        status: response.status
+        status: response.status,
+        userId: userId
       }
     } else {
       const showErrorDialog = useShowPopUp()

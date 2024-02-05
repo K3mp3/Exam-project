@@ -2,7 +2,7 @@
 
 <template>
   <div class="bottom-nav-parent-container">
-    <ul>
+    <ul class="display-flex justify-between padding-0">
       <li class="list-style-none">
         <RouterLink
           to="/user-sent"

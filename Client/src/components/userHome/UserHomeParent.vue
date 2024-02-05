@@ -9,8 +9,15 @@ import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNavParent from '../sideNav/SideNavParent.vue'
 import UserContactPage from '../userHome/UserContactPage.vue'
+import UserSettings from './UserSettings.vue'
+
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
 
 const isSideNav = ref(false)
+const isUserSettings = ref(false)
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
@@ -42,15 +49,20 @@ function getCookie(cookieName: string) {
 
 const fullname = getCookie('name')
 const email = getCookie('email')
+const isCookieAccepted = getCookie('accept')
 
 const firstName = fullname ? fullname.split(' ')[0] : ''
 
 const user = computed(() => {
   return {
-    email: email || '',
+    _id: userId.value || '',
     signedIn: false
   }
 })
+
+function showUserSettings() {
+  isUserSettings.value = !isUserSettings.value
+}
 
 async function changeUserSignInStatus() {
   const response = await signOutUser(user.value)
@@ -61,14 +73,20 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(!isSignedIn.value)
 
     if (!isSignedIn.value) {
-      removeCookies()
-      router.push({ name: 'landing page' })
+      if (isCookieAccepted === 'true') {
+        removeCookies()
+        router.push({ name: 'landing page' })
+      } else {
+        router.push({ name: 'landing page' })
+      }
     }
   }
 }
 
 onMounted(() => {
   updateScreenSize()
+
+  console.log(userId.value)
 
   if (!isSignedIn.value) {
     router.push({ name: 'landing page' })
@@ -77,6 +95,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <UserSettings v-if="isUserSettings"></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
   <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent>
   <div class="signed-in-header">
@@ -84,11 +103,10 @@ onMounted(() => {
     <button
       v-if="!isSideNav"
       type="button"
-      class="user-home-sign-out-btn text-main z-index-2"
-      @click="changeUserSignInStatus"
+      class="user-home-profile-btn text-main z-index-2"
+      @click="showUserSettings"
     >
-      <fontAwesome :icon="['fas', 'gear']" />
-      Logga ut
+      <fontAwesome :icon="['fas', 'user']" />
     </button>
   </div>
   <div class="signed-in-main">
