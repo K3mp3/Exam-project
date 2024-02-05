@@ -34,8 +34,6 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width = document.documentElement.clientWidth
 
-  console.log(width)
-
   if (width > 1481) {
     desktop.value = true
     tablet.value = false
