@@ -152,34 +152,39 @@ function checkInputDataEmail() {
   })
 }
 
-function checkInputDataConfirmEmail() {
-  nextTick(() => {
-    if (confirmEmail.value === '') {
-      return
-    } else {
-      isConfirmEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
-
-      if (index !== -1) {
-        inputsArray[index].value = isConfirmEmail.value
-      } else {
-        inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
 function checkEmail() {
   if (email.value === '') return
   if (confirmEmail.value === '') return
 
-  if (email.value === confirmEmail.value) return
+  if (email.value === confirmEmail.value) return true
   else {
     isEmailWrong.value = true
+    return false
   }
+}
+
+function checkInputDataConfirmEmail() {
+  nextTick(() => {
+    checkEmail()
+
+    if (checkEmail()) {
+      if (confirmEmail.value === '') {
+        return
+      } else {
+        isConfirmEmail.value = true
+
+        const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
+
+        if (index !== -1) {
+          inputsArray[index].value = isConfirmEmail.value
+        } else {
+          inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
+        }
+
+        checkInputData()
+      }
+    }
+  })
 }
 
 function checkInputDataPassword() {

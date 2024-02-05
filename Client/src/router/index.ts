@@ -25,7 +25,7 @@ const router = createRouter({
         },
         {
           path: '/contact',
-          name: 'contact form',
+          name: '/contact',
           component: ContactViewVue,
           meta: { index: true }
         },
