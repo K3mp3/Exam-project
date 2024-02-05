@@ -20,6 +20,7 @@ const isName = ref(false)
 const isEmail = ref(false)
 const isMessage = ref(false)
 const isEmailReal = ref(true)
+const isNameCorrect = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
@@ -53,9 +54,7 @@ function checkInputData() {
 function checkInputDataName() {
   nextTick(() => {
     if (name.value === '') {
-      return
-    } else {
-      isName.value = true
+      isName.value = false
 
       const index = inputsArray.findIndex((field) => field.key === 'isName')
 
@@ -66,24 +65,42 @@ function checkInputDataName() {
       }
 
       checkInputData()
+      return
+    } else {
+      isName.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isName')
+
+      const nameRegex = /^[^\s]+\s[^\s]+$/
+      isNameCorrect.value = nameRegex.test(name.value)
+
+      if (isNameCorrect.value) {
+        if (index !== -1) {
+          inputsArray[index].value = isName.value
+        } else {
+          inputsArray.push({ key: 'isName', value: isName.value })
+        }
+      } else {
+        isName.value = false
+
+        const index = inputsArray.findIndex((field) => field.key === 'isName')
+
+        if (index !== -1) {
+          inputsArray[index].value = isName.value
+        } else {
+          inputsArray.push({ key: 'isName', value: isName.value })
+        }
+      }
+
+      checkInputData()
     }
   })
-}
-
-function checkEmail() {
-  checkInputData()
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-  isEmailReal.value = emailRegex.test(email.value.trim())
 }
 
 function checkInputDataEmail() {
   nextTick(() => {
     if (email.value === '') {
-      return
-    } else {
-      isEmail.value = true
+      isEmail.value = false
 
       const index = inputsArray.findIndex((field) => field.key === 'isEmail')
 
@@ -94,6 +111,34 @@ function checkInputDataEmail() {
       }
 
       checkInputData()
+      return
+    } else {
+      isEmail.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      isEmailReal.value = emailRegex.test(email.value.trim())
+
+      if (isEmailReal.value) {
+        if (index !== -1) {
+          inputsArray[index].value = isEmail.value
+        } else {
+          inputsArray.push({ key: 'isEmail', value: isEmail.value })
+        }
+      } else {
+        isEmail.value = false
+
+        const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+
+        if (index !== -1) {
+          inputsArray[index].value = isEmail.value
+        } else {
+          inputsArray.push({ key: 'isEmail', value: isEmail.value })
+        }
+      }
+
+      checkInputData()
     }
   })
 }
@@ -101,6 +146,17 @@ function checkInputDataEmail() {
 function checkInputDataMessage() {
   nextTick(() => {
     if (message.value === '') {
+      isMessage.value = false
+
+      const index = inputsArray.findIndex((field) => field.key === 'isMessage')
+
+      if (index !== -1) {
+        inputsArray[index].value = isMessage.value
+      } else {
+        inputsArray.push({ key: 'isMessage', value: isMessage.value })
+      }
+
+      checkInputData()
       return
     } else {
       isMessage.value = true
@@ -160,8 +216,15 @@ onMounted(() => {
         placeholder="Förnamn & efternamn"
         v-model="name"
         @input="checkInputDataName"
-        class="contact-form-text-input"
+        :class="isNameCorrect ? 'contact-form-text-input' : 'input-warning'"
       />
+      <p
+        class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
+        v-if="!isNameCorrect"
+      >
+        <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange både
+        för- och efternman!
+      </p>
 
       <label for="email">Email adress</label>
       <input
@@ -170,11 +233,10 @@ onMounted(() => {
         placeholder="namn@mail.se"
         v-model="email"
         @input="checkInputDataEmail"
-        @change="checkEmail"
-        :class="isEmailReal ? 'contact-form-text-input' : 'email-fake'"
+        :class="isEmailReal ? 'contact-form-text-input' : 'input-warning'"
       />
       <p
-        class="text-warning-orange font-text-light display-flex gap-16 align-items-center margin-top-n11 margin-bm-16"
+        class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
         v-if="!isEmailReal"
       >
         <fontAwesome

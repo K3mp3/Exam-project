@@ -132,7 +132,7 @@
       }
     }
 
-    .email-fake {
+    .input-warning {
       position: relative;
       transition: all 0.2s ease-in-out;
       width: 100%;
@@ -150,6 +150,17 @@
         linear-gradient(to bottom, #f1550d, #f1550d5b);
       background-origin: border-box;
       background-clip: padding-box, border-box;
+
+      &:focus {
+        transition: all 0.2s ease-in-out;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+          linear-gradient(to bottom, #f1550d, #f1550d5b);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+      }
     }
 
     .contact-form-textarea-input {
