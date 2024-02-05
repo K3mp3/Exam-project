@@ -26,7 +26,7 @@ const faqTexts: { title: string; type: string; text: string }[] = [
   {
     title: 'Hur används min data?',
     type: 'user data',
-    text: 'Vi använder oss av cookies för att kunna använda funktioner så som halvautomatisk inloggning. När du loggar in sparas ditt namn, email adress samt typ av konto i cookies. Det görs även en notering i databasen om att du är inloggad. Detta görs för att kunna hantera utloggning, visa ditt namn när du är inloggad i form av Hej namn.'
+    text: 'Vi använder oss av cookies för att kunna använda funktioner så som halvautomatisk inloggning. När du loggar in sparas ditt namn, email adress samt typ av konto i cookies. Det görs även en notering i databasen om att du är inloggad. Detta görs för att kunna hantera utloggning effektivt samt visa ditt namn vid inloggning i form av "Hej namn".'
   },
   {
     title: 'Hur vet jag om ni sparar cookies?',
@@ -36,7 +36,7 @@ const faqTexts: { title: string; type: string; text: string }[] = [
   {
     title: 'Hur sparas min data?',
     type: 'user data',
-    text: 'De uppgifter du anger när du skapar ett konto sparas i databasen. Detta görs för att du ska kunna ha ett konto och kontakta verkstäder utan att varje gång skriva in din information.'
+    text: 'De uppgifter du anger när du skapar ett konto sparas i databasen. Detta görs för att du ska kunna kontakta verkstäder utan att varje gång behöva skriva in din information så som namn och email adress.'
   },
   {
     title: 'Kostar tjänsten något?',
