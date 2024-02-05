@@ -17,8 +17,6 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width = document.documentElement.clientWidth
 
-  console.log(width)
-
   if (width > 1481) {
     desktop.value = true
     tablet.value = false
@@ -39,10 +37,8 @@ function updateScreenSize() {
 }
 
 async function handleMessage(messageData: Object) {
-  console.log('messageData:', messageData)
   const castedMessage = messageData as IMessage
   const response = await contactVibe(castedMessage)
-  console.log(response)
 
   if (response === 201) {
     isConfirmation.value = true

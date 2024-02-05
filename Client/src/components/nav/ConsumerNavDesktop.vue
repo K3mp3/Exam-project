@@ -3,7 +3,7 @@ import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, nextTick, onMounted, ref } from 'vue'
-import { handleAutomaticSignIn } from '../signIn/automaticSignIn.ts'
+import { handleAutomaticSignIn } from '../signIn/automaticSignIn'
 
 const navScroll = ref(false)
 

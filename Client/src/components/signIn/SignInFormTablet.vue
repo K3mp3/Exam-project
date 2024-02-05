@@ -71,29 +71,6 @@ function checkInputDataPassword() {
   })
 }
 
-function checkSelectValue() {
-  nextTick(() => {
-    if (repairShop.value === '') {
-      console.log(repairShop.value)
-      return
-    } else {
-      console.log(repairShop.value)
-      isRepairShop.value = true
-      console.log(isRepairShop.value)
-
-      const index = inputsArray.findIndex((field) => field.key === 'isRepairShop')
-
-      if (index !== -1) {
-        inputsArray[index].value = isRepairShop.value
-      } else {
-        inputsArray.push({ key: 'isRepairShop', value: isRepairShop.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
 async function handleRegistration() {
   const response = await signInUser(user.value)
 

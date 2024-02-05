@@ -4,12 +4,7 @@
   <div class="user-settings-container">
     <ul>
       <li>
-        <button
-          v-if="!isSideNav"
-          type="button"
-          class="user-home-sign-out-btn text-main z-index-2"
-          @click="showUserSettings"
-        >
+        <button type="button" class="user-home-sign-out-btn text-main z-index-2">
           <fontAwesome :icon="['fas', 'right-from-bracket']" />
           Logga ut
         </button>
