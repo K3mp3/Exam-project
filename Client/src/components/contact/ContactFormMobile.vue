@@ -28,21 +28,18 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isMessage', value: false }
 ]
 
-let width = document.documentElement.clientWidth
-
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
-  width = document.documentElement.clientWidth
 
-  if (width > 1481) {
+  if (document.documentElement.clientWidth > 1481) {
     mobile.value = false
   }
 
-  if (width > 699 && width < 1482) {
+  if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1482) {
     mobile.value = false
   }
 
-  if (width < 700) {
+  if (document.documentElement.clientWidth < 700) {
     mobile.value = true
   }
 }
