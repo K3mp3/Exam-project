@@ -5,7 +5,6 @@ const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
 
 export async function contactVibe(messageData: IMessage) {
   try {
-    console.log(messageData)
     const response = await axios.post<IMessage>(`${BASE_URL}/contact/contactVibe`, messageData)
 
     return response.status

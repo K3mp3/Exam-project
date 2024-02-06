@@ -53,8 +53,6 @@ const newUser = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
-  console.log('inputsArray:', inputsArray)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataName() {
@@ -63,7 +61,6 @@ function checkInputDataName() {
       return
     } else {
       isName.value = true
-      console.log(isName.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isName')
 
@@ -84,7 +81,6 @@ function checkInputDataLocation() {
       return
     } else {
       isLocation.value = true
-      console.log(isName.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isLocation')
 
@@ -105,7 +101,6 @@ function checkInputDataPhone() {
       return
     } else {
       isPhoneNumber.value = true
-      console.log(isName.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isPhoneNumber')
 
@@ -231,7 +226,6 @@ function checkPasswordStrength(type: string) {
 
 async function handleRegistration() {
   const response = await registerRepairShop(newUser.value)
-  console.log(response)
 }
 </script>
 

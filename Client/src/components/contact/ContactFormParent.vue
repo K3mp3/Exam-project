@@ -5,31 +5,30 @@ import { onMounted, ref } from 'vue'
 import ContactFormMobile from './ContactFormMobile.vue'
 import ContactFormTablet from './ContactFormTablet.vue'
 
+const TABLET_BREAKPOINT = 699
+const DESKTOP_BREAKPOINT = 1481
+
 const mobile = ref(true)
 const tablet = ref(false)
 const desktop = ref(false)
 const isConfirmation = ref(false)
 const isConfirmationError = ref(false)
 
-let width = document.documentElement.clientWidth
-
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
-  width = document.documentElement.clientWidth
 
-  if (width > 1481) {
+  if (document.documentElement.clientWidth > DESKTOP_BREAKPOINT) {
     desktop.value = true
     tablet.value = false
     mobile.value = false
-  }
-
-  if (width > 699 && width < 1482) {
+  } else if (
+    document.documentElement.clientWidth > TABLET_BREAKPOINT &&
+    document.documentElement.clientWidth < DESKTOP_BREAKPOINT
+  ) {
     tablet.value = true
     desktop.value = false
     mobile.value = false
-  }
-
-  if (width < 700) {
+  } else if (document.documentElement.clientWidth < TABLET_BREAKPOINT + 1) {
     mobile.value = true
     desktop.value = false
     tablet.value = false

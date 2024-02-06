@@ -32,8 +32,6 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isConfirmPassword', value: false }
 ]
 
-console.log(inputsArray)
-
 const isDialog = computed(() => useShowPopUp().showPopUp)
 const filledEmail = computed(() => useShowUserEmail().userEmail)
 const isFilledEmail = computed(() => useShowUserEmail().isEmail)
@@ -50,7 +48,6 @@ const newUser = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataName() {
@@ -59,7 +56,6 @@ function checkInputDataName() {
       return
     } else {
       isName.value = true
-      console.log(isName.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isName')
 

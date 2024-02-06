@@ -6,7 +6,6 @@ export const useShowSignInDialog = defineStore('signInDialog', () => {
 
   function showSignInDialogForm(show: boolean) {
     isSignInDialog.value = show
-    console.log(isSignInDialog.value)
   }
 
   return { isSignInDialog, showSignInDialogForm }

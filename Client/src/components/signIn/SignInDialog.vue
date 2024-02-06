@@ -35,7 +35,6 @@ function checkInputData() {
 
 async function handleSignIn() {
   const response = await signInUser(user.value)
-  console.log(response)
 
   if (response === 'Wrong email or password!') {
     isEmailWrong.value = true

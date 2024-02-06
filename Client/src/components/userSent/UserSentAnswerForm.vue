@@ -45,7 +45,6 @@ function showMessageBox() {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataAnswer() {
@@ -69,7 +68,6 @@ function checkInputDataAnswer() {
 }
 
 function sendAnswer() {
-  console.log(answerData.value)
   props.onAnswer(answerData.value)
 }
 </script>

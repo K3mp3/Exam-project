@@ -7,10 +7,8 @@ const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
 export async function registerUser(user: IUserRegistration) {
   try {
     const response = await axios.post<IUserRegistration>(`${BASE_URL}/users/createUser`, user)
-    console.log(response)
     return response.data
   } catch (error: any) {
-    console.log('Error in registration:', error)
     if (
       error.response &&
       error.response.status === 400 &&

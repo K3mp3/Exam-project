@@ -65,7 +65,6 @@ function showUserSettings() {
 
 async function changeUserSignInStatus() {
   const response = await signOutUser(user.value)
-  console.log(response)
 
   if (response) {
     const isUserSignedIn = useSignInStore()
@@ -84,8 +83,6 @@ async function changeUserSignInStatus() {
 
 onMounted(() => {
   updateScreenSize()
-
-  console.log(userId.value)
 
   if (!isSignedIn.value) {
     router.push('/')

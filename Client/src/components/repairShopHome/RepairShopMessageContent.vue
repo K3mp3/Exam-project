@@ -59,7 +59,6 @@ const answerData = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataAnswer() {
@@ -87,14 +86,12 @@ function showMessageBox() {
 }
 
 function sendAnswer() {
-  console.log(answerData.value)
   props.onAnswer(answerData.value)
 }
 
 onMounted(() => {
   messageArray.push(props.index.customerMessage)
   messageArray.push(props.index.repairShopAnswer)
-  console.log(props.index.customerMessage[0].message)
 })
 </script>
 

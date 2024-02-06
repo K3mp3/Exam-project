@@ -32,7 +32,6 @@ const user = computed(() => {
 
 async function changeUserSignInStatus() {
   const response = await signOutUser(user.value)
-  console.log(response)
 
   if (response) {
     const isUserSignedIn = useSignInStore()

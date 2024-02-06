@@ -2,6 +2,7 @@
 import router from '@/router'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
+import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, ref } from 'vue'
 import { checkMagicToken } from '../../services/signInUser'
 import DialogBox from '../dialogs/DialogBox.vue'
@@ -15,6 +16,7 @@ const userId = computed(() => useShowMagicTokenDialog().userId)
 setUserId.value = userId.value
 const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
 const isDialog = computed(() => useShowPopUp().showPopUp)
+const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
 const user = computed(() => {
   return {
@@ -53,6 +55,9 @@ async function handleSignIn() {
     }
 
     closeDialog()
+
+    const showSignInDialog = useShowSignInDialog()
+    showSignInDialog.showSignInDialogForm(false)
 
     if (setUserId.value) {
       router.push(`/user-home/${setUserId.value}`)
