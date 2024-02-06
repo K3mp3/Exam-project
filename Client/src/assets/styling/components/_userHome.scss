@@ -26,6 +26,30 @@
 .signed-in-main {
   padding: 16px;
 
+  .user-home-new-btn {
+    transition: all 0.2s ease-in-out;
+    background-color: $el-active-blue;
+    border: none;
+    color: $text-main;
+    font-family: map-get($font-text-light, font-family);
+    font-weight: map-get($font-text-light, font-weight);
+    height: 35px;
+    border-radius: 50px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0px 16px;
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+      background-color: $el-active-blue-hover;
+    }
+  }
+
   h3 {
     margin-bottom: 16px;
   }

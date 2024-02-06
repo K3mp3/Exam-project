@@ -81,12 +81,17 @@ async function changeUserSignInStatus() {
   }
 }
 
+function newRequest() {
+  // window.history.back()
+  router.push(`/user-home-new-request/${userId.value}`)
+}
+
 onMounted(() => {
   updateScreenSize()
 
-  if (!isSignedIn.value) {
-    router.push('/')
-  }
+  // if (!isSignedIn.value) {
+  //   router.push('/')
+  // }
 })
 </script>
 
@@ -106,6 +111,14 @@ onMounted(() => {
     </button>
   </div>
   <div class="signed-in-main">
+    <button
+      v-if="!isSideNav"
+      type="button"
+      class="user-home-new-btn text-main z-index-2"
+      @click="newRequest"
+    >
+      Ny förfrågan
+    </button>
     <UserContactPage></UserContactPage>
   </div>
 </template>
