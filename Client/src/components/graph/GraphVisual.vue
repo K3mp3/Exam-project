@@ -10,8 +10,6 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width = document.documentElement.clientWidth
 
-  console.log(width)
-
   if (width < 700) {
     mobile.value = true
     tablet.value = false

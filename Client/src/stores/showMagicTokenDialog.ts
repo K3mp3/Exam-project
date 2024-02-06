@@ -7,11 +7,9 @@ export const useShowMagicTokenDialog = defineStore('magicTokenDialog', () => {
   const userId = ref('')
 
   function showMagicTokenInput(show: boolean, email?: string, _id?: string) {
-    console.log(show, showMagicTokenDialog.value, userEmail.value)
     showMagicTokenDialog.value = show
     userEmail.value = email || ''
     userId.value = _id || ''
-    console.log(userId.value)
   }
 
   return { showMagicTokenDialog, userEmail, userId, showMagicTokenInput }

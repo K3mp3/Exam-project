@@ -2,7 +2,7 @@
 import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowUserEmail } from '@/stores/showUserEmail'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
 const name = ref('')
@@ -32,8 +32,6 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isConfirmPassword', value: false }
 ]
 
-console.log(inputsArray)
-
 const isDialog = computed(() => useShowPopUp().showPopUp)
 const filledEmail = computed(() => useShowUserEmail().userEmail)
 const isFilledEmail = computed(() => useShowUserEmail().isEmail)
@@ -50,7 +48,6 @@ const newUser = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataName() {
@@ -59,7 +56,6 @@ function checkInputDataName() {
       return
     } else {
       isName.value = true
-      console.log(isName.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isName')
 
@@ -167,10 +163,6 @@ function checkPasswordStrength(type: string) {
 async function handleRegistration() {
   const response = await registerUser(newUser.value)
 }
-
-onMounted(() => {
-  console.log(filledEmail.value, isFilledEmail.value)
-})
 </script>
 
 <template>

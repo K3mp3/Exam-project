@@ -8,8 +8,6 @@ export const useShowPopUp = defineStore('popup', () => {
   function showPopUpTab(show: boolean, message: string) {
     showPopUp.value = show
     popUpMessage.value = message
-    console.log(showPopUp.value)
-    console.log(popUpMessage.value)
   }
 
   return { showPopUp, popUpMessage, showPopUpTab }

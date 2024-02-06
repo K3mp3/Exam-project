@@ -51,15 +51,11 @@ function updateScreenSize() {
 }
 
 function changeRepairDialogStatus(showRepairShopRegisterDialog: boolean) {
-  console.log(showRepairShopRegisterDialog)
   isRepairShopDialog.value = showRepairShopRegisterDialog
-  console
 }
 
 onMounted(() => {
   updateScreenSize()
-  console.log(isMagicTokenDialog)
-  console.log('isRepairShopDialog:', isRepairShopDialog.value)
 })
 </script>
 

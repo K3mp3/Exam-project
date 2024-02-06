@@ -4,14 +4,11 @@ import axios from 'axios'
 const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
 
 export async function answerFromRepairShop(messageData: IUserContact) {
-  // console.log(messageData)
   try {
-    console.log(messageData)
     const response = await axios.post<IUserContact>(
       `${BASE_URL}/users/answerFromRepairShop`,
       messageData
     )
-    // console.log(response.data)
     return response.data
   } catch (error) {
     return error

@@ -27,8 +27,6 @@ const user = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
-  console.log(isBtnDisabled.value)
-  console.log(inputsArray)
 }
 
 function checkInputDataEmail() {

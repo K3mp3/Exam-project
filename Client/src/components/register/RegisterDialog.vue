@@ -62,7 +62,6 @@ const newUser = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataName() {
@@ -71,7 +70,6 @@ function checkInputDataName() {
       return
     } else {
       isName.value = true
-      console.log(isName.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isName')
 

@@ -30,7 +30,6 @@ async function getMessages() {
   const answeredResponse = await removedAnsweredRequests()
   answeredMessages.value = answeredResponse
 
-  // Filtering logic
   const filtered = unansweredMessages.value.filter((unansweredMessage) => {
     const matchingAnswer = answeredMessages.value.find(
       (answeredMessage) =>
@@ -43,13 +42,10 @@ async function getMessages() {
   })
 
   filteredMessages.value = filtered
-
-  console.log(filteredMessages.value)
 }
 
 async function handleAnswer(answerData: Object) {
   const castedAnswerData = answerData as IUserContact
-  console.log(castedAnswerData)
   const response = await answerFromRepairShop(castedAnswerData)
 
   getMessages()
@@ -57,8 +53,6 @@ async function handleAnswer(answerData: Object) {
 
 onMounted(() => {
   getMessages()
-
-  console.log(repairShopEmail, repairShopName)
 })
 </script>
 

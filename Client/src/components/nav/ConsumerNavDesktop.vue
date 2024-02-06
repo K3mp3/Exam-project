@@ -32,7 +32,6 @@ const userEmail = getCookie('email') || ''
 async function showSignInForm() {
   const { signIn, id } = await handleAutomaticSignIn()
   if (signIn && id) {
-    console.log(signIn, id)
     const showMagicTokenDialog = useShowMagicTokenDialog()
     showMagicTokenDialog.showMagicTokenInput(true, userEmail, id)
   } else {
@@ -55,7 +54,6 @@ onMounted(() => {
 
   nextTick(() => {
     const faqSection = document.getElementById('faq-component')
-    console.log(faqSection)
   })
 })
 </script>

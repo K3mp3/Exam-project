@@ -18,7 +18,6 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isRegistrationNumber', value: false },
   { key: 'isMessage', value: false }
 ]
-console.log(inputsArray)
 
 const isBtnDisabled = ref(true)
 const hideMobileBtn = ref(false)
@@ -27,7 +26,6 @@ let width = document.documentElement.clientWidth
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(isBtnDisabled.value)
 }
 
 function checkInputDataSelect1() {
@@ -164,7 +162,6 @@ const messageData = computed(() => {
 })
 
 async function handleMessage() {
-  console.log(location, registrationNumber, troubleshootTime, message)
   const response = await contactRepairShops(messageData.value)
 }
 

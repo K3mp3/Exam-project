@@ -27,8 +27,6 @@ const user = computed(() => {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
-  console.log(isBtnDisabled.value)
-  console.log(inputsArray)
 }
 
 function checkInputDataEmail() {
@@ -37,7 +35,6 @@ function checkInputDataEmail() {
       return
     } else {
       isEmail.value = true
-      console.log(isEmail.value)
 
       const index = inputsArray.findIndex((field) => field.key === 'isEmail')
 

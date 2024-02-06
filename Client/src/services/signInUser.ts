@@ -14,11 +14,9 @@ let userId = ''
 
 export async function signInUser(user: IUserSignIn) {
   try {
-    console.log(user)
     const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
 
     const showMagicTokenDialog = useShowMagicTokenDialog()
-    console.log(response.data)
     showMagicTokenDialog.showMagicTokenInput(true, response.data.email, response.data.id)
 
     userId = response.data.id || ''
@@ -44,20 +42,18 @@ export async function signInUser(user: IUserSignIn) {
 export async function automaticSignIn(user: IUserSignIn) {
   try {
     const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/automaticSignIn`, user)
-    console.log(response.data)
     return {
       status: response.status,
       userId: response.data.id
     }
   } catch (error) {
-    console.log(error)
+    return error
   }
 }
 
 export async function checkMagicToken(user: IUserToken) {
   try {
     const response = await axios.post<IUserToken>(`${BASE_URL}/users/checkMagicToken`, user)
-    console.log('response.data.signedIn:', response.data.signedIn)
 
     if (response.data.signedIn) {
       const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
@@ -93,7 +89,6 @@ export async function checkMagicToken(user: IUserToken) {
 
 export async function signOutUser(user: IUserSignIn) {
   try {
-    console.log('user:', user)
     const response = await axios.post(`${BASE_URL}/users/signOutUser`, user)
     return response.status
   } catch (error: any) {

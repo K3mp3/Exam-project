@@ -6,7 +6,6 @@ export const useShowRepairShopDialog = defineStore('repairShopRegisterDialog', (
 
   function showRepairShopRegisterDialogForm(show: boolean) {
     isRepairShopDialog.value = show
-    console.log(isRepairShopDialog.value)
   }
 
   return { isRepairShopDialog, showRepairShopRegisterDialogForm }

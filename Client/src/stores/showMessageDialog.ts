@@ -6,7 +6,6 @@ export const useShowMessageDialog = defineStore('messageDialog', () => {
 
   function showMessageContent(show: boolean) {
     showMessageDialog.value = show
-    console.log(showMessageDialog.value)
   }
 
   return { showMessageDialog, showMessageContent }

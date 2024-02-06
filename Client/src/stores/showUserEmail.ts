@@ -8,7 +8,6 @@ export const useShowUserEmail = defineStore('userEmail', () => {
   function useUserEmail(email: string, isEmailUsed: boolean) {
     userEmail.value = email
     isEmail.value = isEmailUsed
-    console.log(userEmail.value)
   }
 
   return { userEmail, isEmail, useUserEmail }

@@ -14,16 +14,10 @@ function getCookie(cookieName: string) {
 
 const userEmail = getCookie('email')
 
-const user = {
-  email: userEmail || ''
-}
-
 export async function handleAutomaticSignIn() {
   const userEmail = getCookie('email') || ''
   if (userEmail) {
     const response = await automaticSignIn({ email: userEmail })
-
-    console.log('response:', response?.userId)
 
     if (response?.status === 201) {
       return {
