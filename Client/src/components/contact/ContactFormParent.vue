@@ -5,8 +5,8 @@ import { onMounted, ref } from 'vue'
 import ContactFormMobile from './ContactFormMobile.vue'
 import ContactFormTablet from './ContactFormTablet.vue'
 
-const TABLET_BREAKPOINT = 699
-const DESKTOP_BREAKPOINT = 1481
+const RESPONSE_SUCCESS = 201
+const RESPONSE_ERROR = 500
 
 const mobile = ref(true)
 const tablet = ref(false)
@@ -17,35 +17,34 @@ const isConfirmationError = ref(false)
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > DESKTOP_BREAKPOINT) {
+  if (document.documentElement.clientWidth > 1481) {
     desktop.value = true
     tablet.value = false
     mobile.value = false
   } else if (
-    document.documentElement.clientWidth > TABLET_BREAKPOINT &&
-    document.documentElement.clientWidth < DESKTOP_BREAKPOINT
+    document.documentElement.clientWidth > 699 &&
+    document.documentElement.clientWidth < 1482
   ) {
     tablet.value = true
     desktop.value = false
     mobile.value = false
-  } else if (document.documentElement.clientWidth < TABLET_BREAKPOINT + 1) {
+  } else if (document.documentElement.clientWidth < 700) {
     mobile.value = true
     desktop.value = false
     tablet.value = false
   }
 }
 
-async function handleMessage(messageData: Object) {
-  const castedMessage = messageData as IMessage
-  const response = await contactVibe(castedMessage)
+async function handleMessage(messageData: IMessage) {
+  const response = await contactVibe(messageData)
 
-  if (response === 201) {
+  if (response === RESPONSE_SUCCESS) {
     isConfirmation.value = true
 
     setTimeout(() => {
       isConfirmation.value = false
     }, 4000)
-  } else if (response === 500) {
+  } else if (response === RESPONSE_ERROR) {
     isConfirmationError.value = true
 
     setTimeout(() => {
