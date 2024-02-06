@@ -19,10 +19,12 @@ export async function handleAutomaticSignIn() {
   if (userEmail) {
     const response = await automaticSignIn({ email: userEmail })
 
-    if (response?.status === 201) {
+    const signInResponse = response as { status: number; userId: string }
+
+    if (signInResponse?.status === 201) {
       return {
         signIn: true,
-        id: response.userId
+        id: signInResponse.userId
       }
     }
   }
