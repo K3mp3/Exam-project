@@ -6,7 +6,7 @@ const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
 export async function answerFromRepairShop(messageData: IUserContact) {
   try {
     const response = await axios.post<IUserContact>(
-      `${BASE_URL}/users/answerFromRepairShop`,
+      `${BASE_URL}/answerFromRepairShops/answerFromRepairShop`,
       messageData
     )
     return response.data
@@ -17,7 +17,7 @@ export async function answerFromRepairShop(messageData: IUserContact) {
 
 export async function removedAnsweredRequests() {
   try {
-    const response = await axios.get(`${BASE_URL}/users/answerFromRepairShop`)
+    const response = await axios.get(`${BASE_URL}/answerFromRepairShops/answerFromRepairShop`)
     return response.data
   } catch (error) {
     return error

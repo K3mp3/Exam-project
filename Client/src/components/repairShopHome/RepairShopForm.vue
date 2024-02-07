@@ -47,6 +47,8 @@ async function getMessages() {
 }
 
 async function handleAnswer(answerData: Object) {
+  console.log('hejsan hoppsan')
+
   const castedAnswerData = answerData as IUserContact
   const response = await answerFromRepairShop(castedAnswerData)
 
@@ -62,7 +64,7 @@ onMounted(() => {
   <h3></h3>
   <h3>Dina förfrågningar</h3>
 
-  <form @submit.prevent="handleAnswer" class="repair-shop-requests-form">
+  <form @submit.prevent="" class="repair-shop-requests-form">
     <RepairShopMessageContent
       v-for="index in filteredMessages"
       :key="index._id"
