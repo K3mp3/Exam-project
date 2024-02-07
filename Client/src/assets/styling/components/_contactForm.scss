@@ -187,40 +187,6 @@
         background-clip: padding-box, border-box;
       }
     }
-
-    .contact-form-send-btn {
-      transition: all 0.2s ease-in-out;
-      background-color: $el-active-blue;
-      border: none;
-      color: $text-main;
-      font-family: map-get($font-title-bold, font-family);
-      font-weight: map-get($font-title-bold, font-weight);
-      font-size: 0.9rem;
-      height: 42px;
-      border-radius: 50px;
-      margin-top: 32px;
-      width: 100%;
-
-      &:hover {
-        transition: all 0.2s ease-in-out;
-        cursor: pointer;
-        background-color: $el-active-blue-hover;
-      }
-    }
-
-    .contact-form-send-btn-disabled {
-      transition: all 0.2s ease-in-out;
-      background-color: $el-inactive-blue;
-      border: none;
-      color: $text-disabled;
-      font-family: map-get($font-title-bold, font-family);
-      font-weight: map-get($font-title-bold, font-weight);
-      font-size: 0.9rem;
-      height: 42px;
-      border-radius: 50px;
-      margin: 32px 0;
-      width: 100%;
-    }
   }
 
   .contact-form-blue-line {
@@ -266,16 +232,6 @@
       .contact-form-textarea-input {
         height: 204px;
       }
-
-      .contact-form-send-btn {
-        font-size: 1rem;
-        margin: 16px 0;
-      }
-
-      .contact-form-send-btn-disabled {
-        font-size: 1rem;
-        margin: 16px 0;
-      }
     }
   }
 }
@@ -315,16 +271,6 @@
 
       .contact-form-textarea-input {
         height: 219px;
-      }
-
-      .contact-form-send-btn {
-        font-size: 1rem;
-        margin: 16px 0;
-      }
-
-      .contact-form-send-btn-disabled {
-        font-size: 1rem;
-        margin: 16px 0;
       }
     }
   }

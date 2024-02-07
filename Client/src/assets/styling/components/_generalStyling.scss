@@ -207,6 +207,10 @@
   z-index: 2;
 }
 
+.margin-32-0 {
+  margin: 32px 0;
+}
+
 .margin-top-n11 {
   margin-top: -11px;
 }
@@ -308,7 +312,6 @@
 }
 
 // Buttons
-
 .btn-back {
   background: transparent;
   color: $text-main;
@@ -327,5 +330,44 @@
     cursor: pointer;
     color: $el-active-blue;
     border: 2px solid $el-active-blue;
+  }
+}
+
+.main-btn {
+  transition: all 0.2s ease-in-out;
+  background-color: $el-active-blue;
+  border: none;
+  color: $text-main;
+  font-family: map-get($font-title-bold, font-family);
+  font-weight: map-get($font-title-bold, font-weight);
+  font-size: 0.9rem;
+  height: 42px;
+  border-radius: 50px;
+  margin-top: 32px;
+  width: 100%;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    background-color: $el-active-blue-hover;
+  }
+}
+
+.main-btn-disabled {
+  transition: all 0.2s ease-in-out;
+  background-color: $el-inactive-blue;
+  border: none;
+  font-size: 0.9rem;
+  height: 42px;
+  border-radius: 50px;
+  width: 100%;
+}
+
+@media screen and (min-width: 700px) {
+  .main-btn {
+    font-size: 1rem;
+  }
+  .main-btn-disabled {
+    font-size: 1rem;
   }
 }
