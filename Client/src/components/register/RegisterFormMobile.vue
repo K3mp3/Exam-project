@@ -170,12 +170,9 @@ onMounted(() => {
   if (storedEmail) {
     email.value = storedEmail
     checkInputDataEmail()
-    console.log('hejsan')
   }
 
   checkInputData()
-
-  console.log(storedEmail, email.value)
 })
 </script>
 
