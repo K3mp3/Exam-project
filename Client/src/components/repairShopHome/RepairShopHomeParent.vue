@@ -2,11 +2,15 @@
 import router from '@/router'
 import { signOutUser } from '@/services/signInUser'
 import { useSignInStore } from '@/stores/signInStore'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { removeCookies } from '../cookies/RemoveCookies'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
+import UserSettings from '../userHome/UserSettings.vue'
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
+
+const isSideNav = ref(false)
+const isUserSettings = ref(false)
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -22,6 +26,10 @@ function getCookie(cookieName: string) {
 
 const fullname = getCookie('name')
 const email = getCookie('email')
+
+function showUserSettings() {
+  isUserSettings.value = !isUserSettings.value
+}
 
 const user = computed(() => {
   return {
@@ -45,23 +53,24 @@ async function changeUserSignInStatus() {
 }
 
 onMounted(() => {
-  if (!isSignedIn.value) {
-    router.push({ name: 'landing page' })
-  }
+  // if (!isSignedIn.value) {
+  //   router.push({ name: 'landing page' })
+  // }
 })
 </script>
 
 <template>
+  <UserSettings v-if="isUserSettings" :signOutFunction="changeUserSignInStatus"></UserSettings>
   <div class="repair-shop-home-parent">
     <div class="repair-shop-signed-in-header">
       <h2>Hej {{ fullname }}</h2>
       <button
+        v-if="!isSideNav"
         type="button"
-        class="repair-shop-home-sign-out-btn text-main z-index-2"
-        @click="changeUserSignInStatus"
+        class="btn-transparent text-main z-index-2"
+        @click="showUserSettings"
       >
-        <fontAwesome :icon="['fas', 'gear']" />
-        Logga ut
+        <fontAwesome :icon="['fas', 'user']" />
       </button>
     </div>
     <div class="repair-shop-signed-in-main">

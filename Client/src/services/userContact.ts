@@ -6,7 +6,7 @@ const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
 export async function contactRepairShops(messageData: IUserContact) {
   try {
     const response = await axios.post<IUserContact>(
-      `${BASE_URL}/users/contactRepairShops`,
+      `${BASE_URL}/contactRepairShops/contactRepairShops`,
       messageData
     )
 
@@ -18,7 +18,7 @@ export async function contactRepairShops(messageData: IUserContact) {
 
 export async function getContactRepairShops() {
   try {
-    const response = await axios.get(`${BASE_URL}/users/contactRepairShops`)
+    const response = await axios.get(`${BASE_URL}/contactRepairShops/contactRepairShops`)
     return response.data
   } catch (error) {
     return error

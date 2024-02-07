@@ -363,6 +363,21 @@
   width: 100%;
 }
 
+.btn-transparent {
+  background: transparent;
+  transition: all 0.2s ease-in-out;
+  border-radius: 20px;
+  background: transparent;
+  border: none;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: $el-active-blue;
+  }
+}
+
 @media screen and (min-width: 700px) {
   .main-btn {
     font-size: 1rem;

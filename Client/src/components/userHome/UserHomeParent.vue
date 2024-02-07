@@ -103,7 +103,7 @@ onMounted(() => {
     <button
       v-if="!isSideNav"
       type="button"
-      class="user-home-profile-btn text-main z-index-2"
+      class="btn-transparent text-main z-index-2"
       @click="showUserSettings"
     >
       <fontAwesome :icon="['fas', 'user']" />
