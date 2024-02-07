@@ -264,8 +264,8 @@ onMounted(() => {
           type="submit"
           :disabled="isBtnDisabled"
           :class="{
-            'contact-form-send-btn-disabled': isBtnDisabled,
-            'contact-form-send-btn': !isBtnDisabled
+            'main-btn-disabled margin-16-0 text-disabled font-title-bold': isBtnDisabled,
+            'main-btn margin-32-0 text-disabled font-title-bold': !isBtnDisabled
           }"
         >
           Skicka
