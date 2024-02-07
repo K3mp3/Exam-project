@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import router from '@/router'
-import { useShowUserEmail } from '@/stores/showUserEmail'
 import { nextTick, onMounted, ref } from 'vue'
 
 const userEmail = ref('')
@@ -26,8 +25,7 @@ function saveUserEmail() {
       router.push({ name: 'register form' })
       return
     } else {
-      const writtenEmail = useShowUserEmail()
-      writtenEmail.useUserEmail(userEmail.value, true)
+      localStorage.setItem('userEmail', userEmail.value)
       router.push({ name: 'register form' })
     }
   })

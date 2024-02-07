@@ -4,7 +4,7 @@ import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { useShowUserEmail } from '@/stores/showUserEmail'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -202,6 +202,20 @@ function showRegisterRepairShopDialog() {
   const showRegisterDialog = useShowRegisterDialog()
   showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
+
+onMounted(() => {
+  const storedEmail = localStorage.getItem('userEmail')
+
+  if (storedEmail) {
+    email.value = storedEmail
+    checkInputDataEmail()
+    console.log('hejsan')
+  }
+
+  checkInputData()
+
+  console.log(storedEmail, email.value)
+})
 </script>
 
 <template>

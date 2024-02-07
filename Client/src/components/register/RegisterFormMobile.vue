@@ -2,7 +2,7 @@
 import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowUserEmail } from '@/stores/showUserEmail'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
 const name = ref('')
@@ -163,6 +163,20 @@ function checkPasswordStrength(type: string) {
 async function handleRegistration() {
   const response = await registerUser(newUser.value)
 }
+
+onMounted(() => {
+  const storedEmail = localStorage.getItem('userEmail')
+
+  if (storedEmail) {
+    email.value = storedEmail
+    checkInputDataEmail()
+    console.log('hejsan')
+  }
+
+  checkInputData()
+
+  console.log(storedEmail, email.value)
+})
 </script>
 
 <template>
