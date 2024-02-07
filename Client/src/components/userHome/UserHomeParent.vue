@@ -7,6 +7,7 @@ import { computed, onMounted, ref } from 'vue'
 import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNavParent from '../sideNav/SideNavParent.vue'
+import UserHomeAnswers from './UserHomeAnswers.vue'
 import UserSettings from './UserSettings.vue'
 
 const userId = computed(() => {
@@ -119,4 +120,6 @@ onMounted(() => {
       Ny förfrågan
     </button>
   </div>
+
+  <UserHomeAnswers></UserHomeAnswers>
 </template>

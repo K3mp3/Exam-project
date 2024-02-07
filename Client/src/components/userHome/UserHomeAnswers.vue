@@ -3,7 +3,7 @@ import type { IUserContact } from '@/models/IUserContact'
 import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { answerRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
-import UserSentAnswerForm from './UserSentAnswerForm.vue'
+import UserHomeAnswerForm from './UserHomeAnswerForm.vue'
 
 const allRepairShopAnswers = ref<IUserContact[]>([])
 const correctRepairShopAnswers = ref<IUserContact[]>([])
@@ -25,6 +25,8 @@ const customerEmail = getCookie('email')
 async function getAnswers() {
   const allResponses = await removedAnsweredRequests()
   allRepairShopAnswers.value = allResponses
+
+  console.log(allRepairShopAnswers.value)
 
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
     (answer) => answer.customerEmail === customerEmail
@@ -54,13 +56,13 @@ onMounted(() => {
   <div class="user-sent-main">
     <p>{{ `Du har ${calculateTotalAnswers()} svar` }}</p>
 
-    <form @submit.prevent="handleAnswer" class="user-sent-answer-form">
-      <UserSentAnswerForm
+    <form @submit.prevent="" class="user-sent-answer-form">
+      <UserHomeAnswerForm
         v-for="index in allRepairShopAnswers"
         :key="index._id"
         :index="index"
         :onAnswer="handleAnswer"
-      ></UserSentAnswerForm>
+      ></UserHomeAnswerForm>
     </form>
   </div>
 </template>

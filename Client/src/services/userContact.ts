@@ -28,7 +28,7 @@ export async function getContactRepairShops() {
 export async function answerRepairShops(messageData: IUserContact) {
   try {
     const response = await axios.post<IUserContact>(
-      `${BASE_URL}/users/answerRepairShops`,
+      `${BASE_URL}/answerRepairShops/answerRepairShops`,
       messageData
     )
     return response.data
