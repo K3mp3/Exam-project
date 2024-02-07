@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import router from '@/router'
 import { contactRepairShops } from '@/services/userContact'
 import { computed, nextTick, onMounted, ref } from 'vue'
+
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
 
 const location = ref('')
 const registrationNumber = ref('')
@@ -23,6 +29,10 @@ const isBtnDisabled = ref(true)
 const hideMobileBtn = ref(false)
 
 let width = document.documentElement.clientWidth
+
+function handleReturnClick() {
+  router.push(`/user-home/${userId.value}`)
+}
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
@@ -171,7 +181,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <h3>Kontakta verkstäder</h3>
+  <div class="new-request-top-nav">
+    <button type="button" class="btn-back" @click="handleReturnClick">
+      <fontAwesome :icon="['fas', 'chevron-left']" />
+    </button>
+    <h3>Kontakta verkstäder</h3>
+  </div>
 
   <form @submit.prevent="handleMessage">
     <div class="right-side-contact-form">

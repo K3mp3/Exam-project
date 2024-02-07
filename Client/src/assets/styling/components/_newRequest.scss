@@ -1,53 +1,14 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
-.signed-in-header {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-
-  .user-home-profile-btn {
-    background: transparent;
-    transition: all 0.2s ease-in-out;
-    padding: 2px 16px;
-    border-radius: 20px;
-    background: transparent;
-    border: none;
-    text-align: center;
-
-    &:hover {
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      color: $el-active-blue;
-    }
-  }
-}
-
-.signed-in-main {
+.new-request-parent-container {
   padding: 16px;
 
-  .user-home-new-btn {
-    transition: all 0.2s ease-in-out;
-    background-color: $el-active-blue;
-    border: none;
-    color: $text-main;
-    font-family: map-get($font-text-light, font-family);
-    font-weight: map-get($font-text-light, font-weight);
-    height: 35px;
-    border-radius: 50px;
-    max-width: 100%;
+  .new-request-top-nav {
     display: flex;
+    gap: 16px;
     align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: 0.9rem;
-    padding: 0px 16px;
-
-    &:hover {
-      transition: all 0.2s ease-in-out;
-      cursor: pointer;
-      background-color: $el-active-blue-hover;
-    }
+    margin-bottom: 16px;
   }
 
   label {
@@ -176,11 +137,7 @@
 }
 
 @media screen and (min-width: 700px) {
-  .signed-in-header {
-    padding: 32px;
-  }
-
-  .signed-in-main {
+  .new-request-parent-container {
     padding: 16px 32px;
 
     form {

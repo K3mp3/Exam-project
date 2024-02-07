@@ -5,6 +5,7 @@ import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
 import RepairShopHomeViewVue from '@/views/RepairShopHomeView.vue'
 import SignInViewVue from '@/views/SignInView.vue'
+import UserHomeNewRequestViewVue from '@/views/UserHomeNewRequestView.vue'
 import UserHomeView from '@/views/UserHomeView.vue'
 import UserSentViewVue from '@/views/UserSentView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -51,6 +52,12 @@ const router = createRouter({
           path: '/user-home/:userId',
           name: 'user home view',
           component: UserHomeView,
+          meta: { index: true }
+        },
+        {
+          path: '/user-home-new-request/:userId',
+          name: 'user home new request',
+          component: UserHomeNewRequestViewVue,
           meta: { index: true }
         },
         {
