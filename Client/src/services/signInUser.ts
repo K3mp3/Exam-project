@@ -21,7 +21,11 @@ export async function signInUser(user: IUserSignIn) {
 
     userId = response.data.id || ''
 
-    return response
+    console.log(response.data.email)
+
+    localStorage.setItem('userEmail', response.data.email || '')
+
+    // return response
   } catch (error: any) {
     if (
       error.response &&

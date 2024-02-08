@@ -20,17 +20,17 @@ function getCookie(cookieName: string) {
   return null
 }
 
-const customerEmail = getCookie('email')
+const customerEmail = localStorage.getItem('userEmail')
 
 async function getAnswers() {
   const allResponses = await removedAnsweredRequests()
   allRepairShopAnswers.value = allResponses
 
-  console.log(allRepairShopAnswers.value)
+  console.log(customerEmail)
 
-  // allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
-  //   (answer) => answer.customerEmail === customerEmail
-  // )
+  allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
+    (answer) => answer.customerEmail === customerEmail
+  )
 }
 
 function calculateTotalAnswers() {
