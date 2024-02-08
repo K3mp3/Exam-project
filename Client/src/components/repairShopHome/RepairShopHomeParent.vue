@@ -53,9 +53,9 @@ async function changeUserSignInStatus() {
 }
 
 onMounted(() => {
-  if (!isSignedIn.value) {
-    router.push({ name: 'landing page' })
-  }
+  // if (!isSignedIn.value) {
+  //   router.push({ name: 'landing page' })
+  // }
 })
 </script>
 

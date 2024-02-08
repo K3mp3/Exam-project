@@ -46,17 +46,19 @@ async function getMessages() {
   filteredMessages.value = filtered
 }
 
-async function handleAnswer(answerData: Object) {
-  console.log('hejsan hoppsan')
+async function getAnsweredMessages() {}
 
-  const castedAnswerData = answerData as IUserContact
-  const response = await answerFromRepairShop(castedAnswerData)
+async function handleAnswer(answerData: Object) {
+  console.log(answerData)
+
+  const response = await answerFromRepairShop(answerData as IUserContact)
 
   getMessages()
 }
 
 onMounted(() => {
   getMessages()
+  getAnsweredMessages()
 })
 </script>
 

@@ -61,7 +61,7 @@ const router = createRouter({
           meta: { index: true }
         },
         {
-          path: '/repair-shop-home',
+          path: '/repair-shop-home/:userId',
           name: 'repair shop home view',
           component: RepairShopHomeViewVue,
           meta: { index: true }

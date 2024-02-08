@@ -2,8 +2,8 @@ export interface IUserContact {
   _id?: string
   customerId?: string
   messageId?: string
-  customerName: string
-  customerEmail: string
+  customerName?: string
+  customerEmail?: string
   repairShopEmail?: string
   repairShopName?: string
   location: string

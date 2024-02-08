@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import router from '@/router'
 import { computed, nextTick, onMounted, ref } from 'vue'
+
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
 
 const props = defineProps({
   index: {
@@ -41,11 +47,10 @@ const repairShopName = getCookie('name')
 
 const answerData = computed(() => {
   return {
+    repairShopId: userId.value as unknown as string,
     customerName: props.index.customerName,
     customerId: props.index.customerId,
     customerEmail: props.index.customerEmail,
-    repairShopEmail: repairShopEmail,
-    repairShopName: repairShopName,
     customerMessage: props.index.customerMessage[0].message,
     customerMessageDate: props.index.customerMessage[0].date,
     repairShopAnswer: messageAnswer.value,

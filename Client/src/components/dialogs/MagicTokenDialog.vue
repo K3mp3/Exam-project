@@ -75,7 +75,11 @@ async function handleSignIn() {
 
     closeDialog()
 
-    router.push({ name: 'repair shop home view' })
+    if (setUserId.value) {
+      router.push(`/repair-shop-home/${setUserId.value}`)
+    } else {
+      router.push(`/repair-shop-home/${response.userId}`)
+    }
   }
 
   if (response === 'Unauthorized') {

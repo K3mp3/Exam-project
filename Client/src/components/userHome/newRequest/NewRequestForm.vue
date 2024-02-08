@@ -161,8 +161,7 @@ const messageData = computed(() => {
   const nonNullEmaik = email || ''
 
   return {
-    customerName: nonNullName,
-    customerEmail: nonNullEmaik,
+    customerId: userId.value as unknown as string,
     location: location.value,
     registrationNumber: registrationNumber.value,
     troubleshootTime: troubleshootTime.value,
@@ -172,6 +171,7 @@ const messageData = computed(() => {
 })
 
 async function handleMessage() {
+  console.log('wyedabyhwd')
   const response = await contactRepairShops(messageData.value)
 }
 
