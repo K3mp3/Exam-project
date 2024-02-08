@@ -24,18 +24,9 @@ const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer'
 
 const answerData = computed(() => {
   return {
-    customerName: props.index.customerName,
     customerId: props.index.customerId,
     messageId: props.index.messageId,
-    customerEmail: props.index.customerEmail,
-    repairShopEmail: props.index.repairShopEmail,
-    repairShopName: props.index.repairShopName,
-    customerMessage: props.index.customerMessage,
     customerAnswer: messageAnswer.value,
-    repairShopAnswer: props.index.repairShopAnswer,
-    priceOffer: priceOffer.value,
-    registrationNumber: props.index.registrationNumber,
-    troubleshootTime: props.index.troubleshootTime,
     answeredByRepairShop: false
   }
 })

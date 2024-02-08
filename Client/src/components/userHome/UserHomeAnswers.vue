@@ -28,9 +28,9 @@ async function getAnswers() {
 
   console.log(allRepairShopAnswers.value)
 
-  allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
-    (answer) => answer.customerEmail === customerEmail
-  )
+  // allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
+  //   (answer) => answer.customerEmail === customerEmail
+  // )
 }
 
 function calculateTotalAnswers() {
@@ -44,6 +44,7 @@ function calculateTotalAnswers() {
 }
 
 async function handleAnswer(answerData: object) {
+  console.log(answerData)
   const response = await answerRepairShops(answerData as IUserContact)
 }
 
