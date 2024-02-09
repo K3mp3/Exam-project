@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import type { IRepairShopId } from '@/models/IRepairShopId'
 import type { IUserContact } from '@/models/IUserContact'
-import { answerFromRepairShop, removedAnsweredRequests } from '@/services/RepariShopAnswer'
-import { getContactRepairShops } from '@/services/userContact'
-import { onMounted, ref } from 'vue'
+import router from '@/router'
+import { answerFromRepairShop } from '@/services/RepariShopAnswer'
+import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
+import { computed, onMounted, ref } from 'vue'
 import RepairShopMessageContent from './RepairShopMessageContent.vue'
 
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
+
 const unansweredMessages = ref<IUserContact[]>([])
-const answeredMessages = ref<IUserContact[]>([])
-const filteredMessages = ref<IUserContact[]>([])
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -21,32 +26,25 @@ function getCookie(cookieName: string) {
   return null
 }
 
-const repairShopEmail = getCookie('email')
-const repairShopName = getCookie('name')
+const repairShopEmail = localStorage.getItem('userEmail')
+const repairShopName = localStorage.getItem('userName')
 
-async function getMessages() {
-  const response = await getContactRepairShops()
-  unansweredMessages.value = response
-  console.log(unansweredMessages.value)
-
-  const answeredResponse = await removedAnsweredRequests()
-  answeredMessages.value = answeredResponse
-
-  const filtered = unansweredMessages.value.filter((unansweredMessage) => {
-    const matchingAnswer = answeredMessages.value.find(
-      (answeredMessage) =>
-        unansweredMessage.customerId === answeredMessage.customerId &&
-        repairShopEmail === answeredMessage.repairShopEmail &&
-        repairShopName === answeredMessage.repairShopName
-    )
-
-    return !matchingAnswer
-  })
-
-  filteredMessages.value = filtered
+const repairShopId = {
+  repairShopId: userId.value
 }
 
-async function getAnsweredMessages() {}
+async function getMessages() {
+  if (userId.value) {
+    const response = await getContactRepairShops(repairShopId as IRepairShopId)
+    unansweredMessages.value = response
+    console.log(response)
+  }
+}
+
+async function getAnsweredMessages() {
+  const response = await getAnswerRepairShops()
+  console.log('response:', response)
+}
 
 async function handleAnswer(answerData: Object) {
   console.log(answerData)
@@ -68,7 +66,7 @@ onMounted(() => {
 
   <form @submit.prevent="" class="repair-shop-requests-form">
     <RepairShopMessageContent
-      v-for="index in filteredMessages"
+      v-for="index in unansweredMessages"
       :key="index._id"
       :index="index"
       class="repair-shop-message-content-component"

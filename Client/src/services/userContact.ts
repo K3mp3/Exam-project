@@ -1,3 +1,4 @@
+import type { IRepairShopId } from '@/models/IRepairShopId'
 import type { IUserContact } from '@/models/IUserContact'
 import axios from 'axios'
 
@@ -18,9 +19,12 @@ export async function contactRepairShops(messageData: IUserContact) {
   }
 }
 
-export async function getContactRepairShops() {
+export async function getContactRepairShops(repairShopId: IRepairShopId) {
   try {
-    const response = await axios.get(`${BASE_URL}/contactRepairShops/contactRepairShops`)
+    const response = await axios.post(
+      `${BASE_URL}/contactRepairShops/getContactRepairShops`,
+      repairShopId
+    )
     return response.data
   } catch (error) {
     return error
@@ -34,6 +38,15 @@ export async function answerRepairShops(messageData: IUserContact) {
       `${BASE_URL}/answerRepairShops/answerRepairShops`,
       messageData
     )
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function getAnswerRepairShops() {
+  try {
+    const response = await axios.get(`${BASE_URL}/answerRepairShops/answerRepairShops`)
     return response.data
   } catch (error) {
     return error

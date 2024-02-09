@@ -14,4 +14,5 @@ export interface IUserContact {
   customerAnswer?: string
   priceOffer?: string
   answeredByRepairShop: boolean
+  repairShopAnswers: [object]
 }

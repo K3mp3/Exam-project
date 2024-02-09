@@ -7,7 +7,9 @@ import { useSignInStore } from '@/stores/signInStore'
 import axios from 'axios'
 import { computed } from 'vue'
 
-const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
+const BASE_URL = 'http://localhost:3000'
+// https://shark-app-mvsjk.ondigitalocean.app
+
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
 let userId = ''
@@ -21,9 +23,10 @@ export async function signInUser(user: IUserSignIn) {
 
     userId = response.data.id || ''
 
-    console.log(response.data.email)
+    console.log(response.data.name)
 
     localStorage.setItem('userEmail', response.data.email || '')
+    localStorage.setItem('userName', response.data.name || '')
 
     // return response
   } catch (error: any) {
