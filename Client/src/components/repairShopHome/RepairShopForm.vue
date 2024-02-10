@@ -13,6 +13,7 @@ const userId = computed(() => {
 })
 
 const unansweredMessages = ref<IUserContact[]>([])
+const filteredMessages = []
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -26,18 +27,27 @@ function getCookie(cookieName: string) {
   return null
 }
 
-const repairShopEmail = localStorage.getItem('userEmail')
-const repairShopName = localStorage.getItem('userName')
+// const repairShopEmail = localStorage.getItem('userEmail')
+// const repairShopName = localStorage.getItem('userName')
 
 const repairShopId = {
   repairShopId: userId.value
 }
 
+const repairShopName = localStorage.getItem('userName')
+
 async function getMessages() {
   if (userId.value) {
     const response = await getContactRepairShops(repairShopId as IRepairShopId)
-    unansweredMessages.value = response
-    console.log(response)
+
+    const filteredResponse = response.filter((message: IUserContact) => {
+      return (
+        !message.repairShopAnswers || // If repairShopAnswers is not defined
+        message.repairShopAnswers.every((answer) => answer.repairShop !== repairShopName)
+      )
+    })
+
+    unansweredMessages.value = filteredResponse
   }
 }
 
