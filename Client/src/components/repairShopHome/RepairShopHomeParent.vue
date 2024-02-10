@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import router from '@/router'
-import { signOutUser } from '@/services/signInUser'
+import { signOutUser } from '@/services/signOutUser'
 import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
-import { removeCookies } from '../cookies/RemoveCookies'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import UserSettings from '../userHome/UserSettings.vue'
 
@@ -46,7 +45,6 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(!isSignedIn.value)
 
     if (!isSignedIn.value) {
-      removeCookies()
       router.push({ name: 'landing page' })
     }
   }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import router from '@/router'
-import { signOutUser } from '@/services/signInUser'
+
+import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
@@ -89,9 +90,9 @@ function newRequest() {
 onMounted(() => {
   updateScreenSize()
 
-  // if (!isSignedIn.value) {
-  //   router.push('/')
-  // }
+  if (!isSignedIn.value) {
+    router.push('/')
+  }
 })
 </script>
 

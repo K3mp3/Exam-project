@@ -46,14 +46,6 @@ async function handleSignIn() {
   expirationDate.setDate(expirationDate.getDate() + 60.8)
 
   if (response.status === 201 && response.repairShop === false) {
-    if (isCookieAccepted === 'true') {
-      document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
-      document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
-      document.cookie = `repairShop=${
-        response.repairShop
-      }; expires=${expirationDate.toUTCString()}; path=/`
-    }
-
     closeDialog()
 
     const showSignInDialog = useShowSignInDialog()
@@ -65,14 +57,6 @@ async function handleSignIn() {
       router.push(`/user-home/${response.userId}`)
     }
   } else if (response.status === 201 && response.repairShop === true) {
-    if (isCookieAccepted === 'true') {
-      document.cookie = `name=${response.name}; expires=${expirationDate.toUTCString()}; path=/`
-      document.cookie = `email=${userEmail.value}; expires=${expirationDate.toUTCString()}; path=/`
-      document.cookie = `repairShop=${
-        response.repairShop
-      }; expires=${expirationDate.toUTCString()}; path=/`
-    }
-
     closeDialog()
 
     if (setUserId.value) {

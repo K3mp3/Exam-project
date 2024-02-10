@@ -24,11 +24,6 @@ export async function signInUser(user: IUserSignIn) {
     userId = response.data.id || ''
 
     console.log(response.data.name)
-
-    localStorage.setItem('userEmail', response.data.email || '')
-    localStorage.setItem('userName', response.data.name || '')
-
-    // return response
   } catch (error: any) {
     if (
       error.response &&
@@ -70,6 +65,12 @@ export async function checkMagicToken(user: IUserToken) {
       const isSignedIn = useSignInStore()
       isSignedIn.signInUser(true)
 
+      console.log(response.data.repairShop)
+
+      localStorage.setItem('userEmail', response.data.email || '')
+      localStorage.setItem('userName', response.data.name || '')
+      localStorage.setItem('isRepairShop', String(response.data.repairShop ?? ''))
+
       return {
         name: response.data.name,
         repairShop: response.data.repairShop,
@@ -90,25 +91,6 @@ export async function checkMagicToken(user: IUserToken) {
       error.response.data.message === 'Unauthorized'
     ) {
       return error.response.data.message
-    }
-  }
-}
-
-export async function signOutUser(user: IUserSignIn) {
-  try {
-    const response = await axios.post(`${BASE_URL}/users/signOutUser`, user)
-    return response.status
-  } catch (error: any) {
-    if (
-      error &&
-      error.response.status === 500 &&
-      error.response.data.message === 'Internal Server Error'
-    ) {
-      const showErrorDialog = useShowPopUp()
-      showErrorDialog.showPopUpTab(
-        true,
-        'Whoops, tyvärr fungerade det inte att logga ut på grund av ett fel. Om problemet kvarstår, vänligen kontakta support på 060-123 47 53'
-      )
     }
   }
 }
