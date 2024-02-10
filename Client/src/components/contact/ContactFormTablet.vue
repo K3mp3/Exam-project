@@ -218,7 +218,7 @@ onMounted(() => {
           v-model="message"
           placeholder="Beskriv varför du kontaktar oss"
           @input="checkInputDataMessage"
-          class="contact-form-textarea-input"
+          :class="['textarea-input', tablet ? 'height-204px' : 'height-219px']"
         ></textarea>
       </div>
       <div class="contact-form-right-side">

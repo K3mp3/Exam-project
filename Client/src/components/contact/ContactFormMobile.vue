@@ -10,6 +10,8 @@ const props = defineProps({
 })
 
 const mobile = ref(true)
+const tablet = ref(false)
+const desktop = ref(false)
 const isBtnDisabled = ref(true)
 
 const name = ref('')
@@ -32,14 +34,20 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
   if (document.documentElement.clientWidth > 1481) {
+    desktop.value = true
+    tablet.value = false
     mobile.value = false
   }
 
   if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1482) {
+    desktop.value = false
+    tablet.value = true
     mobile.value = false
   }
 
   if (document.documentElement.clientWidth < 700) {
+    desktop.value = false
+    tablet.value = false
     mobile.value = true
   }
 }
@@ -248,7 +256,7 @@ onMounted(() => {
         v-model="message"
         placeholder="Beskriv varför du kontaktar oss"
         @input="checkInputDataMessage"
-        class="contact-form-textarea-input"
+        :class="['textarea-input', 'height-239px']"
       ></textarea>
 
       <button
