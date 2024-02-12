@@ -90,9 +90,9 @@ function newRequest() {
 onMounted(() => {
   updateScreenSize()
 
-  if (!isSignedIn.value) {
-    router.push('/')
-  }
+  // if (!isSignedIn.value) {
+  //   router.push('/')
+  // }
 })
 </script>
 

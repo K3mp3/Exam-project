@@ -29,7 +29,7 @@ async function getAnswers() {
   console.log(customerEmail)
 
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
-    (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === false
+    (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
   )
 }
 

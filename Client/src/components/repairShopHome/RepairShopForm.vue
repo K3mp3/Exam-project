@@ -5,6 +5,7 @@ import router from '@/router'
 import { answerFromRepairShop } from '@/services/RepariShopAnswer'
 import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
 import { computed, onMounted, ref } from 'vue'
+import RepairShopAnsweredContent from './RepairShopAnsweredContent.vue'
 import RepairShopMessageContent from './RepairShopMessageContent.vue'
 
 const userId = computed(() => {
@@ -13,6 +14,8 @@ const userId = computed(() => {
 })
 
 const unansweredMessages = ref<IUserContact[]>([])
+const answeredMessages = ref<IUserContact[]>([])
+
 const filteredMessages = []
 
 function getCookie(cookieName: string) {
@@ -53,7 +56,14 @@ async function getMessages() {
 
 async function getAnsweredMessages() {
   const response = await getAnswerRepairShops()
-  console.log('response:', response)
+  answeredMessages.value = response
+  console.log('answeredMessages.value:', answeredMessages.value)
+
+  answeredMessages.value = answeredMessages.value.filter(
+    (answer) => answer.answeredByRepairShop === false
+  )
+
+  console.log('answeredMessages.value:', answeredMessages.value)
 }
 
 async function handleAnswer(answerData: Object) {
@@ -82,6 +92,14 @@ onMounted(() => {
       class="repair-shop-message-content-component"
       :onAnswer="handleAnswer"
     ></RepairShopMessageContent>
+    <RepairShopAnsweredContent
+      v-for="index in answeredMessages"
+      :key="index._id"
+      :index="index"
+      class="repair-shop-message-content-component"
+      :onAnswer="handleAnswer"
+    >
+    </RepairShopAnsweredContent>
   </form>
 
   <div class="blue-line"></div>

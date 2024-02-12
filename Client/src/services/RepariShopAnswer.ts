@@ -20,7 +20,6 @@ export async function answerFromRepairShop(messageData: IUserContact) {
 
 export async function removedAnsweredRequests() {
   try {
-    console.log('hejsan')
     const response = await axios.get(`${BASE_URL}/answerFromRepairShops/answerFromRepairShop`)
     console.log(response.data)
     return response.data
