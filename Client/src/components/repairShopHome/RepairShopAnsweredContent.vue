@@ -28,7 +28,7 @@ const showDialog = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
-const messageArray: { message: string; date: string }[] = []
+const messageArray: { message: string; name: string; date: string }[] = []
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -123,8 +123,10 @@ onMounted(() => {
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
-        <p v-for="index in messageArray" :key="index.date">{{ index.message }}</p>
-        <hr />
+        <p v-for="index in messageArray" :key="index.date">
+          <span>{{ index.name }}</span
+          >{{ index.message }}
+        </p>
       </div>
       <div class="message-content-answer">
         <textarea

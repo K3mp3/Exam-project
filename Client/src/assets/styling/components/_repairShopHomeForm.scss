@@ -66,8 +66,6 @@
           width: 100%;
           margin-top: -14px;
           border-radius: 15px;
-          border: 2px solid $el-border-gray;
-          padding: 8px 8px 0 8px;
 
           .message-content-top-nav {
             display: flex;
@@ -108,16 +106,29 @@
 
           .message-content-text {
             width: 100%;
-            margin-top: 8px;
+            margin-top: 10px;
             display: flex;
             flex-direction: column;
             gap: 4px;
 
             p {
+              padding: 8px;
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+              margin-bottom: 4px;
               font-size: 0.9rem;
               color: $text-main;
               font-family: map-get($font-text-light, font-family);
               font-weight: map-get($font-text-light, font-weight);
+              background-color: $bg-third;
+              border-radius: 8px;
+
+              span {
+                color: $text-third;
+                font-family: map-get($font-text-light, font-family);
+                font-weight: map-get($font-text-light, font-weight);
+              }
             }
           }
 

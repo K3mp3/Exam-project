@@ -31,16 +31,21 @@
   font-weight: map-get($font-text-light, font-weight);
   font-size: 0.9rem;
   padding: 16px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
   .user-sent-answer-form {
+    max-width: 100%;
+
     .user-sent-answer-form-container {
       display: flex;
       flex-direction: column;
       gap: 16px;
       margin-top: 16px;
+      max-width: 100%;
 
       .user-sent-message-content-container {
-        width: 100%;
+        max-width: 100%;
         border-radius: 15px;
         border: 2px solid $el-border-gray;
         padding: 8px;
@@ -88,13 +93,15 @@
         }
 
         .user-sent-old-message-content-text {
-          width: 100%;
+          max-width: 100%;
           margin-top: 8px;
           display: flex;
           flex-direction: column;
+
           gap: 4px;
 
           p {
+            max-width: 100%;
             font-size: 0.9rem;
             color: $text-disabled;
             font-family: map-get($font-text-light, font-family);

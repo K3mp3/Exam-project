@@ -47,11 +47,11 @@ function getCookie(cookieName: string) {
   return null
 }
 
-const fullname = getCookie('name')
-const email = getCookie('email')
+const fullName = localStorage.getItem('userName')
+const email = localStorage.getItem('userEmail')
 const isCookieAccepted = getCookie('accept')
 
-const firstName = fullname ? fullname.split(' ')[0] : ''
+const firstName = fullName ? fullName.split(' ')[0] : ''
 
 const user = computed(() => {
   return {
