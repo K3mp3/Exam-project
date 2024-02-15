@@ -18,6 +18,20 @@ export async function answerFromRepairShop(messageData: IUserContact) {
   }
 }
 
+export async function answerCustomerBack(messageData: IUserContact) {
+  try {
+    console.log(messageData)
+    const response = await axios.post<IUserContact>(
+      `${BASE_URL}/answerFromRepairShops/answerCustomer`,
+      messageData
+    )
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
 export async function removedAnsweredRequests() {
   try {
     const response = await axios.get(`${BASE_URL}/answerFromRepairShops/answerFromRepairShop`)

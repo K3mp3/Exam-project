@@ -2,7 +2,7 @@
 import type { IRepairShopId } from '@/models/IRepairShopId'
 import type { IUserContact } from '@/models/IUserContact'
 import router from '@/router'
-import { answerFromRepairShop } from '@/services/RepariShopAnswer'
+import { answerCustomerBack, answerFromRepairShop } from '@/services/RepariShopAnswer'
 import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
 import { computed, onMounted, ref } from 'vue'
 import RepairShopAnsweredContent from './RepairShopAnsweredContent.vue'
@@ -74,6 +74,14 @@ async function handleAnswer(answerData: Object) {
   getMessages()
 }
 
+async function handleAnswerCustomerBack(answerData: Object) {
+  console.log(answerData)
+
+  const response = await answerCustomerBack(answerData as IUserContact)
+
+  getMessages()
+}
+
 onMounted(() => {
   getMessages()
   getAnsweredMessages()
@@ -97,7 +105,7 @@ onMounted(() => {
       :key="index._id"
       :index="index"
       class="repair-shop-message-content-component"
-      :onAnswer="handleAnswer"
+      :onAnswer="handleAnswerCustomerBack"
     >
     </RepairShopAnsweredContent>
   </form>

@@ -30,26 +30,14 @@ const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer'
 
 const messageArray: { message: string; name: string; date: string }[] = []
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const repairShopEmail = getCookie('email')
-const repairShopName = getCookie('name')
+const repairShopName = localStorage.getItem('userName')
 
 const answerData = computed(() => {
   return {
     repairShopId: userId.value as unknown as string,
     customerName: props.index.customerName,
     customerId: props.index.customerId,
+    messageId: props.index.messageId,
     customerEmail: props.index.customerEmail,
     customerMessage: props.index.customerMessage[0].message,
     customerMessageDate: props.index.customerMessage[0].date,
@@ -115,16 +103,17 @@ onMounted(() => {
 
     <div class="message-content-parent-container">
       <div class="message-content-top-nav">
-        <p>
-          <span v-if="isMessageBox">Registreringsnummer: </span>{{ props.index.registrationNumber }}
-        </p>
-        <button v-if="!showDialog" type="button" class="show-more-btn" @click="showMessageBox">
+        <p><span>Registreringsnummer: </span>{{ props.index.registrationNumber }}</p>
+        <button v-if="!isMessageBox" type="button" class="show-more-btn" @click="showMessageBox">
           <fontAwesome :icon="['fas', 'chevron-down']" />
+        </button>
+        <button v-if="isMessageBox" type="button" class="show-more-btn" @click="showMessageBox">
+          <fontAwesome :icon="['fas', 'chevron-up']" />
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
         <p v-for="index in messageArray" :key="index.date">
-          <span>{{ index.name }}</span
+          <span>{{ repairShopName === index.name ? 'Du' : index.name }}</span
           >{{ index.message }}
         </p>
       </div>
@@ -163,5 +152,7 @@ onMounted(() => {
     >
       Skicka
     </button>
+    <hr />
   </div>
+  <!-- <RepairShopCustomerContent v-if="isMessageBox"></RepairShopCustomerContent> -->
 </template>
