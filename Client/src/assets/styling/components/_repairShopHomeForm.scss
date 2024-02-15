@@ -129,6 +129,9 @@
                 font-family: map-get($font-text-light, font-family);
                 font-weight: map-get($font-text-light, font-weight);
               }
+              .text-active-blue {
+                color: $el-active-blue;
+              }
             }
           }
 

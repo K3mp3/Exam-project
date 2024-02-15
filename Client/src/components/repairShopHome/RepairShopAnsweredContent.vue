@@ -113,7 +113,9 @@ onMounted(() => {
       </div>
       <div class="message-content-text" v-if="isMessageBox">
         <p v-for="index in messageArray" :key="index.date">
-          <span>{{ repairShopName === index.name ? 'Du' : index.name }}</span
+          <span :class="repairShopName === index.name ? 'text-active-blue' : ''">{{
+            repairShopName === index.name ? 'Du' : index.name
+          }}</span
           >{{ index.message }}
         </p>
       </div>
