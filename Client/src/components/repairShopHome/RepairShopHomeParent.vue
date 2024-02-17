@@ -11,20 +11,8 @@ const isSignedIn = computed(() => useSignInStore().signedIn)
 const isSideNav = ref(false)
 const isUserSettings = ref(false)
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const fullname = getCookie('name')
-const email = getCookie('email')
+const fullname = localStorage.getItem('userName')
+const email = localStorage.getItem('userEmail')
 
 function showUserSettings() {
   isUserSettings.value = !isUserSettings.value

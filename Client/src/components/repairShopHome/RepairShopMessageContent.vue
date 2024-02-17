@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
 const userId = computed(() => {
   const routeParams = router.currentRoute.value.params
@@ -24,26 +24,10 @@ const priceOffer = ref('')
 const isMessageBox = ref(false)
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
-const showDialog = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
-const messageArray = []
-
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const repairShopEmail = getCookie('email')
-const repairShopName = getCookie('name')
+const repairShopName = localStorage.getItem('userName')
 
 const answerData = computed(() => {
   return {
@@ -93,29 +77,27 @@ function showMessageBox() {
 function sendAnswer() {
   props.onAnswer(answerData.value)
 }
-
-onMounted(() => {
-  messageArray.push(props.index.customerMessage)
-  messageArray.push(props.index.repairShopAnswer)
-})
 </script>
 
 <template>
   <div class="request-container">
-    <p class="customer-name">{{ props.index.customerName }}</p>
+    <p :class="isMessageBox ? 'hide' : 'customer-name'">{{ props.index.customerName }}</p>
 
     <div class="message-content-parent-container">
       <div class="message-content-top-nav">
-        <p>
-          <span v-if="isMessageBox">Registreringsnummer: </span>{{ props.index.registrationNumber }}
-        </p>
-        <button v-if="!showDialog" type="button" class="show-more-btn" @click="showMessageBox">
+        <p><span>Registreringsnummer: </span>{{ props.index.registrationNumber }}</p>
+        <button v-if="!isMessageBox" type="button" class="show-more-btn" @click="showMessageBox">
           <fontAwesome :icon="['fas', 'chevron-down']" />
+        </button>
+        <button v-if="isMessageBox" type="button" class="show-more-btn" @click="showMessageBox">
+          <fontAwesome :icon="['fas', 'chevron-up']" />
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
-        <p>{{ props.index.customerMessage[0].message }}</p>
-        <hr />
+        <p v-for="index in props.index.customerMessage" :key="index.date">
+          <span>{{ props.index.customerName }}</span
+          >{{ index.message }}
+        </p>
       </div>
       <div class="message-content-answer">
         <textarea
@@ -152,5 +134,6 @@ onMounted(() => {
     >
       Skicka
     </button>
+    <hr />
   </div>
 </template>

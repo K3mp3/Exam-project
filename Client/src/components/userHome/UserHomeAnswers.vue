@@ -4,23 +4,38 @@ import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { answerRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import UserHomeAnswerForm from './UserHomeAnswerForm.vue'
+import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
+
+const mobile = ref(true)
+const tablet = ref(false)
+const desktop = ref(false)
 
 const allRepairShopAnswers = ref<IUserContact[]>([])
-const correctRepairShopAnswers = ref<IUserContact[]>([])
-
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
+const requestData = ref<IUserContact[]>([])
 
 const customerEmail = localStorage.getItem('userEmail')
+
+function updateScreenSize() {
+  window.addEventListener('resize', updateScreenSize)
+
+  if (document.documentElement.clientWidth > 1481) {
+    desktop.value = true
+    tablet.value = false
+    mobile.value = false
+  }
+
+  if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1482) {
+    tablet.value = true
+    desktop.value = false
+    mobile.value = false
+  }
+
+  if (document.documentElement.clientWidth < 700) {
+    mobile.value = true
+    desktop.value = false
+    tablet.value = false
+  }
+}
 
 async function getAnswers() {
   const allResponses = await removedAnsweredRequests()
@@ -33,37 +48,54 @@ async function getAnswers() {
   )
 }
 
-function calculateTotalAnswers() {
-  let count = 0
-
-  for (let i = 0; i < allRepairShopAnswers.value.length; i++) {
-    count++
-  }
-
-  return count
-}
-
 async function handleAnswer(answerData: object) {
   console.log(answerData)
   const response = await answerRepairShops(answerData as IUserContact)
 }
 
+function showRequestData(index: string | undefined) {
+  console.log('index:', index)
+  const foundAnswer = allRepairShopAnswers.value.find((answer) => answer._id === index)
+  if (foundAnswer) {
+    console.log('Found answer:', foundAnswer)
+    requestData.value = [foundAnswer]
+    console.log(requestData.value)
+  } else {
+    console.log('Answer not found!')
+  }
+}
+
 onMounted(() => {
   getAnswers()
+  updateScreenSize()
 })
 </script>
 
 <template>
   <div class="user-sent-main">
-    <p>{{ `Du har ${calculateTotalAnswers()} svar` }}</p>
-
-    <form @submit.prevent="" class="user-sent-answer-form">
+    <form @submit.prevent="" class="user-sent-answer-form" v-if="mobile">
       <UserHomeAnswerForm
         v-for="index in allRepairShopAnswers"
         :key="index._id"
         :index="index"
         :onAnswer="handleAnswer"
       ></UserHomeAnswerForm>
+    </form>
+    <form @submit.prevent="" class="user-sent-answer-form" v-if="tablet">
+      <div class="request-column">
+        <UserHomeAnswerFormTablet
+          v-for="index in allRepairShopAnswers"
+          :key="index._id"
+          :index="index"
+          :onAnswer="handleAnswer"
+          @showMore="showRequestData(index._id)"
+        ></UserHomeAnswerFormTablet>
+      </div>
+      <div class="data-column">
+        <div class="request-container-tablet" v-for="index in requestData" :key="index._id">
+          <p>{{ index.repairShopName }}</p>
+        </div>
+      </div>
     </form>
   </div>
 </template>
