@@ -9,6 +9,7 @@ import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
 const mobile = ref(true)
 const tablet = ref(false)
 const desktop = ref(false)
+const isData = ref(false)
 
 const allRepairShopAnswers = ref<IUserContact[]>([])
 const requestData = ref<IUserContact[]>([])
@@ -69,6 +70,7 @@ async function showRequestData(index: any) {
 
     console.log(correctResponse.customerMessage)
 
+    messageArray.splice(0, messageArray.length)
     sortRequestData(correctResponse.customerMessage, correctResponse.repairShopAnswer)
   } else {
     console.log('Answer not found!')
@@ -90,6 +92,8 @@ function sortRequestData(
   messageArray.push(...flattenedMessages)
 
   console.log(messageArray)
+
+  isData.value = true
 }
 
 onMounted(() => {
@@ -119,11 +123,14 @@ onMounted(() => {
         ></UserHomeAnswerFormTablet>
       </div>
       <div class="data-column">
-        <div class="data-container-tablet" v-for="index in requestData" :key="index._id">
+        <div
+          class="data-container-tablet"
+          v-for="index in requestData"
+          :key="index._id"
+          v-if="isData"
+        >
           <p>{{ index.repairShopName }}</p>
           <p><span>Registreringsnummer: </span>{{ index.registrationNumber }}</p>
-        </div>
-        <div class="message-content-text">
           <p v-for="index in messageArray" :key="index.date">
             <span :class="userName === index.name ? 'text-active-blue' : ''">{{
               userName === index.name ? 'Du' : index.name
@@ -131,6 +138,8 @@ onMounted(() => {
             >{{ index.message }}
           </p>
         </div>
+
+        <div class="message-content-text"></div>
       </div>
     </form>
   </div>
