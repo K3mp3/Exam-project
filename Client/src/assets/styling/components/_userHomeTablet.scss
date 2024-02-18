@@ -4,6 +4,7 @@
 @media screen and (min-width: 700px) {
   .user-sent-answer-form {
     display: flex;
+    gap: 64px;
 
     .request-column {
       width: 100%;
@@ -51,11 +52,19 @@
             }
           }
         }
+
+        hr {
+          margin-top: 4px;
+        }
       }
     }
 
     .data-column {
       width: 100%;
+
+      .data-container-tablet {
+        padding: 16px;
+      }
     }
 
     // .user-sent-main {

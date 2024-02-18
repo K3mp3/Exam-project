@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { IUserContact } from '@/models/IUserContact'
 import { computed, nextTick, ref } from 'vue'
 
 const props = defineProps({
@@ -35,10 +36,10 @@ const answerData = computed(() => {
 
 const emits = defineEmits(['showMore'])
 
-function showMessageBox(index: Record<string, any>) {
+function showMessageBox(index: any) {
   isMessageBox.value = !isMessageBox.value
   console.log(index)
-  emits('showMore', index)
+  emits('showMore', index as IUserContact)
 }
 
 function checkInputData() {
@@ -78,7 +79,7 @@ function sendAnswer() {
       <button
         type="button"
         class="show-more-btn"
-        @click="showMessageBox(props.index)"
+        @click="showMessageBox(props.index._id)"
         v-if="!isMessageBox"
       >
         <fontAwesome :icon="['fas', 'chevron-right']" />
@@ -92,9 +93,8 @@ function sendAnswer() {
         <fontAwesome :icon="['fas', 'chevron-left']" />
       </button>
     </div>
+    <hr />
   </div>
-
-  <div class="data-column"></div>
 </template>
 
 <!-- <div class="left-column">

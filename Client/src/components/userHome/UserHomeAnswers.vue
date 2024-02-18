@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { IUserContact } from '@/models/IUserContact'
-import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
+import { getCorrectAnswer, removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { answerRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import UserHomeAnswerForm from './UserHomeAnswerForm.vue'
@@ -12,6 +12,7 @@ const desktop = ref(false)
 
 const allRepairShopAnswers = ref<IUserContact[]>([])
 const requestData = ref<IUserContact[]>([])
+const messageArray: { message: string; name: string; date: string }[] = []
 
 const customerEmail = localStorage.getItem('userEmail')
 
@@ -53,16 +54,38 @@ async function handleAnswer(answerData: object) {
   const response = await answerRepairShops(answerData as IUserContact)
 }
 
-function showRequestData(index: string | undefined) {
+async function showRequestData(index: any) {
   console.log('index:', index)
   const foundAnswer = allRepairShopAnswers.value.find((answer) => answer._id === index)
   if (foundAnswer) {
-    console.log('Found answer:', foundAnswer)
     requestData.value = [foundAnswer]
-    console.log(requestData.value)
+
+    const request = {
+      customerId: foundAnswer.customerId,
+      messageId: foundAnswer.messageId
+    }
+
+    const correctResponse = await getCorrectAnswer(request)
+    messageArray.push(correctResponse)
+
+    console.log(correctResponse.customerMessage)
+
+    sortRequestData(correctResponse.customerMessage, correctResponse.repairShopAnswer)
   } else {
     console.log('Answer not found!')
   }
+}
+
+function sortRequestData(
+  customerMessage: { message: string; date: string }[],
+  repairShopAnswer: { message: string; date: string }[]
+) {
+  const flattenedMessages = customerMessage.concat(repairShopAnswer)
+
+  flattenedMessages.sort(
+    (a: { date: string }, b: { date: string }) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
 }
 
 onMounted(() => {
@@ -92,8 +115,9 @@ onMounted(() => {
         ></UserHomeAnswerFormTablet>
       </div>
       <div class="data-column">
-        <div class="request-container-tablet" v-for="index in requestData" :key="index._id">
+        <div class="data-container-tablet" v-for="index in requestData" :key="index._id">
           <p>{{ index.repairShopName }}</p>
+          <p><span>Registreringsnummer: </span>{{ index.registrationNumber }}</p>
         </div>
       </div>
     </form>
