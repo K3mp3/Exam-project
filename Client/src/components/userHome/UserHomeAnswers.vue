@@ -66,7 +66,6 @@ async function showRequestData(index: any) {
     }
 
     const correctResponse = await getCorrectAnswer(request)
-    messageArray.push(correctResponse)
 
     console.log(correctResponse.customerMessage)
 
@@ -76,9 +75,11 @@ async function showRequestData(index: any) {
   }
 }
 
+const userName = localStorage.getItem('userName')
+
 function sortRequestData(
-  customerMessage: { message: string; date: string }[],
-  repairShopAnswer: { message: string; date: string }[]
+  customerMessage: { message: string; name: string; date: string }[],
+  repairShopAnswer: { message: string; name: string; date: string }[]
 ) {
   const flattenedMessages = customerMessage.concat(repairShopAnswer)
 
@@ -86,6 +87,9 @@ function sortRequestData(
     (a: { date: string }, b: { date: string }) =>
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
+  messageArray.push(...flattenedMessages)
+
+  console.log(messageArray)
 }
 
 onMounted(() => {
@@ -118,6 +122,14 @@ onMounted(() => {
         <div class="data-container-tablet" v-for="index in requestData" :key="index._id">
           <p>{{ index.repairShopName }}</p>
           <p><span>Registreringsnummer: </span>{{ index.registrationNumber }}</p>
+        </div>
+        <div class="message-content-text">
+          <p v-for="index in messageArray" :key="index.date">
+            <span :class="userName === index.name ? 'text-active-blue' : ''">{{
+              userName === index.name ? 'Du' : index.name
+            }}</span
+            >{{ index.message }}
+          </p>
         </div>
       </div>
     </form>
