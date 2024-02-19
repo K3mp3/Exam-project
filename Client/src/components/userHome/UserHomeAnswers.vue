@@ -13,7 +13,7 @@ const isData = ref(false)
 
 const allRepairShopAnswers = ref<IUserContact[]>([])
 const requestData = ref<IUserContact[]>([])
-const messageArray: { message: string; name: string; date: string }[] = []
+const messageArray = ref<{ message: string; name: string; date: string }[]>([])
 
 const customerEmail = localStorage.getItem('userEmail')
 
@@ -43,7 +43,7 @@ async function getAnswers() {
   const allResponses = await removedAnsweredRequests()
   allRepairShopAnswers.value = allResponses
 
-  console.log(customerEmail)
+  // console.log(customerEmail)
 
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
     (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
@@ -55,8 +55,11 @@ async function handleAnswer(answerData: object) {
   const response = await answerRepairShops(answerData as IUserContact)
 }
 
-async function showRequestData(index: any) {
-  console.log('index:', index)
+async function showRequestData(
+  customerMessage: { message: string; name: string; date: string }[],
+  repairShopAnswer: { message: string; name: string; date: string }[],
+  index: any
+) {
   const foundAnswer = allRepairShopAnswers.value.find((answer) => answer._id === index)
   if (foundAnswer) {
     requestData.value = [foundAnswer]
@@ -68,10 +71,10 @@ async function showRequestData(index: any) {
 
     const correctResponse = await getCorrectAnswer(request)
 
-    console.log(correctResponse.customerMessage)
+    // console.log(customerMessage)
+    // console.log(repairShopAnswer)
 
-    messageArray.splice(0, messageArray.length)
-    sortRequestData(correctResponse.customerMessage, correctResponse.repairShopAnswer)
+    sortRequestData(customerMessage, repairShopAnswer)
   } else {
     console.log('Answer not found!')
   }
@@ -89,11 +92,15 @@ function sortRequestData(
     (a: { date: string }, b: { date: string }) =>
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
-  messageArray.push(...flattenedMessages)
+  messageArray.value = flattenedMessages
 
-  console.log(messageArray)
+  console.log(messageArray.value)
+  console.log(flattenedMessages)
 
   isData.value = true
+
+  // if (messageArray.value === flattenedMessages) isData.value = true
+  // else isData.value = false
 }
 
 onMounted(() => {
@@ -119,7 +126,7 @@ onMounted(() => {
           :key="index._id"
           :index="index"
           :onAnswer="handleAnswer"
-          @showMore="showRequestData(index._id)"
+          @showMore="showRequestData"
         ></UserHomeAnswerFormTablet>
       </div>
       <div class="data-column">

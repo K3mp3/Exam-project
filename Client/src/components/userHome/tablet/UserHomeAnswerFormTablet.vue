@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { IUserContact } from '@/models/IUserContact'
 import { computed, nextTick, ref } from 'vue'
 
 const props = defineProps({
@@ -23,8 +22,6 @@ const isBtnDisabled = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
-const dataColumnArray: [] = []
-
 const answerData = computed(() => {
   return {
     customerId: props.index.customerId,
@@ -34,12 +31,22 @@ const answerData = computed(() => {
   }
 })
 
-const emits = defineEmits(['showMore'])
+const emits = defineEmits<{
+  (
+    e: 'showMore',
+    customerMessage: { message: string; name: string; date: string },
+    repairShopAnswer: { message: string; name: string; date: string }[],
+    index: any
+  ): void
+}>()
 
 function showMessageBox(index: any) {
   isMessageBox.value = !isMessageBox.value
-  console.log(index)
-  emits('showMore', index as IUserContact)
+  console.log(props.index.customerMessage)
+
+  nextTick(() => {
+    emits('showMore', props.index.customerMessage, props.index.repairShopAnswer, index)
+  })
 }
 
 function checkInputData() {
@@ -87,7 +94,7 @@ function sendAnswer() {
       <button
         type="button"
         class="show-more-btn"
-        @click="showMessageBox(props.index)"
+        @click="showMessageBox(props.index._id)"
         v-if="isMessageBox"
       >
         <fontAwesome :icon="['fas', 'chevron-left']" />

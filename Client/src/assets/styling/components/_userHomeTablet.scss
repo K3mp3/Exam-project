@@ -4,10 +4,13 @@
 @media screen and (min-width: 700px) {
   .user-sent-answer-form {
     display: flex;
+    justify-content: space-between;
     gap: 64px;
+    background-color: blue;
+    width: calc(100vw - 32px);
 
     .request-column {
-      width: 100%;
+      width: 50%;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -60,7 +63,9 @@
     }
 
     .data-column {
-      width: 100%;
+      width: 50%;
+      margin-left: -16px;
+      background-color: rgb(119, 0, 255);
 
       .data-container-tablet {
         padding: 16px;
