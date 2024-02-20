@@ -9,7 +9,6 @@ import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
 
 const mobile = ref(true)
 const tablet = ref(false)
-const desktop = ref(false)
 const isData = ref(false)
 
 const allRepairShopAnswers = ref<IUserContact[]>([])
@@ -21,21 +20,13 @@ const customerEmail = localStorage.getItem('userEmail')
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > 1481) {
-    desktop.value = true
-    tablet.value = false
-    mobile.value = false
-  }
-
-  if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1482) {
+  if (document.documentElement.clientWidth > 699) {
     tablet.value = true
-    desktop.value = false
     mobile.value = false
   }
 
   if (document.documentElement.clientWidth < 700) {
     mobile.value = true
-    desktop.value = false
     tablet.value = false
   }
 }
@@ -160,17 +151,17 @@ onMounted(() => {
               class="price-offer-input"
             />
 
-            <!-- <button
+            <button
               type="submit"
               :disabled="isBtnDisabled"
               :class="{
-                'repair-shop-home-send-btn-disabled': isBtnDisabled,
-                'repair-shop-home-send-btn': !isBtnDisabled
+                'main-btn-disabled': isBtnDisabled,
+                'main-btn': !isBtnDisabled
               }"
               @click="sendAnswer"
             >
               Skicka
-            </button> -->
+            </button>
           </div>
         </div>
       </div>

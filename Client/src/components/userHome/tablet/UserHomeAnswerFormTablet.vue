@@ -41,8 +41,7 @@ const emits = defineEmits<{
 }>()
 
 function showMessageBox(index: any) {
-  isMessageBox.value = !isMessageBox.value
-  console.log(props.index.customerMessage)
+  isMessageBox.value = true
 
   nextTick(() => {
     emits('showMore', props.index.customerMessage, props.index.repairShopAnswer, index)
