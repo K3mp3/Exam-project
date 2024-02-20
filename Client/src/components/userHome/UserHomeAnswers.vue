@@ -141,6 +141,36 @@ onMounted(() => {
               :key="index.date"
               :index="index"
             ></UserHomeMessages>
+
+            <textarea
+              name="message-input"
+              v-model="messageAnswer"
+              class="text-editor-answer"
+              placeholder="Svar"
+              @input="checkInputDataAnswer"
+            ></textarea>
+
+            <label for="priceOffer">Prisförslag</label>
+            <input
+              type="text"
+              name="priceOffer"
+              placeholder="500 kr"
+              v-model="priceOffer"
+              maxlength="7"
+              class="price-offer-input"
+            />
+
+            <!-- <button
+              type="submit"
+              :disabled="isBtnDisabled"
+              :class="{
+                'repair-shop-home-send-btn-disabled': isBtnDisabled,
+                'repair-shop-home-send-btn': !isBtnDisabled
+              }"
+              @click="sendAnswer"
+            >
+              Skicka
+            </button> -->
           </div>
         </div>
       </div>
