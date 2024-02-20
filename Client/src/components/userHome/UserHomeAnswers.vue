@@ -4,6 +4,7 @@ import { getCorrectAnswer, removedAnsweredRequests } from '@/services/RepariShop
 import { answerRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import UserHomeAnswerForm from './UserHomeAnswerForm.vue'
+import UserHomeMessages from './UserHomeMessages.vue'
 import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
 
 const mobile = ref(true)
@@ -80,8 +81,6 @@ async function showRequestData(
   }
 }
 
-const userName = localStorage.getItem('userName')
-
 function sortRequestData(
   customerMessage: { message: string; name: string; date: string }[],
   repairShopAnswer: { message: string; name: string; date: string }[]
@@ -98,9 +97,6 @@ function sortRequestData(
   console.log(flattenedMessages)
 
   isData.value = true
-
-  // if (messageArray.value === flattenedMessages) isData.value = true
-  // else isData.value = false
 }
 
 onMounted(() => {
@@ -138,15 +134,15 @@ onMounted(() => {
         >
           <p>{{ index.repairShopName }}</p>
           <p><span>Registreringsnummer: </span>{{ index.registrationNumber }}</p>
-          <p v-for="index in messageArray" :key="index.date">
-            <span :class="userName === index.name ? 'text-active-blue' : ''">{{
-              userName === index.name ? 'Du' : index.name
-            }}</span
-            >{{ index.message }}
-          </p>
-        </div>
 
-        <div class="message-content-text"></div>
+          <div class="data-column-message-container">
+            <UserHomeMessages
+              v-for="index in messageArray"
+              :key="index.date"
+              :index="index"
+            ></UserHomeMessages>
+          </div>
+        </div>
       </div>
     </form>
   </div>

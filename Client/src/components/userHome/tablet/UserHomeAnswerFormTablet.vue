@@ -34,7 +34,7 @@ const answerData = computed(() => {
 const emits = defineEmits<{
   (
     e: 'showMore',
-    customerMessage: { message: string; name: string; date: string },
+    customerMessage: { message: string; name: string; date: string }[],
     repairShopAnswer: { message: string; name: string; date: string }[],
     index: any
   ): void
@@ -83,24 +83,9 @@ function sendAnswer() {
     <p>{{ props.index.repairShopName }}</p>
     <div class="request-container-content-tablet">
       <p><span>Registreringsnummer: </span>{{ props.index.registrationNumber }}</p>
-      <button
-        type="button"
-        class="show-more-btn"
-        @click="showMessageBox(props.index._id)"
-        v-if="!isMessageBox"
-      >
-        <fontAwesome :icon="['fas', 'chevron-right']" />
-      </button>
-      <button
-        type="button"
-        class="show-more-btn"
-        @click="showMessageBox(props.index._id)"
-        v-if="isMessageBox"
-      >
-        <fontAwesome :icon="['fas', 'chevron-left']" />
-      </button>
+      <button type="button" class="show-more-btn" @click="showMessageBox(props.index._id)"></button>
     </div>
-    <hr />
+    <div :class="isMessageBox ? 'line-active' : 'line-inactive'"></div>
   </div>
 </template>
 
