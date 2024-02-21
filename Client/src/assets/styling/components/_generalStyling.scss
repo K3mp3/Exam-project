@@ -1,39 +1,6 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
-.outline-btn {
-  transition: all 0.2s ease-in-out;
-  padding: 2px 20px;
-  border-radius: 20px;
-  width: 100%;
-  background: transparent;
-  border: 2px solid $el-white-main;
-  text-align: center;
-
-  &:hover {
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    border: 2px solid $el-active-blue;
-  }
-}
-
-.filled-btn {
-  transition: all 0.2s ease-in-out;
-  padding: 2px 20px;
-  border-radius: 20px;
-  width: 100%;
-  transition: all 0.2s ease-in-out;
-  color: $text-secondary;
-  border: none;
-
-  &:hover {
-    color: $text-main;
-    transition: all 0.2s ease-in-out;
-    background-color: $el-active-blue;
-    cursor: pointer;
-  }
-}
-
 .text-main {
   color: $text-main;
 }
@@ -448,6 +415,39 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     color: $el-active-blue;
+  }
+}
+
+.outline-btn {
+  transition: all 0.2s ease-in-out;
+  padding: 2px 20px;
+  border-radius: 20px;
+  width: 100%;
+  background: transparent;
+  border: 2px solid $el-white-main;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid $el-active-blue;
+  }
+}
+
+.filled-btn {
+  transition: all 0.2s ease-in-out;
+  padding: 2px 20px;
+  border-radius: 20px;
+  width: 100%;
+  transition: all 0.2s ease-in-out;
+  color: $text-secondary;
+  border: none;
+
+  &:hover {
+    color: $text-main;
+    transition: all 0.2s ease-in-out;
+    background-color: $el-active-blue;
+    cursor: pointer;
   }
 }
 

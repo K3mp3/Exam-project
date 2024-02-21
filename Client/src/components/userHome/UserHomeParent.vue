@@ -4,7 +4,7 @@ import router from '@/router'
 import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useSignInStore } from '@/stores/signInStore'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
 import UserHomeAnswers from './UserHomeAnswers.vue'
@@ -20,19 +20,6 @@ const isUserSettings = ref(false)
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
-
-let width = document.documentElement.clientWidth
-
-function updateScreenSize() {
-  window.addEventListener('resize', updateScreenSize)
-  width = document.documentElement.clientWidth
-
-  if (width > 899) {
-    isSideNav.value = true
-  } else {
-    isSideNav.value = false
-  }
-}
 
 function getCookie(cookieName: string) {
   const cookiesArray = document.cookie.split(';')
@@ -85,14 +72,6 @@ function newRequest() {
   // window.history.back()
   router.push(`/user-home-new-request/${userId.value}`)
 }
-
-onMounted(() => {
-  updateScreenSize()
-
-  // if (!isSignedIn.value) {
-  //   router.push('/')
-  // }
-})
 </script>
 
 <template>
@@ -101,22 +80,12 @@ onMounted(() => {
   <!-- <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent> -->
   <div class="signed-in-header">
     <h2>Hej {{ firstName }}</h2>
-    <button
-      v-if="!isSideNav"
-      type="button"
-      class="btn-transparent text-main z-index-2"
-      @click="showUserSettings"
-    >
+    <button type="button" class="btn-transparent text-main z-index-2" @click="showUserSettings">
       <fontAwesome :icon="['fas', 'user']" />
     </button>
   </div>
   <div class="signed-in-main">
-    <button
-      v-if="!isSideNav"
-      type="button"
-      class="user-home-new-btn text-main z-index-2"
-      @click="newRequest"
-    >
+    <button type="button" class="user-home-new-btn text-main z-index-2" @click="newRequest">
       Ny förfrågan
     </button>
   </div>

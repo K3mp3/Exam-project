@@ -97,7 +97,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="user-sent-main">
+  <div class="request-form-main">
     <form @submit.prevent="" class="user-sent-answer-form" v-if="mobile">
       <UserHomeAnswerForm
         v-for="index in allRepairShopAnswers"
@@ -123,14 +123,18 @@ onMounted(() => {
           :key="index._id"
           v-if="isData"
         >
-          <p>{{ index.repairShopName }}</p>
-          <p><span>Registreringsnummer: </span>{{ index.registrationNumber }}</p>
+          <p class="text-main font-text-light">{{ index.repairShopName }}</p>
+          <p class="text-main font-text-light">
+            <span class="text-main font-title-bold">Registreringsnummer: </span
+            >{{ index.registrationNumber }}
+          </p>
 
           <div class="data-column-message-container">
             <UserHomeMessages
               v-for="index in messageArray"
               :key="index.date"
               :index="index"
+              :amount="messageArray"
             ></UserHomeMessages>
 
             <textarea
@@ -141,14 +145,14 @@ onMounted(() => {
               @input="checkInputDataAnswer"
             ></textarea>
 
-            <label for="priceOffer">Prisförslag</label>
+            <label for="priceOffer" class="text-main font-text-light">Prisförslag</label>
             <input
               type="text"
               name="priceOffer"
-              placeholder="500 kr"
-              v-model="priceOffer"
               maxlength="7"
               class="price-offer-input"
+              :value="index.priceOffer"
+              disabled
             />
 
             <button
