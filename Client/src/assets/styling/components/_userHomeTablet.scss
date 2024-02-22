@@ -5,8 +5,10 @@
   .user-sent-answer-form {
     display: flex;
     justify-content: space-between;
-    width: calc(100vw - 32px);
+    width: calc(100vw);
+    padding: 0 16px;
     max-width: 1300px;
+    background-color: aqua;
     margin: auto;
 
     .request-column {
@@ -201,16 +203,16 @@
   }
 }
 
-@media screen and (min-width: 1482px) {
-  .user-sent-answer-form {
-    .request-column {
-      padding: 16px 32px;
-    }
+// @media screen and (min-width: 1482px) {
+//   .user-sent-answer-form {
+//     .request-column {
+//       padding: 16px 32px;
+//     }
 
-    .data-column {
-      .data-container-tablet {
-        padding: 16px 32px;
-      }
-    }
-  }
-}
+//     .data-column {
+//       .data-container-tablet {
+//         padding: 16px 32px;
+//       }
+//     }
+//   }
+// }

@@ -5,10 +5,15 @@
   padding: 16px;
   display: flex;
   justify-content: space-between;
+  max-width: 1300px;
+  margin: auto;
 }
 
 .signed-in-main {
   padding: 16px;
+  background-color: aqua;
+  max-width: 1300px;
+  margin: auto;
 
   .user-home-new-btn {
     transition: all 0.2s ease-in-out;
@@ -239,21 +244,15 @@
 }
 
 @media screen and (min-width: 1482px) {
-  .signed-in-header {
-    max-width: 1300px;
-    margin: auto;
-  }
-
   .signed-in-main {
     padding: 16px 32px;
-    max-width: 1300px;
-    margin: auto;
 
     form {
-      max-width: 1482px;
+      max-width: 1300px;
       display: flex;
       gap: 64px;
       justify-content: center;
+      background-color: blueviolet;
 
       .right-side-contact-form {
         width: 100%;
