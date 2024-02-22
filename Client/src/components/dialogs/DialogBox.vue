@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useShowPopUp } from '../../stores/ShowPopUpStore'
+import { computed } from 'vue';
+import { useShowPopUp } from '../../stores/ShowPopUpStore';
 
 const dialogMessage = computed(() => useShowPopUp().popUpMessage)
 
@@ -12,7 +12,7 @@ function closeDialog() {
 
 <template>
   <div
-    class="width-100vw height-100vh bg-main position-absolute top-0 left-0 z-index-2 padding-16 display-flex align-items-center"
+    class="width-100vw height-100vh bg-main p-absolute top-0 left-0 z-index-2 padding-16 display-flex align-items-center"
   >
     <div class="display-flex flex-dir-col gap-16 m-width-320px margin-auto">
       <p class="font-text-light text-main">{{ dialogMessage }}</p>

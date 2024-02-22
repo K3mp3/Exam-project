@@ -221,7 +221,11 @@ onMounted(() => {
         placeholder="Förnamn & efternamn"
         v-model="name"
         @input="checkInputDataName"
-        :class="isNameCorrect ? 'contact-form-text-input' : 'input-warning'"
+        :class="
+          isNameCorrect
+            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+        "
       />
       <p
         class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
@@ -238,7 +242,11 @@ onMounted(() => {
         placeholder="namn@mail.se"
         v-model="email"
         @input="checkInputDataEmail"
-        :class="isEmailReal ? 'contact-form-text-input' : 'input-warning'"
+        :class="
+          isEmailReal
+            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+        "
       />
       <p
         class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"

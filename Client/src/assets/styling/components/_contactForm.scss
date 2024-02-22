@@ -104,64 +104,6 @@
       font-family: map-get($font-text-light, font-family);
       font-weight: map-get($font-text-light, font-weight);
     }
-
-    .contact-form-text-input {
-      position: relative;
-      transition: all 0.2s ease-in-out;
-      width: 100%;
-      height: 42px;
-      background-color: $el-bg-gray;
-      color: $text-main;
-      border: 2px solid $el-border-gray;
-      padding: 8px;
-      border-radius: 10px;
-      z-index: 1;
-      margin-bottom: 16px;
-      font-size: 0.9rem;
-      margin-top: 4px;
-
-      &:focus {
-        transition: all 0.2s ease-in-out;
-        outline: none;
-        border: 2px solid transparent;
-        border-radius: 10px;
-        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
-          linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
-        background-origin: border-box;
-        background-clip: padding-box, border-box;
-      }
-    }
-
-    .input-warning {
-      position: relative;
-      transition: all 0.2s ease-in-out;
-      width: 100%;
-      height: 42px;
-      background-color: $el-bg-gray;
-      color: $text-main;
-      border: 2px solid transparent;
-      padding: 8px;
-      border-radius: 10px;
-      z-index: 1;
-      margin-bottom: 16px;
-      font-size: 0.9rem;
-      margin-top: 4px;
-      background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
-        linear-gradient(to bottom, #f1550d, #f1550d5b);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-
-      &:focus {
-        transition: all 0.2s ease-in-out;
-        outline: none;
-        border: 2px solid transparent;
-        border-radius: 10px;
-        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
-          linear-gradient(to bottom, #f1550d, #f1550d5b);
-        background-origin: border-box;
-        background-clip: padding-box, border-box;
-      }
-    }
   }
 
   .contact-form-blue-line {
@@ -199,10 +141,6 @@
       label {
         font-size: 1rem;
       }
-
-      .contact-form-text-input {
-        margin-bottom: 16px;
-      }
     }
   }
 }
@@ -234,10 +172,6 @@
 
       label {
         font-size: 1rem;
-      }
-
-      .contact-form-text-input {
-        margin-bottom: 24px;
       }
     }
   }

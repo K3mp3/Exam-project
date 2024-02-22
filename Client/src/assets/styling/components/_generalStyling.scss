@@ -150,6 +150,10 @@
   max-width: 320px;
 }
 
+.h-42px {
+  height: 42px;
+}
+
 .height-204px {
   height: 204px;
 }
@@ -166,7 +170,11 @@
   height: 100vh;
 }
 
-.position-absolute {
+.p-relative {
+  position: relative;
+}
+
+.p-absolute {
   position: absolute;
 }
 
@@ -186,11 +194,20 @@
   z-index: 2;
 }
 
+.margin-4-0 {
+  margin: 4px 0;
+}
+
 .margin-16-0 {
   margin: 16px 0;
 }
+
 .margin-32-0 {
   margin: 32px 0;
+}
+
+.margin-tp-4 {
+  margin-top: 4px;
 }
 
 .margin-top-n11 {
@@ -211,6 +228,10 @@
 
 .margin-bm-22 {
   margin-bottom: 22px;
+}
+
+.margin-bm-24 {
+  margin-bottom: 24px;
 }
 
 .margin-bm-32 {
@@ -352,6 +373,52 @@
   }
 }
 
+.text-input {
+  transition: all 0.2s ease-in-out;
+  height: 42px;
+  background-color: $el-bg-gray;
+  color: $text-main;
+  border: 2px solid $el-border-gray;
+  border-radius: 10px;
+  font-size: 0.9rem;
+
+  &:focus {
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+      linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+}
+
+.input-warning {
+  transition: all 0.2s ease-in-out;
+  height: 42px;
+  background-color: $el-bg-gray;
+  color: $text-main;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+    linear-gradient(to bottom, #f1550d, #f1550d5b);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  &:focus {
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+      linear-gradient(to bottom, #f1550d, #f1550d5b);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+}
+
 // Buttons
 .btn-back {
   background: transparent;
@@ -455,6 +522,12 @@
 
 .hide {
   visibility: none;
+}
+
+// Transitions
+
+.All-02-e-i-o {
+  transition: all 0.2s ease-in-out;
 }
 
 @media screen and (min-width: 700px) {
