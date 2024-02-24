@@ -63,9 +63,6 @@ async function showRequestData(
 
     const correctResponse = await getCorrectAnswer(request)
 
-    // console.log(customerMessage)
-    // console.log(repairShopAnswer)
-
     sortRequestData(customerMessage, repairShopAnswer)
   } else {
     console.log('Answer not found!')
@@ -98,7 +95,7 @@ onMounted(() => {
 
 <template>
   <div class="request-form-main">
-    <form @submit.prevent="" class="user-sent-answer-form" v-if="mobile">
+    <form @submit.prevent="" class="user-sent-answer-form-mobile" v-if="mobile">
       <UserHomeAnswerForm
         v-for="index in allRepairShopAnswers"
         :key="index._id"

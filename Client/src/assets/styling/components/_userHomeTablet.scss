@@ -5,10 +5,8 @@
   .user-sent-answer-form {
     display: flex;
     justify-content: space-between;
-    width: calc(100vw);
-    padding: 0 16px;
+    width: calc(1300px);
     max-width: 1300px;
-    background-color: aqua;
     margin: auto;
 
     .request-column {
@@ -16,10 +14,11 @@
       display: flex;
       flex-direction: column;
       gap: 48px;
-      padding: 16px;
+      padding: 32px;
 
       .request-container-tablet {
         width: 100%;
+        max-width: 1300px;
 
         .request-container-content-tablet {
           display: flex;
@@ -65,7 +64,7 @@
       margin-left: -16px;
 
       .data-container-tablet {
-        padding: 16px;
+        padding: 32px;
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -202,17 +201,3 @@
     }
   }
 }
-
-// @media screen and (min-width: 1482px) {
-//   .user-sent-answer-form {
-//     .request-column {
-//       padding: 16px 32px;
-//     }
-
-//     .data-column {
-//       .data-container-tablet {
-//         padding: 16px 32px;
-//       }
-//     }
-//   }
-// }

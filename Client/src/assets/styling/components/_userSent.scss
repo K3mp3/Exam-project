@@ -25,7 +25,7 @@
   }
 }
 
-.user-sent-main {
+.request-form-main {
   color: $text-main;
   font-family: map-get($font-text-light, font-family);
   font-weight: map-get($font-text-light, font-weight);
@@ -50,6 +50,7 @@
         border: 2px solid $el-border-gray;
         padding: 8px;
         margin-top: -14px;
+        background-color: aqua;
 
         .user-sent-message-content-top-nav {
           display: flex;
