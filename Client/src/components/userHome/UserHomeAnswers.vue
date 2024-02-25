@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { IUserContact } from '@/models/IUserContact'
-import { getCorrectAnswer, removedAnsweredRequests } from '@/services/RepariShopAnswer'
+import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { answerRepairShops } from '@/services/userContact'
 import { onMounted, ref } from 'vue'
 import UserHomeAnswerForm from './UserHomeAnswerForm.vue'
@@ -10,6 +10,10 @@ import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
 const mobile = ref(true)
 const tablet = ref(false)
 const isData = ref(false)
+
+const isActive = ref('')
+
+let activeMessageId = ''
 
 const allRepairShopAnswers = ref<IUserContact[]>([])
 const requestData = ref<IUserContact[]>([])
@@ -33,9 +37,12 @@ function updateScreenSize() {
 
 async function getAnswers() {
   const allResponses = await removedAnsweredRequests()
-  allRepairShopAnswers.value = allResponses
+  allRepairShopAnswers.value = allResponses.map((response: []) => ({
+    ...response,
+    isLineActive: false
+  }))
 
-  // console.log(customerEmail)
+  console.log(allRepairShopAnswers.value)
 
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
     (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
@@ -47,6 +54,21 @@ async function handleAnswer(answerData: object) {
   const response = await answerRepairShops(answerData as IUserContact)
 }
 
+function activeLine(messageId: string) {
+  if (activeMessageId) {
+    const activeAnswer = allRepairShopAnswers.value.find((answer) => answer._id === activeMessageId)
+    if (activeAnswer) {
+      activeAnswer.isLineActive = false
+    }
+  }
+
+  const clickedAnswer = allRepairShopAnswers.value.find((answer) => answer._id === messageId)
+  if (clickedAnswer) {
+    clickedAnswer.isLineActive = true
+    activeMessageId = messageId // Update the active messageId
+  }
+}
+
 async function showRequestData(
   customerMessage: { message: string; name: string; date: string }[],
   repairShopAnswer: { message: string; name: string; date: string }[],
@@ -55,13 +77,6 @@ async function showRequestData(
   const foundAnswer = allRepairShopAnswers.value.find((answer) => answer._id === index)
   if (foundAnswer) {
     requestData.value = [foundAnswer]
-
-    const request = {
-      customerId: foundAnswer.customerId,
-      messageId: foundAnswer.messageId
-    }
-
-    const correctResponse = await getCorrectAnswer(request)
 
     sortRequestData(customerMessage, repairShopAnswer)
   } else {
@@ -80,9 +95,6 @@ function sortRequestData(
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
   messageArray.value = flattenedMessages
-
-  console.log(messageArray.value)
-  console.log(flattenedMessages)
 
   isData.value = true
 }
@@ -110,6 +122,7 @@ onMounted(() => {
           :key="index._id"
           :index="index"
           :onAnswer="handleAnswer"
+          :onActive="activeLine"
           @showMore="showRequestData"
         ></UserHomeAnswerFormTablet>
       </div>

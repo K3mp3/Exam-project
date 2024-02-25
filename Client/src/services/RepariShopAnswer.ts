@@ -41,16 +41,3 @@ export async function removedAnsweredRequests() {
     return error
   }
 }
-
-export async function getCorrectAnswer(messageData: object) {
-  try {
-    console.log(messageData)
-    const response = await axios.post(
-      `${BASE_URL}/answerFromRepairShops/correctAnswer`,
-      messageData
-    )
-    return response.data
-  } catch (error) {
-    return error
-  }
-}
