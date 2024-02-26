@@ -148,8 +148,8 @@ onMounted(() => {
               type="submit"
               :disabled="isBtnDisabled"
               :class="{
-                'main-btn-disabled': isBtnDisabled,
-                'main-btn': !isBtnDisabled
+                'main-btn-disabled m-h-42': isBtnDisabled,
+                'main-btn m-h-42': !isBtnDisabled
               }"
               @click="sendAnswer"
             >
