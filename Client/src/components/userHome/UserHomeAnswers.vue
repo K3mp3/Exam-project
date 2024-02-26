@@ -11,10 +11,6 @@ const mobile = ref(true)
 const tablet = ref(false)
 const isData = ref(false)
 
-const isActive = ref('')
-
-let activeMessageId = ''
-
 const allRepairShopAnswers = ref<IUserContact[]>([])
 const requestData = ref<IUserContact[]>([])
 const messageArray = ref<{ message: string; name: string; date: string }[]>([])
@@ -42,8 +38,6 @@ async function getAnswers() {
     isLineActive: false
   }))
 
-  console.log(allRepairShopAnswers.value)
-
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
     (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
   )
@@ -52,21 +46,6 @@ async function getAnswers() {
 async function handleAnswer(answerData: object) {
   console.log(answerData)
   const response = await answerRepairShops(answerData as IUserContact)
-}
-
-function activeLine(messageId: string) {
-  if (activeMessageId) {
-    const activeAnswer = allRepairShopAnswers.value.find((answer) => answer._id === activeMessageId)
-    if (activeAnswer) {
-      activeAnswer.isLineActive = false
-    }
-  }
-
-  const clickedAnswer = allRepairShopAnswers.value.find((answer) => answer._id === messageId)
-  if (clickedAnswer) {
-    clickedAnswer.isLineActive = true
-    activeMessageId = messageId // Update the active messageId
-  }
 }
 
 async function showRequestData(
@@ -122,9 +101,9 @@ onMounted(() => {
           :key="index._id"
           :index="index"
           :onAnswer="handleAnswer"
-          :onActive="activeLine"
           @showMore="showRequestData"
-        ></UserHomeAnswerFormTablet>
+        >
+        </UserHomeAnswerFormTablet>
       </div>
       <div class="data-column">
         <div

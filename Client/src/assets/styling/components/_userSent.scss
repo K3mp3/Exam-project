@@ -5,6 +5,7 @@
   display: flex;
   gap: 16px;
   padding: 16px;
+  background-color: aqua;
 
   .user-sent-router-link {
     color: $text-main;
@@ -38,12 +39,6 @@
     max-width: 100%;
 
     .user-sent-answer-form-container {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 16px;
-      max-width: 100%;
-
       .user-sent-message-content-container {
         max-width: 100%;
         border-radius: 15px;

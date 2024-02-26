@@ -65,7 +65,7 @@ function sendAnswer() {
 </script>
 
 <template>
-  <div class="user-sent-answer-form-container">
+  <div class="display-flex flex-dir-col gap-16 margin-tp-16 m-width-100">
     <p>{{ props.index.repairShopName }}</p>
 
     <div class="user-sent-message-content-container">

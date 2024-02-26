@@ -24,16 +24,17 @@ const props = defineProps<{
           <fontAwesome :icon="['fas', 'user']" /> Profil</RouterLink
         >
       </li>
-      <li>
-        <button
-          type="button"
-          class="user-home-sign-out-btn text-main z-index-2"
-          @click="signOutFunction"
-        >
-          <fontAwesome :icon="['fas', 'gear']" />
-          Logga ut
-        </button>
-      </li>
     </ul>
+
+    <div class="sign-out-btn-container">
+      <button
+        type="button"
+        class="user-home-sign-out-btn text-main z-index-2"
+        @click="signOutFunction"
+      >
+        <fontAwesome :icon="['fas', 'gear']" />
+        Logga ut
+      </button>
+    </div>
   </div>
 </template>

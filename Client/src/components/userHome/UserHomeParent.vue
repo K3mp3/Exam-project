@@ -4,9 +4,10 @@ import router from '@/router'
 import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useSignInStore } from '@/stores/signInStore'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
+import SideNavParent from '../sideNav/SideNavParent.vue'
 import UserHomeAnswers from './UserHomeAnswers.vue'
 import UserSettings from './UserSettings.vue'
 
@@ -15,8 +16,8 @@ const userId = computed(() => {
   return routeParams.userId || ''
 })
 
-const isSideNav = ref(false)
 const isUserSettings = ref(false)
+const desktop = ref(false)
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
@@ -31,6 +32,13 @@ function getCookie(cookieName: string) {
   }
 
   return null
+}
+
+function updateScreenSize() {
+  window.addEventListener('resize', updateScreenSize)
+
+  if (document.documentElement.clientWidth > 1599) desktop.value = true
+  else desktop.value = false
 }
 
 const fullName = localStorage.getItem('userName')
@@ -72,12 +80,16 @@ function newRequest() {
   // window.history.back()
   router.push(`/user-home-new-request/${userId.value}`)
 }
+
+onMounted(() => {
+  updateScreenSize()
+})
 </script>
 
 <template>
   <UserSettings v-if="isUserSettings" :signOutFunction="changeUserSignInStatus"></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
-  <!-- <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent> -->
+  <SideNavParent v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNavParent>
   <div class="signed-in-header">
     <h2>Hej {{ firstName }}</h2>
     <button type="button" class="btn-transparent text-main z-index-2" @click="showUserSettings">

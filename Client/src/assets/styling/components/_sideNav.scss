@@ -6,40 +6,45 @@
   background-color: $el-bg-gray;
   border: 1px solid $el-border-gray;
   position: fixed;
-  padding: 32px;
+  padding: 24px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin: 32px;
+  margin: 16px;
   border-radius: 15px;
 
   ul {
     padding: 0;
     display: flex;
     flex-direction: column;
+    justify-content: end;
     gap: 32px;
     align-items: start;
+    height: 100%;
 
     li {
       list-style: none;
+    }
+  }
 
-      .user-home-sign-out-btn {
-        background: transparent;
+  .sign-out-btn-container {
+    height: 100%;
+    display: flex;
+    align-items: end;
+
+    .user-home-sign-out-btn {
+      background: transparent;
+      transition: all 0.2s ease-in-out;
+      padding: 4px 16px;
+      border-radius: 22px;
+      background: transparent;
+      border: 2px solid $el-white-main;
+      text-align: center;
+
+      &:hover {
+        cursor: pointer;
         transition: all 0.2s ease-in-out;
-        padding: 2px 16px;
-        height: 36px;
-        border-radius: 20px;
-        background: transparent;
-        border: 2px solid $el-white-main;
-        text-align: center;
-        position: absolute;
-        bottom: 32px;
-        left: 25%;
-
-        &:hover {
-          cursor: pointer;
-          transition: all 0.2s ease-in-out;
-          border: 2px solid $el-active-blue;
-        }
+        border: 2px solid $el-active-blue;
       }
     }
   }
@@ -65,15 +70,5 @@
 
   .active-url {
     color: $el-active-blue;
-  }
-}
-
-@media screen and (min-width: 1482px) {
-  .side-nav-parent-container {
-    padding: 64px;
-
-    ul {
-      gap: 64px;
-    }
   }
 }

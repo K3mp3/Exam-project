@@ -9,17 +9,12 @@ const props = defineProps({
   onAnswer: {
     type: Function,
     required: true
-  },
-  onActive: {
-    type: Function,
-    required: true
   }
 })
 
 const messageAnswer = ref('')
 const priceOffer = ref('')
 
-const isLineActive = ref(true)
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
 
@@ -44,8 +39,6 @@ const emits = defineEmits<{
 }>()
 
 function showMessageBox(index: any) {
-  props.onActive(props.index.messageId)
-
   nextTick(() => {
     emits('showMore', props.index.customerMessage, props.index.repairShopAnswer, index)
   })
@@ -87,6 +80,6 @@ function sendAnswer() {
       <p><span>Registreringsnummer: </span>{{ props.index.registrationNumber }}</p>
       <button type="button" class="show-more-btn" @click="showMessageBox(props.index._id)"></button>
     </div>
-    <div :class="props.index.isLineActive ? 'line-active' : 'line-inactive'"></div>
+    <div class="line-inactive"></div>
   </div>
 </template>

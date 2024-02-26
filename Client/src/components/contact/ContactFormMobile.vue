@@ -213,8 +213,8 @@ onMounted(() => {
         Kontakta oss
       </h2>
     </div>
-    <form @submit.prevent="handleMessage" class="contact-form">
-      <label for="name">För- och efternamn</label>
+    <form @submit.prevent="handleMessage" class="width-100 m-width-1200px text-align-left">
+      <label for="name" class="text-main font-text-light">För- och efternamn</label>
       <input
         type="text"
         name="name"
@@ -235,7 +235,7 @@ onMounted(() => {
         för- och efternman!
       </p>
 
-      <label for="email">Email adress</label>
+      <label for="email" class="text-main font-text-light">Email adress</label>
       <input
         type="email"
         name="name"
@@ -258,13 +258,13 @@ onMounted(() => {
         />Kontrollera så att mailadressen stämmer!
       </p>
 
-      <label for="message-input">Meddelande</label>
+      <label for="message-input" class="text-main font-text-light">Meddelande</label>
       <textarea
         name="message-input"
         v-model="message"
         placeholder="Beskriv varför du kontaktar oss"
         @input="checkInputDataMessage"
-        :class="['textarea-input', 'height-239px']"
+        :class="['textarea-input', 'height-239px', 'margin-tp-4']"
       ></textarea>
 
       <button
