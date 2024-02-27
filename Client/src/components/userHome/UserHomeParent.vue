@@ -37,7 +37,7 @@ function getCookie(cookieName: string) {
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > 1599) desktop.value = true
+  if (document.documentElement.clientWidth > 1639) desktop.value = true
   else desktop.value = false
 }
 

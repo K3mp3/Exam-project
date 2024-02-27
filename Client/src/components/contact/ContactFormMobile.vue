@@ -202,7 +202,7 @@ onMounted(() => {
   </nav>
   <div class="contact-form-container">
     <div class="contact-form-nav-container">
-      <RouterLink to="/" class="contact-form-back-router-link"
+      <RouterLink to="/" class="btn-back"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
       <h2
@@ -279,6 +279,6 @@ onMounted(() => {
         Skicka
       </button>
     </form>
-    <div class="contact-form-blue-line"></div>
+    <div class="blue-line"></div>
   </div>
 </template>

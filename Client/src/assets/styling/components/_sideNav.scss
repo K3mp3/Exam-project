@@ -2,7 +2,7 @@
 @use '../abstracts/fonts' as *;
 
 .side-nav-parent-container {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 32px);
   background-color: $el-bg-gray;
   border: 1px solid $el-border-gray;
   position: fixed;

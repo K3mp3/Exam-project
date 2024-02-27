@@ -120,6 +120,8 @@
     .contact-form {
       display: flex;
       gap: 32px;
+      width: 100%;
+      max-width: 1200px;
 
       .contact-form-right-side {
         width: 100%;

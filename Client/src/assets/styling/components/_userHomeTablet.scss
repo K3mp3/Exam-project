@@ -15,10 +15,13 @@
       flex-direction: column;
       gap: 48px;
       padding: 32px;
+      max-height: 476px;
+      overflow-y: scroll;
 
       .request-container-tablet {
         width: 100%;
         max-width: 1300px;
+        position: relative;
 
         .request-container-content-tablet {
           display: flex;
@@ -56,6 +59,34 @@
             }
           }
         }
+
+        .trash-btn {
+          transition: all 0.2s ease-in-out;
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: transparent;
+          border: none;
+          visibility: hidden;
+        }
+
+        .trash-btn-visible {
+          transition: all 0.2s ease-in-out;
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: transparent;
+          border: none;
+          visibility: visible;
+          color: $text-main;
+          padding: 8px;
+
+          &:hover {
+            transition: all 0.2s ease-in-out;
+            color: $text-error-red;
+            cursor: pointer;
+          }
+        }
       }
     }
 
@@ -71,12 +102,13 @@
 
         .data-column-message-container {
           width: 100%;
-          max-height: 600px;
+          max-height: 476px;
           overflow-y: scroll;
           margin-top: 10px;
           display: flex;
           flex-direction: column;
           gap: 6px;
+          padding-right: 10px;
 
           .message-box-collapesed {
             button {

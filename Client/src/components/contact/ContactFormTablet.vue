@@ -290,6 +290,6 @@ onMounted(() => {
         </button>
       </div>
     </form>
-    <div class="contact-form-blue-line"></div>
+    <div class="blue-line"></div>
   </div>
 </template>

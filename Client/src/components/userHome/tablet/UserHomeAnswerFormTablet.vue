@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { removeUserRequest } from '@/services/removeRequest'
 import { computed, nextTick, ref } from 'vue'
 
 const props = defineProps({
@@ -17,15 +18,14 @@ const priceOffer = ref('')
 
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
+const isTrashBtn = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
-const answerData = computed(() => {
+const requestData = computed(() => {
   return {
     customerId: props.index.customerId,
-    messageId: props.index.messageId,
-    customerAnswer: messageAnswer.value,
-    answeredByRepairShop: false
+    messageId: props.index.messageId
   }
 })
 
@@ -37,6 +37,14 @@ const emits = defineEmits<{
     index: any
   ): void
 }>()
+
+function showTrashBtn() {
+  isTrashBtn.value = true
+}
+
+function hideTrashBtn() {
+  isTrashBtn.value = false
+}
 
 function showMessageBox(index: any) {
   nextTick(() => {
@@ -68,18 +76,30 @@ function checkInputDataAnswer() {
   })
 }
 
+async function removeRequest() {
+  console.log('whops')
+  const response = await removeUserRequest(requestData.value as object)
+}
+
 function sendAnswer() {
   props.onAnswer(answerData.value)
 }
 </script>
 
 <template>
-  <div class="request-container-tablet">
+  <div class="request-container-tablet" @mouseover="showTrashBtn" @mouseleave="hideTrashBtn">
     <p class="text-main font-text-light">{{ props.index.repairShopName }}</p>
     <div class="request-container-content-tablet">
       <p><span>Registreringsnummer: </span>{{ props.index.registrationNumber }}</p>
       <button type="button" class="show-more-btn" @click="showMessageBox(props.index._id)"></button>
     </div>
+    <button
+      type="button"
+      :class="isTrashBtn ? 'trash-btn-visible' : 'trash-btn'"
+      @click="removeRequest"
+    >
+      <fontAwesome :icon="['fas', 'trash']" />
+    </button>
     <div class="line-inactive"></div>
   </div>
 </template>
