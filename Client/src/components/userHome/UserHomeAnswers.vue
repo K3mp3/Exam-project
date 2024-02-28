@@ -2,7 +2,7 @@
 import type { IUserContact } from '@/models/IUserContact'
 import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { answerRepairShops } from '@/services/userContact'
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import UserHomeAnswerForm from './UserHomeAnswerForm.vue'
 import UserHomeMessages from './UserHomeMessages.vue'
 import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
@@ -10,10 +10,16 @@ import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
 const mobile = ref(true)
 const tablet = ref(false)
 const isData = ref(false)
+const isMessageAnswer = ref(false)
+const isBtnDisabled = ref(true)
 
+const customerMessage = ref('')
+
+const storedRequestData = ref<Object[]>([])
 const allRepairShopAnswers = ref<IUserContact[]>([])
 const requestData = ref<IUserContact[]>([])
 const messageArray = ref<{ message: string; name: string; date: string }[]>([])
+const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
 const customerEmail = localStorage.getItem('userEmail')
 
@@ -43,9 +49,40 @@ async function getAnswers() {
   )
 }
 
-async function handleAnswer(answerData: object) {
-  console.log(answerData)
-  const response = await answerRepairShops(answerData as IUserContact)
+function checkInputData() {
+  isBtnDisabled.value = !inputsArray.every((field) => field.value)
+}
+
+function checkInputDataAnswer() {
+  nextTick(() => {
+    if (customerMessage.value === '') {
+      return
+    } else {
+      isMessageAnswer.value = true
+
+      const index = inputsArray.findIndex((field) => field.key === 'isMessageAnswer')
+
+      if (index !== -1) {
+        inputsArray[index].value = isMessageAnswer.value
+      } else {
+        inputsArray.push({ key: 'isMessageAnswer', value: isMessageAnswer.value })
+      }
+
+      checkInputData()
+    }
+  })
+}
+
+let customerData = {}
+
+function handleAnswer(answerData: IUserContact) {
+  customerData = answerData
+
+  console.log(storedRequestData.value)
+}
+
+async function handleAnswerMobile(answerData: IUserContact) {
+  await answerRepairShops(answerData as IUserContact)
 }
 
 async function showRequestData(
@@ -78,6 +115,21 @@ function sortRequestData(
   isData.value = true
 }
 
+const emits = defineEmits(['sendCustomerMessage'])
+
+async function sendAnswer() {
+  console.log(customerData)
+
+  customerData = {
+    ...customerData,
+    customerAnswer: customerMessage.value
+  }
+
+  console.log(customerData)
+
+  await answerRepairShops(customerData as IUserContact)
+}
+
 onMounted(() => {
   getAnswers()
   updateScreenSize()
@@ -91,7 +143,7 @@ onMounted(() => {
         v-for="index in allRepairShopAnswers"
         :key="index._id"
         :index="index"
-        :onAnswer="handleAnswer"
+        :onAnswer="handleAnswerMobile"
       ></UserHomeAnswerForm>
     </form>
     <form @submit.prevent="" class="user-sent-answer-form" v-if="tablet">
@@ -101,6 +153,7 @@ onMounted(() => {
           :key="index._id"
           :index="index"
           :onAnswer="handleAnswer"
+          :onFilter="getAnswers"
           @showMore="showRequestData"
         >
         </UserHomeAnswerFormTablet>
@@ -128,7 +181,7 @@ onMounted(() => {
 
             <textarea
               name="message-input"
-              v-model="messageAnswer"
+              v-model="customerMessage"
               class="text-editor-answer"
               placeholder="Svar"
               @input="checkInputDataAnswer"

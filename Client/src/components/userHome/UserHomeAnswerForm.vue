@@ -26,7 +26,6 @@ const answerData = computed(() => {
   return {
     customerId: props.index.customerId,
     messageId: props.index.messageId,
-    customerAnswer: messageAnswer.value,
     answeredByRepairShop: false
   }
 })

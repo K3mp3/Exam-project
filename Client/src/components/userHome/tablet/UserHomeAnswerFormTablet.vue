@@ -10,6 +10,10 @@ const props = defineProps({
   onAnswer: {
     type: Function,
     required: true
+  },
+  onFilter: {
+    type: Function,
+    required: true
   }
 })
 
@@ -25,18 +29,17 @@ const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer'
 const requestData = computed(() => {
   return {
     customerId: props.index.customerId,
-    messageId: props.index.messageId
+    messageId: props.index.messageId,
+    customerName: props.index.customerName,
+    answeredByRepairShop: false
   }
 })
 
-const emits = defineEmits<{
-  (
-    e: 'showMore',
-    customerMessage: { message: string; name: string; date: string }[],
-    repairShopAnswer: { message: string; name: string; date: string }[],
-    index: any
-  ): void
-}>()
+const emits = defineEmits(['showMore', 'receiveCustomerMessage'])
+
+emits('sendCustomerMessage', (message: string) => {
+  customerMessageFromParent.value = message
+})
 
 function showTrashBtn() {
   isTrashBtn.value = true
@@ -47,6 +50,13 @@ function hideTrashBtn() {
 }
 
 function showMessageBox(index: any) {
+  props.onAnswer({
+    customerName: props.index.customerName,
+    customerId: props.index.customerId,
+    messageId: props.index.messageId,
+    answeredByRepairShop: false
+  })
+
   nextTick(() => {
     emits('showMore', props.index.customerMessage, props.index.repairShopAnswer, index)
   })
@@ -77,12 +87,8 @@ function checkInputDataAnswer() {
 }
 
 async function removeRequest() {
-  console.log('whops')
   const response = await removeUserRequest(requestData.value as object)
-}
-
-function sendAnswer() {
-  props.onAnswer(answerData.value)
+  props.onFilter(true)
 }
 </script>
 
