@@ -14,7 +14,7 @@ main {
     .vertical-line {
       width: 2px;
       min-height: 100%;
-      background: linear-gradient(to bottom, #0d3ef100, #a80df1);
+      background: linear-gradient(to bottom, #0d3ef100, hsl(281, 90%, 50%));
     }
 
     .info-container {

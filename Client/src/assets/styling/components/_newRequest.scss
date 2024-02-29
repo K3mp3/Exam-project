@@ -113,6 +113,8 @@
     border-radius: 50px;
     margin: 32px 0;
     width: 100%;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
       transition: all 0.2s ease-in-out;
@@ -136,15 +138,48 @@
   }
 }
 
+.spinner-component {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
 @media screen and (min-width: 700px) {
   .new-request-parent-container {
     padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 0;
+
+    .new-request-surrounding-container {
+      width: 100%;
+    }
+
+    .new-request-top-nav {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      width: 100%;
+      max-width: 1300px;
+      margin: auto;
+      margin-bottom: 32px;
+    }
 
     form {
-      max-width: 700px;
+      width: 100%;
+      max-width: 1300px;
       display: flex;
       gap: 32px;
       justify-content: center;
+      margin: auto;
 
       .right-side-contact-form {
         width: 100%;

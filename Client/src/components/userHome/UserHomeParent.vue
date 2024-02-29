@@ -63,7 +63,7 @@ async function changeUserSignInStatus() {
 
   if (response) {
     const isUserSignedIn = useSignInStore()
-    isUserSignedIn.signInUser(!isSignedIn.value)
+    isUserSignedIn.signInUser(false)
 
     if (!isSignedIn.value) {
       if (isCookieAccepted === 'true') {
@@ -92,7 +92,12 @@ onMounted(() => {
   <SideNavParent v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNavParent>
   <div class="signed-in-header">
     <h2>Hej {{ firstName }}</h2>
-    <button type="button" class="btn-transparent text-main z-index-2" @click="showUserSettings">
+    <button
+      type="button"
+      class="btn-transparent text-main z-index-2"
+      @click="showUserSettings"
+      v-if="!desktop"
+    >
       <fontAwesome :icon="['fas', 'user']" />
     </button>
   </div>

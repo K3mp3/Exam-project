@@ -35,11 +35,7 @@ const requestData = computed(() => {
   }
 })
 
-const emits = defineEmits(['showMore', 'receiveCustomerMessage'])
-
-emits('sendCustomerMessage', (message: string) => {
-  customerMessageFromParent.value = message
-})
+const emits = defineEmits(['showMore'])
 
 function showTrashBtn() {
   isTrashBtn.value = true

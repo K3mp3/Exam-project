@@ -13,7 +13,10 @@ export async function contactRepairShops(messageData: IUserContact) {
       messageData
     )
 
-    return response.data
+    const data = response.data
+    const status = response.status
+
+    return { data, status }
   } catch (error) {
     return error
   }
@@ -25,7 +28,8 @@ export async function getContactRepairShops(repairShopId: IRepairShopId) {
       `${BASE_URL}/contactRepairShops/getContactRepairShops`,
       repairShopId
     )
-    return response.data
+
+    return response
   } catch (error) {
     return error
   }

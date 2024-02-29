@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import router from '@/router'
 import { contactRepairShops } from '@/services/userContact'
 import { computed, nextTick, onMounted, ref } from 'vue'
@@ -17,6 +18,7 @@ const isLocation = ref(false)
 const isTroubleshootTime = ref(false)
 const isRegistrationNumber = ref(false)
 const isMessage = ref(false)
+const isLoading = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
@@ -171,8 +173,24 @@ const messageData = computed(() => {
 })
 
 async function handleMessage() {
-  console.log('wyedabyhwd')
+  isLoading.value = true
   const response = await contactRepairShops(messageData.value)
+  const responseData = response as { status: number }
+
+  if (responseData && responseData.status === 201) {
+    isLoading.value = false
+
+    location.value = ''
+    registrationNumber.value = ''
+    troubleshootTime.value = ''
+    message.value = ''
+    // Reset input data flags
+    inputsArray.forEach((field) => {
+      field.value = false
+    })
+    // Disable submit button
+    isBtnDisabled.value = true
+  }
 }
 
 onMounted(() => {
@@ -181,48 +199,73 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="new-request-top-nav">
-    <button type="button" class="btn-back" @click="handleReturnClick">
-      <fontAwesome :icon="['fas', 'chevron-left']" />
-    </button>
-    <h3>Kontakta verkstäder</h3>
-  </div>
+  <div class="new-request-surrounding-container">
+    <div class="new-request-top-nav">
+      <button type="button" class="btn-back" @click="handleReturnClick">
+        <fontAwesome :icon="['fas', 'chevron-left']" />
+      </button>
+      <h3>Kontakta verkstäder</h3>
+    </div>
 
-  <form @submit.prevent="handleMessage">
-    <div class="right-side-contact-form">
-      <label for="location">Kommun</label>
-      <select
-        name="location"
-        class="signed-in-contact-form-select"
-        v-model="location"
-        @change="checkInputDataSelect1"
-      >
-        <option value="Sundsvall">Sundsvall</option>
-      </select>
+    <form @submit.prevent="handleMessage">
+      <div class="right-side-contact-form">
+        <label for="location">Kommun</label>
+        <select
+          name="location"
+          class="signed-in-contact-form-select"
+          v-model="location"
+          @change="checkInputDataSelect1"
+        >
+          <option value="Sundsvall">Sundsvall</option>
+        </select>
 
-      <label for="registrationNumber">Registreringsnummer</label>
-      <input
-        type="text"
-        name="registrationNumber"
-        placeholder="ABC 123"
-        v-model="registrationNumber"
-        @change="checkInputDataRegistrationNumber"
-        @input="formatRegistrationNumber"
-        maxlength="7"
-      />
+        <label for="registrationNumber">Registreringsnummer</label>
+        <input
+          type="text"
+          name="registrationNumber"
+          placeholder="ABC 123"
+          v-model="registrationNumber"
+          @change="checkInputDataRegistrationNumber"
+          @input="formatRegistrationNumber"
+          maxlength="7"
+        />
 
-      <label for="troubleshootTime">Felsökningstid</label>
-      <select
-        name="troubleshootTime"
-        class="signed-in-contact-form-select"
-        v-model="troubleshootTime"
-        @change="checkInputDataSelect2"
-      >
-        <option value="1 timme">1 timme</option>
-        <option value="2 timme">2 timmar</option>
-        <option value="3 timme">3 timmar</option>
-        <option value="4 timme">4 timmar</option>
-      </select>
+        <label for="troubleshootTime">Felsökningstid</label>
+        <select
+          name="troubleshootTime"
+          class="signed-in-contact-form-select"
+          v-model="troubleshootTime"
+          @change="checkInputDataSelect2"
+        >
+          <option value="1 timme">1 timme</option>
+          <option value="2 timme">2 timmar</option>
+          <option value="3 timme">3 timmar</option>
+          <option value="4 timme">4 timmar</option>
+        </select>
+
+        <button
+          type="submit"
+          :disabled="isBtnDisabled"
+          :class="{
+            'user-home-send-btn-disabled': isBtnDisabled,
+            'user-home-send-btn': !isBtnDisabled,
+            hidden: !hideMobileBtn
+          }"
+        >
+          Skicka
+        </button>
+      </div>
+
+      <div class="left-side-contact-form">
+        <label for="message-input">Meddelande</label>
+        <textarea
+          name="message-input"
+          v-model="message"
+          class="text-editor"
+          placeholder="Beskriv vad du vill ha hjälp med..."
+          @input="checkInputDataMessage"
+        ></textarea>
+      </div>
 
       <button
         type="submit"
@@ -230,36 +273,17 @@ onMounted(() => {
         :class="{
           'user-home-send-btn-disabled': isBtnDisabled,
           'user-home-send-btn': !isBtnDisabled,
-          hidden: !hideMobileBtn
+          hidden: hideMobileBtn
         }"
       >
         Skicka
       </button>
-    </div>
+      <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
+    </form>
 
-    <div class="left-side-contact-form">
-      <label for="message-input">Meddelande</label>
-      <textarea
-        name="message-input"
-        v-model="message"
-        class="text-editor"
-        placeholder="Beskriv vad du vill ha hjälp med..."
-        @input="checkInputDataMessage"
-      ></textarea>
-    </div>
-
-    <button
-      type="submit"
-      :disabled="isBtnDisabled"
-      :class="{
-        'user-home-send-btn-disabled': isBtnDisabled,
-        'user-home-send-btn': !isBtnDisabled,
-        hidden: hideMobileBtn
-      }"
-    >
-      Skicka
-    </button>
-  </form>
-
-  <div class="blue-line"></div>
+    <div class="blue-line"></div>
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner></LoadingSpinner>
+  </div>
 </template>
