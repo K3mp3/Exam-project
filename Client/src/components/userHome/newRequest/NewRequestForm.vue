@@ -19,6 +19,8 @@ const isTroubleshootTime = ref(false)
 const isRegistrationNumber = ref(false)
 const isMessage = ref(false)
 const isLoading = ref(false)
+const isConfirmation = ref(false)
+const isConfirmationError = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
@@ -172,9 +174,30 @@ const messageData = computed(() => {
   }
 })
 
+function showConfirmationBox(response: any) {
+  console.log(response)
+
+  if (response.status === 201) {
+    isConfirmation.value = true
+
+    setTimeout(() => {
+      isConfirmation.value = false
+    }, 4000)
+  } else if (response === 500) {
+    isConfirmationError.value = true
+
+    setTimeout(() => {
+      isConfirmationError.value = false
+    }, 4000)
+  }
+}
+
 async function handleMessage() {
   isLoading.value = true
   const response = await contactRepairShops(messageData.value)
+
+  console.log(response)
+
   const responseData = response as { status: number }
 
   if (responseData && responseData.status === 201) {
@@ -190,6 +213,12 @@ async function handleMessage() {
     })
     // Disable submit button
     isBtnDisabled.value = true
+    showConfirmationBox(response)
+  } else {
+    setTimeout(() => {
+      isLoading.value = false
+      showConfirmationBox(response)
+    }, 5000)
   }
 }
 
@@ -285,5 +314,16 @@ onMounted(() => {
   </div>
   <div class="spinner-component" v-if="isLoading">
     <LoadingSpinner></LoadingSpinner>
+  </div>
+  <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
+    <div class="confirmation-box" v-if="isConfirmation">
+      <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
+      <p class="text-main font-title-bold O1rem">Email skickat!</p>
+    </div>
+
+    <div class="confirmation-box-error" v-if="isConfirmationError">
+      <fontAwesome :icon="['fas', 'x']" class="text-main font-title-bold O35rem" />
+      <p class="text-main font-title-bold O1rem">Email kunde ej skickas!</p>
+    </div>
   </div>
 </template>

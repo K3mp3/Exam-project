@@ -18,7 +18,7 @@ export async function contactRepairShops(messageData: IUserContact) {
 
     return { data, status }
   } catch (error) {
-    return error
+    return 500
   }
 }
 
