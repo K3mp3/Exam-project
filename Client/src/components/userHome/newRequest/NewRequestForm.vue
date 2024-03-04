@@ -14,10 +14,6 @@ const registrationNumber = ref('')
 const troubleshootTime = ref('')
 const message = ref('')
 
-const isLocation = ref(false)
-const isTroubleshootTime = ref(false)
-const isRegistrationNumber = ref(false)
-const isMessage = ref(false)
 const isLoading = ref(false)
 const isConfirmation = ref(false)
 const isConfirmationError = ref(false)
@@ -40,81 +36,47 @@ function handleReturnClick() {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
+  console.log(inputsArray)
 }
 
-function checkInputDataSelect1() {
+function checkInputsData(confirmKey: string) {
   nextTick(() => {
-    if (location.value === '') {
-      return
-    } else {
-      isLocation.value = true
+    let refVariable: Ref<string> | null = null
+    switch (confirmKey) {
+      case 'isLocation':
+        refVariable = location
+        break
+      case 'isRegistrationNumber':
+        refVariable = registrationNumber
+        break
+      case 'isTroubleshootTime':
+        refVariable = troubleshootTime
+        break
+      case 'isMessage':
+        refVariable = message
+        break
+      default:
+        break
+    }
 
-      const index = inputsArray.findIndex((field) => field.key === 'isLocation')
+    if (refVariable.value === '') {
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isLocation.value
+        inputsArray[index].value = false
       } else {
-        inputsArray.push({ key: 'isLocation', value: isLocation.value })
+        inputsArray.push({ key: confirmKey, value: false })
       }
 
       checkInputData()
-    }
-  })
-}
-
-function checkInputDataSelect2() {
-  nextTick(() => {
-    if (troubleshootTime.value === '') {
       return
     } else {
-      isTroubleshootTime.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isTroubleshootTime')
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isTroubleshootTime.value
+        inputsArray[index].value = true
       } else {
-        inputsArray.push({ key: 'isTroubleshootTime', value: isTroubleshootTime.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataRegistrationNumber() {
-  nextTick(() => {
-    if (registrationNumber.value === '') {
-      return
-    } else {
-      isRegistrationNumber.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isRegistrationNumber')
-
-      if (index !== -1) {
-        inputsArray[index].value = isRegistrationNumber.value
-      } else {
-        inputsArray.push({ key: 'isRegistrationNumber', value: isRegistrationNumber.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataMessage() {
-  nextTick(() => {
-    if (message.value === '') {
-      return
-    } else {
-      isMessage.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isMessage')
-
-      if (index !== -1) {
-        inputsArray[index].value = isMessage.value
-      } else {
-        inputsArray.push({ key: 'isMessage', value: isMessage.value })
+        inputsArray.push({ key: confirmKey, value: true })
       }
 
       checkInputData()
@@ -145,25 +107,7 @@ function formatRegistrationNumber() {
   checkInputData()
 }
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const fullname = getCookie('name')
-const email = getCookie('email')
-
 const messageData = computed(() => {
-  const nonNullName = fullname || ''
-  const nonNullEmaik = email || ''
-
   return {
     customerId: userId.value as unknown as string,
     location: location.value,
@@ -243,7 +187,7 @@ onMounted(() => {
           name="location"
           class="signed-in-contact-form-select"
           v-model="location"
-          @change="checkInputDataSelect1"
+          @change="checkInputsData('isLocation')"
         >
           <option value="Sundsvall">Sundsvall</option>
         </select>
@@ -254,7 +198,7 @@ onMounted(() => {
           name="registrationNumber"
           placeholder="ABC 123"
           v-model="registrationNumber"
-          @change="checkInputDataRegistrationNumber"
+          @change="checkInputsData('isRegistrationNumber')"
           @input="formatRegistrationNumber"
           maxlength="7"
         />
@@ -264,7 +208,7 @@ onMounted(() => {
           name="troubleshootTime"
           class="signed-in-contact-form-select"
           v-model="troubleshootTime"
-          @change="checkInputDataSelect2"
+          @change="checkInputsData('isTroubleshootTime')"
         >
           <option value="1 timme">1 timme</option>
           <option value="2 timme">2 timmar</option>
@@ -292,7 +236,7 @@ onMounted(() => {
           v-model="message"
           class="text-editor"
           placeholder="Beskriv vad du vill ha hjälp med..."
-          @input="checkInputDataMessage"
+          @input="checkInputsData('message', 'isMessage')"
         ></textarea>
       </div>
 
