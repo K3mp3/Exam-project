@@ -17,6 +17,9 @@ const message = ref('')
 const isLoading = ref(false)
 const isConfirmation = ref(false)
 const isConfirmationError = ref(false)
+const isBtnDisabled = ref(true)
+const hideMobileBtn = ref(false)
+const isRegistrationNumberValid = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
@@ -24,9 +27,6 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isRegistrationNumber', value: false },
   { key: 'isMessage', value: false }
 ]
-
-const isBtnDisabled = ref(true)
-const hideMobileBtn = ref(false)
 
 let width = document.documentElement.clientWidth
 
@@ -36,10 +36,11 @@ function handleReturnClick() {
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(inputsArray)
 }
 
 function checkInputsData(confirmKey: string) {
+  console.log('confirmKey')
+
   nextTick(() => {
     let refVariable: Ref<string> | null = null
     switch (confirmKey) {
@@ -73,6 +74,14 @@ function checkInputsData(confirmKey: string) {
     } else {
       const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
+      if (confirmKey === 'isRegistrationNumber') {
+        console.log('hejsan')
+        const registrationRegex = /^[a-zA-Z0-9\s]*$/
+        isRegistrationNumberValid.value = registrationRegex.test(refVariable.value)
+      }
+
+      if (!isRegistrationNumberValid.value) return
+
       if (index !== -1) {
         inputsArray[index].value = true
       } else {
@@ -104,7 +113,7 @@ function formatRegistrationNumber() {
 
   registrationNumber.value = formattedValue
 
-  checkInputData()
+  checkInputsData('isRegistrationNumber')
 }
 
 const messageData = computed(() => {
@@ -198,10 +207,16 @@ onMounted(() => {
           name="registrationNumber"
           placeholder="ABC 123"
           v-model="registrationNumber"
-          @change="checkInputsData('isRegistrationNumber')"
           @input="formatRegistrationNumber"
           maxlength="7"
         />
+        <p
+          class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
+          v-if="!isRegistrationNumberValid"
+        >
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange
+          ett giltigt registreringsnummer!
+        </p>
 
         <label for="troubleshootTime">Felsökningstid</label>
         <select
@@ -236,7 +251,7 @@ onMounted(() => {
           v-model="message"
           class="text-editor"
           placeholder="Beskriv vad du vill ha hjälp med..."
-          @input="checkInputsData('message', 'isMessage')"
+          @input="checkInputsData('isMessage')"
         ></textarea>
       </div>
 
