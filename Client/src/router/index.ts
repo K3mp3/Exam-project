@@ -67,7 +67,7 @@ const router = createRouter({
           meta: { index: true }
         },
         {
-          path: '/user-sent',
+          path: '/user-sent/:id',
           name: 'user sent view',
           component: UserSentViewVue,
           meta: { index: true }

@@ -9,6 +9,8 @@
     gap: 16px;
     align-items: center;
     margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
   }
 
   label {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import LoadingSpinner from '@/components/assets/LoadingSpinner.vue'
 import router from '@/router'
 import { contactRepairShops } from '@/services/userContact'
 import { computed, nextTick, onMounted, ref } from 'vue'
@@ -307,13 +307,13 @@ onMounted(() => {
       >
         Skicka
       </button>
-      <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
     </form>
 
     <div class="blue-line"></div>
   </div>
   <div class="spinner-component" v-if="isLoading">
     <LoadingSpinner></LoadingSpinner>
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
   <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
     <div class="confirmation-box" v-if="isConfirmation">
