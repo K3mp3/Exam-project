@@ -197,8 +197,8 @@ onMounted(() => {
     <ConsumerNav></ConsumerNav>
   </nav>
   <div class="contact-form-container">
-    <div class="contact-form-nav-container">
-      <RouterLink to="/" class="contact-form-back-router-link"
+    <div class="display-flex align-items-center gap-24 width-100 m-width-1200px">
+      <RouterLink to="/" class="btn-back"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
       <h2

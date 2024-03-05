@@ -78,6 +78,7 @@ function checkInputsData(confirmKey: string) {
         console.log('hejsan')
         const registrationRegex = /^[a-zA-Z0-9\s]*$/
         isRegistrationNumberValid.value = registrationRegex.test(refVariable.value)
+        isBtnDisabled.value = true
       }
 
       if (!isRegistrationNumberValid.value) return

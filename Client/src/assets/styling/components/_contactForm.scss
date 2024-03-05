@@ -65,33 +65,6 @@
     justify-content: space-between;
   }
 
-  .contact-form-nav-container {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    max-width: 1200px;
-
-    .contact-form-back-router-link {
-      color: $text-main;
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      border: 2px solid $el-border-gray;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:focus,
-      &:active,
-      &:hover {
-        cursor: pointer;
-        color: $el-active-blue;
-        border: 2px solid $el-active-blue;
-      }
-    }
-  }
-
   .contact-form {
     label {
       font-size: 0.9rem;
@@ -112,10 +85,6 @@
   .contact-form-container {
     padding: 137px 32px 0 32px;
     gap: 48px;
-
-    .contact-form-nav-container {
-      gap: 24px;
-    }
 
     .contact-form {
       display: flex;
@@ -146,10 +115,6 @@
   .contact-form-container {
     padding: 153px 64px 0 64px;
     gap: 64px;
-
-    .contact-form-nav-container {
-      gap: 24px;
-    }
 
     .contact-form {
       display: flex;

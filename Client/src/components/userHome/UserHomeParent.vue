@@ -18,21 +18,10 @@ const userId = computed(() => {
 
 const isUserSettings = ref(false)
 const desktop = ref(false)
+const showEmptyMessage = ref(false)
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
-
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
 
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
@@ -43,7 +32,6 @@ function updateScreenSize() {
 
 const fullName = localStorage.getItem('userName')
 const email = localStorage.getItem('userEmail')
-const isCookieAccepted = getCookie('accept')
 
 const firstName = fullName ? fullName.split(' ')[0] : ''
 
@@ -66,12 +54,8 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(false)
 
     if (!isSignedIn.value) {
-      if (isCookieAccepted === 'true') {
-        removeCookies()
-        router.push({ name: 'landing page' })
-      } else {
-        router.push({ name: 'landing page' })
-      }
+      removeCookies()
+      router.push({ name: 'landing page' })
     }
   }
 }
@@ -79,6 +63,11 @@ async function changeUserSignInStatus() {
 function newRequest() {
   // window.history.back()
   router.push(`/user-home-new-request/${userId.value}`)
+}
+
+function countNumberOfAnswers(totalAnswers: Number) {
+  console.log(totalAnswers)
+  if (totalAnswers < 1) return true
 }
 
 onMounted(() => {
@@ -105,8 +94,10 @@ onMounted(() => {
     <button type="button" class="user-home-new-btn text-main z-index-2" @click="newRequest">
       Ny förfrågan
     </button>
+    <p v-if="countNumberOfAnswers" class="text-main font-title-bold margin-tp-32">
+      Whoops, här var det tomt!
+    </p>
   </div>
 
-  <UserHomeAnswers></UserHomeAnswers>
+  <UserHomeAnswers :numberOfAnswers="countNumberOfAnswers"></UserHomeAnswers>
 </template>
-../sideNav/SideNav.vue

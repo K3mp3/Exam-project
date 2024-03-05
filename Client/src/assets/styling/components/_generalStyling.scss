@@ -98,6 +98,10 @@
   font-weight: map-get($font-text-light, font-weight);
 }
 
+p {
+  font-size: 0.9rem;
+}
+
 .text-deco-none {
   text-decoration: none;
 }
@@ -234,6 +238,10 @@
   margin-top: 16px;
 }
 
+.margin-tp-32 {
+  margin-top: 32px;
+}
+
 .margin-top-n11 {
   margin-top: -11px;
 }
@@ -308,6 +316,10 @@
 
 .gap-16 {
   gap: 16px;
+}
+
+.gap-24 {
+  gap: 24px;
 }
 
 .blue-line {
@@ -566,6 +578,10 @@
     font-size: 1rem;
   }
   .main-btn-disabled {
+    font-size: 1rem;
+  }
+
+  p {
     font-size: 1rem;
   }
 }
