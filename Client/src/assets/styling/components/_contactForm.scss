@@ -51,14 +51,6 @@
 }
 
 .contact-form-container {
-  padding: 105px 16px 0 16px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 32px;
-
   .contact-form-nav {
     width: 100%;
     display: flex;
@@ -82,31 +74,26 @@
 }
 
 @media screen and (min-width: 700px) {
-  .contact-form-container {
-    padding: 137px 32px 0 32px;
-    gap: 48px;
+  .contact-form {
+    display: flex;
+    gap: 32px;
+    width: 100%;
+    max-width: 1200px;
 
-    .contact-form {
-      display: flex;
-      gap: 32px;
+    .contact-form-right-side {
       width: 100%;
-      max-width: 1200px;
+      order: 2;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .contact-form-right-side {
-        width: 100%;
-        order: 2;
-        display: flex;
-        flex-direction: column;
-      }
+    .contact-form-left-side {
+      width: 100%;
+      order: 1;
+    }
 
-      .contact-form-left-side {
-        width: 100%;
-        order: 1;
-      }
-
-      label {
-        font-size: 1rem;
-      }
+    label {
+      font-size: 1rem;
     }
   }
 }
