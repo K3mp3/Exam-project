@@ -10,6 +10,8 @@ const userHomeRoute = computed(() => `/user-home/${userId}`)
 const userName = localStorage.getItem('userName')
 const userEmail = localStorage.getItem('userEmail')
 
+const allRepairShopAnswers = ref<IUserContact[]>([])
+
 const user = ref({
   customerName: userName,
   customerEmail: userEmail
@@ -19,6 +21,8 @@ async function getMessages() {
   nextTick(async () => {
     console.log(user.value)
     const response = await getSentMessages(user.value)
+    allRepairShopAnswers.value = response
+    console.log(allRepairShopAnswers.value)
   })
 }
 

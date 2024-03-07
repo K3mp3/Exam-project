@@ -41,7 +41,7 @@ export async function getSentMessages(user: IUserContact) {
   try {
     const response = await axios.post(`${BASE_URL}/contactRepairShops/sentMessages`, user)
 
-    return response
+    return response.data
   } catch (error) {
     return error
   }
