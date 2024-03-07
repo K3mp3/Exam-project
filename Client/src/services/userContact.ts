@@ -35,6 +35,18 @@ export async function getContactRepairShops(repairShopId: IRepairShopId) {
   }
 }
 
+export async function getSentMessages(user: IUserContact) {
+  console.log(user)
+
+  try {
+    const response = await axios.post(`${BASE_URL}/contactRepairShops/sentMessages`, user)
+
+    return response
+  } catch (error) {
+    return error
+  }
+}
+
 export async function answerRepairShops(messageData: IUserContact) {
   try {
     console.log(messageData)

@@ -5,7 +5,8 @@
   display: flex;
   gap: 16px;
   padding: 16px;
-  background-color: aqua;
+  max-width: 1300px;
+  margin: auto;
 
   .user-sent-router-link {
     color: $text-main;
@@ -19,7 +20,6 @@
   }
 
   h2 {
-    font-size: 1.5rem;
     color: $text-main;
     font-family: map-get($font-title-black, font-family);
     font-weight: map-get($font-title-black, font-weight);
