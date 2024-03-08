@@ -16,20 +16,6 @@ const userId = computed(() => {
 const unansweredMessages = ref<IUserContact[]>([])
 const answeredMessages = ref<IUserContact[]>([])
 
-const filteredMessages = []
-
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
 // const repairShopEmail = localStorage.getItem('userEmail')
 // const repairShopName = localStorage.getItem('userName')
 
@@ -43,7 +29,9 @@ async function getMessages() {
   if (userId.value) {
     const response = await getContactRepairShops(repairShopId as IRepairShopId)
 
-    const filteredResponse = response.filter((message: IUserContact) => {
+    const responseArray: IUserContact[] = Array.isArray(response) ? response : []
+
+    const filteredResponse = responseArray.filter((message: IUserContact) => {
       return (
         !message.repairShopAnswers || // If repairShopAnswers is not defined
         message.repairShopAnswers.every((answer) => answer.repairShop !== repairShopName)

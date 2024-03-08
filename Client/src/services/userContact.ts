@@ -35,7 +35,7 @@ export async function getContactRepairShops(repairShopId: IRepairShopId) {
   }
 }
 
-export async function getSentMessages(user: IUserContact) {
+export async function getSentMessages(user: Object) {
   console.log(user)
 
   try {
