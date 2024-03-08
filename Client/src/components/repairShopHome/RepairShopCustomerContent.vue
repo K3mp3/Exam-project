@@ -1,103 +1,103 @@
 <script setup lang="ts">
-// import router from '@/router'
-// import { computed, nextTick, onMounted, ref } from 'vue'
+import router from '@/router'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
-// const userId = computed(() => {
-//   const routeParams = router.currentRoute.value.params
-//   return routeParams.userId || ''
-// })
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
 
-// const props = defineProps({
-//   index: {
-//     type: Object,
-//     required: true
-//   },
-//   onAnswer: {
-//     type: Function,
-//     required: true
-//   }
-// })
+const props = defineProps({
+  index: {
+    type: Object,
+    required: true
+  },
+  onAnswer: {
+    type: Function,
+    required: true
+  }
+})
 
-// const messageAnswer = ref('')
-// const priceOffer = ref('')
+const messageAnswer = ref('')
+const priceOffer = ref('')
 
-// const isMessageBox = ref(false)
-// const isMessageAnswer = ref(false)
-// const isBtnDisabled = ref(true)
-// const showDialog = ref(false)
+const isMessageBox = ref(false)
+const isMessageAnswer = ref(false)
+const isBtnDisabled = ref(true)
+const showDialog = ref(false)
 
-// const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
+const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
-// const messageArray: { message: string; name: string; date: string }[] = []
+const messageArray: { message: string; name: string; date: string }[] = []
 
-// const repairShopName = localStorage.getItem('userName')
+const repairShopName = localStorage.getItem('userName')
 
-// const answerData = computed(() => {
-//   return {
-//     repairShopId: userId.value as unknown as string,
-//     customerName: props.index.customerName,
-//     customerId: props.index.customerId,
-//     customerEmail: props.index.customerEmail,
-//     customerMessage: props.index.customerMessage[0].message,
-//     customerMessageDate: props.index.customerMessage[0].date,
-//     repairShopAnswer: messageAnswer.value,
-//     priceOffer: priceOffer.value,
-//     location: props.index.location,
-//     registrationNumber: props.index.registrationNumber,
-//     troubleshootTime: props.index.troubleshootTime,
-//     answeredByRepairShop: true
-//   }
-// })
+const answerData = computed(() => {
+  return {
+    repairShopId: userId.value as unknown as string,
+    customerName: props.index.customerName,
+    customerId: props.index.customerId,
+    customerEmail: props.index.customerEmail,
+    customerMessage: props.index.customerMessage[0].message,
+    customerMessageDate: props.index.customerMessage[0].date,
+    repairShopAnswer: messageAnswer.value,
+    priceOffer: priceOffer.value,
+    location: props.index.location,
+    registrationNumber: props.index.registrationNumber,
+    troubleshootTime: props.index.troubleshootTime,
+    answeredByRepairShop: true
+  }
+})
 
-// function checkInputData() {
-//   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-// }
+function checkInputData() {
+  isBtnDisabled.value = !inputsArray.every((field) => field.value)
+}
 
-// function checkInputDataAnswer() {
-//   nextTick(() => {
-//     if (messageAnswer.value === '') {
-//       return
-//     } else {
-//       isMessageAnswer.value = true
+function checkInputDataAnswer() {
+  nextTick(() => {
+    if (messageAnswer.value === '') {
+      return
+    } else {
+      isMessageAnswer.value = true
 
-//       const index = inputsArray.findIndex((field) => field.key === 'isMessageAnswer')
+      const index = inputsArray.findIndex((field) => field.key === 'isMessageAnswer')
 
-//       if (index !== -1) {
-//         inputsArray[index].value = isMessageAnswer.value
-//       } else {
-//         inputsArray.push({ key: 'isMessageAnswer', value: isMessageAnswer.value })
-//       }
+      if (index !== -1) {
+        inputsArray[index].value = isMessageAnswer.value
+      } else {
+        inputsArray.push({ key: 'isMessageAnswer', value: isMessageAnswer.value })
+      }
 
-//       checkInputData()
-//     }
-//   })
-// }
+      checkInputData()
+    }
+  })
+}
 
-// function showMessageBox() {
-//   isMessageBox.value = !isMessageBox.value
-// }
+function showMessageBox() {
+  isMessageBox.value = !isMessageBox.value
+}
 
-// function sendAnswer() {
-//   props.onAnswer(answerData.value)
-// }
+function sendAnswer() {
+  props.onAnswer(answerData.value)
+}
 
-// onMounted(() => {
-//   const flattenedMessages = props.index.customerMessage.concat(props.index.repairShopAnswer)
+onMounted(() => {
+  const flattenedMessages = props.index.customerMessage.concat(props.index.repairShopAnswer)
 
-//   // Sort the flattened array based on the date property
-//   flattenedMessages.sort(
-//     (a: { date: string }, b: { date: string }) =>
-//       new Date(a.date).getTime() - new Date(b.date).getTime()
-//   )
-//   // Push the sorted messages back into messageArray
-//   messageArray.push(...flattenedMessages)
+  // Sort the flattened array based on the date property
+  flattenedMessages.sort(
+    (a: { date: string }, b: { date: string }) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
+  // Push the sorted messages back into messageArray
+  messageArray.push(...flattenedMessages)
 
-//   console.log(messageArray)
-// })
+  console.log(messageArray)
+})
 </script>
 
 <template>
-  <!-- <div class="request-container">
+  <div class="request-container">
     <p class="customer-name">{{ props.index.customerName }}</p>
 
     <div class="message-content-parent-container">
@@ -152,6 +152,6 @@
       Skicka
     </button>
     <hr />
-  </div> -->
+  </div>
   <div class="background-container"></div>
 </template>

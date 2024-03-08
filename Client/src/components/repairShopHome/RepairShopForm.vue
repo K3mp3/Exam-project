@@ -28,7 +28,6 @@ const repairShopName = localStorage.getItem('userName')
 async function getMessages() {
   if (userId.value) {
     const response = await getContactRepairShops(repairShopId as IRepairShopId)
-
     const responseArray: IUserContact[] = Array.isArray(response) ? response : []
 
     const filteredResponse = responseArray.filter((message: IUserContact) => {
@@ -73,6 +72,7 @@ async function handleAnswerCustomerBack(answerData: Object) {
 onMounted(() => {
   getMessages()
   getAnsweredMessages()
+  console.log(unansweredMessages.value)
 })
 </script>
 

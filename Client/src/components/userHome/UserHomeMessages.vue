@@ -22,6 +22,8 @@ const isLastMessageBox = ref(false)
 const instance = getCurrentInstance()
 
 const userName = localStorage.getItem('userName')
+console.log(userName)
+console.log(props.index)
 
 function collapseMessageBox() {
   isCollaspedMessageBox.value = !isCollaspedMessageBox.value
@@ -38,7 +40,7 @@ watch(
 )
 
 onMounted(() => {
-  console.log(props.index)
+  console.log(props.index.name)
 })
 </script>
 

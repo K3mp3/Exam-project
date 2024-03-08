@@ -275,15 +275,15 @@ onMounted(() => {
     <LoadingSpinner></LoadingSpinner>
     <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
-  <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
+  <div class="confirmation-box-background" v-if="isConfirmation">
     <div class="confirmation-box" v-if="isConfirmation">
       <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
-      <p class="text-main font-title-bold O1rem">Email skickat!</p>
+      <p class="text-main font-title-bold O1rem">Meddelande skickat!</p>
     </div>
 
     <div class="confirmation-box-error" v-if="isConfirmationError">
       <fontAwesome :icon="['fas', 'x']" class="text-main font-title-bold O35rem" />
-      <p class="text-main font-title-bold O1rem">Email kunde ej skickas!</p>
+      <p class="text-main font-title-bold O1rem">Meddelande kunde ej skickas!</p>
     </div>
   </div>
 </template>

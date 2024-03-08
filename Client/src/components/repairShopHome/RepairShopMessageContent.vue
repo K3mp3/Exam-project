@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 const userId = computed(() => {
   const routeParams = router.currentRoute.value.params
@@ -18,7 +18,7 @@ const props = defineProps({
   }
 })
 
-console.log(props.index)
+console.log('hejsan')
 
 const messageAnswer = ref('')
 const priceOffer = ref('')
@@ -29,6 +29,8 @@ const isBtnDisabled = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
+const messageArray: { message: string; name: string; date: string }[] = []
+
 const repairShopName = localStorage.getItem('userName')
 
 const answerData = computed(() => {
@@ -36,6 +38,7 @@ const answerData = computed(() => {
     repairShopId: userId.value as unknown as string,
     customerName: props.index.customerName,
     customerId: props.index.customerId,
+    messageId: props.index.messageId,
     customerEmail: props.index.customerEmail,
     customerMessage: props.index.customerMessage[0].message,
     customerMessageDate: props.index.customerMessage[0].date,
@@ -79,11 +82,21 @@ function showMessageBox() {
 function sendAnswer() {
   props.onAnswer(answerData.value)
 }
+
+onMounted(() => {
+  const flattenedMessages = props.index.customerMessage.concat(props.index.repairShopAnswer)
+
+  flattenedMessages.sort(
+    (a: { date: string }, b: { date: string }) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
+  messageArray.push(...flattenedMessages)
+})
 </script>
 
 <template>
   <div class="request-container">
-    <p :class="isMessageBox ? 'hide' : 'customer-name'">{{ props.index.customerName }}</p>
+    <p class="customer-name">{{ props.index.customerName }}</p>
 
     <div class="message-content-parent-container">
       <div class="message-content-top-nav">
@@ -96,8 +109,10 @@ function sendAnswer() {
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
-        <p v-for="index in props.index.customerMessage" :key="index.date">
-          <span>{{ props.index.customerName }}</span
+        <p v-for="index in messageArray" :key="index.date">
+          <span :class="repairShopName === index.name ? 'text-active-blue' : ''">{{
+            repairShopName === index.name ? 'Du' : index.name
+          }}</span
           >{{ index.message }}
         </p>
       </div>
@@ -138,4 +153,5 @@ function sendAnswer() {
     </button>
     <hr />
   </div>
+  <!-- <RepairShopCustomerContent v-if="isMessageBox"></RepairShopCustomerContent> -->
 </template>

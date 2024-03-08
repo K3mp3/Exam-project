@@ -29,7 +29,7 @@ export async function getContactRepairShops(repairShopId: IRepairShopId) {
       repairShopId
     )
 
-    return response
+    return response.data
   } catch (error) {
     return error
   }

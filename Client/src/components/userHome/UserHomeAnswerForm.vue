@@ -16,7 +16,6 @@ const messageAnswer = ref('')
 const priceOffer = ref('')
 
 const isMessageBox = ref(false)
-const isShortMessage = ref(true)
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
 
@@ -64,39 +63,24 @@ function sendAnswer() {
 </script>
 
 <template>
-  <div class="display-flex flex-dir-col gap-16 margin-tp-16 m-width-100">
+  <div class="display-flex flex-dir-col margin-tp-16 m-width-100">
     <p>{{ props.index.repairShopName }}</p>
 
     <div class="user-sent-message-content-container">
-      <div class="user-sent-message-content-top-nav">
-        <p>
-          <span v-if="isMessageBox">Registreringsnummer: </span>{{ props.index.registrationNumber }}
+      <div class="user-sent-message-content-top-nav p-relative">
+        <p class="text-main font-text-light">
+          <span class="font-title-bold">Registreringsnummer: </span
+          >{{ props.index.registrationNumber }}
         </p>
         <button type="button" class="show-more-btn" @click="showMessageBox">
-          <fontAwesome :icon="['fas', 'chevron-down']" />
+          <fontAwesome :icon="['fas', 'chevron-down']" v-if="!isMessageBox" />
+          <fontAwesome :icon="['fas', 'chevron-up']" v-if="isMessageBox" />
         </button>
       </div>
-      <div class="user-sent-old-message-content-text" v-if="isMessageBox">
-        <p v-if="isShortMessage">
-          {{ `${props.index.customerMessage[0].message.slice(0, 100)}...` }}
+      <div class="width-100 margin-tp-10 display-flex flex-dir-col gap-4" v-if="isMessageBox">
+        <p>
+          {{ props.index.customerMessage[0].message }}
         </p>
-        <p v-if="!isShortMessage">{{ props.index.customerMessage[0].message }}</p>
-        <button
-          v-if="isShortMessage"
-          type="button"
-          class="old-message-show-btn"
-          @click="isShortMessage = !isShortMessage"
-        >
-          <fontAwesome :icon="['fas', 'chevron-down']" /> Se mer
-        </button>
-        <button
-          v-if="!isShortMessage"
-          type="button"
-          class="old-message-show-btn"
-          @click="isShortMessage = !isShortMessage"
-        >
-          <fontAwesome :icon="['fas', 'chevron-up']" /> stäng
-        </button>
         <hr />
       </div>
       <div class="repair-shop-sent-message-content-text" v-if="isMessageBox">
@@ -138,4 +122,5 @@ function sendAnswer() {
       Skicka
     </button>
   </div>
+  <div class="line-inactive"></div>
 </template>

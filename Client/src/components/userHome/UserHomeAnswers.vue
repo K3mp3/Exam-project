@@ -29,6 +29,7 @@ const messageArray = ref<{ message: string; name: string; date: string }[]>([])
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
 const customerEmail = localStorage.getItem('userEmail')
+const customerName = localStorage.getItem('userName')
 
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
@@ -86,8 +87,6 @@ let customerData = {}
 
 function handleAnswer(answerData: IUserContact) {
   customerData = answerData
-
-  console.log(storedRequestData.value)
 }
 
 async function handleAnswerMobile(answerData: IUserContact) {
@@ -97,7 +96,7 @@ async function handleAnswerMobile(answerData: IUserContact) {
 async function showRequestData(
   customerMessage: { message: string; name: string; date: string }[],
   repairShopAnswer: { message: string; name: string; date: string }[],
-  index: any
+  index: number
 ) {
   const foundAnswer = allRepairShopAnswers.value.find((answer) => answer._id === index)
   if (foundAnswer) {
@@ -120,19 +119,16 @@ function sortRequestData(
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
   messageArray.value = flattenedMessages
+  console.log(messageArray.value)
 
   isData.value = true
 }
 
 async function sendAnswer() {
-  console.log(customerData)
-
   customerData = {
     ...customerData,
     customerAnswer: customerMessage.value
   }
-
-  console.log(customerData)
 
   await answerRepairShops(customerData as IUserContact)
 }
