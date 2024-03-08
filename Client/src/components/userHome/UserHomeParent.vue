@@ -65,9 +65,10 @@ function newRequest() {
   router.push(`/user-home-new-request/${userId.value}`)
 }
 
-function countNumberOfAnswers(totalAnswers: Number) {
+function countNumberOfAnswers(totalAnswers: number) {
   console.log(totalAnswers)
-  if (totalAnswers < 1) return true
+  if (totalAnswers < 1) showEmptyMessage.value = true
+  else showEmptyMessage.value = false
 }
 
 onMounted(() => {
@@ -94,7 +95,7 @@ onMounted(() => {
     <button type="button" class="user-home-new-btn text-main z-index-2" @click="newRequest">
       Ny förfrågan
     </button>
-    <p v-if="countNumberOfAnswers" class="text-main font-title-bold margin-tp-32">
+    <p v-if="showEmptyMessage" class="text-main font-title-bold margin-tp-32">
       Whoops, här var det tomt!
     </p>
   </div>

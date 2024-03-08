@@ -38,7 +38,7 @@ watch(
 )
 
 onMounted(() => {
-  console.log(props.amount.length)
+  console.log(props.index)
 })
 </script>
 

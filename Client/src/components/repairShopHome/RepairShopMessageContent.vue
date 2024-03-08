@@ -18,6 +18,8 @@ const props = defineProps({
   }
 })
 
+console.log(props.index)
+
 const messageAnswer = ref('')
 const priceOffer = ref('')
 
