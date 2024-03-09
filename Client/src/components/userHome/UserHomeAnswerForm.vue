@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 const props = defineProps({
   index: {
@@ -20,6 +20,7 @@ const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
+const messageArray: { message: string; name: string; date: string }[] = []
 
 const answerData = computed(() => {
   return {
@@ -60,6 +61,16 @@ function checkInputDataAnswer() {
 function sendAnswer() {
   props.onAnswer(answerData.value)
 }
+
+onMounted(() => {
+  const flattenedMessages = props.index.customerMessage.concat(props.index.repairShopAnswer)
+
+  flattenedMessages.sortAndDeduplicateDiagnostics(
+    (a: { date: string }, b: { date: string }) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
+  messageArray.push(...flattenedMessages)
+})
 </script>
 
 <template>
@@ -78,10 +89,12 @@ function sendAnswer() {
         </button>
       </div>
       <div class="width-100 margin-tp-10 display-flex flex-dir-col gap-4" v-if="isMessageBox">
-        <p>
-          {{ props.index.customerMessage[0].message }}
+        <p v-for="index in messageArray" :key="index.date">
+          <span :class="repairShopName === index.name ? 'text-active-blue' : ''">{{
+            repairShopName === index.name ? 'Du' : index.name
+          }}</span
+          >{{ index.message }}
         </p>
-        <hr />
       </div>
       <div class="repair-shop-sent-message-content-text" v-if="isMessageBox">
         <p>{{ props.index.repairShopAnswer[0].message }}</p>
