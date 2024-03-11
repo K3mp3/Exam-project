@@ -28,7 +28,6 @@ const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
-
 const messageArray: { message: string; name: string; date: string }[] = []
 
 const repairShopName = localStorage.getItem('userName')

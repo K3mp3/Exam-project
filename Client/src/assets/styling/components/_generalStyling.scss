@@ -70,11 +70,17 @@
 .bg-main {
   background-color: $bg-main;
 }
+
 .bg-main-90 {
   background-color: $bg-main-90;
 }
+
 .bg-secondary {
   background-color: $bg-secondary;
+}
+
+.bg-third {
+  background-color: $bg-third;
 }
 
 .t-b-gradient {
@@ -262,6 +268,10 @@ p {
   margin: auto;
 }
 
+.margin-bm-4 {
+  margin-bottom: 4px;
+}
+
 .margin-bm-16 {
   margin-bottom: 16px;
 }
@@ -324,6 +334,10 @@ p {
 
 .padding-lt-32 {
   padding-left: 16px;
+}
+
+.padding-8-16 {
+  padding: 8px 16px;
 }
 
 .display-flex {

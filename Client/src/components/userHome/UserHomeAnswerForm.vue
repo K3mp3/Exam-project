@@ -22,6 +22,8 @@ const isBtnDisabled = ref(true)
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 const messageArray: { message: string; name: string; date: string }[] = []
 
+const userName = localStorage.getItem('userName')
+
 const answerData = computed(() => {
   return {
     customerId: props.index.customerId,
@@ -31,6 +33,7 @@ const answerData = computed(() => {
 })
 
 function showMessageBox() {
+  console.log('hejsan')
   isMessageBox.value = !isMessageBox.value
 }
 
@@ -65,7 +68,7 @@ function sendAnswer() {
 onMounted(() => {
   const flattenedMessages = props.index.customerMessage.concat(props.index.repairShopAnswer)
 
-  flattenedMessages.sortAndDeduplicateDiagnostics(
+  flattenedMessages.sort(
     (a: { date: string }, b: { date: string }) =>
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
@@ -89,16 +92,16 @@ onMounted(() => {
         </button>
       </div>
       <div class="width-100 margin-tp-10 display-flex flex-dir-col gap-4" v-if="isMessageBox">
-        <p v-for="index in messageArray" :key="index.date">
-          <span :class="repairShopName === index.name ? 'text-active-blue' : ''">{{
-            repairShopName === index.name ? 'Du' : index.name
-          }}</span
+        <p
+          v-for="index in messageArray"
+          :key="index.date"
+          class="padding-8-16 display-flex flex-dir-col gap-4 margin-bm-4 text-main font-text-light bg-third b-r-10"
+        >
+          <span
+            :class="userName === index.name ? 'text-active-blue' : 'text-third font-text-light'"
+            >{{ userName === index.name ? 'Du' : index.name }}</span
           >{{ index.message }}
         </p>
-      </div>
-      <div class="repair-shop-sent-message-content-text" v-if="isMessageBox">
-        <p>{{ props.index.repairShopAnswer[0].message }}</p>
-        <hr />
       </div>
       <div class="user-sent-message-content-answer">
         <textarea
