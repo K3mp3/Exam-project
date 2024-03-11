@@ -66,6 +66,7 @@ function sendAnswer() {
 }
 
 onMounted(() => {
+  console.log(props.index.priceOffer)
   const flattenedMessages = props.index.customerMessage.concat(props.index.repairShopAnswer)
 
   flattenedMessages.sort(
@@ -103,26 +104,26 @@ onMounted(() => {
           >{{ index.message }}
         </p>
       </div>
-      <div class="user-sent-message-content-answer">
+      <div class="width-100 margin-tp-8 margin-bm-8">
         <textarea
           v-if="isMessageBox"
           name="message-input"
           v-model="messageAnswer"
-          class="user-sent-text-editor-answer"
+          class="textarea-input h-300 margin-tp-8"
           placeholder="Svar"
           @input="checkInputDataAnswer"
         ></textarea>
       </div>
     </div>
-    <label for="user-sent-priceOffer" v-if="isMessageBox">Prisförslag</label>
+    <label for="user-sent-priceOffer" class="margin-bm-4" v-if="isMessageBox">Prisförslag</label>
     <input
       v-if="isMessageBox"
       type="text"
       name="priceOffer"
-      placeholder="500 kr"
-      v-model="priceOffer"
+      :value="props.index.priceOffer === '' ? 'Ej angivet' : props.index.priceOffer"
       maxlength="7"
-      class="user-sent-price-offer-input"
+      class="text-input padding-10 margin-bm-32"
+      disabled
     />
 
     <button
@@ -130,8 +131,8 @@ onMounted(() => {
       type="submit"
       :disabled="isBtnDisabled"
       :class="{
-        'user-sent-btn-disabled': isBtnDisabled,
-        'user-sent-btn': !isBtnDisabled
+        'main-btn-disabled margin-bm-8': isBtnDisabled,
+        'main-btn margin-bm-8': !isBtnDisabled
       }"
       @click="sendAnswer"
     >
