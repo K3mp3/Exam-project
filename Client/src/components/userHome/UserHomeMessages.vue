@@ -45,16 +45,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <p :class="isCollaspedMessageBox ? 'message-box-collapesed' : ''">
-    <button type="button" @click="collapseMessageBox" class="collapse-message-box">
-      <fontAwesome :icon="['fas', 'chevron-down']" v-if="isCollaspedMessageBox" /><fontAwesome
-        :icon="['fas', 'chevron-up']"
-        v-if="!isCollaspedMessageBox"
-      />
-    </button>
-    <span :class="userName === index.name ? 'text-active-blue' : ''">{{
-      userName === props.index.name ? 'Du' : props.index.name
-    }}</span>
-    <span v-if="!isCollaspedMessageBox">{{ props.index.message }}</span>
-  </p>
+  <div :class="isCollaspedMessageBox ? 'message-box-collapesed' : ''">
+    <p
+      class="padding-8-16 display-flex flex-dir-col gap-4 margin-bm-4 text-main font-text-light bg-third b-r-10 p-relative"
+    >
+      <button type="button" @click="collapseMessageBox" class="collapse-message-box">
+        <fontAwesome :icon="['fas', 'chevron-down']" v-if="isCollaspedMessageBox" /><fontAwesome
+          :icon="['fas', 'chevron-up']"
+          v-if="!isCollaspedMessageBox"
+        />
+      </button>
+      <span :class="userName === index.name ? 'text-active-blue' : 'text-third font-text-light'">{{
+        userName === props.index.name ? 'Du' : props.index.name
+      }}</span>
+      <span v-if="!isCollaspedMessageBox">{{ props.index.message }}</span>
+    </p>
+  </div>
 </template>

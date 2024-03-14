@@ -89,8 +89,9 @@ function handleAnswer(answerData: IUserContact) {
   customerData = answerData
 }
 
-async function handleAnswerMobile(answerData: IUserContact) {
-  await answerRepairShops(answerData as IUserContact)
+async function handleAnswerMobile(answerDataMobileForm: IUserContact) {
+  await answerRepairShops(answerDataMobileForm as IUserContact)
+  getAnswers()
 }
 
 async function showRequestData(
@@ -147,6 +148,7 @@ onMounted(() => {
         :key="index._id"
         :index="index"
         :onAnswer="handleAnswerMobile"
+        :reFetch="getAnswers"
       ></UserHomeAnswerForm>
     </form>
     <form @submit.prevent="" class="user-sent-answer-form" v-if="tablet">

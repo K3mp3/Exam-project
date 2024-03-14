@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { IUserContact } from '@/models/IUserContact'
 import { getSentMessages } from '@/services/userContact'
 import { nextTick, onMounted, ref } from 'vue'
 import UserSentRequestsVue from './UserSentRequests.vue'
 import UserSentTopNav from './UserSentTopNav.vue'
-import type { IUserContact } from '@/models/IUserContact'
 
 const desktop = ref(false)
 
@@ -42,9 +42,12 @@ onMounted(() => {
 <template>
   <!-- <SideNavParent v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNavParent> -->
   <UserSentTopNav></UserSentTopNav>
-  <UserSentRequestsVue
-    v-for="index in allRequests"
-    :key="index._id"
-    :requests="index"
-  ></UserSentRequestsVue>
+
+  <div class="padding-16">
+    <UserSentRequestsVue
+      v-for="index in allRequests"
+      :key="index._id"
+      :requests="index"
+    ></UserSentRequestsVue>
+  </div>
 </template>

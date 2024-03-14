@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { removeUserRequest } from '@/services/removeRequest'
 import { computed, nextTick, onMounted, ref } from 'vue'
+import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
+import UserHomeMessages from './UserHomeMessages.vue'
 
 const props = defineProps({
   index: {
@@ -9,15 +12,19 @@ const props = defineProps({
   onAnswer: {
     type: Function,
     required: true
+  },
+  reFetch: {
+    type: Function,
+    required: true
   }
 })
 
 const messageAnswer = ref('')
-const priceOffer = ref('')
 
 const isMessageBox = ref(false)
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
+const isConfirmDialog = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 const messageArray: { message: string; name: string; date: string }[] = []
@@ -26,6 +33,7 @@ const userName = localStorage.getItem('userName')
 
 const answerData = computed(() => {
   return {
+    customerAnswer: messageAnswer.value,
     customerId: props.index.customerId,
     messageId: props.index.messageId,
     answeredByRepairShop: false
@@ -33,7 +41,6 @@ const answerData = computed(() => {
 })
 
 function showMessageBox() {
-  console.log('hejsan')
   isMessageBox.value = !isMessageBox.value
 }
 
@@ -62,6 +69,7 @@ function checkInputDataAnswer() {
 }
 
 function sendAnswer() {
+  console.log(answerData.value)
   props.onAnswer(answerData.value)
 }
 
@@ -74,7 +82,14 @@ onMounted(() => {
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
   messageArray.push(...flattenedMessages)
+  console.log(messageArray.length)
 })
+
+async function removeRequest() {
+  const response = await removeUserRequest(answerData.value as object)
+  isConfirmDialog.value = false
+  props.reFetch(true)
+}
 </script>
 
 <template>
@@ -91,18 +106,23 @@ onMounted(() => {
           <fontAwesome :icon="['fas', 'chevron-down']" v-if="!isMessageBox" />
           <fontAwesome :icon="['fas', 'chevron-up']" v-if="isMessageBox" />
         </button>
+        <button
+          v-if="isMessageBox"
+          type="button"
+          class="margin-tp-4 remove-btn text-main display-flex text-main gap-8 align-items-center"
+          @click="() => (isConfirmDialog = true)"
+        >
+          <fontAwesome :icon="['fas', 'trash']" />
+        </button>
       </div>
-      <div class="width-100 margin-tp-10 display-flex flex-dir-col gap-4" v-if="isMessageBox">
-        <p
+      <div class="width-100 margin-tp-32 display-flex flex-dir-col gap-4" v-if="isMessageBox">
+        <div
           v-for="index in messageArray"
           :key="index.date"
-          class="padding-8-16 display-flex flex-dir-col gap-4 margin-bm-4 text-main font-text-light bg-third b-r-10"
+          class="display-flex flex-dir-col gap-4 margin-bm-4 text-main font-text-light bg-third b-r-10"
         >
-          <span
-            :class="userName === index.name ? 'text-active-blue' : 'text-third font-text-light'"
-            >{{ userName === index.name ? 'Du' : index.name }}</span
-          >{{ index.message }}
-        </p>
+          <UserHomeMessages :index="index" :amount="messageArray"></UserHomeMessages>
+        </div>
       </div>
       <div class="width-100 margin-tp-8 margin-bm-8">
         <textarea
@@ -131,8 +151,8 @@ onMounted(() => {
       type="submit"
       :disabled="isBtnDisabled"
       :class="{
-        'main-btn-disabled margin-bm-8': isBtnDisabled,
-        'main-btn margin-bm-8': !isBtnDisabled
+        'main-btn-disabled margin-bm-16': isBtnDisabled,
+        'main-btn margin-bm-16': !isBtnDisabled
       }"
       @click="sendAnswer"
     >
@@ -140,4 +160,9 @@ onMounted(() => {
     </button>
   </div>
   <div class="line-inactive"></div>
+  <ConfirmDialog
+    :removeRequest="removeRequest"
+    :closeDialog="() => (isConfirmDialog = false)"
+    v-if="isConfirmDialog"
+  ></ConfirmDialog>
 </template>
