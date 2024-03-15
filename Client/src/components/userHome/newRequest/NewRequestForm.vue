@@ -2,7 +2,9 @@
 import LoadingSpinner from '@/components/assets/LoadingSpinner.vue'
 import router from '@/router'
 import { contactRepairShops } from '@/services/userContact'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
+import LocationSelect from './LocationSelect.vue'
+import NewRequestTopNav from './NewRequestTopNav.vue'
 
 const userId = computed(() => {
   const routeParams = router.currentRoute.value.params
@@ -20,6 +22,7 @@ const isConfirmationError = ref(false)
 const isBtnDisabled = ref(true)
 const hideMobileBtn = ref(false)
 const isRegistrationNumberValid = ref(true)
+const isMessageValid = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
@@ -30,16 +33,25 @@ const inputsArray: { key: string; value: boolean }[] = [
 
 let width = document.documentElement.clientWidth
 
-function handleReturnClick() {
-  router.push(`/user-home/${userId.value}`)
-}
-
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
+  console.log(inputsArray)
 }
 
+function controlRegistrationNumber(refVariable: string) {
+  const registrationRegex = /^[a-zA-Z0-9\s]*$/
+  isRegistrationNumberValid.value = registrationRegex.test(refVariable)
+  console.log(isRegistrationNumberValid.value)
+}
+
+// function controlMessage(refVariable: string) {
+//   const messageRegex = /^[^$]*$/
+//   isMessageValid.value = messageRegex.test(refVariable)
+//   console.log(isMessageValid.value)
+// }
+
 function checkInputsData(confirmKey: string) {
-  console.log('confirmKey')
+  console.log(confirmKey)
 
   nextTick(() => {
     let refVariable: Ref<string> | null = null
@@ -60,7 +72,7 @@ function checkInputsData(confirmKey: string) {
         break
     }
 
-    if (refVariable.value === '') {
+    if (refVariable?.value === '') {
       const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
@@ -74,12 +86,9 @@ function checkInputsData(confirmKey: string) {
     } else {
       const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
-      if (confirmKey === 'isRegistrationNumber') {
-        console.log('hejsan')
-        const registrationRegex = /^[a-zA-Z0-9\s]*$/
-        isRegistrationNumberValid.value = registrationRegex.test(refVariable.value)
-        isBtnDisabled.value = true
-      }
+      if (confirmKey === 'isRegistrationNumber') controlRegistrationNumber(refVariable?.value ?? '')
+
+      // if (confirmKey === 'isMessage') controlMessage(refVariable?.value ?? '')
 
       if (!isRegistrationNumberValid.value) return
 
@@ -137,7 +146,7 @@ function showConfirmationBox(response: any) {
     setTimeout(() => {
       isConfirmation.value = false
     }, 4000)
-  } else if (response === 500) {
+  } else if (response === 500 || response === 400) {
     isConfirmationError.value = true
 
     setTimeout(() => {
@@ -161,11 +170,9 @@ async function handleMessage() {
     registrationNumber.value = ''
     troubleshootTime.value = ''
     message.value = ''
-    // Reset input data flags
     inputsArray.forEach((field) => {
       field.value = false
     })
-    // Disable submit button
     isBtnDisabled.value = true
     showConfirmationBox(response)
   } else {
@@ -183,24 +190,14 @@ onMounted(() => {
 
 <template>
   <div class="new-request-surrounding-container">
-    <div class="new-request-top-nav">
-      <button type="button" class="btn-back" @click="handleReturnClick">
-        <fontAwesome :icon="['fas', 'chevron-left']" />
-      </button>
-      <h3>Kontakta verkstäder</h3>
-    </div>
+    <NewRequestTopNav :userId="userId"></NewRequestTopNav>
 
     <form @submit.prevent="handleMessage">
       <div class="right-side-contact-form">
-        <label for="location">Kommun</label>
-        <select
-          name="location"
-          class="signed-in-contact-form-select"
-          v-model="location"
-          @change="checkInputsData('isLocation')"
-        >
-          <option value="Sundsvall">Sundsvall</option>
-        </select>
+        <LocationSelect
+          :checkInputData="(e: string) => checkInputsData(e)"
+          :selectData="(e: string) => (location = e)"
+        ></LocationSelect>
 
         <label for="registrationNumber">Registreringsnummer</label>
         <input
@@ -254,6 +251,14 @@ onMounted(() => {
           placeholder="Beskriv vad du vill ha hjälp med..."
           @input="checkInputsData('isMessage')"
         ></textarea>
+
+        <p
+          class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
+          v-if="!isMessageValid"
+        >
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Detta
+          tecken är ej tillåtet!
+        </p>
       </div>
 
       <button
@@ -275,7 +280,7 @@ onMounted(() => {
     <LoadingSpinner></LoadingSpinner>
     <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
-  <div class="confirmation-box-background" v-if="isConfirmation">
+  <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
     <div class="confirmation-box" v-if="isConfirmation">
       <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
       <p class="text-main font-title-bold O1rem">Meddelande skickat!</p>
