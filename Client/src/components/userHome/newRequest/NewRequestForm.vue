@@ -5,6 +5,9 @@ import { contactRepairShops } from '@/services/userContact'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LocationSelect from './LocationSelect.vue'
 import NewRequestTopNav from './NewRequestTopNav.vue'
+import RegistrationNumberInput from './RegistrationNumberInput.vue'
+import TextareaInput from './TextareaInput.vue'
+import TroubleShootTimeSelect from './TroubleShootTimeSelect.vue'
 
 const userId = computed(() => {
   const routeParams = router.currentRoute.value.params
@@ -21,8 +24,7 @@ const isConfirmation = ref(false)
 const isConfirmationError = ref(false)
 const isBtnDisabled = ref(true)
 const hideMobileBtn = ref(false)
-const isRegistrationNumberValid = ref(true)
-const isMessageValid = ref(true)
+const isLargeScreen = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
@@ -37,18 +39,6 @@ function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
   console.log(inputsArray)
 }
-
-function controlRegistrationNumber(refVariable: string) {
-  const registrationRegex = /^[a-zA-Z0-9\s]*$/
-  isRegistrationNumberValid.value = registrationRegex.test(refVariable)
-  console.log(isRegistrationNumberValid.value)
-}
-
-// function controlMessage(refVariable: string) {
-//   const messageRegex = /^[^$]*$/
-//   isMessageValid.value = messageRegex.test(refVariable)
-//   console.log(isMessageValid.value)
-// }
 
 function checkInputsData(confirmKey: string) {
   console.log(confirmKey)
@@ -86,12 +76,6 @@ function checkInputsData(confirmKey: string) {
     } else {
       const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
-      if (confirmKey === 'isRegistrationNumber') controlRegistrationNumber(refVariable?.value ?? '')
-
-      // if (confirmKey === 'isMessage') controlMessage(refVariable?.value ?? '')
-
-      if (!isRegistrationNumberValid.value) return
-
       if (index !== -1) {
         inputsArray[index].value = true
       } else {
@@ -108,22 +92,10 @@ function updateScreenSize() {
   width = document.documentElement.clientWidth
 
   if (width > 699) {
-    hideMobileBtn.value = true
+    isLargeScreen.value = true
   } else {
-    hideMobileBtn.value = false
+    isLargeScreen.value = false
   }
-}
-
-function formatRegistrationNumber() {
-  let formattedValue = registrationNumber.value.replace(/\s/g, '').toUpperCase()
-
-  if (formattedValue.length > 3) {
-    formattedValue = formattedValue.slice(0, 3) + ' ' + formattedValue.slice(3)
-  }
-
-  registrationNumber.value = formattedValue
-
-  checkInputsData('isRegistrationNumber')
 }
 
 const messageData = computed(() => {
@@ -192,74 +164,26 @@ onMounted(() => {
   <div class="new-request-surrounding-container">
     <NewRequestTopNav :userId="userId"></NewRequestTopNav>
 
-    <form @submit.prevent="handleMessage">
-      <div class="right-side-contact-form">
-        <LocationSelect
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :selectData="(e: string) => (location = e)"
-        ></LocationSelect>
+    <form @submit.prevent="handleMessage" v-if="!isLargeScreen">
+      <LocationSelect
+        :checkInputData="(e: string) => checkInputsData(e)"
+        :selectData="(e: string) => (location = e)"
+      ></LocationSelect>
 
-        <label for="registrationNumber">Registreringsnummer</label>
-        <input
-          type="text"
-          name="registrationNumber"
-          placeholder="ABC 123"
-          v-model="registrationNumber"
-          @input="formatRegistrationNumber"
-          maxlength="7"
-        />
-        <p
-          class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-          v-if="!isRegistrationNumberValid"
-        >
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange
-          ett giltigt registreringsnummer!
-        </p>
+      <RegistrationNumberInput
+        :checkInputData="(e: string) => checkInputsData(e)"
+        :inputData="(e: string) => (registrationNumber = e)"
+      ></RegistrationNumberInput>
 
-        <label for="troubleshootTime">Felsökningstid</label>
-        <select
-          name="troubleshootTime"
-          class="signed-in-contact-form-select"
-          v-model="troubleshootTime"
-          @change="checkInputsData('isTroubleshootTime')"
-        >
-          <option value="1 timme">1 timme</option>
-          <option value="2 timme">2 timmar</option>
-          <option value="3 timme">3 timmar</option>
-          <option value="4 timme">4 timmar</option>
-        </select>
+      <TroubleShootTimeSelect
+        :checkInputData="(e: string) => checkInputsData(e)"
+        :selectData="(e: string) => (troubleshootTime = e)"
+      ></TroubleShootTimeSelect>
 
-        <button
-          type="submit"
-          :disabled="isBtnDisabled"
-          :class="{
-            'user-home-send-btn-disabled': isBtnDisabled,
-            'user-home-send-btn': !isBtnDisabled,
-            hidden: !hideMobileBtn
-          }"
-        >
-          Skicka
-        </button>
-      </div>
-
-      <div class="left-side-contact-form">
-        <label for="message-input">Meddelande</label>
-        <textarea
-          name="message-input"
-          v-model="message"
-          class="text-editor"
-          placeholder="Beskriv vad du vill ha hjälp med..."
-          @input="checkInputsData('isMessage')"
-        ></textarea>
-
-        <p
-          class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-          v-if="!isMessageValid"
-        >
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Detta
-          tecken är ej tillåtet!
-        </p>
-      </div>
+      <TextareaInput
+        :checkInputData="(e: string) => checkInputsData(e)"
+        :inputData="(e: string) => (message = e)"
+      ></TextareaInput>
 
       <button
         type="submit"
@@ -272,6 +196,43 @@ onMounted(() => {
       >
         Skicka
       </button>
+    </form>
+
+    <form @submit.prevent="handleMessage" v-if="isLargeScreen">
+      <div class="left-side-contact-form">
+        <TextareaInput
+          :checkInputData="(e: string) => checkInputsData(e)"
+          :inputData="(e: string) => (message = e)"
+        ></TextareaInput>
+      </div>
+
+      <div class="right-side-contact-form">
+        <LocationSelect
+          :checkInputData="(e: string) => checkInputsData(e)"
+          :selectData="(e: string) => (location = e)"
+        ></LocationSelect>
+
+        <RegistrationNumberInput
+          :checkInputData="(e: string) => checkInputsData(e)"
+          :inputData="(e: string) => (registrationNumber = e)"
+        ></RegistrationNumberInput>
+
+        <TroubleShootTimeSelect
+          :checkInputData="(e: string) => checkInputsData(e)"
+          :selectData="(e: string) => (troubleshootTime = e)"
+        ></TroubleShootTimeSelect>
+
+        <button
+          type="submit"
+          :disabled="isBtnDisabled"
+          :class="{
+            'user-home-send-btn-disabled': isBtnDisabled,
+            'user-home-send-btn': !isBtnDisabled
+          }"
+        >
+          Skicka
+        </button>
+      </div>
     </form>
 
     <div class="blue-line"></div>
