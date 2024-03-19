@@ -29,9 +29,9 @@ nav {
           display: flex;
           flex-direction: column;
           gap: 5px;
+          padding-bottom: 0;
+          padding: 10px;
           background: transparent;
-          padding: 0;
-          padding: 5px;
           margin-right: -5px;
 
           &:hover {
@@ -40,10 +40,39 @@ nav {
         }
 
         span {
+          transition: all 0.2s ease-in-out;
           width: 25px;
           height: 4px;
           border-radius: 5px;
           background-color: $el-white-main;
+
+          &:nth-child(1) {
+            width: 16px;
+          }
+
+          &:nth-child(3) {
+            width: 16px;
+            margin-left: 10px;
+          }
+        }
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          span:nth-child(2) {
+            transform: rotate(-45deg);
+          }
+
+          button {
+            gap: 0px;
+          }
+
+          span:nth-child(1) {
+            transform: rotate(45deg);
+          }
+          span:nth-child(3) {
+            transform: rotate(45deg);
+            margin-left: 9px;
+          }
         }
       }
     }
