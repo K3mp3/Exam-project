@@ -85,7 +85,7 @@ function checkInputDataAnswer() {
 }
 
 async function removeRequest() {
-  const response = await removeUserRequest(requestData.value as object)
+  await removeUserRequest(requestData.value as object)
   props.onFilter(true)
 }
 </script>

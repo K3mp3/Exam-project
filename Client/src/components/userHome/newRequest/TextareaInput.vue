@@ -17,16 +17,30 @@ const message = ref('')
 const isMessageValid = ref(true)
 
 function controlMessage(refVariable: string) {
-  const messageRegex = /^[^$]*$/
+  const messageRegex = /^[^\\]*$/
   isMessageValid.value = messageRegex.test(refVariable)
   console.log(isMessageValid.value)
+}
+
+function escapeHtml(text: string) {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }
+
+  return text.replace(/[&<>"']/g, function (m) {
+    return map[m]
+  })
 }
 
 function handleChange() {
   controlMessage(message.value)
 
   props.checkInputData('isMessage')
-  props.inputData(isMessageValid.value ? message.value : '')
+  props.inputData(isMessageValid.value ? escapeHtml(message.value) : '')
 }
 </script>
 

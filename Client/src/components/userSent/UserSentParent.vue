@@ -43,11 +43,12 @@ onMounted(() => {
   <!-- <SideNavParent v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNavParent> -->
   <UserSentTopNav></UserSentTopNav>
 
-  <div class="padding-16">
+  <div class="display-flex flex-dir-col gap-6 padding-16">
     <UserSentRequestsVue
       v-for="index in allRequests"
       :key="index._id"
       :requests="index"
+      :onFilter="getMessages"
     ></UserSentRequestsVue>
   </div>
 </template>

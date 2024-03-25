@@ -109,7 +109,7 @@ async function removeRequest() {
         <button
           v-if="isMessageBox"
           type="button"
-          class="margin-tp-4 remove-btn text-main display-flex text-main gap-8 align-items-center"
+          class="margin-tp-4 remove-btn text-main display-flex text-main gap-8 align-items-center p-absolute"
           @click="() => (isConfirmDialog = true)"
         >
           <fontAwesome :icon="['fas', 'trash']" />
