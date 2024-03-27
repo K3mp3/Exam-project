@@ -215,6 +215,16 @@ onMounted(() => {
             </button>
           </div>
         </div>
+        <div class="display-flex flex-dir-col gap-16 p-relative" v-if="!isData">
+          <div class="width-50p h-40 silhouette"></div>
+          <div class="width-60p h-40 silhouette"></div>
+          <div class="width-100 h-80 silhouette"></div>
+          <div class="width-100 h-80 silhouette"></div>
+          <div class="width-100 h-250 silhouette"></div>
+          <div class="width-100 h-40 silhouette"></div>
+          <div class="width-100 h-40 silhouette"></div>
+          <div class="p-absolute top-0 left-0 width-100 h-100p bg-main-40"></div>
+        </div>
       </div>
     </form>
   </div>

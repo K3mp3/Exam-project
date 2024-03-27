@@ -203,7 +203,7 @@ onMounted(() => {
   <div
     class="padding-tp-105 padding-rt-16 padding-bm-0 padding-lt-16 margin-au display-flex flex-dir-col justify-center align-items-center gap-32"
   >
-    <div class="display-flex align-items-center gap-16 width-100 m-width-1200px">
+    <div class="display-flex align-items-center gap-16 width-100 m-width-1200">
       <RouterLink to="/" class="btn-back"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
@@ -215,7 +215,7 @@ onMounted(() => {
         Kontakta oss
       </h2>
     </div>
-    <form @submit.prevent="handleMessage" class="width-100 m-width-1200px text-align-left">
+    <form @submit.prevent="handleMessage" class="width-100 m-width-1200 text-align-left">
       <label for="name" class="text-main font-text-light">För- och efternamn</label>
       <input
         type="text"

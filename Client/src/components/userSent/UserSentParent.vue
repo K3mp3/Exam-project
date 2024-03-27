@@ -10,7 +10,7 @@ const desktop = ref(false)
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > 1639) desktop.value = true
+  if (document.documentElement.clientWidth > 1399) desktop.value = true
   else desktop.value = false
 }
 
@@ -40,15 +40,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- <SideNavParent v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNavParent> -->
   <UserSentTopNav></UserSentTopNav>
 
-  <div class="display-flex flex-dir-col gap-6 padding-16">
+  <div
+    :class="[
+      'display-flex gap-6 padding-16 m-width-1000 margin-au w-100',
+      desktop ? 'flex-dir-col' : 'flex-dir-col'
+    ]"
+  >
     <UserSentRequestsVue
       v-for="index in allRequests"
       :key="index._id"
       :requests="index"
       :onFilter="getMessages"
-    ></UserSentRequestsVue>
+    />
   </div>
 </template>

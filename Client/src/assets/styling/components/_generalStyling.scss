@@ -75,6 +75,10 @@
   background-color: $bg-main-90;
 }
 
+.bg-main-40 {
+  background-color: $bg-main-40;
+}
+
 .bg-secondary {
   background-color: $bg-secondary;
 }
@@ -160,6 +164,14 @@ p {
   font-size: 3.5rem;
 }
 
+.width-50p {
+  width: 50%;
+}
+
+.width-60p {
+  width: 60%;
+}
+
 .width-100 {
   width: 100%;
 }
@@ -180,12 +192,28 @@ p {
   max-width: 330px;
 }
 
-.m-width-1200px {
+.m-width-1000 {
+  max-width: 700px;
+}
+
+.m-width-1200 {
   max-width: 1200px;
+}
+
+.h-40 {
+  height: 40px;
 }
 
 .h-42px {
   height: 42px;
+}
+
+.h-80 {
+  height: 80px;
+}
+
+.h-250 {
+  height: 250px;
 }
 
 .m-h-42 {
@@ -206,6 +234,10 @@ p {
 
 .h-300 {
   height: 300px;
+}
+
+.h-100p {
+  height: 100%;
 }
 
 .height-100vh {
@@ -382,6 +414,10 @@ p {
 
 .flex-dir-col {
   flex-direction: column;
+}
+
+.flex-dir-row {
+  flex-direction: row;
 }
 
 .align-items-center {
@@ -791,6 +827,22 @@ p {
 // Transitions
 .All-02-e-i-o {
   transition: all 0.2s ease-in-out;
+}
+
+// Details
+
+.silhouette {
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-image: linear-gradient($bg-main, $bg-main),
+    linear-gradient(to right, #a80df1, #3b178a, #0d3ef100);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.anw-silhouette {
+  width: 100%;
+  height: 300px;
 }
 
 @media screen and (min-width: 700px) {

@@ -14,7 +14,6 @@ const props = defineProps({
 })
 
 const isMessageBox = ref(false)
-const isTrashBtn = ref(false)
 
 const requestData = computed(() => {
   return {
@@ -33,8 +32,6 @@ async function removeRequest() {
   await removeUserRequest(requestData.value as object)
   props.onFilter(true)
 }
-
-console.log(props.requests)
 </script>
 
 <template>
@@ -66,5 +63,5 @@ console.log(props.requests)
       </p>
     </div>
   </div>
-  <div class="margin-top-n11 line-inactive"></div>
+  <div class="line-inactive"></div>
 </template>
