@@ -73,6 +73,9 @@ function countNumberOfAnswers(totalAnswers: number) {
 
 onMounted(() => {
   updateScreenSize()
+  if (!isSignedIn.value) {
+    router.push('/')
+  }
 })
 </script>
 
