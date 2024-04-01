@@ -7,40 +7,38 @@
   height: 100vh;
   background-color: $bg-main-90;
   z-index: 2;
-  display: flex;
-  justify-content: center;
   padding: 56px 16px;
 
-  .user-settings-container {
-    padding: 16px;
-    background-color: $el-bg-gray;
-    border: 2px solid $el-border-gray;
-    border-radius: 8px;
+  .user-settings-parent-container {
     width: 100%;
-    max-width: 320px;
+    height: 100%;
+    margin: auto;
+    max-width: 1300px;
+    display: flex;
+    justify-content: right;
 
-    ul {
-      padding: 0;
+    .user-settings-container {
+      padding: 16px;
+      background-color: $el-bg-gray;
+      border: 2px solid $el-border-gray;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+  }
+}
 
-      li {
-        list-style: none;
+@media screen and (min-width: 700px) {
+  .user-settings-background {
+    padding: 72px 0;
 
-        .user-home-sign-out-btn {
-          background: transparent;
-          transition: all 0.2s ease-in-out;
-          padding: 2px 16px;
-          border-radius: 20px;
-          background: transparent;
-          border: none;
-          text-align: center;
-
-          &:hover {
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            color: $el-active-blue;
-          }
-        }
-      }
+    .user-settings-parent-container {
+      padding: 0 32px;
     }
   }
 }

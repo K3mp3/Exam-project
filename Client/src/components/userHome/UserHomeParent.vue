@@ -71,16 +71,24 @@ function countNumberOfAnswers(totalAnswers: number) {
   else showEmptyMessage.value = false
 }
 
+function closeSettingsMenu() {
+  isUserSettings.value = !isUserSettings.value
+}
+
 onMounted(() => {
   updateScreenSize()
-  if (!isSignedIn.value) {
-    router.push('/')
-  }
+  // if (!isSignedIn.value) {
+  //   router.push('/')
+  // }
 })
 </script>
 
 <template>
-  <UserSettings v-if="isUserSettings" :signOutFunction="changeUserSignInStatus"></UserSettings>
+  <UserSettings
+    v-if="isUserSettings"
+    :signOutFunction="changeUserSignInStatus"
+    :closeMenu="closeSettingsMenu"
+  ></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
   <SideNav v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNav>
   <div class="signed-in-header">
