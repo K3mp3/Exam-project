@@ -122,6 +122,7 @@ const messageData = computed(() => {
       props.job === 'Framvagnsinställning' || props.job === 'Övrigt' ? 'null' : meterSetting.value,
     troubleshootTime: troubleshootTime.value,
     customerMessage: message.value,
+    jobType: props.job,
     customerEmail: userEmail,
     answeredByRepairShop: false
   }

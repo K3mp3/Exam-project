@@ -14,6 +14,7 @@ export interface IUserContact {
   customerAnswer?: string
   priceOffer?: string
   meterSetting?: string
+  jobType?: string
   answeredByRepairShop: boolean
   isLineActive?: boolean
   repairShopAnswers?: { repairShop: string }[]
