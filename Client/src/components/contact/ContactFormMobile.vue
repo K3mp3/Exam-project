@@ -10,6 +10,8 @@ const props = defineProps({
 })
 
 const mobile = ref(true)
+const tablet = ref(false)
+const desktop = ref(false)
 const isBtnDisabled = ref(true)
 
 const name = ref('')
@@ -32,14 +34,20 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
   if (document.documentElement.clientWidth > 1481) {
+    desktop.value = true
+    tablet.value = false
     mobile.value = false
   }
 
   if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1482) {
+    desktop.value = false
+    tablet.value = true
     mobile.value = false
   }
 
   if (document.documentElement.clientWidth < 700) {
+    desktop.value = false
+    tablet.value = false
     mobile.value = true
   }
 }
@@ -192,9 +200,11 @@ onMounted(() => {
   <nav>
     <ConsumerNav></ConsumerNav>
   </nav>
-  <div class="contact-form-container">
-    <div class="contact-form-nav-container">
-      <RouterLink to="/" class="contact-form-back-router-link"
+  <div
+    class="padding-tp-105 padding-rt-16 padding-bm-0 padding-lt-16 margin-au display-flex flex-dir-col justify-center align-items-center gap-32"
+  >
+    <div class="display-flex align-items-center gap-16 width-100 m-width-1200">
+      <RouterLink to="/" class="btn-back"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
       <h2
@@ -205,15 +215,19 @@ onMounted(() => {
         Kontakta oss
       </h2>
     </div>
-    <form @submit.prevent="handleMessage" class="contact-form">
-      <label for="name">För- och efternamn</label>
+    <form @submit.prevent="handleMessage" class="width-100 m-width-1200 text-align-left">
+      <label for="name" class="text-main font-text-light">För- och efternamn</label>
       <input
         type="text"
         name="name"
         placeholder="Förnamn & efternamn"
         v-model="name"
         @input="checkInputDataName"
-        :class="isNameCorrect ? 'contact-form-text-input' : 'input-warning'"
+        :class="
+          isNameCorrect
+            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+        "
       />
       <p
         class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
@@ -223,14 +237,18 @@ onMounted(() => {
         för- och efternman!
       </p>
 
-      <label for="email">Email adress</label>
+      <label for="email" class="text-main font-text-light">Email adress</label>
       <input
         type="email"
         name="name"
         placeholder="namn@mail.se"
         v-model="email"
         @input="checkInputDataEmail"
-        :class="isEmailReal ? 'contact-form-text-input' : 'input-warning'"
+        :class="
+          isEmailReal
+            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
+        "
       />
       <p
         class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
@@ -242,13 +260,13 @@ onMounted(() => {
         />Kontrollera så att mailadressen stämmer!
       </p>
 
-      <label for="message-input">Meddelande</label>
+      <label for="message-input" class="text-main font-text-light">Meddelande</label>
       <textarea
         name="message-input"
         v-model="message"
         placeholder="Beskriv varför du kontaktar oss"
         @input="checkInputDataMessage"
-        class="contact-form-textarea-input"
+        :class="['textarea-input', 'height-239px', 'margin-tp-4']"
       ></textarea>
 
       <button
@@ -256,13 +274,13 @@ onMounted(() => {
         type="submit"
         :disabled="isBtnDisabled"
         :class="{
-          'contact-form-send-btn-disabled': isBtnDisabled,
-          'contact-form-send-btn': !isBtnDisabled
+          'main-btn-disabled margin-32-0 text-disabled font-title-bold': isBtnDisabled,
+          'main-btn margin-32-0 text-disabled font-title-bold': !isBtnDisabled
         }"
       >
         Skicka
       </button>
     </form>
-    <div class="contact-form-blue-line"></div>
+    <div class="blue-line"></div>
   </div>
 </template>

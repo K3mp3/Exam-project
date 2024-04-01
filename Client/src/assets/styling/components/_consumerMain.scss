@@ -14,7 +14,7 @@ main {
     .vertical-line {
       width: 2px;
       min-height: 100%;
-      background: linear-gradient(to bottom, #0d3ef100, #a80df1);
+      background: linear-gradient(to bottom, #0d3ef100, hsl(281, 90%, 50%));
     }
 
     .info-container {
@@ -122,7 +122,6 @@ main {
         //   linear-gradient(to bottom, #0d3ff1, #0d3ef100);
         background-origin: border-box;
         background-clip: padding-box, border-box;
-        border-radius: 8px 8px 0 0;
       }
 
       .graph-1 {

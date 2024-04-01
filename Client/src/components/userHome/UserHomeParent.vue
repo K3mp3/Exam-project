@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import router from '@/router'
-import { signOutUser } from '@/services/signInUser'
+
+import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
 import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
-import SideNavParent from '../sideNav/SideNavParent.vue'
-import UserContactPage from '../userHome/UserContactPage.vue'
+import SideNav from '../sideNav/SideNav.vue'
+import UserHomeAnswers from './UserHomeAnswers.vue'
 import UserSettings from './UserSettings.vue'
 
 const userId = computed(() => {
@@ -15,42 +16,24 @@ const userId = computed(() => {
   return routeParams.userId || ''
 })
 
-const isSideNav = ref(false)
 const isUserSettings = ref(false)
+const desktop = ref(false)
+const showEmptyMessage = ref(false)
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
-let width = document.documentElement.clientWidth
-
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
-  width = document.documentElement.clientWidth
 
-  if (width > 899) {
-    isSideNav.value = true
-  } else {
-    isSideNav.value = false
-  }
+  if (document.documentElement.clientWidth > 1639) desktop.value = true
+  else desktop.value = false
 }
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
+const fullName = localStorage.getItem('userName')
+const email = localStorage.getItem('userEmail')
 
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const fullname = getCookie('name')
-const email = getCookie('email')
-const isCookieAccepted = getCookie('accept')
-
-const firstName = fullname ? fullname.split(' ')[0] : ''
+const firstName = fullName ? fullName.split(' ')[0] : ''
 
 const user = computed(() => {
   return {
@@ -68,44 +51,54 @@ async function changeUserSignInStatus() {
 
   if (response) {
     const isUserSignedIn = useSignInStore()
-    isUserSignedIn.signInUser(!isSignedIn.value)
+    isUserSignedIn.signInUser(false)
 
     if (!isSignedIn.value) {
-      if (isCookieAccepted === 'true') {
-        removeCookies()
-        router.push({ name: 'landing page' })
-      } else {
-        router.push({ name: 'landing page' })
-      }
+      removeCookies()
+      router.push({ name: 'landing page' })
     }
   }
 }
 
+function newRequest() {
+  // window.history.back()
+  router.push(`/user-home-new-request/${userId.value}`)
+}
+
+function countNumberOfAnswers(totalAnswers: number) {
+  console.log(totalAnswers)
+  if (totalAnswers < 1) showEmptyMessage.value = true
+  else showEmptyMessage.value = false
+}
+
 onMounted(() => {
   updateScreenSize()
-
-  if (!isSignedIn.value) {
-    router.push('/')
-  }
 })
 </script>
 
 <template>
   <UserSettings v-if="isUserSettings" :signOutFunction="changeUserSignInStatus"></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
-  <SideNavParent v-if="isSideNav" :signOutFunction="changeUserSignInStatus"></SideNavParent>
+  <SideNav v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNav>
   <div class="signed-in-header">
     <h2>Hej {{ firstName }}</h2>
     <button
-      v-if="!isSideNav"
       type="button"
-      class="user-home-profile-btn text-main z-index-2"
+      class="btn-transparent text-main z-index-2"
       @click="showUserSettings"
+      v-if="!desktop"
     >
       <fontAwesome :icon="['fas', 'user']" />
     </button>
   </div>
   <div class="signed-in-main">
-    <UserContactPage></UserContactPage>
+    <button type="button" class="user-home-new-btn text-main z-index-2" @click="newRequest">
+      Ny förfrågan
+    </button>
+    <p v-if="showEmptyMessage" class="text-main font-title-bold margin-tp-32">
+      Whoops, här var det tomt!
+    </p>
   </div>
+
+  <UserHomeAnswers :numberOfAnswers="countNumberOfAnswers"></UserHomeAnswers>
 </template>

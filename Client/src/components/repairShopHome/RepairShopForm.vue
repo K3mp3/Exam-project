@@ -1,78 +1,102 @@
 <script setup lang="ts">
+import type { IRepairShopId } from '@/models/IRepairShopId'
 import type { IUserContact } from '@/models/IUserContact'
-import { answerFromRepairShop, removedAnsweredRequests } from '@/services/RepariShopAnswer'
-import { getContactRepairShops } from '@/services/userContact'
-import { onMounted, ref } from 'vue'
+import router from '@/router'
+import { answerCustomerBack, answerFromRepairShop } from '@/services/RepariShopAnswer'
+import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
+import { computed, onMounted, ref } from 'vue'
+import RepairShopAnsweredContent from './RepairShopAnsweredContent.vue'
+import RepairShopMessageContent from './RepairShopMessageContent.vue'
+
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
 
 const unansweredMessages = ref<IUserContact[]>([])
 const answeredMessages = ref<IUserContact[]>([])
-const filteredMessages = ref<IUserContact[]>([])
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
+// const repairShopEmail = localStorage.getItem('userEmail')
+// const repairShopName = localStorage.getItem('userName')
 
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
+const repairShopId = {
+  repairShopId: userId.value
 }
 
-const repairShopEmail = getCookie('email')
-const repairShopName = getCookie('name')
+const repairShopName = localStorage.getItem('userName')
 
 async function getMessages() {
-  const response = await getContactRepairShops()
-  unansweredMessages.value = response
+  if (userId.value) {
+    const response = await getContactRepairShops(repairShopId as IRepairShopId)
+    const responseArray: IUserContact[] = Array.isArray(response) ? response : []
 
-  const answeredResponse = await removedAnsweredRequests()
-  answeredMessages.value = answeredResponse
+    const filteredResponse = responseArray.filter((message: IUserContact) => {
+      return (
+        !message.repairShopAnswers || // If repairShopAnswers is not defined
+        message.repairShopAnswers.every((answer) => answer.repairShop !== repairShopName)
+      )
+    })
 
-  const filtered = unansweredMessages.value.filter((unansweredMessage) => {
-    const matchingAnswer = answeredMessages.value.find(
-      (answeredMessage) =>
-        unansweredMessage.customerId === answeredMessage.customerId &&
-        repairShopEmail === answeredMessage.repairShopEmail &&
-        repairShopName === answeredMessage.repairShopName
-    )
+    unansweredMessages.value = filteredResponse
+  }
+}
 
-    return !matchingAnswer
-  })
+async function getAnsweredMessages() {
+  const response = await getAnswerRepairShops()
+  answeredMessages.value = response
+  console.log('answeredMessages.value:', answeredMessages.value)
 
-  filteredMessages.value = filtered
+  answeredMessages.value = answeredMessages.value.filter(
+    (answer) => answer.answeredByRepairShop === false
+  )
+
+  console.log('answeredMessages.value:', answeredMessages.value)
 }
 
 async function handleAnswer(answerData: Object) {
-  const castedAnswerData = answerData as IUserContact
-  const response = await answerFromRepairShop(castedAnswerData)
+  console.log(answerData)
+
+  const response = await answerFromRepairShop(answerData as IUserContact)
+
+  getMessages()
+}
+
+async function handleAnswerCustomerBack(answerData: Object) {
+  console.log(answerData)
+
+  const response = await answerCustomerBack(answerData as IUserContact)
 
   getMessages()
 }
 
 onMounted(() => {
   getMessages()
+  getAnsweredMessages()
+  console.log(unansweredMessages.value)
 })
 </script>
 
 <template>
-  <h3>
-    Här är det än så länge tomt. Men ora dig inte, inom snar framtid kommer du att kunna se alla
-    förfrågningar här.<br />
-    Tillsvidare ser du dom på din mail!
-  </h3>
-  <!-- <h3>Dina förfrågningar</h3>
+  <h3></h3>
+  <h3>Dina förfrågningar</h3>
 
-  <form @submit.prevent="handleAnswer" class="repair-shop-requests-form">
+  <form @submit.prevent="" class="repair-shop-requests-form">
     <RepairShopMessageContent
-      v-for="index in filteredMessages"
+      v-for="index in unansweredMessages"
       :key="index._id"
       :index="index"
       class="repair-shop-message-content-component"
       :onAnswer="handleAnswer"
     ></RepairShopMessageContent>
-  </form> -->
+    <RepairShopAnsweredContent
+      v-for="index in answeredMessages"
+      :key="index._id"
+      :index="index"
+      class="repair-shop-message-content-component"
+      :onAnswer="handleAnswerCustomerBack"
+    >
+    </RepairShopAnsweredContent>
+  </form>
 
   <div class="blue-line"></div>
 </template>

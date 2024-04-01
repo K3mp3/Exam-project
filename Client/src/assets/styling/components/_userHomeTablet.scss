@@ -1,0 +1,169 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
+@media screen and (min-width: 700px) {
+  .user-sent-answer-form {
+    display: flex;
+    justify-content: space-between;
+    width: calc(1300px);
+    max-width: 1300px;
+    margin: auto;
+
+    .request-column {
+      width: calc(50% - 48px);
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      padding: 32px;
+      max-height: 476px;
+      overflow-y: scroll;
+
+      .request-container-tablet {
+        width: 100%;
+        max-width: 1300px;
+        position: relative;
+
+        .request-container-content-tablet {
+          display: flex;
+          justify-content: space-between;
+          position: relative;
+
+          p,
+          span {
+            font-size: 0.9rem;
+            color: $text-main;
+            font-family: map-get($font-text-light, font-family);
+            font-weight: map-get($font-text-light, font-weight);
+          }
+
+          span {
+            font-family: map-get($font-title-bold, font-family);
+            font-weight: map-get($font-title-bold, font-weight);
+          }
+
+          .show-more-btn {
+            background: transparent;
+            border: none;
+            color: $text-main;
+            position: absolute;
+            border-bottom: 15px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: right;
+
+            &:hover {
+              cursor: pointer;
+              color: $el-active-blue;
+            }
+          }
+        }
+
+        .trash-btn {
+          transition: all 0.2s ease-in-out;
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: transparent;
+          border: none;
+          visibility: hidden;
+        }
+
+        .trash-btn-visible {
+          transition: all 0.2s ease-in-out;
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: transparent;
+          border: none;
+          visibility: visible;
+          color: $text-main;
+          padding: 8px;
+
+          &:hover {
+            transition: all 0.2s ease-in-out;
+            color: $text-error-red;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .data-column {
+      width: 50%;
+      margin-left: -16px;
+
+      .data-container-tablet {
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        .data-column-message-container {
+          width: 100%;
+          max-height: 476px;
+          overflow-y: scroll;
+          margin-top: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          padding-right: 10px;
+
+          .text-editor-answer {
+            width: 100%;
+            min-height: 300px;
+            color: $text-main;
+            border: none;
+            background: $bg-third;
+            resize: none;
+            font-size: 0.9rem;
+            font-family: map-get($font-text-light, font-family);
+            font-weight: map-get($font-text-light, font-weight);
+            border-radius: 10px;
+            padding: 8px 16px;
+            border: 2px solid $el-border-gray;
+            margin-top: 4px;
+            margin-bottom: 4px;
+
+            &:focus {
+              transition: all 0.2s ease-in-out;
+              outline: none;
+              border: 2px solid transparent;
+              background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+                linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+              background-origin: border-box;
+              background-clip: padding-box, border-box;
+            }
+          }
+
+          .price-offer-input {
+            width: 100%;
+            height: 42px;
+            background-color: $bg-third;
+            font-size: 0.9rem;
+            color: $text-main;
+            font-family: map-get($font-text-light, font-family);
+            font-weight: map-get($font-text-light, font-weight);
+            border: 2px solid $el-border-gray;
+            padding: 10px;
+            border-radius: 10px;
+            z-index: 1;
+            margin-bottom: 32px;
+
+            &:focus {
+              transition: all 0.2s ease-in-out;
+              outline: none;
+              border: 2px solid transparent;
+              border-radius: 10px;
+              background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+                linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+              background-origin: border-box;
+              background-clip: padding-box, border-box;
+            }
+          }
+        }
+      }
+    }
+  }
+}
