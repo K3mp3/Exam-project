@@ -4,7 +4,7 @@ import router from '@/router'
 import { contactRepairShops } from '@/services/userContact'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LocationSelect from './LocationSelect.vue'
-import NewRequestTopNav from './NewRequestTopNav.vue'
+import MeterSetting from './MeterSetting.vue'
 import RegistrationNumberInput from './RegistrationNumberInput.vue'
 import TextareaInput from './TextareaInput.vue'
 import TroubleShootTimeSelect from './TroubleShootTimeSelect.vue'
@@ -14,8 +14,16 @@ const userId = computed(() => {
   return routeParams.userId || ''
 })
 
+const props = defineProps({
+  job: {
+    type: String,
+    required: true
+  }
+})
+
 const location = ref('')
 const registrationNumber = ref('')
+const meterSetting = ref('')
 const troubleshootTime = ref('')
 const message = ref('')
 
@@ -26,11 +34,16 @@ const isBtnDisabled = ref(true)
 const hideMobileBtn = ref(false)
 const isLargeScreen = ref(false)
 
+const userEmail = localStorage.getItem('userEmail')
+
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
-  { key: 'isTroubleshootTime', value: false },
   { key: 'isRegistrationNumber', value: false },
-  { key: 'isMessage', value: false }
+  { key: 'isMessage', value: false },
+  {
+    key: 'isMeterSetting',
+    value: props.job === 'Framvagnsinställning' || props.job === 'Övrigt' ? true : false
+  }
 ]
 
 let width = document.documentElement.clientWidth
@@ -52,8 +65,8 @@ function checkInputsData(confirmKey: string) {
       case 'isRegistrationNumber':
         refVariable = registrationNumber
         break
-      case 'isTroubleshootTime':
-        refVariable = troubleshootTime
+      case 'isMeterSetting':
+        refVariable = meterSetting
         break
       case 'isMessage':
         refVariable = message
@@ -61,6 +74,8 @@ function checkInputsData(confirmKey: string) {
       default:
         break
     }
+
+    console.log(!!meterSetting.value)
 
     if (refVariable?.value === '') {
       const index = inputsArray.findIndex((field) => field.key === confirmKey)
@@ -103,8 +118,11 @@ const messageData = computed(() => {
     customerId: userId.value as unknown as string,
     location: location.value,
     registrationNumber: registrationNumber.value,
+    meterSetting:
+      props.job === 'Framvagnsinställning' || props.job === 'Övrigt' ? 'null' : meterSetting.value,
     troubleshootTime: troubleshootTime.value,
     customerMessage: message.value,
+    customerEmail: userEmail,
     answeredByRepairShop: false
   }
 })
@@ -137,7 +155,6 @@ async function handleMessage() {
 
   if (responseData && responseData.status === 201) {
     isLoading.value = false
-
     location.value = ''
     registrationNumber.value = ''
     troubleshootTime.value = ''
@@ -162,8 +179,6 @@ onMounted(() => {
 
 <template>
   <div class="new-request-surrounding-container">
-    <NewRequestTopNav :userId="userId"></NewRequestTopNav>
-
     <form @submit.prevent="handleMessage" v-if="!isLargeScreen">
       <LocationSelect
         :checkInputData="(e: string) => checkInputsData(e)"
@@ -175,8 +190,14 @@ onMounted(() => {
         :inputData="(e: string) => (registrationNumber = e)"
       ></RegistrationNumberInput>
 
-      <TroubleShootTimeSelect
+      <MeterSetting
+        v-if="props.job === 'Kamremsbyte' || props.job === 'Service'"
         :checkInputData="(e: string) => checkInputsData(e)"
+        :selectData="(e: string) => (meterSetting = e)"
+      ></MeterSetting>
+
+      <TroubleShootTimeSelect
+        v-if="props.job === 'Övrigt'"
         :selectData="(e: string) => (troubleshootTime = e)"
       ></TroubleShootTimeSelect>
 

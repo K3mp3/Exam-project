@@ -19,14 +19,19 @@ function closeNavMenu() {
           ><fontAwesome :icon="['fas', 'house']" /> hem</RouterLink
         >
       </li>
-      <li>
+      <!-- <li>
         <RouterLink to="sign-in" class="router-link" @click="closeNavMenu"
           ><fontAwesome :icon="['fas', 'right-to-bracket']" />Logga in</RouterLink
         >
-      </li>
-      <li>
+      </li> -->
+      <!-- <li>
         <RouterLink to="register" class="router-link" @click="closeNavMenu"
           ><fontAwesome :icon="['fas', 'house']" /> Registrera</RouterLink
+        >
+      </li> -->
+      <li>
+        <RouterLink to="contact-repair-shop-form" class="router-link" @click="closeNavMenu"
+          ><fontAwesome :icon="['fas', 'gear']" /> Kontakta verkstäder</RouterLink
         >
       </li>
       <li>

@@ -1,15 +1,8 @@
 <script setup lang="ts">
 import router from '@/router'
 
-const props = defineProps({
-  userId: {
-    type: [String, Array],
-    required: true
-  }
-})
-
 function handleReturnClick() {
-  router.push(`/user-home/${props.userId}`)
+  router.push('/')
 }
 </script>
 

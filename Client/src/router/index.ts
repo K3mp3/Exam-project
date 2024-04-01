@@ -1,4 +1,5 @@
 import ConsumerLandingViewVue from '@/views/ConsumerLandingView.vue'
+import ContactRepairShopsView from '@/views/ContactRepairShopsView.vue'
 import ContactViewVue from '@/views/ContactView.vue'
 import LayoutVue from '@/views/Layout.vue'
 import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
@@ -70,6 +71,12 @@ const router = createRouter({
           path: '/user-sent/:id',
           name: 'user sent view',
           component: UserSentViewVue,
+          meta: { index: true }
+        },
+        {
+          path: '/contact-repair-shop-form',
+          name: 'contact repair shop view',
+          component: ContactRepairShopsView,
           meta: { index: true }
         }
       ]

@@ -2,10 +2,6 @@
 import { ref } from 'vue'
 
 const props = defineProps({
-  checkInputData: {
-    type: Function,
-    required: true
-  },
   selectData: {
     type: Function,
     required: true
@@ -15,7 +11,6 @@ const props = defineProps({
 const troubleshootTime = ref('')
 
 function handleChange() {
-  props.checkInputData('isTroubleshootTime')
   props.selectData(troubleshootTime.value)
 }
 </script>

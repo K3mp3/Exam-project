@@ -13,6 +13,7 @@ export interface IUserContact {
   repairShopAnswer?: string
   customerAnswer?: string
   priceOffer?: string
+  meterSetting?: string
   answeredByRepairShop: boolean
   isLineActive?: boolean
   repairShopAnswers?: { repairShop: string }[]
