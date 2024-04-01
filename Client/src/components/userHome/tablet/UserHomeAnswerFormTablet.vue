@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { removeUserRequest } from '@/services/removeRequest'
 import { computed, nextTick, ref } from 'vue'
+import ConfirmDialog from '../../dialogs/ConfirmDialog.vue'
 
 const props = defineProps({
   index: {
@@ -21,6 +22,7 @@ console.log(props.index)
 
 const messageAnswer = ref('')
 const priceOffer = ref('')
+const isConfirmDialog = ref(false)
 
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
@@ -86,6 +88,7 @@ function checkInputDataAnswer() {
 
 async function removeRequest() {
   await removeUserRequest(requestData.value as object)
+  isConfirmDialog.value = false
   props.onFilter(true)
 }
 </script>
@@ -100,10 +103,15 @@ async function removeRequest() {
     <button
       type="button"
       :class="isTrashBtn ? 'trash-btn-visible' : 'trash-btn'"
-      @click="removeRequest"
+      @click="() => (isConfirmDialog = true)"
     >
       <fontAwesome :icon="['fas', 'trash']" />
     </button>
     <div class="line-inactive"></div>
   </div>
+  <ConfirmDialog
+    :removeRequest="removeRequest"
+    :closeDialog="() => (isConfirmDialog = false)"
+    v-if="isConfirmDialog"
+  ></ConfirmDialog>
 </template>
