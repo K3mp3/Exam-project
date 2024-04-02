@@ -38,7 +38,7 @@ const userSentRoute = computed(() => `/user-sent/${userId}`)
             >
           </li>
           <li class="activeUrl list-style-none">
-            <RouterLink to="/user-home" class="text-deco-none font-text-light active-url">
+            <RouterLink to="/user-home" class="text-deco-none font-text-light text-active-blue">
               <fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
             >
           </li>
