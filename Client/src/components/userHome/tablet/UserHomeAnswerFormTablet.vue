@@ -3,7 +3,7 @@ import type { IUserContact } from '@/models/IUserContact'
 import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { removeUserRequest } from '@/services/removeRequest'
 import { answerRepairShops } from '@/services/userContact'
-import { nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import ConfirmDialog from '../../dialogs/ConfirmDialog.vue'
 import UserHomeAnswerForm from '../UserHomeAnswerForm.vue'
 import UserHomeMessages from '../UserHomeMessages.vue'
@@ -139,13 +139,21 @@ function hideTrashBtn() {
   isTrashBtn.value = false
 }
 
-async function sendAnswer() {
-  customerData = {
-    ...customerData,
-    customerAnswer: customerMessage.value
-  }
+async function sendAnswer(index: IUserContact) {
+  const answerData = computed(() => {
+    return {
+      customerAnswer: customerMessage.value,
+      customerId: index.customerId,
+      messageId: index.messageId,
+      answeredByRepairShop: false
+    }
+  })
 
-  await answerRepairShops(customerData as IUserContact)
+  console.log(customerData)
+
+  await answerRepairShops(answerData.value as IUserContact)
+
+  getAnswers()
 }
 
 async function removeRequest() {
@@ -254,9 +262,9 @@ onMounted(() => {
               :disabled="isBtnDisabled"
               :class="{
                 'main-btn-disabled m-h-42': isBtnDisabled,
-                'main-btn m-h-42': !isBtnDisabled
+                'main-btn m-h-42 text-main': !isBtnDisabled
               }"
-              @click="sendAnswer"
+              @click="sendAnswer(index)"
             >
               Skicka
             </button>
