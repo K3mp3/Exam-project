@@ -229,19 +229,10 @@
   }
 }
 
-// .background-container {
-//   background-color: aqua;
-//   top: 0;
-//   left: 0;
-//   width: 100vw;
-//   height: 100vh;
-//   // position: fixed;
-// }
-
 @media screen and (min-width: 600px) {
   .repair-shop-home-parent {
     padding: 16px;
-    max-width: 1200px;
+    max-width: 1300px;
     margin: auto;
 
     .repair-shop-signed-in-header {
@@ -287,8 +278,6 @@
             width: 100%;
             margin-top: -14px;
             border-radius: 15px;
-            border: 2px solid $el-border-gray;
-            padding: 8px 8px 0 8px;
 
             .message-content-top-nav {
               display: flex;
@@ -329,7 +318,7 @@
 
             .text-editor-answer {
               width: 100%;
-              height: 300px;
+              min-height: 300px;
               color: $text-main;
               border: none;
               background: $bg-third;
@@ -337,9 +326,20 @@
               font-size: 0.9rem;
               font-family: map-get($font-text-light, font-family);
               font-weight: map-get($font-text-light, font-weight);
+              border-radius: 10px;
+              padding: 8px 16px;
+              border: 2px solid $el-border-gray;
+              margin-top: 4px;
+              margin-bottom: 4px;
 
               &:focus {
+                transition: all 0.2s ease-in-out;
                 outline: none;
+                border: 2px solid transparent;
+                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+                  linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+                background-origin: border-box;
+                background-clip: padding-box, border-box;
               }
             }
           }
