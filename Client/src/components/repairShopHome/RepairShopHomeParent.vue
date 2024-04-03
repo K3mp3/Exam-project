@@ -2,7 +2,7 @@
 import router from '@/router'
 import { signOutUser } from '@/services/signOutUser'
 import { useSignInStore } from '@/stores/signInStore'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import UserSettings from '../userHome/UserSettings.vue'
 
@@ -37,12 +37,6 @@ async function changeUserSignInStatus() {
     }
   }
 }
-
-onMounted(() => {
-  // if (!isSignedIn.value) {
-  //   router.push({ name: 'landing page' })
-  // }
-})
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, defineProps, onMounted } from 'vue'
+import { computed, defineProps } from 'vue'
 
 const currentUrl = window.location.href
 const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
 
 const userSentRoute = computed(() => `/user-sent/${userId}`)
 
-const props = defineProps<{
+defineProps<{
   signOutFunction: (payload: MouseEvent) => void
 }>()
 </script>
@@ -24,11 +24,11 @@ const props = defineProps<{
           <fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
         >
       </li>
-      <li>
+      <!-- <li>
         <RouterLink to="/user-profile" class="side-nav-router-link">
           <fontAwesome :icon="['fas', 'user']" /> Profil</RouterLink
         >
-      </li>
+      </li> -->
     </ul>
 
     <div class="sign-out-btn-container">

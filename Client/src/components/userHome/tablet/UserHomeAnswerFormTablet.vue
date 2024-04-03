@@ -1,65 +1,66 @@
 <script setup lang="ts">
+import type { IUserContact } from '@/models/IUserContact'
+import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { removeUserRequest } from '@/services/removeRequest'
-import { computed, nextTick, ref } from 'vue'
+import { answerRepairShops } from '@/services/userContact'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import ConfirmDialog from '../../dialogs/ConfirmDialog.vue'
+import UserHomeAnswerForm from '../UserHomeAnswerForm.vue'
+import UserHomeMessages from '../UserHomeMessages.vue'
 
 const props = defineProps({
-  index: {
-    type: Object,
-    required: true
-  },
-  onAnswer: {
-    type: Function,
-    required: true
-  },
-  onFilter: {
+  numberOfAnswers: {
     type: Function,
     required: true
   }
 })
 
-console.log(props.index)
-
-const messageAnswer = ref('')
-const priceOffer = ref('')
-const isConfirmDialog = ref(false)
-
+const mobile = ref(true)
+const tablet = ref(false)
+const isData = ref(false)
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
 const isTrashBtn = ref(false)
+const isConfirmDialog = ref(false)
 
+const customerMessage = ref('')
+const setLineActive = ref('')
+
+const allRepairShopAnswers = ref<IUserContact[]>([])
+const requestData = ref<IUserContact[]>([])
+const messageArray: { message: string; name: string; date: string }[] = []
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 
-const requestData = computed(() => {
-  return {
-    customerId: props.index.customerId,
-    messageId: props.index.messageId,
-    customerName: props.index.customerName,
-    answeredByRepairShop: false
+const customerEmail = localStorage.getItem('userEmail')
+const customerName = localStorage.getItem('userName')
+
+function updateScreenSize() {
+  window.addEventListener('resize', updateScreenSize)
+
+  if (document.documentElement.clientWidth > 699) {
+    tablet.value = true
+    mobile.value = false
   }
-})
 
-const emits = defineEmits(['showMore'])
-
-function showTrashBtn() {
-  isTrashBtn.value = true
+  if (document.documentElement.clientWidth < 700) {
+    mobile.value = true
+    tablet.value = false
+  }
 }
 
-function hideTrashBtn() {
-  isTrashBtn.value = false
-}
+async function getAnswers() {
+  isData.value = false
+  const allResponses = await removedAnsweredRequests()
+  allRepairShopAnswers.value = allResponses.map((response: []) => ({
+    ...response,
+    isLineActive: false
+  }))
 
-function showMessageBox(index: any) {
-  props.onAnswer({
-    customerName: props.index.customerName,
-    customerId: props.index.customerId,
-    messageId: props.index.messageId,
-    answeredByRepairShop: false
-  })
+  allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
+    (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
+  )
 
-  nextTick(() => {
-    emits('showMore', props.index.customerMessage, props.index.repairShopAnswer, index)
-  })
+  props.numberOfAnswers(allRepairShopAnswers.value.length)
 }
 
 function checkInputData() {
@@ -68,7 +69,7 @@ function checkInputData() {
 
 function checkInputDataAnswer() {
   nextTick(() => {
-    if (messageAnswer.value === '') {
+    if (customerMessage.value === '') {
       return
     } else {
       isMessageAnswer.value = true
@@ -86,32 +87,200 @@ function checkInputDataAnswer() {
   })
 }
 
+let customerData = {}
+
+async function handleAnswerMobile(answerDataMobileForm: IUserContact) {
+  await answerRepairShops(answerDataMobileForm as IUserContact)
+  getAnswers()
+}
+
+async function showRequestData(
+  customerMessage: string,
+  repairShopAnswer: string,
+  index: string | undefined
+) {
+  setLineActive.value = index ? index : ''
+
+  const foundAnswer = allRepairShopAnswers.value.find((answer) => answer._id === index)
+  if (foundAnswer) {
+    requestData.value = [foundAnswer]
+
+    sortRequestData(
+      customerMessage as unknown as { message: string; name: string; date: string }[],
+      repairShopAnswer as unknown as { message: string; name: string; date: string }[]
+    )
+  } else {
+    console.log('Answer not found!')
+  }
+}
+
+function sortRequestData(
+  customerMessage: { message: string; name: string; date: string }[],
+  repairShopAnswer: { message: string; name: string; date: string }[]
+) {
+  messageArray.splice(0, messageArray.length)
+  const flattenedMessages = customerMessage.concat(repairShopAnswer)
+
+  flattenedMessages.sort(
+    (a: { date: string }, b: { date: string }) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
+  messageArray.push(...flattenedMessages)
+
+  isData.value = true
+  console.log(isData.value)
+}
+
+function showTrashBtn() {
+  isTrashBtn.value = true
+}
+
+function hideTrashBtn() {
+  isTrashBtn.value = false
+}
+
+async function sendAnswer(index: IUserContact) {
+  const answerData = computed(() => {
+    return {
+      customerAnswer: customerMessage.value,
+      customerId: index.customerId,
+      messageId: index.messageId,
+      answeredByRepairShop: false
+    }
+  })
+
+  console.log(customerData)
+
+  await answerRepairShops(answerData.value as IUserContact)
+
+  getAnswers()
+}
+
 async function removeRequest() {
   await removeUserRequest(requestData.value as object)
   isConfirmDialog.value = false
-  props.onFilter(true)
+  getAnswers()
 }
+
+onMounted(() => {
+  getAnswers()
+  updateScreenSize()
+})
 </script>
 
 <template>
-  <div class="request-container-tablet" @mouseover="showTrashBtn" @mouseleave="hideTrashBtn">
-    <p class="text-main font-text-light">{{ props.index.repairShopName }}</p>
-    <div class="request-container-content-tablet">
-      <p><span>Registreringsnummer: </span>{{ props.index.registrationNumber }}</p>
-      <button type="button" class="show-more-btn" @click="showMessageBox(props.index._id)"></button>
-    </div>
-    <button
-      type="button"
-      :class="isTrashBtn ? 'trash-btn-visible' : 'trash-btn'"
-      @click="() => (isConfirmDialog = true)"
-    >
-      <fontAwesome :icon="['fas', 'trash']" />
-    </button>
-    <div class="line-inactive"></div>
+  <div class="request-form-main">
+    <form @submit.prevent="" class="user-sent-answer-form-mobile" v-if="mobile">
+      <UserHomeAnswerForm
+        v-for="index in allRepairShopAnswers"
+        :key="index._id"
+        :index="index"
+        :onAnswer="handleAnswerMobile"
+        :reFetch="getAnswers"
+      ></UserHomeAnswerForm>
+    </form>
+    <form @submit.prevent="" class="user-sent-answer-form" v-if="tablet">
+      <div class="request-column">
+        <div
+          class="request-container-tablet"
+          @mouseover="showTrashBtn"
+          @mouseleave="hideTrashBtn"
+          v-for="index in allRepairShopAnswers"
+          :key="index._id"
+        >
+          <p class="text-main font-text-light">{{ index.repairShopName }}</p>
+          <div class="request-container-content-tablet">
+            <p><span>Registreringsnummer: </span>{{ index.registrationNumber }}</p>
+            <button
+              type="button"
+              class="show-more-btn"
+              @click="
+                showRequestData(
+                  index.customerMessage,
+                  index.repairShopAnswer ? index.repairShopAnswer : '',
+                  index._id
+                )
+              "
+            ></button>
+          </div>
+          <button
+            type="button"
+            :class="isTrashBtn ? 'trash-btn-visible' : 'trash-btn'"
+            @click="() => ((isConfirmDialog = true), (setLineActive = index._id as string))"
+          >
+            <fontAwesome :icon="['fas', 'trash']" />
+          </button>
+          <div :class="index._id === setLineActive ? 'line-active' : 'line-inactive'"></div>
+        </div>
+        <ConfirmDialog
+          :removeRequest="removeRequest"
+          :closeDialog="() => (isConfirmDialog = false)"
+          v-if="isConfirmDialog"
+        />
+      </div>
+      <div class="data-column">
+        <div
+          class="data-container-tablet"
+          v-for="index in requestData"
+          :key="index._id"
+          v-if="isData"
+        >
+          <p class="text-main font-text-light">{{ index.repairShopName }}</p>
+          <p class="text-main font-text-light">
+            <span class="text-main font-title-bold">Registreringsnummer: </span
+            >{{ index.registrationNumber }}
+          </p>
+
+          <div class="data-column-message-container">
+            <UserHomeMessages
+              v-for="index in messageArray"
+              :key="index.date"
+              :index="index"
+              :amount="messageArray"
+            ></UserHomeMessages>
+
+            <textarea
+              name="message-input"
+              v-model="customerMessage"
+              class="text-editor-answer"
+              placeholder="Svar"
+              @input="checkInputDataAnswer"
+            ></textarea>
+
+            <label for="priceOffer" class="text-main font-text-light">Prisförslag</label>
+            <input
+              type="text"
+              name="priceOffer"
+              maxlength="7"
+              class="price-offer-input"
+              :value="index.priceOffer"
+              disabled
+            />
+
+            <button
+              type="submit"
+              :disabled="isBtnDisabled"
+              :class="{
+                'main-btn-disabled m-h-42': isBtnDisabled,
+                'main-btn m-h-42 text-main': !isBtnDisabled
+              }"
+              @click="sendAnswer(index)"
+            >
+              Skicka
+            </button>
+          </div>
+        </div>
+        <div class="display-flex flex-dir-col gap-16 p-relative" v-if="!isData">
+          <div class="width-50p h-40 silhouette"></div>
+          <div class="width-60p h-40 silhouette"></div>
+          <div class="width-100 h-80 silhouette"></div>
+          <div class="width-100 h-80 silhouette"></div>
+          <div class="width-100 h-250 silhouette"></div>
+          <div class="width-100 h-40 silhouette"></div>
+          <div class="width-100 h-40 silhouette"></div>
+          <div class="p-absolute top-0 left-0 width-100 h-100p bg-main-40"></div>
+        </div>
+      </div>
+    </form>
   </div>
-  <ConfirmDialog
-    :removeRequest="removeRequest"
-    :closeDialog="() => (isConfirmDialog = false)"
-    v-if="isConfirmDialog"
-  ></ConfirmDialog>
 </template>
