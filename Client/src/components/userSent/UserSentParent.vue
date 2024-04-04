@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import type { IUserContact } from '@/models/IUserContact'
+import router from '@/router'
 import { getSentMessages } from '@/services/userContact'
 import { nextTick, onMounted, ref } from 'vue'
 import UserSentRequestsVue from './UserSentRequests.vue'
 import UserSentTopNav from './UserSentTopNav.vue'
 
 const desktop = ref(false)
+const isRepairShop = ref(false)
+
+const userId = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
+
+const userName = localStorage.getItem('userName')
+const userEmail = localStorage.getItem('userEmail')
+
+const allRequests = ref<IUserContact[]>([])
 
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
@@ -13,11 +22,6 @@ function updateScreenSize() {
   if (document.documentElement.clientWidth > 1399) desktop.value = true
   else desktop.value = false
 }
-
-const userName = localStorage.getItem('userName')
-const userEmail = localStorage.getItem('userEmail')
-
-const allRequests = ref<IUserContact[]>([])
 
 const user = ref({
   customerName: userName,
@@ -36,6 +40,10 @@ async function getMessages() {
 onMounted(() => {
   updateScreenSize()
   getMessages()
+
+  isRepairShop.value = !!localStorage.getItem('isRepairShop')
+
+  if (isRepairShop.value) router.push(`/repair-shop-sent/${userId}`)
 })
 </script>
 
