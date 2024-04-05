@@ -238,7 +238,7 @@ onMounted(() => {
     <div class="blue-line"></div>
   </div>
   <div class="spinner-component" v-if="isLoading">
-    <LoadingSpinner></LoadingSpinner>
+    <LoadingSpinner />
     <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
   <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">

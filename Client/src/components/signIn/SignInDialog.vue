@@ -2,15 +2,25 @@
 import { signInUser } from '@/services/signInUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
+import { nextTick } from 'process'
 import { computed, ref } from 'vue'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
+
+const props = defineProps({
+  loadingState: {
+    type: Boolean,
+    required: true
+  }
+})
 
 const email = ref('')
 const password = ref('')
 
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
-const disableRegisterBtn = ref(true)
+const isBtnDisabled = ref(true)
+const isLoading = ref(false)
 
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 const isDialog = computed(() => useShowPopUp().showPopUp)
@@ -25,20 +35,32 @@ const user = computed(() => {
 
 function checkInputData() {
   if (email.value === '' || password.value === '') {
-    disableRegisterBtn.value = true
+    isBtnDisabled.value = true
     return false
   } else {
-    disableRegisterBtn.value = false
+    isBtnDisabled.value = false
     return true
   }
 }
 
 async function handleSignIn() {
+  isBtnDisabled.value = true
+  isLoading.value = true
   const response = await signInUser(user.value)
+
+  const responseStatus = response as { status: number }
 
   if (response === 'Wrong email or password!') {
     isEmailWrong.value = true
     isPasswordWrong.value = true
+    isLoading.value = false
+  }
+
+  if (responseStatus) {
+    isLoading.value = false
+    nextTick(() => {
+      isBtnDisabled.value = false
+    })
   }
 }
 
@@ -96,14 +118,25 @@ function closeSignInDialog() {
         <div class="sign-in-desktop-form-bottom-container">
           <button
             type="submit"
-            :disabled="disableRegisterBtn"
-            :class="disableRegisterBtn ? 'sign-in-desktop-btn-disable' : 'sign-in-desktop-btn'"
+            :disabled="isBtnDisabled"
+            :class="
+              isBtnDisabled
+                ? 'sign-in-desktop-btn-disable display-flex align-items-center justify-center'
+                : 'sign-in-desktop-btn display-flex align-items-center justify-center'
+            "
           >
-            Logga in
+            <template v-if="isLoading">
+              <!-- <LoadingSpinner /> -->
+            </template>
+            <template v-else> Logga in </template>
           </button>
         </div>
       </form>
       <div class="blue-line"></div>
     </div>
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
