@@ -214,6 +214,10 @@ p {
   max-width: 1200px;
 }
 
+.m-width-50c-16 {
+  max-width: calc(50% - 16px);
+}
+
 .h-2 {
   height: 2px;
 }

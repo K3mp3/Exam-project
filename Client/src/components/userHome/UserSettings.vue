@@ -12,7 +12,7 @@ const isRepairShop = ref(false)
 const currentUrl = window.location.href
 const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
 const userSentRoute = computed(() =>
-  isRepairShop.value ? `/repair-shop-sent/${userId}` : `/user-sent/${userId}`
+  isRepairShop.value ? `/user-sent/${userId}` : `/user-sent/${userId}`
 )
 
 onMounted(() => {

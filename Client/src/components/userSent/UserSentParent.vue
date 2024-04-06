@@ -7,7 +7,7 @@ import UserSentRequestsVue from './UserSentRequests.vue'
 import UserSentTopNav from './UserSentTopNav.vue'
 
 const desktop = ref(false)
-const isRepairShop = ref(false)
+const isRepairShop = ref<string | null>('')
 
 const userId = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
 
@@ -41,21 +41,16 @@ onMounted(() => {
   updateScreenSize()
   getMessages()
 
-  isRepairShop.value = !!localStorage.getItem('isRepairShop')
+  isRepairShop.value = localStorage.getItem('isRepairShop')
 
-  if (isRepairShop.value) router.push(`/repair-shop-sent/${userId}`)
+  if (isRepairShop.value === 'true') router.push(`/repair-shop-sent/${userId}`)
 })
 </script>
 
 <template>
-  <UserSentTopNav></UserSentTopNav>
+  <UserSentTopNav />
 
-  <div
-    :class="[
-      'display-flex gap-6 padding-16 m-width-1000 margin-au w-100',
-      desktop ? 'flex-dir-col' : 'flex-dir-col'
-    ]"
-  >
+  <div class="display-flex flex-dir-col gap-6 padding-16 m-width-1000 margin-au w-100">
     <UserSentRequestsVue
       v-for="index in allRequests"
       :key="index._id"
