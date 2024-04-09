@@ -11,10 +11,7 @@ export async function answerFromRepairShop(messageData: IUserContact) {
       `${BASE_URL}/answerFromRepairShops/answerFromRepairShop`,
       messageData
     )
-    const data = response.data
-    const status = response.status
-
-    return { data, status }
+    return response.data
   } catch (error) {
     return error
   }

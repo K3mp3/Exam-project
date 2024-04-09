@@ -18,6 +18,8 @@ const props = defineProps({
   }
 })
 
+console.log('hejsan')
+
 const messageAnswer = ref('')
 const priceOffer = ref('')
 

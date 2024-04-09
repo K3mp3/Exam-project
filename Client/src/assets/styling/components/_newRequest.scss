@@ -157,8 +157,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
-  background-color: $bg-main-90;
+  z-index: 1;
 }
 
 @media screen and (min-width: 700px) {
