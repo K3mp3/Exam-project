@@ -53,8 +53,6 @@ async function getAnsweredMessages() {
   answeredMessages.value = answeredMessages.value.filter(
     (answer) => answer.answeredByRepairShop === false
   )
-
-  console.log('answeredMessages.value:', answeredMessages.value)
 }
 
 function showConfirmationBox(response: number) {
