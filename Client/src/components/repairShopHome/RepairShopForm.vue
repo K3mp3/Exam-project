@@ -48,8 +48,6 @@ async function getAnsweredMessages() {
   answeredMessages.value = answeredMessages.value.filter(
     (answer) => answer.answeredByRepairShop === false
   )
-
-  console.log('answeredMessages.value:', answeredMessages.value)
 }
 
 async function handleAnswer(answerData: Object) {
