@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
-const isRepairShop = ref(false)
+import { computed } from 'vue'
 
 const currentUrl = window.location.href
 const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
 
-onMounted(() => {
-  isRepairShop.value = !!localStorage.getItem('isRepairShop')
-})
+const userHomeRoute = computed(() => `/user-home/${userId}`)
 </script>
 
 <template>
   <div class="user-sent-top-nav">
-    <RouterLink
-      :to="isRepairShop ? `/repair-shop-home/${userId}` : `/user-home/${userId}`"
-      class="btn-back"
+    <RouterLink :to="userHomeRoute" class="btn-back"
       ><fontAwesome :icon="['fas', 'chevron-left']"
     /></RouterLink>
     <h2>Skickat</h2>

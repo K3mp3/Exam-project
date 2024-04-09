@@ -81,16 +81,9 @@ function closeDialog() {
   <div class="magic-token-dialog-container">
     <DialogBox v-if="isDialog"></DialogBox>
     <div class="magic-token-dialog-box">
-      <div>
-        <h1 class="text-main font-title-bold">Veriferingskod</h1>
-        <p class="font-text-light text-third">
-          Vänligen skriv in koden vi har skickat till din email
-        </p>
-      </div>
-
       <input
         type="text"
-        placeholder="veriferingskod"
+        placeholder="veriferings kod"
         v-model="writtenToken"
         :class="isMagicTokenWrong ? 'input-error' : ''"
       />
