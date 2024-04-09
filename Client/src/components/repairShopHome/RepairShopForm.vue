@@ -44,7 +44,6 @@ async function getMessages() {
 async function getAnsweredMessages() {
   const response = await getAnswerRepairShops()
   answeredMessages.value = response
-  console.log('answeredMessages.value:', answeredMessages.value)
 
   answeredMessages.value = answeredMessages.value.filter(
     (answer) => answer.answeredByRepairShop === false
