@@ -340,4 +340,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-@/stores/useShowRepairShopDialog

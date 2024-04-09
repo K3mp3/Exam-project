@@ -2,257 +2,234 @@
 @use '../abstracts/fonts' as *;
 
 .desktop-form-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: $bg-main-90;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $bg-main-90;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    .desktop-dialog-container {
-        max-width: 1200px;
-        background-color: $bg-main;
-        padding: 64px;
+  .desktop-dialog-container {
+    max-width: 1200px;
+    background-color: $bg-main;
+    padding: 64px;
 
-        .desktop-dialog-nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background-color: $bg-main;
+    .desktop-dialog-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: $bg-main;
 
-            .btn-back {
-                transition: all 0.2s ease-in-out;
-                background: transparent;
-                color: $text-main;
-                width: 50px;
-                height: 50px;
-                border-radius: 12px;
-                border: 2px solid $el-border-gray;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 2rem;
-        
-                &:hover {
-                    transition: all 0.2s ease-in-out;
-                    border: 2px solid $el-active-blue;
-                    color: $el-active-blue;
-                    cursor: pointer;
-                }
-            }
+      .btn-back {
+        transition: all 0.2s ease-in-out;
+        background: transparent;
+        color: $text-main;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        border: 2px solid $el-border-gray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
 
-            h2 {
-                font-size: 2.5rem;
-                color: $text-main;
-                font-family: map-get($font-title-black, font-family);
-                font-weight: map-get($font-title-black, font-weight);
-            }
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          border: 2px solid $el-active-blue;
+          color: $el-active-blue;
+          cursor: pointer;
         }
+      }
 
-        .desktop-register-form {
-            padding: 32px 0;
-            display: flex;
-            flex-direction: row;
-            gap: 60px;
-            background-color: $bg-main;
-            max-width: 1200px;
-
-            .input-container-left {
-                width: 538px;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .input-container-right {
-                width: 538px;
-                display: flex;
-                flex-direction: column;
-            }
-        
-            label {
-                color: $text-main;
-                font-family: map-get($font-text-light, font-family);
-                font-weight: map-get($font-text-light, font-weight);
-            }
-
-            .desktop-register-form-select {
-                position: relative;
-                transition: all 0.2s ease-in-out;
-                margin: 5px 0 10px 0;
-                max-width: 100%;
-                height: 42px;
-                background-color: $el-bg-gray;
-                color: $text-main;
-                border: 2px solid $el-border-gray;
-                padding: 10px;
-                border-radius: 10px;
-                z-index: 1;
-    
-                &:focus {
-                    transition: all 0.2s ease-in-out;
-                    outline: none;
-                    border: 2px solid transparent;
-                    border-radius: 10px;
-                    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                    linear-gradient(
-                        to bottom,
-                        rgb(13, 63, 241),
-                        rgb(13, 63, 241, 0.2)
-                      );
-                    background-origin: border-box;
-                    background-clip: padding-box, border-box;
-                }
-            }
-        
-            input {
-                position: relative;
-                transition: all 0.2s ease-in-out;
-                margin: 5px 0 10px 0;
-                max-width: 100%;
-                height: 42px;
-                background-color: $el-bg-gray;
-                color: $text-main;
-                border: 2px solid $el-border-gray;
-                padding: 10px;
-                border-radius: 10px;
-                z-index: 1;
-        
-                &:focus {
-                    transition: all 0.2s ease-in-out;
-                    outline: none;
-                    border: 2px solid transparent;
-                    border-radius: 10px;
-                    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                    linear-gradient(
-                        to bottom,
-                        rgb(13, 63, 241),
-                        rgb(13, 63, 241, 0.2)
-                        );
-                    background-origin: border-box;
-                    background-clip: padding-box, border-box;
-                }
-            }
-        
-            .input-error {
-                transition: all 0.2s ease-in-out;
-                outline: none;
-                border: 2px solid transparent;
-                border-radius: 10px;
-                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                linear-gradient(
-                    to bottom,
-                    rgb(241, 13, 13),
-                    rgb(241, 13, 13, 0.2)
-                    );
-                background-origin: border-box;
-                background-clip: padding-box, border-box;
-        
-                &:focus {
-                    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                    linear-gradient(
-                        to bottom,
-                        rgb(241, 13, 13),
-                        rgb(241, 13, 13, 0.2)
-                        );
-                }
-            }
-
-            .input-password-weak {
-                transition: all 0.2s ease-in-out;
-                outline: none;
-                border: 2px solid transparent;
-                border-radius: 10px;
-                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                linear-gradient(
-                    to bottom,
-                    rgb(241, 85, 13),
-                    rgb(241, 85, 13, 0.2)
-                  );
-                background-origin: border-box;
-                background-clip: padding-box, border-box;
-        
-                &:focus {
-                    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                    linear-gradient(
-                        to bottom,
-                        rgb(241, 85, 13),
-                        rgb(241, 85, 13, 0.2)
-                      );
-                }
-            }
-    
-            .warning-text {
-                color: $el-warning-orange;
-            }
-        
-            p {
-                color: $el-error-red;
-                margin-bottom: 20px;
-            }
-
-            .register-desktop-button-disable {
-                transition: all 0.2s ease-in-out;
-                background-color: $el-inactive-blue;
-                border: none;
-                color: $text-disabled;
-                font-family: map-get($font-title-bold, font-family);
-                font-weight: map-get($font-title-bold, font-weight);
-                height: 42px;
-                border-radius: 50px;
-                margin-top: 29px;
-                width: 100%;
-            }
-        
-            .desktop-register-btn {
-                transition: all 0.2s ease-in-out;
-                background-color: $el-active-blue;
-                border: none;
-                color: $text-main;
-                font-family: map-get($font-title-bold, font-family);
-                font-weight: map-get($font-title-bold, font-weight);
-                height: 42px;
-                border-radius: 50px;
-                margin-top: 29px;
-                width: 100%;
-        
-                &:hover {
-                    transition: all 0.2s ease-in-out;
-                    cursor: pointer;
-                    background-color: $el-active-blue-hover;
-                }
-            }
-        }
-
-        .dialog-blue-line {
-            margin-top: 0px;
-            width: 1200px;
-            height: 2px;
-            background: linear-gradient(to right, #0d3ef100, #0D31F1, #0d3ef100);
-        }
-
-        .dialog-text-form-container {
-            padding: 33px 32px;
-        
-            .router-link-text, p {
-                background: transparent;
-                border: none;
-                font-size: 1rem;
-                color: $text-main;
-                font-family: map-get($font-text-light, font-family);
-                font-weight: map-get($font-text-light, font-weight);
-            }
-
-            .router-link-text {
-                text-decoration: underline;
-
-                &:hover {
-                    cursor: pointer;
-                    color: $el-active-blue;
-                }
-            }
-        }
+      h2 {
+        font-size: 2.5rem;
+        color: $text-main;
+        font-family: map-get($font-title-black, font-family);
+        font-weight: map-get($font-title-black, font-weight);
+      }
     }
+
+    .desktop-register-form {
+      padding: 32px 0;
+      display: flex;
+      flex-direction: row;
+      gap: 60px;
+      background-color: $bg-main;
+      max-width: 1200px;
+
+      .input-container-left {
+        width: 538px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .input-container-right {
+        width: 538px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        color: $text-main;
+        font-family: map-get($font-text-light, font-family);
+        font-weight: map-get($font-text-light, font-weight);
+      }
+
+      .desktop-register-form-select {
+        position: relative;
+        transition: all 0.2s ease-in-out;
+        margin: 5px 0 10px 0;
+        max-width: 100%;
+        height: 42px;
+        background-color: $el-bg-gray;
+        color: $text-main;
+        border: 2px solid $el-border-gray;
+        padding: 10px;
+        border-radius: 10px;
+        z-index: 1;
+
+        &:focus {
+          transition: all 0.2s ease-in-out;
+          outline: none;
+          border: 2px solid transparent;
+          border-radius: 10px;
+          background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+            linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+          background-origin: border-box;
+          background-clip: padding-box, border-box;
+        }
+      }
+
+      input {
+        position: relative;
+        transition: all 0.2s ease-in-out;
+        margin: 5px 0 10px 0;
+        max-width: 100%;
+        height: 42px;
+        background-color: $el-bg-gray;
+        color: $text-main;
+        border: 2px solid $el-border-gray;
+        padding: 10px;
+        border-radius: 10px;
+        z-index: 1;
+
+        &:focus {
+          transition: all 0.2s ease-in-out;
+          outline: none;
+          border: 2px solid transparent;
+          border-radius: 10px;
+          background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+            linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+          background-origin: border-box;
+          background-clip: padding-box, border-box;
+        }
+      }
+
+      .input-error {
+        transition: all 0.2s ease-in-out;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+          linear-gradient(to bottom, rgb(241, 13, 13), rgb(241, 13, 13, 0.2));
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+
+        &:focus {
+          background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+            linear-gradient(to bottom, rgb(241, 13, 13), rgb(241, 13, 13, 0.2));
+        }
+      }
+
+      .input-password-weak {
+        transition: all 0.2s ease-in-out;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+          linear-gradient(to bottom, rgb(241, 85, 13), rgb(241, 85, 13, 0.2));
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+
+        &:focus {
+          background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+            linear-gradient(to bottom, rgb(241, 85, 13), rgb(241, 85, 13, 0.2));
+        }
+      }
+
+      .warning-text {
+        color: $el-warning-orange;
+      }
+
+      p {
+        color: $el-error-red;
+        margin-bottom: 20px;
+      }
+
+      .register-desktop-button-disable {
+        transition: all 0.2s ease-in-out;
+        background-color: $el-inactive-blue;
+        border: none;
+        color: $text-disabled;
+        font-family: map-get($font-title-bold, font-family);
+        font-weight: map-get($font-title-bold, font-weight);
+        height: 42px;
+        border-radius: 50px;
+        margin-top: 29px;
+        width: 100%;
+      }
+
+      .desktop-register-btn {
+        transition: all 0.2s ease-in-out;
+        background-color: $el-active-blue;
+        border: none;
+        color: $text-main;
+        font-family: map-get($font-title-bold, font-family);
+        font-weight: map-get($font-title-bold, font-weight);
+        height: 42px;
+        border-radius: 50px;
+        margin-top: 29px;
+        width: 100%;
+
+        &:hover {
+          transition: all 0.2s ease-in-out;
+          cursor: pointer;
+          background-color: $el-active-blue-hover;
+        }
+      }
+    }
+
+    .dialog-blue-line {
+      margin-top: 0px;
+      width: 1200px;
+      height: 2px;
+      background: linear-gradient(to right, #0d3ef100, #0d31f1, #0d3ef100);
+    }
+
+    .dialog-text-form-container {
+      padding: 33px 32px;
+
+      .router-link-text,
+      p {
+        background: transparent;
+        border: none;
+        font-size: 1rem;
+        color: $text-main;
+        font-family: map-get($font-text-light, font-family);
+        font-weight: map-get($font-text-light, font-weight);
+      }
+
+      .router-link-text {
+        text-decoration: underline;
+
+        &:hover {
+          cursor: pointer;
+          color: $el-active-blue;
+        }
+      }
+    }
+  }
 }

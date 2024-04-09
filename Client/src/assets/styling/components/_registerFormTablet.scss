@@ -2,222 +2,199 @@
 @use '../abstracts/fonts' as *;
 
 .tablet-form-background {
-    padding: 32px;
-    margin: auto;
+  padding: 32px;
+  margin: auto;
+  max-width: 700px;
+
+  .tablet-form-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0;
+    margin-bottom: 32px;
+
+    .router-link {
+      background: transparent;
+      color: $text-main;
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      border: 2px solid $el-border-gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: $text-main;
+      font-family: map-get($font-title-black, font-family);
+      font-weight: map-get($font-title-black, font-weight);
+    }
+  }
+
+  .tablet-register-form {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+    background-color: $bg-main;
     max-width: 700px;
+    margin-bottom: 32px;
 
-    .tablet-form-nav {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding: 0;
-        margin-bottom: 32px;
-
-        .router-link {
-            background: transparent;
-            color: $text-main;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            border: 2px solid $el-border-gray;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-            color: $text-main;
-            font-family: map-get($font-title-black, font-family);
-            font-weight: map-get($font-title-black, font-weight);
-        }
+    .tablet-input-container-left {
+      width: 538px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .tablet-register-form {
-        display: flex;
-        flex-direction: row;
-        gap: 60px;
-        background-color: $bg-main;
-        max-width: 700px;
-        margin-bottom: 32px;
-
-        .tablet-input-container-left {
-            width: 538px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tablet-input-container-right {
-            width: 538px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            color: $text-main;
-            font-family: map-get($font-text-light, font-family);
-            font-weight: map-get($font-text-light, font-weight);
-        }
-
-        .mobile-register-form-select {
-            position: relative;
-            transition: all 0.2s ease-in-out;
-            margin: 5px 0 10px 0;
-            max-width: 100%;
-            height: 42px;
-            background-color: $el-bg-gray;
-            color: $text-main;
-            border: 2px solid $el-border-gray;
-            padding: 10px;
-            border-radius: 10px;
-            z-index: 1;
-
-            &:focus {
-                transition: all 0.2s ease-in-out;
-                outline: none;
-                border: 2px solid transparent;
-                border-radius: 10px;
-                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                linear-gradient(
-                    to bottom,
-                    rgb(13, 63, 241),
-                    rgb(13, 63, 241, 0.2)
-                  );
-                background-origin: border-box;
-                background-clip: padding-box, border-box;
-            }
-        }
-
-        input {
-            position: relative;
-            transition: all 0.2s ease-in-out;
-            margin: 5px 0 10px 0;
-            max-width: 100%;
-            height: 42px;
-            background-color: $el-bg-gray;
-            color: $text-main;
-            border: 2px solid $el-border-gray;
-            padding: 10px;
-            border-radius: 10px;
-            z-index: 1;
-    
-            &:focus {
-                transition: all 0.2s ease-in-out;
-                outline: none;
-                border: 2px solid transparent;
-                border-radius: 10px;
-                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                linear-gradient(
-                    to bottom,
-                    rgb(13, 63, 241),
-                    rgb(13, 63, 241, 0.2)
-                    );
-                background-origin: border-box;
-                background-clip: padding-box, border-box;
-            }
-        }
-
-        .input-error {
-            transition: all 0.2s ease-in-out;
-            outline: none;
-            border: 2px solid transparent;
-            border-radius: 10px;
-            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-            linear-gradient(
-                to bottom,
-                rgb(241, 13, 13),
-                rgb(241, 13, 13, 0.2)
-                );
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
-    
-            &:focus {
-                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                linear-gradient(
-                    to bottom,
-                    rgb(241, 13, 13),
-                    rgb(241, 13, 13, 0.2)
-                    );
-            }
-        }
-
-        .input-password-weak {
-            transition: all 0.2s ease-in-out;
-            outline: none;
-            border: 2px solid transparent;
-            border-radius: 10px;
-            background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-            linear-gradient(
-                to bottom,
-                rgb(241, 85, 13),
-                rgb(241, 85, 13, 0.2)
-              );
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
-    
-            &:focus {
-                background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus), 
-                linear-gradient(
-                    to bottom,
-                    rgb(241, 85, 13),
-                    rgb(241, 85, 13, 0.2)
-                  );
-            }
-        }
-
-        .warning-text {
-            color: $el-warning-orange;
-        }
-
-        p {
-            color: $el-error-red;
-            margin-bottom: 20px;
-            margin-top: -10px;
-        }
-
-        .register-tablet-button-disable {
-            transition: all 0.2s ease-in-out;
-            background-color: $el-inactive-blue;
-            border: none;
-            color: $text-disabled;
-            font-family: map-get($font-title-bold, font-family);
-            font-weight: map-get($font-title-bold, font-weight);
-            height: 42px;
-            border-radius: 50px;
-            margin-top: 29px;
-        }
-
-        .tablet-register-btn {
-            transition: all 0.2s ease-in-out;
-            background-color: $el-active-blue;
-            border: none;
-            color: $text-main;
-            font-family: map-get($font-title-bold, font-family);
-            font-weight: map-get($font-title-bold, font-weight);
-            height: 42px;
-            border-radius: 50px;
-            margin-top: 29px;
-    
-            &:hover {
-                transition: all 0.2s ease-in-out;
-                cursor: pointer;
-                background-color: $el-active-blue-hover;
-            }
-        }
+    .tablet-input-container-right {
+      width: 538px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .tablet-text-form-container {
-        margin-top: 32px;
-    
-        .router-link-text, p {
-            color: $text-main;
-            font-family: map-get($font-text-light, font-family);
-            font-weight: map-get($font-text-light, font-weight);
-        }
-
-        p {
-            margin-bottom: 10px;
-        }
+    label {
+      color: $text-main;
+      font-family: map-get($font-text-light, font-family);
+      font-weight: map-get($font-text-light, font-weight);
     }
+
+    .mobile-register-form-select {
+      position: relative;
+      transition: all 0.2s ease-in-out;
+      margin: 5px 0 10px 0;
+      max-width: 100%;
+      height: 42px;
+      background-color: $el-bg-gray;
+      color: $text-main;
+      border: 2px solid $el-border-gray;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 1;
+
+      &:focus {
+        transition: all 0.2s ease-in-out;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+          linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+      }
+    }
+
+    input {
+      position: relative;
+      transition: all 0.2s ease-in-out;
+      margin: 5px 0 10px 0;
+      max-width: 100%;
+      height: 42px;
+      background-color: $el-bg-gray;
+      color: $text-main;
+      border: 2px solid $el-border-gray;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 1;
+
+      &:focus {
+        transition: all 0.2s ease-in-out;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+          linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+      }
+    }
+
+    .input-error {
+      transition: all 0.2s ease-in-out;
+      outline: none;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+        linear-gradient(to bottom, rgb(241, 13, 13), rgb(241, 13, 13, 0.2));
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+
+      &:focus {
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+          linear-gradient(to bottom, rgb(241, 13, 13), rgb(241, 13, 13, 0.2));
+      }
+    }
+
+    .input-password-weak {
+      transition: all 0.2s ease-in-out;
+      outline: none;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+        linear-gradient(to bottom, rgb(241, 85, 13), rgb(241, 85, 13, 0.2));
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+
+      &:focus {
+        background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+          linear-gradient(to bottom, rgb(241, 85, 13), rgb(241, 85, 13, 0.2));
+      }
+    }
+
+    .warning-text {
+      color: $el-warning-orange;
+    }
+
+    p {
+      color: $el-error-red;
+      margin-bottom: 20px;
+      margin-top: -10px;
+    }
+
+    .register-tablet-button-disable {
+      transition: all 0.2s ease-in-out;
+      background-color: $el-inactive-blue;
+      border: none;
+      color: $text-disabled;
+      font-family: map-get($font-title-bold, font-family);
+      font-weight: map-get($font-title-bold, font-weight);
+      height: 42px;
+      border-radius: 50px;
+      margin-top: 29px;
+    }
+
+    .tablet-register-btn {
+      transition: all 0.2s ease-in-out;
+      background-color: $el-active-blue;
+      border: none;
+      color: $text-main;
+      font-family: map-get($font-title-bold, font-family);
+      font-weight: map-get($font-title-bold, font-weight);
+      height: 42px;
+      border-radius: 50px;
+      margin-top: 29px;
+
+      &:hover {
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        background-color: $el-active-blue-hover;
+      }
+    }
+  }
+
+  .tablet-text-form-container {
+    margin-top: 32px;
+
+    .router-link-text,
+    p {
+      color: $text-main;
+      font-family: map-get($font-text-light, font-family);
+      font-weight: map-get($font-text-light, font-weight);
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+  }
 }

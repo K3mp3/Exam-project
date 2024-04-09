@@ -24,6 +24,11 @@ export async function signInUser(user: IUserSignIn) {
     userId = response.data.id || ''
 
     console.log(response.data.name)
+
+    const data = response.data
+    const status = !!showMagicTokenDialog
+
+    return { data, status }
   } catch (error: any) {
     if (
       error.response &&

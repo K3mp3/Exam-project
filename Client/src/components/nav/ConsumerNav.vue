@@ -73,5 +73,5 @@ onMounted(() => {
     v-if="isRepairShopDialog"
     :closeRepairShopRegisterDialog="changeRepairDialogStatus"
   ></RegisterRepairShopDialog>
-  <SignInDialog v-if="isSignIn"></SignInDialog>
+  <SignInDialog v-if="isSignIn" :loadingState="isMagicTokenDialog"></SignInDialog>
 </template>

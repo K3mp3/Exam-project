@@ -20,6 +20,7 @@
     width: 100%;
     max-width: 320px;
     margin: auto;
+    text-align: center;
 
     input {
       position: relative;
@@ -32,6 +33,7 @@
       padding: 10px;
       border-radius: 10px;
       z-index: 1;
+      margin: 4px 0 10px 0;
 
       &:focus {
         transition: all 0.2s ease-in-out;

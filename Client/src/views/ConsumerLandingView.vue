@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ConsumerLandingPageParent from "@/components/landingpage/ConsumerLandingPageParent.vue";
+import ConsumerLandingPageParent from '@/components/landingpage/ConsumerLandingPageParent.vue'
 </script>
 
 <template>
