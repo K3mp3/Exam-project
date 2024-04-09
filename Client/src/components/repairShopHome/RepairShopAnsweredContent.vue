@@ -15,10 +15,12 @@ const props = defineProps({
   onAnswer: {
     type: Function,
     required: true
+  },
+  hideAnswerInput: {
+    type: Boolean,
+    required: true
   }
 })
-
-console.log('hejsan')
 
 const messageAnswer = ref('')
 const priceOffer = ref('')
@@ -26,8 +28,10 @@ const priceOffer = ref('')
 const isMessageBox = ref(false)
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
+const showAnswerInputs = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
+
 const messageArray: { message: string; name: string; date: string }[] = []
 
 const repairShopName = localStorage.getItem('userName')
@@ -90,6 +94,8 @@ onMounted(() => {
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
   messageArray.push(...flattenedMessages)
+
+  showAnswerInputs.value = props.hideAnswerInput
 })
 </script>
 
@@ -115,9 +121,9 @@ onMounted(() => {
           >{{ index.message }}
         </p>
       </div>
-      <div class="message-content-answer">
+      <div class="message-content-answer" v-if="showAnswerInputs">
         <textarea
-          v-if="isMessageBox"
+          v-if="isMessageBox || showAnswerInputs"
           name="message-input"
           v-model="messageAnswer"
           class="text-editor-answer"
@@ -127,9 +133,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <label for="priceOffer" v-if="isMessageBox">Prisförslag</label>
+    <label for="priceOffer" v-if="isMessageBox && showAnswerInputs">Prisförslag</label>
     <input
-      v-if="isMessageBox"
+      v-if="isMessageBox && showAnswerInputs"
       type="text"
       name="priceOffer"
       placeholder="500 kr"
@@ -152,5 +158,4 @@ onMounted(() => {
     </button>
     <hr />
   </div>
-  <!-- <RepairShopCustomerContent v-if="isMessageBox"></RepairShopCustomerContent> -->
 </template>

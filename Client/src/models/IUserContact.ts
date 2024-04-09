@@ -1,8 +1,9 @@
 export interface IUserContact {
   _id?: string
-  customerId?: String
-  customerName: string
-  customerEmail: string
+  customerId?: string
+  messageId?: string
+  customerName?: string
+  customerEmail?: string
   repairShopEmail?: string
   repairShopName?: string
   location: string
@@ -13,4 +14,6 @@ export interface IUserContact {
   customerAnswer?: string
   priceOffer?: string
   answeredByRepairShop: boolean
+  isLineActive?: boolean
+  repairShopAnswers?: { repairShop: string }[]
 }

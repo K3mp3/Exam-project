@@ -18,16 +18,16 @@ const props = defineProps({
   }
 })
 
-console.log('hejsan')
-
 const messageAnswer = ref('')
 const priceOffer = ref('')
 
 const isMessageBox = ref(false)
 const isMessageAnswer = ref(false)
 const isBtnDisabled = ref(true)
+const showDialog = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
+
 const messageArray: { message: string; name: string; date: string }[] = []
 
 const repairShopName = localStorage.getItem('userName')
@@ -37,7 +37,6 @@ const answerData = computed(() => {
     repairShopId: userId.value as unknown as string,
     customerName: props.index.customerName,
     customerId: props.index.customerId,
-    messageId: props.index.messageId,
     customerEmail: props.index.customerEmail,
     customerMessage: props.index.customerMessage[0].message,
     customerMessageDate: props.index.customerMessage[0].date,
@@ -109,9 +108,7 @@ onMounted(() => {
       </div>
       <div class="message-content-text" v-if="isMessageBox">
         <p v-for="index in messageArray" :key="index.date">
-          <span :class="repairShopName === index.name ? 'text-active-blue' : ''">{{
-            repairShopName === index.name ? 'Du' : index.name
-          }}</span
+          <span>{{ repairShopName === index.name ? 'Du' : index.name }}</span
           >{{ index.message }}
         </p>
       </div>
@@ -152,5 +149,5 @@ onMounted(() => {
     </button>
     <hr />
   </div>
-  <!-- <RepairShopCustomerContent v-if="isMessageBox"></RepairShopCustomerContent> -->
+  <div class="background-container"></div>
 </template>

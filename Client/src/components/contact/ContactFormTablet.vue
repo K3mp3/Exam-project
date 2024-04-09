@@ -196,9 +196,11 @@ onMounted(() => {
   <nav>
     <ConsumerNav></ConsumerNav>
   </nav>
-  <div class="contact-form-container">
-    <div class="contact-form-nav-container">
-      <RouterLink to="/" class="contact-form-back-router-link"
+  <div
+    class="padding-tp-137 padding-rt-32 padding-bm-0 padding-lt-32 margin-au display-flex flex-dir-col justify-center align-items-center gap-48"
+  >
+    <div class="display-flex align-items-center gap-24 width-100 m-width-1200">
+      <RouterLink to="/" class="btn-back"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
       <h2
@@ -218,7 +220,7 @@ onMounted(() => {
           v-model="message"
           placeholder="Beskriv varför du kontaktar oss"
           @input="checkInputDataMessage"
-          class="contact-form-textarea-input"
+          :class="['textarea-input', tablet ? 'height-204px' : 'height-219px']"
         ></textarea>
       </div>
       <div class="contact-form-right-side">
@@ -229,7 +231,16 @@ onMounted(() => {
           placeholder="Förnamn & efternamn"
           v-model="name"
           @input="checkInputDataName"
-          :class="isNameCorrect ? 'contact-form-text-input' : 'input-warning'"
+          :class="[
+            isEmailReal ? 'text-input' : 'input-warning',
+            'p-relative',
+            'width-100',
+            'padding-8',
+            'z-index-1',
+            'margin-bm-16',
+            'margin-tp-4',
+            desktop ? 'margin-bm-24' : 'margin-bm-16'
+          ]"
         />
         <p
           class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
@@ -246,7 +257,16 @@ onMounted(() => {
           placeholder="namn@mail.se"
           v-model="email"
           @input="checkInputDataEmail"
-          :class="isEmailReal ? 'contact-form-text-input' : 'input-warning'"
+          :class="[
+            isEmailReal ? 'text-input' : 'input-warning',
+            'p-relative',
+            'width-100',
+            'padding-8',
+            'z-index-1',
+            'margin-bm-16',
+            'margin-tp-4',
+            desktop ? 'margin-bm-24' : 'margin-bm-16'
+          ]"
         />
 
         <p
@@ -264,14 +284,14 @@ onMounted(() => {
           type="submit"
           :disabled="isBtnDisabled"
           :class="{
-            'contact-form-send-btn-disabled': isBtnDisabled,
-            'contact-form-send-btn': !isBtnDisabled
+            'main-btn-disabled margin-16-0 text-disabled font-title-bold': isBtnDisabled,
+            'main-btn margin-32-0 text-disabled font-title-bold': !isBtnDisabled
           }"
         >
           Skicka
         </button>
       </div>
     </form>
-    <div class="contact-form-blue-line"></div>
+    <div class="blue-line"></div>
   </div>
 </template>

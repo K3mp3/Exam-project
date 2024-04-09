@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
 
-const props = defineProps<{
+const currentUrl = window.location.href
+const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
+
+const userSentRoute = computed(() => `/user-sent/${userId}`)
+
+defineProps<{
   signOutFunction: (payload: MouseEvent) => void
 }>()
 </script>
@@ -10,7 +15,7 @@ const props = defineProps<{
   <div class="side-nav-parent-container">
     <ul>
       <li>
-        <RouterLink to="/user-sent" class="side-nav-router-link">
+        <RouterLink :to="userSentRoute" class="side-nav-router-link">
           <fontAwesome :icon="['fas', 'paper-plane']" /> Skickat</RouterLink
         >
       </li>
@@ -19,21 +24,22 @@ const props = defineProps<{
           <fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
         >
       </li>
-      <li>
+      <!-- <li>
         <RouterLink to="/user-profile" class="side-nav-router-link">
           <fontAwesome :icon="['fas', 'user']" /> Profil</RouterLink
         >
-      </li>
-      <li>
-        <button
-          type="button"
-          class="user-home-sign-out-btn text-main z-index-2"
-          @click="signOutFunction"
-        >
-          <fontAwesome :icon="['fas', 'gear']" />
-          Logga ut
-        </button>
-      </li>
+      </li> -->
     </ul>
+
+    <div class="sign-out-btn-container">
+      <button
+        type="button"
+        class="user-home-sign-out-btn text-main z-index-2"
+        @click="signOutFunction"
+      >
+        <fontAwesome :icon="['fas', 'gear']" />
+        Logga ut
+      </button>
+    </div>
   </div>
 </template>

@@ -1,27 +1,22 @@
 <script setup lang="ts">
 import router from '@/router'
-import { signOutUser } from '@/services/signInUser'
+import { signOutUser } from '@/services/signOutUser'
 import { useSignInStore } from '@/stores/signInStore'
-import { computed, onMounted } from 'vue'
-import { removeCookies } from '../cookies/RemoveCookies'
+import { computed, ref } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
+import UserSettings from '../userHome/UserSettings.vue'
 
 const isSignedIn = computed(() => useSignInStore().signedIn)
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
+const isSideNav = ref(false)
+const isUserSettings = ref(false)
 
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
+const fullname = localStorage.getItem('userName')
+const email = localStorage.getItem('userEmail')
 
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
+function showUserSettings() {
+  isUserSettings.value = !isUserSettings.value
 }
-
-const fullname = getCookie('name')
-const email = getCookie('email')
 
 const user = computed(() => {
   return {
@@ -38,30 +33,24 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(!isSignedIn.value)
 
     if (!isSignedIn.value) {
-      removeCookies()
       router.push({ name: 'landing page' })
     }
   }
 }
-
-onMounted(() => {
-  if (!isSignedIn.value) {
-    router.push({ name: 'landing page' })
-  }
-})
 </script>
 
 <template>
+  <UserSettings v-if="isUserSettings" :signOutFunction="changeUserSignInStatus"></UserSettings>
   <div class="repair-shop-home-parent">
     <div class="repair-shop-signed-in-header">
       <h2>Hej {{ fullname }}</h2>
       <button
+        v-if="!isSideNav"
         type="button"
-        class="repair-shop-home-sign-out-btn text-main z-index-2"
-        @click="changeUserSignInStatus"
+        class="btn-transparent text-main z-index-2"
+        @click="showUserSettings"
       >
-        <fontAwesome :icon="['fas', 'gear']" />
-        Logga ut
+        <fontAwesome :icon="['fas', 'user']" />
       </button>
     </div>
     <div class="repair-shop-signed-in-main">

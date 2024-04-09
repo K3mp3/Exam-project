@@ -1,41 +1,16 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/fonts' as *;
 
-.signed-in-header {
+.new-request-parent-container {
   padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  max-width: 1300px;
-  margin: auto;
-}
 
-.signed-in-main {
-  padding: 16px;
-  max-width: 1300px;
-  margin: auto;
-
-  .user-home-new-btn {
-    transition: all 0.2s ease-in-out;
-    background-color: $el-active-blue;
-    border: none;
-    color: $text-main;
-    font-family: map-get($font-text-light, font-family);
-    font-weight: map-get($font-text-light, font-weight);
-    height: 35px;
-    border-radius: 50px;
-    max-width: 100%;
+  .new-request-top-nav {
     display: flex;
+    gap: 16px;
     align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: 0.9rem;
-    padding: 0px 16px;
-
-    &:hover {
-      transition: all 0.2s ease-in-out;
-      cursor: pointer;
-      background-color: $el-active-blue-hover;
-    }
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
   }
 
   label {
@@ -103,7 +78,8 @@
     }
   }
 
-  .text-editor {
+  .text-editor,
+  .text-editor-warning {
     width: 100%;
     height: 300px;
     padding: 8px;
@@ -128,6 +104,13 @@
     }
   }
 
+  .text-editor-warning {
+    &:focus {
+      background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+        linear-gradient(to bottom, rgb(241, 85, 13), rgb(241, 85, 13, 0.2));
+    }
+  }
+
   .user-home-send-btn {
     transition: all 0.2s ease-in-out;
     background-color: $el-active-blue;
@@ -140,6 +123,8 @@
     border-radius: 50px;
     margin: 32px 0;
     width: 100%;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
       transition: all 0.2s ease-in-out;
@@ -163,19 +148,48 @@
   }
 }
 
-@media screen and (min-width: 700px) {
-  .signed-in-header {
-    padding: 24px 32px;
-  }
+.spinner-component {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
 
-  .signed-in-main {
+@media screen and (min-width: 700px) {
+  .new-request-parent-container {
     padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 0;
+
+    .new-request-surrounding-container {
+      width: 100%;
+    }
+
+    .new-request-top-nav {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      width: 100%;
+      max-width: 1300px;
+      margin: auto;
+      margin-bottom: 32px;
+    }
 
     form {
-      max-width: 700px;
+      width: 100%;
+      max-width: 1300px;
       display: flex;
       gap: 32px;
       justify-content: center;
+      margin: auto;
 
       .right-side-contact-form {
         width: 100%;
@@ -212,11 +226,12 @@
         }
       }
 
-      .text-editor {
+      .text-editor,
+      .text-editor-warning {
         width: 100%;
         height: 300px;
         font-size: 1rem;
-        margin-bottom: 64px;
+        margin-bottom: 16px;
       }
 
       .user-home-send-btn {
@@ -224,6 +239,7 @@
         height: 45px;
         margin: 7px 0;
         width: 100%;
+        margin-bottom: calc(64px - 16px);
 
         &:hover {
           transition: all 0.2s ease-in-out;
@@ -237,100 +253,8 @@
         height: 45px;
         margin: 7px 0;
         width: 100%;
+        margin-bottom: calc(64px - 16px);
       }
     }
-  }
-}
-
-@media screen and (min-width: 1482px) {
-  .signed-in-main {
-    padding: 16px 32px;
-
-    form {
-      max-width: 1300px;
-      display: flex;
-      gap: 64px;
-      justify-content: center;
-      background-color: blueviolet;
-
-      .right-side-contact-form {
-        width: 100%;
-        order: 2;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .left-side-contact-form {
-        width: 100%;
-        order: 1;
-      }
-
-      .signed-in-contact-form-select {
-        margin: 8px 0 24px 0;
-        width: 100%;
-        height: 45px;
-        padding: 8px;
-        font-size: 1rem;
-
-        &:focus {
-          font-size: 1rem;
-        }
-      }
-
-      input {
-        margin: 8px 0 24px 0;
-        width: 100%;
-        height: 45px;
-        font-size: 1rem;
-
-        &:focus {
-          font-size: 1rem;
-        }
-      }
-
-      .text-editor {
-        width: 100%;
-        height: 324px;
-        font-size: 1rem;
-        margin-bottom: 64px;
-      }
-
-      .user-home-send-btn {
-        transition: all 0.2s ease-in-out;
-        background-color: $el-active-blue;
-        border: none;
-        color: $text-main;
-        font-family: map-get($font-title-bold, font-family);
-        font-weight: map-get($font-title-bold, font-weight);
-        font-size: 0.9rem;
-        height: 45px;
-        border-radius: 50px;
-        margin: 8px 0;
-        width: 100%;
-
-        &:hover {
-          transition: all 0.2s ease-in-out;
-          cursor: pointer;
-          background-color: $el-active-blue-hover;
-        }
-      }
-
-      .user-home-send-btn-disabled {
-        font-size: 1rem;
-        height: 45px;
-        margin: 8px 0;
-        width: 100%;
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 1665px) {
-  .signed-in-header {
-    margin: auto;
-  }
-
-  .signed-in-main {
-    margin: auto;
   }
 }
