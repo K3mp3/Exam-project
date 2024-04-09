@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, ref } from 'vue'
+import { computed, defineProps, onMounted, ref } from 'vue'
 
 defineProps<{
   signOutFunction: (payload: MouseEvent) => void
@@ -7,10 +7,17 @@ defineProps<{
 }>()
 
 const isHoverColor = ref(false)
+const isRepairShop = ref(false)
 
 const currentUrl = window.location.href
 const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
-const userSentRoute = computed(() => `/user-sent/${userId}`)
+const userSentRoute = computed(() =>
+  isRepairShop.value ? `/user-sent/${userId}` : `/user-sent/${userId}`
+)
+
+onMounted(() => {
+  isRepairShop.value = !!localStorage.getItem('isRepairShop')
+})
 </script>
 
 <template>
@@ -38,7 +45,10 @@ const userSentRoute = computed(() => `/user-sent/${userId}`)
             >
           </li>
           <li class="activeUrl list-style-none">
-            <RouterLink to="/user-home" class="text-deco-none font-text-light text-active-blue">
+            <RouterLink
+              :to="isRepairShop ? `/repair-shop-home/${userId}` : `/user-home/${userId}`"
+              class="text-deco-none font-text-light text-active-blue"
+            >
               <fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
             >
           </li>

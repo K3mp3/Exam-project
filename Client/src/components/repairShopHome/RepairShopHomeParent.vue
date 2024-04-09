@@ -37,10 +37,18 @@ async function changeUserSignInStatus() {
     }
   }
 }
+
+function closeSettingsMenu() {
+  isUserSettings.value = !isUserSettings.value
+}
 </script>
 
 <template>
-  <UserSettings v-if="isUserSettings" :signOutFunction="changeUserSignInStatus"></UserSettings>
+  <UserSettings
+    v-if="isUserSettings"
+    :signOutFunction="changeUserSignInStatus"
+    :closeMenu="closeSettingsMenu"
+  ></UserSettings>
   <div class="repair-shop-home-parent">
     <div class="repair-shop-signed-in-header">
       <h2>Hej {{ fullname }}</h2>

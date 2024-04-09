@@ -5,9 +5,8 @@ import router from '@/router'
 import { answerCustomerBack, answerFromRepairShop } from '@/services/RepariShopAnswer'
 import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
 import { computed, onMounted, ref } from 'vue'
-import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import RepairShopAnsweredContent from './RepairShopAnsweredContent.vue'
-import RepairShopMessageContent from './RepairShopMessageContent.vue'
+import UserSentTopNav from '../userSent/UserSentTopNav.vue'
+import SentRequests from './sentRequests.vue'
 
 const isLoading = ref(false)
 const isConfirmation = ref(false)
@@ -49,13 +48,6 @@ async function getMessages() {
 async function getAnsweredMessages() {
   const response = await getAnswerRepairShops()
   answeredMessages.value = response
-  console.log('answeredMessages.value:', answeredMessages.value)
-
-  answeredMessages.value = answeredMessages.value.filter(
-    (answer) => answer.answeredByRepairShop === false
-  )
-
-  console.log('answeredMessages.value:', answeredMessages.value)
 }
 
 function showConfirmationBox(response: number) {
@@ -112,42 +104,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <h3></h3>
-  <h3>Dina förfrågningar</h3>
+  <UserSentTopNav />
 
-  <form @submit.prevent="" class="repair-shop-requests-form">
-    <RepairShopMessageContent
-      v-for="index in unansweredMessages"
-      :key="index._id"
-      :index="index"
-      class="repair-shop-message-content-component"
-      :onAnswer="handleAnswer"
-    ></RepairShopMessageContent>
-    <RepairShopAnsweredContent
+  <div class="display-flex flex-dir-col gap-6 padding-16 m-width-1000 margin-au w-100">
+    <SentRequests
       v-for="index in answeredMessages"
       :key="index._id"
       :index="index"
       class="repair-shop-message-content-component"
       :onAnswer="handleAnswerCustomerBack"
-    >
-    </RepairShopAnsweredContent>
-
-    <div class="spinner-component" v-if="isLoading">
-      <LoadingSpinner />
-      <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
-    </div>
-    <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
-      <div class="confirmation-box" v-if="isConfirmation">
-        <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
-        <p class="text-main font-title-bold O1rem">Meddelande skickat!</p>
-      </div>
-
-      <div class="confirmation-box-error" v-if="isConfirmationError">
-        <fontAwesome :icon="['fas', 'x']" class="text-main font-title-bold O35rem" />
-        <p class="text-main font-title-bold O1rem">Meddelande kunde ej skickas!</p>
-      </div>
-    </div>
-  </form>
-
-  <div class="blue-line"></div>
+    />
+  </div>
 </template>
