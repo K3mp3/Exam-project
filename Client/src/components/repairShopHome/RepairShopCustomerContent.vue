@@ -84,15 +84,11 @@ function sendAnswer() {
 onMounted(() => {
   const flattenedMessages = props.index.customerMessage.concat(props.index.repairShopAnswer)
 
-  // Sort the flattened array based on the date property
   flattenedMessages.sort(
     (a: { date: string }, b: { date: string }) =>
       new Date(a.date).getTime() - new Date(b.date).getTime()
   )
-  // Push the sorted messages back into messageArray
   messageArray.push(...flattenedMessages)
-
-  console.log(messageArray)
 })
 </script>
 
