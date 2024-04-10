@@ -2,7 +2,8 @@ import type { IUserRegistration } from '@/models/IUserRegistration'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import axios from 'axios'
 
-const BASE_URL = 'https://shark-app-mvsjk.ondigitalocean.app'
+const BASE_URL = 'http://localhost:3000'
+// https://shark-app-mvsjk.ondigitalocean.app
 
 export async function registerUser(user: IUserRegistration) {
   try {
@@ -31,6 +32,9 @@ export async function registerRepairShop(user: IUserRegistration) {
       `${BASE_URL}/users/createRepairShopUser`,
       user
     )
+
+    window.location = response.data.url as Location | (string & Location)
+
     return response.data
   } catch (error: any) {
     if (

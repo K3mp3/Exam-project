@@ -4,4 +4,5 @@ export interface IUserRegistration {
   password: string
   repairShop: boolean
   signedIn: boolean
+  url?: string
 }

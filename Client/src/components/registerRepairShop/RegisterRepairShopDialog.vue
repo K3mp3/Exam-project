@@ -242,6 +242,7 @@ function checkPasswordStrength(type: string) {
 
 async function handleRegistration() {
   const response = await registerRepairShop(newUser.value)
+  console.log(response)
 }
 
 function closeRegisterDialog() {
