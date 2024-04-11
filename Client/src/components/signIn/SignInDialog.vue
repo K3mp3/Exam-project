@@ -2,8 +2,7 @@
 import { signInUser } from '@/services/signInUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { nextTick } from 'process'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
