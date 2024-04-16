@@ -47,9 +47,10 @@ async function handleSignIn() {
   isLoading.value = true
   const response = await signInUser(user.value)
 
-  const responseStatus = response as { status: number }
+  const responseStatus = response as unknown as { status: number }
+  const responseData = response as { data: { message: string } }
 
-  if (response === 'Wrong email or password!') {
+  if (responseData.data.message === 'Wrong email or password!') {
     isEmailWrong.value = true
     isPasswordWrong.value = true
     isLoading.value = false

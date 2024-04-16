@@ -5,7 +5,6 @@ import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
-import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNav from '../sideNav/SideNav.vue'
 import UserHomeAnswers from './UserHomeAnswers.vue'
@@ -54,7 +53,6 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(false)
 
     if (!isSignedIn.value) {
-      removeCookies()
       router.push({ name: 'landing page' })
     }
   }

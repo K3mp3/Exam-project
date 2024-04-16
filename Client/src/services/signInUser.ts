@@ -15,15 +15,17 @@ const isDialog = computed(() => useShowPopUp().showPopUp)
 let userId = ''
 
 export async function signInUser(user: IUserSignIn) {
+  console.log('user:', user)
+
   try {
     const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
+
+    console.log(response)
 
     const showMagicTokenDialog = useShowMagicTokenDialog()
     showMagicTokenDialog.showMagicTokenInput(true, response.data.email, response.data.id)
 
     userId = response.data.id || ''
-
-    console.log(response.data.name)
 
     const data = response.data
     const status = !!showMagicTokenDialog
