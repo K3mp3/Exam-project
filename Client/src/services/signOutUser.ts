@@ -7,6 +7,7 @@ const BASE_URL = 'http://localhost:3000'
 
 export async function signOutUser(user: IUserSignIn) {
   try {
+    console.log(user)
     const response = await axios.post(`${BASE_URL}/users/signOutUser`, user)
     return response.status
   } catch (error: any) {

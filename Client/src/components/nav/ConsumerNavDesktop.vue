@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, nextTick, onMounted, ref } from 'vue'
-import { handleAutomaticSignIn } from '../signIn/automaticSignIn'
 
 const navScroll = ref(false)
 
@@ -30,14 +28,8 @@ function getCookie(cookieName: string) {
 const userEmail = getCookie('email') || ''
 
 async function showSignInForm() {
-  const { signIn, id } = await handleAutomaticSignIn()
-  if (signIn && id) {
-    const showMagicTokenDialog = useShowMagicTokenDialog()
-    showMagicTokenDialog.showMagicTokenInput(true, userEmail, id)
-  } else {
-    const showSignInDialog = useShowSignInDialog()
-    showSignInDialog.showSignInDialogForm(!isSignIn.value)
-  }
+  const showSignInDialog = useShowSignInDialog()
+  showSignInDialog.showSignInDialogForm(!isSignIn.value)
 }
 
 window.addEventListener('scroll', changeNavColor)
@@ -65,7 +57,7 @@ onMounted(() => {
   >
     <div class="nav-child-container left">
       <RouterLink to="/" class="text-deco-none"
-        ><p class="text-deco-none O15rem text-main font-title-black">Vibe</p></RouterLink
+        ><p class="text-deco-none O15rem text-main font-title-black">FixerFinder</p></RouterLink
       >
     </div>
     <div class="nav-child-container center">

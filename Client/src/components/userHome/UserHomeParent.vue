@@ -36,11 +36,10 @@ const firstName = fullName ? fullName.split(' ')[0] : ''
 
 const user = computed(() => {
   return {
-    _id: userId.value || '',
-    signedIn: false
+    signedIn: false,
+    userId: userId.value
   }
 })
-
 function showUserSettings() {
   isUserSettings.value = !isUserSettings.value
 }
@@ -75,9 +74,9 @@ function closeSettingsMenu() {
 
 onMounted(() => {
   updateScreenSize()
-  // if (!isSignedIn.value) {
-  //   router.push('/')
-  // }
+  if (!isSignedIn.value) {
+    router.push('/')
+  }
 })
 </script>
 

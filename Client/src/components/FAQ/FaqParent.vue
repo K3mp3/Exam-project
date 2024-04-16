@@ -24,12 +24,12 @@ const faqTexts: { title: string; type: string; text: string }[] = [
   {
     title: 'Hur används min data?',
     type: 'user data',
-    text: 'Vi använder oss av cookies för att kunna använda funktioner så som halvautomatisk inloggning. När du loggar in sparas ditt namn, email adress samt typ av konto i cookies. Det görs även en notering i databasen om att du är inloggad. Detta görs för att kunna hantera utloggning effektivt samt visa ditt namn vid inloggning i form av "Hej namn".'
+    text: 'Vi använder din data för att kunna hantera kontouppgifter och för att automatiskt skicka med den när du kontaktar en verkstad.'
   },
   {
     title: 'Hur vet jag om ni sparar cookies?',
     type: 'user data',
-    text: 'När du går in på webbplatsen genom en ny webbläsare så får du frågan om du godkänner cookies eller inte. Klickar du på tillåt så sparas en cookie att du har godkänt detta och du behöver således inte godkänna cookies igen. Klickar du på tillåt inte så sparas inga cookies alls. Du kommer då också få denna fråga varje gång du besöker webbplatsen.'
+    text: 'Vi använder oss inte alls av cookies då vi vill spara så lite data om våra användare som möjligt.'
   },
   {
     title: 'Hur sparas min data?',
@@ -42,9 +42,14 @@ const faqTexts: { title: string; type: string; text: string }[] = [
     text: 'Tjänsten är helt gratis för dig som privatperson. Verkstäder betalar dock en liten summa varje månad för att vara ansluten till plattformen.'
   },
   {
+    title: 'Varför måste jag betala när jag loggar in?',
+    type: 'pricing',
+    text: 'När du registrerar ett konto som en verkstad så skickas du till en betalsida. Om du där väljer att avbryta betalningen måste du då betala första gången du loggar in.'
+  },
+  {
     title: 'Hur vet jag om jag fått svar?',
     type: 'general question',
-    text: 'När du skriver i fråge formuläret för att kontakta verkstäder så går det ut ett mail till varje ansluten verkstad i den kommun du har valt. Verkstaden svarar sedan dig på mailen och konversationen tas vidare där'
+    text: 'När du skriver i kontakt formuläret för att kontakta verkstäder så går det ut ett meddelande till varje verkstad i kommunen du har valt. De svarar sedan dig. Du får en notifikation på mailen, svaret ser du om du loggar in på plattformen'
   }
 ]
 

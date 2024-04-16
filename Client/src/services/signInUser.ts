@@ -55,18 +55,6 @@ export async function signInUser(user: IUserSignIn) {
   }
 }
 
-export async function automaticSignIn(user: IUserSignIn) {
-  try {
-    const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/automaticSignIn`, user)
-    return {
-      status: response.status,
-      userId: response.data.id
-    }
-  } catch (error) {
-    return error
-  }
-}
-
 export async function checkMagicToken(user: IUserToken) {
   try {
     const response = await axios.post<IUserToken>(`${BASE_URL}/users/checkMagicToken`, user)
