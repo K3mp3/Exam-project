@@ -13,20 +13,6 @@ function showRegisterForm() {
   showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
 
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const userEmail = getCookie('email') || ''
-
 async function showSignInForm() {
   const showSignInDialog = useShowSignInDialog()
   showSignInDialog.showSignInDialogForm(!isSignIn.value)
@@ -66,9 +52,6 @@ onMounted(() => {
       >
       <RouterLink to="contact" class="router-link"
         ><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink
-      >
-      <RouterLink to="register" class="router-link"
-        ><fontAwesome :icon="['fas', 'address-card']" /> Om oss</RouterLink
       >
     </div>
     <div class="nav-child-container right">

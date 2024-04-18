@@ -1,23 +1,8 @@
 <script setup lang="ts">
 import router from '@/router'
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
 const userEmail = ref('')
-
-const navTablet = ref(false)
-
-let width = document.documentElement.clientWidth
-
-function updateScreenSize() {
-  window.addEventListener('resize', updateScreenSize)
-  width = document.documentElement.clientWidth
-
-  if (width > 699) {
-    navTablet.value = true
-  } else {
-    navTablet.value = false
-  }
-}
 
 function saveUserEmail() {
   nextTick(() => {
@@ -30,10 +15,6 @@ function saveUserEmail() {
     }
   })
 }
-
-onMounted(() => {
-  updateScreenSize()
-})
 </script>
 
 <template>

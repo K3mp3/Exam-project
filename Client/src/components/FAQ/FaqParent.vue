@@ -22,6 +22,11 @@ function updateScreenSize() {
 
 const faqTexts: { title: string; type: string; text: string }[] = [
   {
+    title: 'Vad är FixerFinder?',
+    type: 'general question',
+    text: 'FixerFinder är en plattform som menar till att göra det enklare för dig som fordonsägare att hitta verkstäder bättre anpassad för din plånbok. Genom att skapa ett konto på plattformen kan du komma i kontakt med hundratals verkstäder på några få enkla klick. Du börjar med att registrera dig. Därefter loggar du in och är nu redo att kontakta verkstäder. Börja med att beskriva vad som är fel med din bil samt fylla i lite information om den men även vilken kommun du bor i'
+  },
+  {
     title: 'Hur används min data?',
     type: 'user data',
     text: 'Vi använder din data för att kunna hantera kontouppgifter och för att automatiskt skicka med den när du kontaktar en verkstad.'
