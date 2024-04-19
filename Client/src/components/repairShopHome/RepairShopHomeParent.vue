@@ -2,7 +2,7 @@
 import router from '@/router'
 import { signOutUser } from '@/services/signOutUser'
 import { useSignInStore } from '@/stores/signInStore'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import UserSettings from '../userHome/UserSettings.vue'
 
@@ -10,6 +10,11 @@ const isSignedIn = computed(() => useSignInStore().signedIn)
 
 const isSideNav = ref(false)
 const isUserSettings = ref(false)
+
+const userId = computed(() => {
+  const routeParams = router.currentRoute.value.params
+  return routeParams.userId || ''
+})
 
 const fullname = localStorage.getItem('userName')
 const email = localStorage.getItem('userEmail')
@@ -20,17 +25,19 @@ function showUserSettings() {
 
 const user = computed(() => {
   return {
-    email: email || '',
-    signedIn: false
+    signedIn: false,
+    userId: userId.value
   }
 })
 
 async function changeUserSignInStatus() {
   const response = await signOutUser(user.value)
 
+  console.log(response)
+
   if (response) {
     const isUserSignedIn = useSignInStore()
-    isUserSignedIn.signInUser(!isSignedIn.value)
+    isUserSignedIn.signInUser(false)
 
     if (!isSignedIn.value) {
       router.push({ name: 'landing page' })
@@ -41,6 +48,12 @@ async function changeUserSignInStatus() {
 function closeSettingsMenu() {
   isUserSettings.value = !isUserSettings.value
 }
+
+onMounted(() => {
+  if (!isSignedIn.value) {
+    router.push('/')
+  }
+})
 </script>
 
 <template>

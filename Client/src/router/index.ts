@@ -1,3 +1,4 @@
+import AboutUsView from '@/views/AboutUsView.vue'
 import ConsumerLandingViewVue from '@/views/ConsumerLandingView.vue'
 import ContactViewVue from '@/views/ContactView.vue'
 import LayoutVue from '@/views/Layout.vue'
@@ -77,6 +78,12 @@ const router = createRouter({
           path: '/repair-shop-sent/:id',
           name: 'repair shop sent view',
           component: RepairShopSentView,
+          meta: { index: true }
+        },
+        {
+          path: '/about-us',
+          name: 'about us view',
+          component: AboutUsView,
           meta: { index: true }
         }
       ]

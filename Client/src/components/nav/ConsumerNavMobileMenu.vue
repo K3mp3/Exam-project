@@ -34,11 +34,6 @@ function closeNavMenu() {
           ><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink
         >
       </li>
-      <li>
-        <RouterLink to="register" class="router-link"
-          ><fontAwesome :icon="['fas', 'address-card']" /> Om oss</RouterLink
-        >
-      </li>
     </ul>
   </div>
 </template>

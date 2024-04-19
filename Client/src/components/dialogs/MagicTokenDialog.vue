@@ -14,9 +14,7 @@ const isMagicTokenWrong = ref(false)
 const userEmail = computed(() => useShowMagicTokenDialog().userEmail)
 const userId = computed(() => useShowMagicTokenDialog().userId)
 setUserId.value = userId.value
-const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
 const isDialog = computed(() => useShowPopUp().showPopUp)
-const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
 const user = computed(() => {
   return {
@@ -24,20 +22,6 @@ const user = computed(() => {
     magicToken: writtenToken.value
   }
 })
-
-function getCookie(cookieName: string) {
-  const cookiesArray = document.cookie.split(';')
-
-  for (let i = 0; i < cookiesArray.length; i++) {
-    let cookie = cookiesArray[i].trim()
-
-    if (cookie.indexOf(cookieName + '=') === 0) return cookie.substring(cookieName.length + 1)
-  }
-
-  return null
-}
-
-const isCookieAccepted = getCookie('accept')
 
 async function handleSignIn() {
   const response = await checkMagicToken(user.value)

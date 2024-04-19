@@ -5,7 +5,6 @@ import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
-import { removeCookies } from '../cookies/RemoveCookies'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNav from '../sideNav/SideNav.vue'
 import UserHomeAnswers from './UserHomeAnswers.vue'
@@ -37,11 +36,10 @@ const firstName = fullName ? fullName.split(' ')[0] : ''
 
 const user = computed(() => {
   return {
-    _id: userId.value || '',
-    signedIn: false
+    signedIn: false,
+    userId: userId.value
   }
 })
-
 function showUserSettings() {
   isUserSettings.value = !isUserSettings.value
 }
@@ -54,7 +52,6 @@ async function changeUserSignInStatus() {
     isUserSignedIn.signInUser(false)
 
     if (!isSignedIn.value) {
-      removeCookies()
       router.push({ name: 'landing page' })
     }
   }
@@ -77,9 +74,9 @@ function closeSettingsMenu() {
 
 onMounted(() => {
   updateScreenSize()
-  // if (!isSignedIn.value) {
-  //   router.push('/')
-  // }
+  if (!isSignedIn.value) {
+    router.push('/')
+  }
 })
 </script>
 

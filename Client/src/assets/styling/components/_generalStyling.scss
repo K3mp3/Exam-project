@@ -266,6 +266,18 @@ p {
   height: 100vh;
 }
 
+.max-h-350 {
+  height: 350px;
+}
+
+.max-h-400 {
+  min-height: 400px;
+}
+
+.max-h-600 {
+  min-height: 600px;
+}
+
 .p-relative {
   position: relative;
 }
