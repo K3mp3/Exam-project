@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
 import { signOutUser } from '@/services/signOutUser'
-import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import UserSettings from '../userHome/UserSettings.vue'
@@ -35,9 +34,6 @@ async function changeUserSignInStatus() {
   console.log(response)
 
   if (response) {
-    const isUserSignedIn = useSignInStore()
-    isUserSignedIn.signInUser(false)
-
     if (getSignInStatus() === 'false') {
       console.log('hejsan')
       router.push({ name: 'landing page' })
