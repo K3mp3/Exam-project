@@ -3,10 +3,10 @@ import router from '@/router'
 
 import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
-import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNav from '../sideNav/SideNav.vue'
+import { getSignInStatus } from '../utils/signInStatus'
 import UserHomeAnswers from './UserHomeAnswers.vue'
 import UserSettings from './UserSettings.vue'
 
@@ -19,7 +19,6 @@ const isUserSettings = ref(false)
 const desktop = ref(false)
 const showEmptyMessage = ref(false)
 
-const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
 function updateScreenSize() {
@@ -48,10 +47,8 @@ async function changeUserSignInStatus() {
   const response = await signOutUser(user.value)
 
   if (response) {
-    const isUserSignedIn = useSignInStore()
-    isUserSignedIn.signInUser(false)
-
-    if (!isSignedIn.value) {
+    if (getSignInStatus() === 'false') {
+      console.log('hejsan')
       router.push({ name: 'landing page' })
     }
   }
@@ -74,7 +71,7 @@ function closeSettingsMenu() {
 
 onMounted(() => {
   updateScreenSize()
-  if (!isSignedIn.value) {
+  if (getSignInStatus() === 'false') {
     router.push('/')
   }
 })

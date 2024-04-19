@@ -67,11 +67,10 @@ export async function checkMagicToken(user: IUserToken) {
       const isSignedIn = useSignInStore()
       isSignedIn.signInUser(true)
 
-      console.log(response.data.repairShop)
-
       localStorage.setItem('userEmail', response.data.email || '')
       localStorage.setItem('userName', response.data.name || '')
       localStorage.setItem('isRepairShop', String(response.data.repairShop ?? ''))
+      localStorage.setItem('isSignedIn', true.toString())
 
       return {
         name: response.data.name,

@@ -9,6 +9,7 @@ export async function signOutUser(user: IUserSignIn) {
   try {
     console.log(user)
     const response = await axios.post(`${BASE_URL}/users/signOutUser`, user)
+    localStorage.setItem('isSignedIn', false.toString())
     return response.status
   } catch (error: any) {
     if (

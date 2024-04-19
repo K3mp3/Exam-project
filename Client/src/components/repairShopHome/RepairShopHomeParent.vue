@@ -5,8 +5,7 @@ import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import UserSettings from '../userHome/UserSettings.vue'
-
-const isSignedIn = computed(() => useSignInStore().signedIn)
+import { getSignInStatus } from '../utils/signInStatus'
 
 const isSideNav = ref(false)
 const isUserSettings = ref(false)
@@ -39,7 +38,8 @@ async function changeUserSignInStatus() {
     const isUserSignedIn = useSignInStore()
     isUserSignedIn.signInUser(false)
 
-    if (!isSignedIn.value) {
+    if (getSignInStatus() === 'false') {
+      console.log('hejsan')
       router.push({ name: 'landing page' })
     }
   }
@@ -50,7 +50,7 @@ function closeSettingsMenu() {
 }
 
 onMounted(() => {
-  if (!isSignedIn.value) {
+  if (getSignInStatus() === 'false') {
     router.push('/')
   }
 })
