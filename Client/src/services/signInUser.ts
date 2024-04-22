@@ -67,6 +67,7 @@ export async function checkMagicToken(user: IUserToken) {
       localStorage.setItem('userName', response.data.name || '')
       localStorage.setItem('isRepairShop', String(response.data.repairShop ?? ''))
       localStorage.setItem('isSignedIn', true.toString())
+      localStorage.setItem('user', response.data.userId ? response.data.userId : '')
 
       return {
         name: response.data.name,

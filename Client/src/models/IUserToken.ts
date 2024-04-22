@@ -4,4 +4,5 @@ export interface IUserToken {
   magicToken: string
   repairShop?: boolean
   signedIn?: boolean
+  userId?: string
 }

@@ -2,6 +2,7 @@
 import router from '@/router'
 
 import { signOutUser } from '@/services/signOutUser'
+import { controllUserAuth } from '@/services/userAuth'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { computed, onMounted, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
@@ -21,15 +22,36 @@ const showEmptyMessage = ref(false)
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
+const fullName = localStorage.getItem('userName')
+const email = localStorage.getItem('userEmail')
+const id = localStorage.getItem('user')
+
+const userAuth = computed(() => {
+  return {
+    userEmail: email,
+    userName: fullName,
+    userId: userId.value
+  }
+})
+
+async function controllUserAuthentication() {
+  console.log(id)
+  const response = await controllUserAuth(userAuth.value)
+
+  console.log(response)
+
+  if (response === 201) return
+  else if (response === 401) {
+    router.push({ params: { userId: id } })
+  }
+}
+
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
   if (document.documentElement.clientWidth > 1639) desktop.value = true
   else desktop.value = false
 }
-
-const fullName = localStorage.getItem('userName')
-const email = localStorage.getItem('userEmail')
 
 const firstName = fullName ? fullName.split(' ')[0] : ''
 
@@ -60,7 +82,6 @@ function newRequest() {
 }
 
 function countNumberOfAnswers(totalAnswers: number) {
-  console.log(totalAnswers)
   if (totalAnswers < 1) showEmptyMessage.value = true
   else showEmptyMessage.value = false
 }
@@ -70,6 +91,7 @@ function closeSettingsMenu() {
 }
 
 onMounted(() => {
+  controllUserAuthentication()
   updateScreenSize()
   if (getSignInStatus() === 'false') {
     router.push('/')
