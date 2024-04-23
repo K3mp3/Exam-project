@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { IUserContact } from '@/models/IUserContact'
-import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { removeUserRequest } from '@/services/removeRequest'
+import { removedAnsweredRequests } from '@/services/RepariShopAnswer'
 import { answerRepairShops } from '@/services/userContact'
+import { storeRemoveRequest } from '@/stores/storeRemoveRequest'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import ConfirmDialog from '../../dialogs/ConfirmDialog.vue'
 import UserHomeAnswerForm from '../UserHomeAnswerForm.vue'
@@ -149,15 +150,31 @@ async function sendAnswer(index: IUserContact) {
     }
   })
 
-  console.log(customerData)
-
   await answerRepairShops(answerData.value as IUserContact)
 
   getAnswers()
 }
 
-async function removeRequest() {
-  await removeUserRequest(requestData.value as object)
+function initiateRemove(index: IUserContact) {
+  setLineActive.value = index._id as string
+  isConfirmDialog.value = true
+
+  const removeData = computed(() => {
+    return {
+      userName: customerName,
+      customerId: index.customerId,
+      messageId: index.messageId ? index.messageId : ''
+    }
+  })
+
+  const test = storeRemoveRequest()
+  test.storeRemovedData(removeData.value)
+}
+
+async function removeRequestData() {
+  const dataToBeRemoved = computed(() => storeRemoveRequest().storedData)
+
+  await removeUserRequest(dataToBeRemoved.value)
   isConfirmDialog.value = false
   getAnswers()
 }
@@ -206,14 +223,14 @@ onMounted(() => {
           <button
             type="button"
             :class="isTrashBtn ? 'trash-btn-visible' : 'trash-btn'"
-            @click="() => ((isConfirmDialog = true), (setLineActive = index._id as string))"
+            @click="() => initiateRemove(index)"
           >
             <fontAwesome :icon="['fas', 'trash']" />
           </button>
           <div :class="index._id === setLineActive ? 'line-active' : 'line-inactive'"></div>
         </div>
         <ConfirmDialog
-          :removeRequest="removeRequest"
+          :removeRequest="removeRequestData"
           :closeDialog="() => (isConfirmDialog = false)"
           v-if="isConfirmDialog"
         />
