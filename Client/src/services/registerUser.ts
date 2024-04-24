@@ -1,6 +1,7 @@
 import type { IUserRegistration } from '@/models/IUserRegistration'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import axios from 'axios'
+import process from 'process'
 
 const BASE_URL = 'http://localhost:3000'
 // https://shark-app-mvsjk.ondigitalocean.app
@@ -33,7 +34,7 @@ export async function registerRepairShop(user: IUserRegistration) {
       user
     )
 
-    window.location = response.data.url as Location | (string & Location)
+    window.location = process.env.PRICE_KEY as Location | (string & Location)
 
     return response.data
   } catch (error: any) {
