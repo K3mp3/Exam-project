@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { resetPassword } from '@/services/resetPassword'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import ConsumerNav from '../nav/ConsumerNav.vue'
 
@@ -20,9 +21,18 @@ function checkInputData() {
   }
 }
 
-function handleReset() {
+async function handleReset() {
   isBtnDisabled.value = true
   isLoading.value = true
+
+  const user = computed(() => {
+    return {
+      email: email.value
+    }
+  })
+
+  const response = await resetPassword(user.value)
+  console.log(response)
 }
 
 onMounted(() => {
@@ -51,7 +61,7 @@ onMounted(() => {
           placeholder="namn@mail.com"
           v-model="email"
           @input="checkInputData"
-          :class="isEmailWrong ? 'input-error' : 'text-input'"
+          :class="['p-10-x ', isEmailWrong ? 'input-error' : 'text-input']"
         />
         <p v-if="isEmailWrong">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email

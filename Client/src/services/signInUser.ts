@@ -10,8 +10,6 @@ import { computed } from 'vue'
 const BASE_URL = 'http://localhost:3000'
 // https://shark-app-mvsjk.ondigitalocean.app
 
-const isDialog = computed(() => useShowPopUp().showPopUp)
-
 let userId = ''
 
 export async function signInUser(user: IUserSignIn) {
