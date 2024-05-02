@@ -115,7 +115,12 @@ function closeSignInDialog() {
           </div>
         </div>
 
-        <div class="sign-in-desktop-form-bottom-container">
+        <div
+          :class="[
+            'sign-in-desktop-form-bottom-container',
+            !isEmailWrong || !isPasswordWrong ? 'margin-tp-32' : ''
+          ]"
+        >
           <button
             type="submit"
             :disabled="isBtnDisabled"
@@ -125,11 +130,11 @@ function closeSignInDialog() {
                 : 'sign-in-desktop-btn display-flex align-items-center justify-center'
             "
           >
-            <template v-if="isLoading">
-              <!-- <LoadingSpinner /> -->
-            </template>
-            <template v-else> Logga in </template>
+            Logga in
           </button>
+          <p class="text-main display-flex gap-4 margin-tp-24">
+            Glömt lösenord?<RouterLink to="/forgot-password" class="text-main">Byt här</RouterLink>
+          </p>
         </div>
       </form>
       <div class="blue-line"></div>
