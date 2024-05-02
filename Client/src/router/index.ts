@@ -1,12 +1,12 @@
 import AboutUsView from '@/views/AboutUsView.vue'
 import ConsumerLandingViewVue from '@/views/ConsumerLandingView.vue'
 import ContactViewVue from '@/views/ContactView.vue'
+import ForgotPasswordView from '@/views/ForgotPasswordView.vue'
 import LayoutVue from '@/views/Layout.vue'
 import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
 import RepairShopHomeViewVue from '@/views/RepairShopHomeView.vue'
 import RepairShopSentView from '@/views/RepairShopSentView.vue'
-import ResetPasswordView from '@/views/ResetPasswordView.vue'
 import SignInViewVue from '@/views/SignInView.vue'
 import UserHomeNewRequestViewVue from '@/views/UserHomeNewRequestView.vue'
 import UserHomeView from '@/views/UserHomeView.vue'
@@ -88,11 +88,18 @@ const router = createRouter({
           meta: { index: true }
         },
         {
-          path: '/reset-password',
-          name: 'resept password view',
-          component: ResetPasswordView,
+          path: '/forgot-password',
+          name: 'forgot password view',
+          component: ForgotPasswordView,
           meta: { index: true }
         }
+        // {
+        //   path: '/reset-password',
+        //   name: 'resept password view',
+        //   component: ResetPasswordView,
+        //   props: (route) => ({ token: route.query.token }),
+        //   meta: { index: true }
+        // }
       ]
     }
   ]

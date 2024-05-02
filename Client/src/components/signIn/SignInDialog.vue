@@ -133,7 +133,7 @@ function closeSignInDialog() {
             Logga in
           </button>
           <p class="text-main display-flex gap-4 margin-tp-24">
-            Glömt lösenord?<RouterLink to="/reset-password" class="text-main">Byt här</RouterLink>
+            Glömt lösenord?<RouterLink to="/forgot-password" class="text-main">Byt här</RouterLink>
           </p>
         </div>
       </form>

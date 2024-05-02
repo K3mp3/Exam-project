@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { resetPassword } from '@/services/resetPassword'
+import { forgotPasswordService } from '@/services/forgotPasswordService'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, onMounted, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
@@ -8,8 +8,14 @@ import ConsumerNav from '../nav/ConsumerNav.vue'
 const isBtnDisabled = ref(true)
 const isEmailWrong = ref(false)
 const isLoading = ref(false)
+const isConfirmation = ref(false)
+const isConfirmationError = ref(false)
 
 const email = ref('')
+
+interface ForgotPasswordResponse {
+  status: number
+}
 
 function checkInputData() {
   if (email.value === '') {
@@ -31,8 +37,24 @@ async function handleReset() {
     }
   })
 
-  const response = await resetPassword(user.value)
-  console.log(response)
+  const response = (await forgotPasswordService(user.value)) as { status: number; data: string }
+
+  if (response.status === 201) {
+    console.log('hejsan')
+    isLoading.value = false
+    isConfirmation.value = true
+
+    setTimeout(() => {
+      isConfirmation.value = false
+    }, 4000)
+  } else if (response.status === 500) {
+    isLoading.value = false
+    isConfirmationError.value = true
+
+    setTimeout(() => {
+      isConfirmationError.value = false
+    }, 4000)
+  }
 }
 
 onMounted(() => {
@@ -85,4 +107,15 @@ onMounted(() => {
       <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
     </div>
   </main>
+  <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
+    <div class="confirmation-box" v-if="isConfirmation">
+      <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
+      <p class="text-main font-title-bold O1rem">Email skickat!</p>
+    </div>
+
+    <div class="confirmation-box-error" v-if="isConfirmationError">
+      <fontAwesome :icon="['fas', 'x']" class="text-main font-title-bold O35rem" />
+      <p class="text-main font-title-bold O1rem">Email kunde ej skickas!</p>
+    </div>
+  </div>
 </template>
