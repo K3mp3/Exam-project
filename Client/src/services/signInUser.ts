@@ -15,7 +15,7 @@ export async function signInUser(user: IUserSignIn) {
   console.log('user:', user)
 
   try {
-    const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
+    const response = await axios.post<IUserSignIn>(`${BASE_URL}/account/signin`, user)
 
     console.log(response)
 

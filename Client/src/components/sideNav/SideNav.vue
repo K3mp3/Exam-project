@@ -1,14 +1,23 @@
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import router from '@/router'
+import { getAuth, signOut } from 'firebase/auth'
+import { computed, onMounted } from 'vue'
 
 const currentUrl = window.location.href
 const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
 
 const userSentRoute = computed(() => `/user-sent/${userId}`)
+let auth: any
 
-defineProps<{
-  signOutFunction: (payload: MouseEvent) => void
-}>()
+function signOutUser() {
+  signOut(auth).then(() => {
+    router.push('/')
+  })
+}
+
+onMounted(() => {
+  auth = getAuth()
+})
 </script>
 
 <template>
@@ -35,7 +44,7 @@ defineProps<{
       <button
         type="button"
         class="user-home-sign-out-btn text-main z-index-2"
-        @click="signOutFunction"
+        @click="signOutUser()"
       >
         <fontAwesome :icon="['fas', 'gear']" />
         Logga ut

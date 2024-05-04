@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { useShowUserEmail } from '@/stores/showUserEmail'
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
 import DialogBox from '../dialogs/DialogBox.vue'
@@ -177,8 +177,20 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
-  const response = await registerUser(newUser.value)
+  // const response = await registerUser(newUser.value)
+
+  createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+    .then((data) => {
+      console.log('Successfully registered!')
+      console.log(data)
+    })
+    .catch((error) => {
+      console.log(error.code)
+      alert(error.message)
+    })
 }
+
+const register = () => {}
 
 function closeRegisterDialog() {
   const showRegisterDialog = useShowRegisterDialog()
