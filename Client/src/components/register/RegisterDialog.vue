@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
@@ -6,6 +7,7 @@ import { useShowUserEmail } from '@/stores/showUserEmail'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
 const props = defineProps({
@@ -26,6 +28,7 @@ const isEmail = ref(false)
 const isConfirmEmail = ref(false)
 const isPassword = ref(false)
 const isConfirmPassword = ref(false)
+const isLoading = ref(false)
 
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
@@ -49,16 +52,6 @@ const isFilledEmail = computed(() => useShowUserEmail().isEmail)
 const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
-
-const newUser = computed(() => {
-  return {
-    name: name.value,
-    email: email.value,
-    password: password.value,
-    repairShop: false,
-    signedIn: false
-  }
-})
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
@@ -177,20 +170,35 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
-  // const response = await registerUser(newUser.value)
+  isLoading.value = true
 
-  createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-    .then((data) => {
-      console.log('Successfully registered!')
-      console.log(data)
-    })
-    .catch((error) => {
-      console.log(error.code)
-      alert(error.message)
-    })
+  const currentUser = getAuth().currentUser
+  const userId = currentUser ? currentUser.uid : ''
+
+  const newUser = computed(() => {
+    return {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      repairShop: false,
+      userId: userId
+    }
+  })
+
+  const response = await registerUser(newUser.value)
+
+  if (response === 201) {
+    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+      .then(async (data) => {
+        isLoading.value = false
+      })
+      .catch((error) => {
+        isLoading.value = false
+      })
+  } else {
+    isLoading.value = false
+  }
 }
-
-const register = () => {}
 
 function closeRegisterDialog() {
   const showRegisterDialog = useShowRegisterDialog()
@@ -350,5 +358,16 @@ onMounted(() => {
 
       <DialogBox v-if="isDialog"></DialogBox>
     </div>
+    <div
+      class="w-full max-w-[1200px] h-[606px] radius-10 bg-blue-500 z-50 absolute flex flex-col items-center p-8 gap-2 text-main justify-center"
+    >
+      <fontAwesome :icon="['fas', 'circle-exclamation']" class="w-20 h-20 text-error-red mb-2" />
+      <h2 class="O15rem">Whoops! Tyvärr kunde inte ditt konto registreras just nu.</h2>
+      <p>Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support här</p>
+    </div>
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>

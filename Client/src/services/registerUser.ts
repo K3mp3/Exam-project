@@ -1,7 +1,6 @@
 import type { IUserRegistration } from '@/models/IUserRegistration'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import axios from 'axios'
-import process from 'process'
 
 const BASE_URL = 'http://localhost:3000'
 // https://shark-app-mvsjk.ondigitalocean.app
@@ -9,7 +8,7 @@ const BASE_URL = 'http://localhost:3000'
 export async function registerUser(user: IUserRegistration) {
   try {
     const response = await axios.post<IUserRegistration>(`${BASE_URL}/users/createUser`, user)
-    return response.data
+    return response.status
   } catch (error: any) {
     if (
       error.response &&

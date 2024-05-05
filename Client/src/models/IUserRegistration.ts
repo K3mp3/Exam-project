@@ -3,6 +3,6 @@ export interface IUserRegistration {
   email: string
   password: string
   repairShop: boolean
-  signedIn: boolean
   url?: string
+  userId: string
 }

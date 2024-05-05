@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
+import { signInUser } from '@/services/signInUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
@@ -46,13 +47,11 @@ function checkInputData() {
 async function handleSignIn() {
   isBtnDisabled.value = true
   isLoading.value = true
-  // const response = await signInUser(user.value)
+  const response = await signInUser(user.value)
 
   const auth = getAuth()
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((data) => {
-      console.log('Successfully signed in')
-      console.log(auth.currentUser)
       router.push(`/user-home/${auth.currentUser?.uid}`)
     })
     .catch((error) => {
