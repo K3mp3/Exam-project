@@ -825,6 +825,24 @@ p {
   }
 }
 
+.main-btn-white {
+  transition: all 0.2s ease-in-out;
+  background-color: $el-white-main;
+  border: 2px solid $el-white-main;
+  font-size: 0.9rem;
+  height: 42px;
+  border-radius: 50px;
+  color: $text-secondary;
+  font-weight: 500;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    background: transparent;
+    color: $text-main;
+  }
+}
+
 .main-btn-disabled {
   transition: all 0.2s ease-in-out;
   background-color: $el-inactive-blue;

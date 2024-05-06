@@ -29,6 +29,7 @@ const isConfirmEmail = ref(false)
 const isPassword = ref(false)
 const isConfirmPassword = ref(false)
 const isLoading = ref(false)
+const showErrorDialog = ref(false)
 
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
@@ -197,6 +198,7 @@ async function handleRegistration() {
       })
   } else {
     isLoading.value = false
+    showErrorDialog.value = true
   }
 }
 
@@ -221,6 +223,12 @@ function showRegisterRepairShopDialog() {
 
   const showRegisterDialog = useShowRegisterDialog()
   showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+}
+
+function directUser() {
+  // router.push('/contact')
+  // const showRegisterDialog = useShowRegisterDialog()
+  // showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
 
 onMounted(() => {
@@ -359,11 +367,23 @@ onMounted(() => {
       <DialogBox v-if="isDialog"></DialogBox>
     </div>
     <div
-      class="w-full max-w-[1200px] h-[606px] radius-10 bg-blue-500 z-50 absolute flex flex-col items-center p-8 gap-2 text-main justify-center"
+      v-if="showErrorDialog"
+      class="w-full max-w-[1200px] h-[606px] radius-10 bg-main z-50 absolute flex flex-col gap-12 text-main p-8 items-center justify-center"
     >
-      <fontAwesome :icon="['fas', 'circle-exclamation']" class="w-20 h-20 text-error-red mb-2" />
-      <h2 class="O15rem">Whoops! Tyvärr kunde inte ditt konto registreras just nu.</h2>
-      <p>Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support här</p>
+      <div class="flex gap-4 w-full max-w-[646px] items-center">
+        <button type="button" class="btn-back" @click="() => (showErrorDialog = false)">
+          <fontAwesome :icon="['fas', 'chevron-left']" />
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-4 justify-center items-center">
+        <fontAwesome :icon="['fas', 'circle-exclamation']" class="w-20 h-20 text-error-red mb-2" />
+        <h2 class="O16rem">Whoops! Tyvärr kunde inte ditt konto registreras just nu.</h2>
+        <p>Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support.</p>
+        <button type="button" class="main-btn-white flex items-center p-5 mt-4" @click="directUser">
+          <p>Kontakta support</p>
+        </button>
+      </div>
     </div>
   </div>
   <div class="spinner-component" v-if="isLoading">
