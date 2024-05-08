@@ -3,10 +3,10 @@ import router from '@/router'
 
 import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
-import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNav from '../sideNav/SideNav.vue'
+import { getSignInStatus } from '../utils/signInStatus'
 import UserHomeAnswers from './UserHomeAnswers.vue'
 import UserSettings from './UserSettings.vue'
 
@@ -19,8 +19,30 @@ const isUserSettings = ref(false)
 const desktop = ref(false)
 const showEmptyMessage = ref(false)
 
-const isSignedIn = computed(() => useSignInStore().signedIn)
 const isDialog = computed(() => useShowPopUp().showPopUp)
+
+const fullName = localStorage.getItem('userName')
+const email = localStorage.getItem('userEmail')
+const id = localStorage.getItem('user')
+
+const userAuth = computed(() => {
+  return {
+    userEmail: email,
+    userName: fullName,
+    userId: userId.value
+  }
+})
+
+// async function controllUserAuthentication() {
+//   const response = await controllUserAuth(userAuth.value)
+
+//   console.log(response)
+
+//   if (response === 201) return
+//   else if (response === 401) {
+//     router.push({ params: { userId: id } })
+//   }
+// }
 
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
@@ -28,9 +50,6 @@ function updateScreenSize() {
   if (document.documentElement.clientWidth > 1639) desktop.value = true
   else desktop.value = false
 }
-
-const fullName = localStorage.getItem('userName')
-const email = localStorage.getItem('userEmail')
 
 const firstName = fullName ? fullName.split(' ')[0] : ''
 
@@ -48,10 +67,8 @@ async function changeUserSignInStatus() {
   const response = await signOutUser(user.value)
 
   if (response) {
-    const isUserSignedIn = useSignInStore()
-    isUserSignedIn.signInUser(false)
-
-    if (!isSignedIn.value) {
+    if (getSignInStatus() === 'false') {
+      console.log('hejsan')
       router.push({ name: 'landing page' })
     }
   }
@@ -63,7 +80,6 @@ function newRequest() {
 }
 
 function countNumberOfAnswers(totalAnswers: number) {
-  console.log(totalAnswers)
   if (totalAnswers < 1) showEmptyMessage.value = true
   else showEmptyMessage.value = false
 }
@@ -73,10 +89,11 @@ function closeSettingsMenu() {
 }
 
 onMounted(() => {
-  updateScreenSize()
-  if (!isSignedIn.value) {
-    router.push('/')
-  }
+  // controllUserAuthentication()
+  // updateScreenSize()
+  // if (getSignInStatus() === 'false') {
+  //   router.push('/')
+  // }
 })
 </script>
 

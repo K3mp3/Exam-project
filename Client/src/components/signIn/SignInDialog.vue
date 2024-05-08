@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { signInUser } from '@/services/signInUser'
+import router from '@/router'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { computed, nextTick, ref } from 'vue'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { computed, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -45,23 +46,40 @@ function checkInputData() {
 async function handleSignIn() {
   isBtnDisabled.value = true
   isLoading.value = true
-  const response = await signInUser(user.value)
+  // const response = await signInUser(user.value)
 
-  const responseStatus = response as unknown as { status: number }
-  const responseData = response as { data: { message: string } }
-
-  if (responseData.data.message === 'Wrong email or password!') {
-    isEmailWrong.value = true
-    isPasswordWrong.value = true
-    isLoading.value = false
-  }
-
-  if (responseStatus) {
-    isLoading.value = false
-    nextTick(() => {
-      isBtnDisabled.value = false
+  const auth = getAuth()
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .then((data) => {
+      console.log(auth.currentUser?.uid)
+      router.push(`/user-home/${auth.currentUser?.uid}`)
     })
-  }
+    .catch((error) => {
+      console.log(error.code)
+      switch (error.code) {
+        case 'auth/invalid-credential':
+          isEmailWrong.value = true
+          isPasswordWrong.value = true
+          isLoading.value = false
+          break
+      }
+    })
+
+  // const responseStatus = response as unknown as { status: number }
+  // const responseData = response as { data: { message: string } }
+
+  // if (responseData.data.message === 'Wrong email or password!') {
+  //   isEmailWrong.value = true
+  //   isPasswordWrong.value = true
+  //   isLoading.value = false
+  // }
+
+  // if (responseStatus) {
+  //   isLoading.value = false
+  //   nextTick(() => {
+  //     isBtnDisabled.value = false
+  //   })
+  // }
 }
 
 function closeSignInDialog() {
@@ -145,3 +163,4 @@ function closeSignInDialog() {
     <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
+import router from '@/router' import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'

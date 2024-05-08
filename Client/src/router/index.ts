@@ -11,6 +11,7 @@ import SignInViewVue from '@/views/SignInView.vue'
 import UserHomeNewRequestViewVue from '@/views/UserHomeNewRequestView.vue'
 import UserHomeView from '@/views/UserHomeView.vue'
 import UserSentViewVue from '@/views/UserSentView.vue'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -55,7 +56,7 @@ const router = createRouter({
           path: '/user-home/:userId',
           name: 'user home view',
           component: UserHomeView,
-          meta: { index: true }
+          meta: { index: true, requiresAuth: true }
         },
         {
           path: '/user-home-new-request/:userId',
@@ -103,6 +104,32 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+function getCurrentUser() {
+  return new Promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+      getAuth(),
+      (user) => {
+        removeListener()
+        resolve(user)
+      },
+      reject
+    )
+  })
+}
+
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (await getCurrentUser()) {
+      next()
+    } else {
+      alert("You don't have access to this page!")
+      next('/')
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

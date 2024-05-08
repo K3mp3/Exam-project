@@ -4,9 +4,13 @@ import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { useShowUserEmail } from '@/stores/showUserEmail'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
+import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
+import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 
 const props = defineProps({
   showRepairShopRegisterDialog: {
@@ -21,12 +25,12 @@ const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
-const isName = ref(false)
-const isEmail = ref(false)
-const isConfirmEmail = ref(false)
 const isPassword = ref(false)
 const isConfirmPassword = ref(false)
 
+const isLoading = ref(false)
+const showErrorDialog = ref(false)
+const isConfirmationSuccess = ref(false)
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
 const isNotBothNames = ref(false)
@@ -50,73 +54,53 @@ const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
-const newUser = computed(() => {
-  return {
-    name: name.value,
-    email: email.value,
-    password: password.value,
-    repairShop: false,
-    signedIn: false
-  }
-})
-
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
 }
 
-function checkInputDataName() {
-  nextTick(() => {
-    if (name.value === '') {
-      return
-    } else {
-      isName.value = true
+function checkInputsData(confirmKey: string) {
+  console.log(confirmKey)
 
-      const index = inputsArray.findIndex((field) => field.key === 'isName')
+  nextTick(() => {
+    let refVariable: Ref<string> | null = null
+    switch (confirmKey) {
+      case 'isName':
+        refVariable = name
+        break
+      case 'isEmail':
+        refVariable = email
+        break
+      case 'isConfirmEmail':
+        refVariable = confirmEmail
+        break
+      case 'isPassword':
+        refVariable = password
+        break
+      case 'isConfirmPassword':
+        refVariable = confirmPassword
+        break
+      default:
+        break
+    }
+
+    if (refVariable?.value === '') {
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isName.value
+        inputsArray[index].value = false
       } else {
-        inputsArray.push({ key: 'isName', value: isName.value })
+        inputsArray.push({ key: confirmKey, value: false })
       }
 
       checkInputData()
-    }
-  })
-}
-
-function checkInputDataEmail() {
-  nextTick(() => {
-    if (email.value === '') {
       return
     } else {
-      isEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isEmail.value
+        inputsArray[index].value = true
       } else {
-        inputsArray.push({ key: 'isEmail', value: isEmail.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataConfirmEmail() {
-  nextTick(() => {
-    if (confirmEmail.value === '') {
-      return
-    } else {
-      isConfirmEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
-
-      if (index !== -1) {
-        inputsArray[index].value = isConfirmEmail.value
-      } else {
-        inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
+        inputsArray.push({ key: confirmKey, value: true })
       }
 
       checkInputData()
@@ -125,6 +109,7 @@ function checkInputDataConfirmEmail() {
 }
 
 function checkInputDataPassword() {
+  checkInputsData('isPassword')
   checkPasswordStrength('password')
   nextTick(() => {
     if (password.value === '') {
@@ -139,13 +124,12 @@ function checkInputDataPassword() {
       } else {
         inputsArray.push({ key: 'isPassword', value: isPassword.value })
       }
-
-      checkInputData()
     }
   })
 }
 
 function checkInputDataConfirmPassword() {
+  checkInputsData('isConfirmPassword')
   checkPasswordStrength('confirmPassword')
   nextTick(() => {
     if (confirmPassword.value === '') {
@@ -160,8 +144,6 @@ function checkInputDataConfirmPassword() {
       } else {
         inputsArray.push({ key: 'isConfirmPassword', value: isConfirmPassword.value })
       }
-
-      checkInputData()
     }
   })
 }
@@ -177,7 +159,40 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
+  isLoading.value = true
+
+  const currentUser = getAuth().currentUser
+  const userId = currentUser ? currentUser.uid : ''
+
+  const newUser = computed(() => {
+    return {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      repairShop: false,
+      userId: userId
+    }
+  })
+
   const response = await registerUser(newUser.value)
+
+  if (response === 201) {
+    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+      .then(async (data) => {
+        isLoading.value = false
+        isConfirmationSuccess.value = true
+
+        setTimeout(() => {
+          isConfirmationSuccess.value = false
+        }, 4000)
+      })
+      .catch((error) => {
+        isLoading.value = false
+      })
+  } else {
+    isLoading.value = false
+    showErrorDialog.value = true
+  }
 }
 
 function closeRegisterDialog() {
@@ -208,7 +223,7 @@ onMounted(() => {
 
   if (storedEmail) {
     email.value = storedEmail
-    checkInputDataEmail()
+    checkInputsData('isEmail')
   }
 
   checkInputData()
@@ -232,7 +247,7 @@ onMounted(() => {
             name="name"
             placeholder="För- och efternammn"
             v-model="name"
-            @input="checkInputDataName"
+            @input="() => checkInputsData('isName')"
             :class="isNotBothNames ? 'input-error' : ''"
           />
           <p v-if="isNotBothNames">
@@ -246,7 +261,7 @@ onMounted(() => {
             name="email"
             placeholder="namn@mail.com"
             v-model="email"
-            @input="checkInputDataEmail"
+            @input="() => checkInputsData('isEmail')"
             :class="isEmailWrong ? 'input-error' : ''"
             :value="isFilledEmail ? filledEmail : email"
           />
@@ -261,7 +276,7 @@ onMounted(() => {
             name="email"
             placeholder="namn@mail.com"
             v-model="confirmEmail"
-            @input="checkInputDataConfirmEmail"
+            @input="() => checkInputsData('isConfirmEmail')"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -338,5 +353,18 @@ onMounted(() => {
 
       <DialogBox v-if="isDialog"></DialogBox>
     </div>
+    <RegisterErrorDialog
+      v-if="showErrorDialog"
+      :showErrorDialog="showErrorDialog"
+      :closeDialog="() => (showErrorDialog = false)"
+    />
+    <SentResponseDialog
+      :isConfirmationSuccess="isConfirmationSuccess"
+      v-if="isConfirmationSuccess"
+    />
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>

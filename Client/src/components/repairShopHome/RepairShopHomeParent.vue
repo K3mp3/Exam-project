@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import router from '@/router'
 import { signOutUser } from '@/services/signOutUser'
-import { useSignInStore } from '@/stores/signInStore'
 import { computed, onMounted, ref } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import UserSettings from '../userHome/UserSettings.vue'
-
-const isSignedIn = computed(() => useSignInStore().signedIn)
+import { getSignInStatus } from '../utils/signInStatus'
 
 const isSideNav = ref(false)
 const isUserSettings = ref(false)
@@ -16,8 +14,29 @@ const userId = computed(() => {
   return routeParams.userId || ''
 })
 
-const fullname = localStorage.getItem('userName')
+const fullName = localStorage.getItem('userName')
 const email = localStorage.getItem('userEmail')
+const id = localStorage.getItem('user')
+
+const userAuth = computed(() => {
+  return {
+    userEmail: email,
+    userName: fullName,
+    userId: userId.value
+  }
+})
+
+// async function controllUserAuthentication() {
+//   console.log(id)
+//   const response = await controllUserAuth(userAuth.value)
+
+//   console.log(response)
+
+//   if (response === 201) return
+//   else if (response === 401) {
+//     router.push({ params: { userId: id } })
+//   }
+// }
 
 function showUserSettings() {
   isUserSettings.value = !isUserSettings.value
@@ -36,10 +55,8 @@ async function changeUserSignInStatus() {
   console.log(response)
 
   if (response) {
-    const isUserSignedIn = useSignInStore()
-    isUserSignedIn.signInUser(false)
-
-    if (!isSignedIn.value) {
+    if (getSignInStatus() === 'false') {
+      console.log('hejsan')
       router.push({ name: 'landing page' })
     }
   }
@@ -50,7 +67,9 @@ function closeSettingsMenu() {
 }
 
 onMounted(() => {
-  if (!isSignedIn.value) {
+  // controllUserAuthentication()
+
+  if (getSignInStatus() === 'false') {
     router.push('/')
   }
 })
@@ -64,7 +83,7 @@ onMounted(() => {
   ></UserSettings>
   <div class="repair-shop-home-parent">
     <div class="repair-shop-signed-in-header">
-      <h2>Hej {{ fullname }}</h2>
+      <h2>Hej {{ fullName }}</h2>
       <button
         v-if="!isSideNav"
         type="button"

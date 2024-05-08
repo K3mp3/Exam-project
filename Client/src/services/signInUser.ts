@@ -3,7 +3,6 @@ import type { IUserToken } from '@/models/IUserToken'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { useSignInStore } from '@/stores/signInStore'
 import axios from 'axios'
 import { computed } from 'vue'
 
@@ -16,7 +15,7 @@ export async function signInUser(user: IUserSignIn) {
   console.log('user:', user)
 
   try {
-    const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
+    const response = await axios.post<IUserSignIn>(`${BASE_URL}/account/signin`, user)
 
     console.log(response)
 
@@ -62,14 +61,11 @@ export async function checkMagicToken(user: IUserToken) {
       const showSignInDialog = useShowSignInDialog()
       showSignInDialog.showSignInDialogForm(!isSignIn.value)
 
-      const isSignedIn = useSignInStore()
-      isSignedIn.signInUser(true)
-
-      console.log(response.data.repairShop)
-
       localStorage.setItem('userEmail', response.data.email || '')
       localStorage.setItem('userName', response.data.name || '')
       localStorage.setItem('isRepairShop', String(response.data.repairShop ?? ''))
+      localStorage.setItem('isSignedIn', true.toString())
+      localStorage.setItem('user', response.data.userId ? response.data.userId : '')
 
       return {
         name: response.data.name,
