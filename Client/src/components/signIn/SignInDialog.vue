@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import router from '@/router'
-import { signInUser } from '@/services/signInUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { computed, nextTick, ref } from 'vue'
+import { computed, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -47,11 +46,12 @@ function checkInputData() {
 async function handleSignIn() {
   isBtnDisabled.value = true
   isLoading.value = true
-  const response = await signInUser(user.value)
+  // const response = await signInUser(user.value)
 
   const auth = getAuth()
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((data) => {
+      console.log(auth.currentUser?.uid)
       router.push(`/user-home/${auth.currentUser?.uid}`)
     })
     .catch((error) => {
@@ -65,21 +65,21 @@ async function handleSignIn() {
       }
     })
 
-  const responseStatus = response as unknown as { status: number }
-  const responseData = response as { data: { message: string } }
+  // const responseStatus = response as unknown as { status: number }
+  // const responseData = response as { data: { message: string } }
 
-  if (responseData.data.message === 'Wrong email or password!') {
-    isEmailWrong.value = true
-    isPasswordWrong.value = true
-    isLoading.value = false
-  }
+  // if (responseData.data.message === 'Wrong email or password!') {
+  //   isEmailWrong.value = true
+  //   isPasswordWrong.value = true
+  //   isLoading.value = false
+  // }
 
-  if (responseStatus) {
-    isLoading.value = false
-    nextTick(() => {
-      isBtnDisabled.value = false
-    })
-  }
+  // if (responseStatus) {
+  //   isLoading.value = false
+  //   nextTick(() => {
+  //     isBtnDisabled.value = false
+  //   })
+  // }
 }
 
 function closeSignInDialog() {

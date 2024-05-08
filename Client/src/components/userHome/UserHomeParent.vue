@@ -2,7 +2,6 @@
 import router from '@/router'
 
 import { signOutUser } from '@/services/signOutUser'
-import { controllUserAuth } from '@/services/userAuth'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { computed, onMounted, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
@@ -34,17 +33,16 @@ const userAuth = computed(() => {
   }
 })
 
-async function controllUserAuthentication() {
-  console.log(id)
-  const response = await controllUserAuth(userAuth.value)
+// async function controllUserAuthentication() {
+//   const response = await controllUserAuth(userAuth.value)
 
-  console.log(response)
+//   console.log(response)
 
-  if (response === 201) return
-  else if (response === 401) {
-    router.push({ params: { userId: id } })
-  }
-}
+//   if (response === 201) return
+//   else if (response === 401) {
+//     router.push({ params: { userId: id } })
+//   }
+// }
 
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
@@ -91,11 +89,11 @@ function closeSettingsMenu() {
 }
 
 onMounted(() => {
-  controllUserAuthentication()
-  updateScreenSize()
-  if (getSignInStatus() === 'false') {
-    router.push('/')
-  }
+  // controllUserAuthentication()
+  // updateScreenSize()
+  // if (getSignInStatus() === 'false') {
+  //   router.push('/')
+  // }
 })
 </script>
 

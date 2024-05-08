@@ -5,10 +5,12 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { useShowUserEmail } from '@/stores/showUserEmail'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
+import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 
 const props = defineProps({
   showRepairShopRegisterDialog: {
@@ -23,14 +25,12 @@ const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
-const isName = ref(false)
-const isEmail = ref(false)
-const isConfirmEmail = ref(false)
 const isPassword = ref(false)
 const isConfirmPassword = ref(false)
+
 const isLoading = ref(false)
 const showErrorDialog = ref(false)
-
+const isConfirmationSuccess = ref(false)
 const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
 const isNotBothNames = ref(false)
@@ -58,59 +58,49 @@ function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
 }
 
-function checkInputDataName() {
-  nextTick(() => {
-    if (name.value === '') {
-      return
-    } else {
-      isName.value = true
+function checkInputsData(confirmKey: string) {
+  console.log(confirmKey)
 
-      const index = inputsArray.findIndex((field) => field.key === 'isName')
+  nextTick(() => {
+    let refVariable: Ref<string> | null = null
+    switch (confirmKey) {
+      case 'isName':
+        refVariable = name
+        break
+      case 'isEmail':
+        refVariable = email
+        break
+      case 'isConfirmEmail':
+        refVariable = confirmEmail
+        break
+      case 'isPassword':
+        refVariable = password
+        break
+      case 'isConfirmPassword':
+        refVariable = confirmPassword
+        break
+      default:
+        break
+    }
+
+    if (refVariable?.value === '') {
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isName.value
+        inputsArray[index].value = false
       } else {
-        inputsArray.push({ key: 'isName', value: isName.value })
+        inputsArray.push({ key: confirmKey, value: false })
       }
 
       checkInputData()
-    }
-  })
-}
-
-function checkInputDataEmail() {
-  nextTick(() => {
-    if (email.value === '') {
       return
     } else {
-      isEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isEmail.value
+        inputsArray[index].value = true
       } else {
-        inputsArray.push({ key: 'isEmail', value: isEmail.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataConfirmEmail() {
-  nextTick(() => {
-    if (confirmEmail.value === '') {
-      return
-    } else {
-      isConfirmEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
-
-      if (index !== -1) {
-        inputsArray[index].value = isConfirmEmail.value
-      } else {
-        inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
+        inputsArray.push({ key: confirmKey, value: true })
       }
 
       checkInputData()
@@ -119,6 +109,7 @@ function checkInputDataConfirmEmail() {
 }
 
 function checkInputDataPassword() {
+  checkInputsData('isPassword')
   checkPasswordStrength('password')
   nextTick(() => {
     if (password.value === '') {
@@ -133,13 +124,12 @@ function checkInputDataPassword() {
       } else {
         inputsArray.push({ key: 'isPassword', value: isPassword.value })
       }
-
-      checkInputData()
     }
   })
 }
 
 function checkInputDataConfirmPassword() {
+  checkInputsData('isConfirmPassword')
   checkPasswordStrength('confirmPassword')
   nextTick(() => {
     if (confirmPassword.value === '') {
@@ -154,8 +144,6 @@ function checkInputDataConfirmPassword() {
       } else {
         inputsArray.push({ key: 'isConfirmPassword', value: isConfirmPassword.value })
       }
-
-      checkInputData()
     }
   })
 }
@@ -192,6 +180,11 @@ async function handleRegistration() {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then(async (data) => {
         isLoading.value = false
+        isConfirmationSuccess.value = true
+
+        setTimeout(() => {
+          isConfirmationSuccess.value = false
+        }, 4000)
       })
       .catch((error) => {
         isLoading.value = false
@@ -225,18 +218,12 @@ function showRegisterRepairShopDialog() {
   showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
 
-function directUser() {
-  // router.push('/contact')
-  // const showRegisterDialog = useShowRegisterDialog()
-  // showRegisterDialog.showRegisterDialogForm(!isRegister.value)
-}
-
 onMounted(() => {
   const storedEmail = localStorage.getItem('userEmail')
 
   if (storedEmail) {
     email.value = storedEmail
-    checkInputDataEmail()
+    checkInputsData('isEmail')
   }
 
   checkInputData()
@@ -260,7 +247,7 @@ onMounted(() => {
             name="name"
             placeholder="För- och efternammn"
             v-model="name"
-            @input="checkInputDataName"
+            @input="() => checkInputsData('isName')"
             :class="isNotBothNames ? 'input-error' : ''"
           />
           <p v-if="isNotBothNames">
@@ -274,7 +261,7 @@ onMounted(() => {
             name="email"
             placeholder="namn@mail.com"
             v-model="email"
-            @input="checkInputDataEmail"
+            @input="() => checkInputsData('isEmail')"
             :class="isEmailWrong ? 'input-error' : ''"
             :value="isFilledEmail ? filledEmail : email"
           />
@@ -289,7 +276,7 @@ onMounted(() => {
             name="email"
             placeholder="namn@mail.com"
             v-model="confirmEmail"
-            @input="checkInputDataConfirmEmail"
+            @input="() => checkInputsData('isConfirmEmail')"
             :class="isEmailWrong ? 'input-error' : ''"
           />
           <p v-if="isEmailWrong">
@@ -366,25 +353,15 @@ onMounted(() => {
 
       <DialogBox v-if="isDialog"></DialogBox>
     </div>
-    <div
+    <RegisterErrorDialog
       v-if="showErrorDialog"
-      class="w-full max-w-[1200px] h-[606px] radius-10 bg-main z-50 absolute flex flex-col gap-12 text-main p-8 items-center justify-center"
-    >
-      <div class="flex gap-4 w-full max-w-[646px] items-center">
-        <button type="button" class="btn-back" @click="() => (showErrorDialog = false)">
-          <fontAwesome :icon="['fas', 'chevron-left']" />
-        </button>
-      </div>
-
-      <div class="flex flex-col gap-4 justify-center items-center">
-        <fontAwesome :icon="['fas', 'circle-exclamation']" class="w-20 h-20 text-error-red mb-2" />
-        <h2 class="O16rem">Whoops! Tyvärr kunde inte ditt konto registreras just nu.</h2>
-        <p>Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support.</p>
-        <button type="button" class="main-btn-white flex items-center p-5 mt-4" @click="directUser">
-          <p>Kontakta support</p>
-        </button>
-      </div>
-    </div>
+      :showErrorDialog="showErrorDialog"
+      :closeDialog="() => (showErrorDialog = false)"
+    />
+    <SentResponseDialog
+      :isConfirmationSuccess="isConfirmationSuccess"
+      v-if="isConfirmationSuccess"
+    />
   </div>
   <div class="spinner-component" v-if="isLoading">
     <LoadingSpinner />

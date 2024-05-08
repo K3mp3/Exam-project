@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
 import { signOutUser } from '@/services/signOutUser'
-import { controllUserAuth } from '@/services/userAuth'
 import { computed, onMounted, ref } from 'vue'
 import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import UserSettings from '../userHome/UserSettings.vue'
@@ -27,17 +26,17 @@ const userAuth = computed(() => {
   }
 })
 
-async function controllUserAuthentication() {
-  console.log(id)
-  const response = await controllUserAuth(userAuth.value)
+// async function controllUserAuthentication() {
+//   console.log(id)
+//   const response = await controllUserAuth(userAuth.value)
 
-  console.log(response)
+//   console.log(response)
 
-  if (response === 201) return
-  else if (response === 401) {
-    router.push({ params: { userId: id } })
-  }
-}
+//   if (response === 201) return
+//   else if (response === 401) {
+//     router.push({ params: { userId: id } })
+//   }
+// }
 
 function showUserSettings() {
   isUserSettings.value = !isUserSettings.value
@@ -68,7 +67,7 @@ function closeSettingsMenu() {
 }
 
 onMounted(() => {
-  controllUserAuthentication()
+  // controllUserAuthentication()
 
   if (getSignInStatus() === 'false') {
     router.push('/')
