@@ -4,10 +4,12 @@ import { computed, onMounted, ref } from 'vue'
 import ConsumerNavMobileMenu from './ConsumerNavMobileMenu.vue'
 
 const navScroll = ref(false)
+const animateMenuBtn = ref(false)
 
 const isNavOpen = computed(() => useShowMobileNavMenu().showMenu)
 
 function showMobileNav() {
+  animateMenuBtn.value = !animateMenuBtn.value
   const showMobileNavMenu = useShowMobileNavMenu()
   showMobileNavMenu.showNavMenu(!isNavOpen.value)
 }
@@ -33,15 +35,15 @@ onMounted(() => {
   >
     <div class="nav-child-container left">
       <RouterLink to="/" class="text-deco-none"
-        ><p class="O15rem text-main font-title-black">FixerFinder</p></RouterLink
+        ><h2 class="O15rem text-main font-title-black">Vibe</h2></RouterLink
       >
     </div>
     <div class="nav-child-container right">
       <div class="nav-hamburger-icon">
         <button type="button" @click="showMobileNav">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span :class="animateMenuBtn && 'span-nr1'"></span>
+          <span :class="animateMenuBtn && 'span-nr2'"></span>
+          <span :class="animateMenuBtn && 'span-nr3'"></span>
         </button>
       </div>
     </div>
