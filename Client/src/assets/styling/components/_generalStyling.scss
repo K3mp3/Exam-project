@@ -33,6 +33,18 @@
   color: $el-warning-orange;
 }
 
+.bg-gray {
+  background-color: $bg-gray;
+}
+
+.bg-light-gray {
+  background-color: $bg-light-gray;
+}
+
+.bg-gr-blue {
+  background: linear-gradient(to right, #0d3ef100, #0d31f1, #0d3ef100);
+}
+
 .el-white-main {
   background-color: $el-white-main;
 }
@@ -931,6 +943,82 @@ p {
   }
 }
 
+.nav-hamburger-icon {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 0;
+    padding: 10px;
+    padding-right: 7px;
+    background: transparent;
+    margin-right: -5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  span {
+    transition: all 0.2s ease-in-out;
+    width: 25px;
+    height: 4px;
+    border-radius: 5px;
+    background-color: $el-white-main;
+    border: none;
+
+    &:nth-child(1) {
+      width: 45%;
+    }
+
+    &:nth-child(3) {
+      width: 75%;
+      margin-left: 25%;
+    }
+  }
+
+  .span-nr1 {
+    transition: all 0.2s ease-in-out;
+    transform-origin: bottom;
+    transform: rotatez(45deg) translate(2px, 1px);
+  }
+
+  .span-nr2 {
+    transition: all 0.2s ease-in-out;
+    transform: rotate(-45deg);
+  }
+
+  .span-nr3 {
+    transition: all 0.2s ease-in-out;
+    transform-origin: bottom;
+    transform: rotatez(45deg) translate(-5px, -3.4px);
+  }
+
+  .animation {
+    transition: all 0.2s ease-in-out;
+    background-color: $el-active-blue-hover;
+    span:nth-child(2) {
+      transform: rotate(-45deg);
+    }
+
+    button {
+      gap: 0px;
+    }
+
+    span:nth-child(1) {
+      transform: rotate(45deg);
+    }
+    span:nth-child(3) {
+      transform: rotate(45deg);
+      margin-left: 9px;
+    }
+  }
+}
+
 // Visibility
 .hide {
   visibility: none;
@@ -961,6 +1049,18 @@ p {
 
 .radius-10 {
   border-radius: 10px;
+}
+
+.border-main {
+  border: 2px solid $el-border-gray;
+}
+
+.border-gr-blue {
+  border: 2px solid transparent;
+  background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+    linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
 }
 
 // Cursors
