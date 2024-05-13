@@ -85,7 +85,7 @@ function closeDialog() {
 
       <div class="magic-token-button-container">
         <button type="button" class="filled-btn" @click="handleSignIn">Logga in</button>
-        <button type="button" class="outline-btn" @click="closeDialog">Tillbaka</button>
+        <button type="button" class="outline-btn w-full" @click="closeDialog">Tillbaka</button>
       </div>
     </div>
   </div>

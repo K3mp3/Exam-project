@@ -17,7 +17,7 @@ const isConfirmationError = ref(false)
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > 1481) {
+  if (document.documentElement.clientWidth > 1471) {
     desktop.value = true
     tablet.value = false
     mobile.value = false

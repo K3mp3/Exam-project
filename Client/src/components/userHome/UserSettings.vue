@@ -60,7 +60,7 @@ onMounted(() => {
         </ul>
 
         <div class="sign-out-btn-container">
-          <button type="button" class="outline-btn text-main p-4-y" @click="signOutFunction">
+          <button type="button" class="outline-btn w-full text-main p-4-y" @click="signOutFunction">
             <fontAwesome :icon="['fas', 'gear']" />
             Logga ut
           </button>

@@ -33,13 +33,13 @@ const inputsArray: { key: string; value: boolean }[] = [
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > 1481) {
+  if (document.documentElement.clientWidth > 1470) {
     desktop.value = true
     tablet.value = false
     mobile.value = false
   }
 
-  if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1482) {
+  if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1471) {
     desktop.value = false
     tablet.value = true
     mobile.value = false

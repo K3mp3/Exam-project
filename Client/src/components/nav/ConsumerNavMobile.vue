@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { useShowMobileNavMenu } from '@/stores/showMobileNavMenuStore'
-import { computed, onMounted, ref } from 'vue'
-import ConsumerNavMobileMenu from './ConsumerNavMobileMenu.vue'
+import { onMounted, ref } from 'vue'
 
 const navScroll = ref(false)
 const animateMenuBtn = ref(false)
-const maxHeight = ref('0px')
 
-const isNavOpen = computed(() => useShowMobileNavMenu().showMenu)
+const maxHeight = ref('0px')
 
 function showMobileNav() {
   animateMenuBtn.value = !animateMenuBtn.value
