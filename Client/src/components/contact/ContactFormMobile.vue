@@ -275,7 +275,7 @@ onMounted(() => {
         :disabled="isBtnDisabled"
         :class="{
           'main-btn-disabled margin-32-0 text-disabled font-title-bold': isBtnDisabled,
-          'main-btn margin-32-0 text-disabled font-title-bold': !isBtnDisabled
+          'main-btn w-full margin-32-0 text-disabled font-title-bold': !isBtnDisabled
         }"
       >
         Skicka

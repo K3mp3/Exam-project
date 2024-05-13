@@ -34,7 +34,7 @@ onMounted(() => {
 
 <template>
   <div class="w-screen p-4">
-    <div class="flex flex-col px-3 py-1 rounded-lg border-main bg-main-40 backdrop-blur-sm gap-4">
+    <div class="flex flex-col px-3 py-1 rounded-lg border-main bg-main-40 backdrop-blur-sm gap-8">
       <div class="flex items-center justify-between w-full">
         <RouterLink to="/" class="text-deco-none"
           ><h2 class="O15rem text-main font-title-black">Vibe</h2></RouterLink

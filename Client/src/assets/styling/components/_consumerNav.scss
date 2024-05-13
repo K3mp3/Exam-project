@@ -112,6 +112,8 @@ nav {
     .nav-parent-container {
       transition: all 0.3s ease-in-out;
       padding: 16px 64px;
+      background-color: blue;
+
       .nav-child-container {
         .nav-hamburger-icon {
           button {
@@ -131,6 +133,7 @@ nav {
     .center {
       display: flex;
       gap: 32px;
+      background-color: blueviolet;
 
       .router-link {
         display: flex;

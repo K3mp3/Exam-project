@@ -828,7 +828,6 @@ p {
   font-size: 0.9rem;
   height: 42px;
   border-radius: 50px;
-  width: 100%;
 
   &:hover {
     transition: all 0.2s ease-in-out;
@@ -845,7 +844,6 @@ p {
   height: 42px;
   border-radius: 50px;
   color: $text-secondary;
-  font-weight: 500;
 
   &:hover {
     transition: all 0.2s ease-in-out;

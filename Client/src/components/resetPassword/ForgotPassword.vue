@@ -96,7 +96,7 @@ onMounted(() => {
         :disabled="isBtnDisabled"
         :class="[
           'margin-tp-16 font-text-light',
-          isBtnDisabled ? 'main-btn-disabled' : 'main-btn text-main'
+          isBtnDisabled ? 'main-btn-disabled' : 'main-btn w-full text-main'
         ]"
       >
         Återställ lösenord
