@@ -23,7 +23,7 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width = document.documentElement.clientWidth
 
-  if (width > 1470) {
+  if (width > 1280) {
     navDesktop.value = true
     navMobile.value = false
     return

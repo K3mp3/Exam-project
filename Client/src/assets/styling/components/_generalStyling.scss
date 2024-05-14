@@ -33,6 +33,13 @@
   color: $el-warning-orange;
 }
 
+.text-light-blue-gr {
+  background: linear-gradient(to right, #2c8be2, #0d31f1);
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
 .bg-gray {
   background-color: $bg-gray;
 }
@@ -1066,7 +1073,7 @@ p {
   cursor: pointer;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 640px) {
   .main-btn {
     font-size: 1rem;
   }
