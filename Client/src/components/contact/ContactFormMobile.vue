@@ -200,22 +200,17 @@ onMounted(() => {
   <nav>
     <ConsumerNav></ConsumerNav>
   </nav>
-  <div
-    class="padding-tp-105 padding-rt-16 padding-bm-0 padding-lt-16 margin-au display-flex flex-dir-col justify-center align-items-center gap-32"
-  >
-    <div class="display-flex align-items-center gap-16 width-100 m-width-1200">
-      <RouterLink to="/" class="btn-back"
+  <div class="pt-[132px] flex flex-col gap-8 p-4 items-center text-main">
+    <div class="display-flex items-center justify-between width-100 m-width-1200 relative">
+      <RouterLink to="/" class="btn-back z-10"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
-      <h2
-        :class="{
-          'font-title-bold O14rem': mobile
-        }"
-      >
-        Kontakta oss
-      </h2>
+
+      <div class="w-full absolute text-center">
+        <h2 class="text-xl">Kontakta oss</h2>
+      </div>
     </div>
-    <form @submit.prevent="handleMessage" class="width-100 m-width-1200 text-align-left">
+    <form @submit.prevent="handleMessage" class="width-100 m-width-1200 text-align-left mt-1">
       <label for="name" class="text-main font-text-light">För- och efternamn</label>
       <input
         type="text"

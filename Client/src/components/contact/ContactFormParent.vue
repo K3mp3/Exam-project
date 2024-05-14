@@ -22,13 +22,13 @@ function updateScreenSize() {
     tablet.value = false
     mobile.value = false
   } else if (
-    document.documentElement.clientWidth > 699 &&
-    document.documentElement.clientWidth < 1482
+    document.documentElement.clientWidth > 639 &&
+    document.documentElement.clientWidth < 1280
   ) {
     tablet.value = true
     desktop.value = false
     mobile.value = false
-  } else if (document.documentElement.clientWidth < 700) {
+  } else if (document.documentElement.clientWidth < 640) {
     mobile.value = true
     desktop.value = false
     tablet.value = false
