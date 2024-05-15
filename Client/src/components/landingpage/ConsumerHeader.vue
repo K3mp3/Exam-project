@@ -18,10 +18,10 @@ function saveUserEmail() {
 </script>
 
 <template>
-  <img src="../../assets/img/headerCar.png" />
-
-  <div class="w-full h-full absolute top-0 flex items-center justify-center">
-    <div class="flex flex-col gap-2 mt-16 items-center text-main xl:gap-4">
+  <div class="w-full h-full pt-[254px] pb-[115px] flex items-center justify-center">
+    <div class="w-[355px] h-[355px] z-10 border border-gr-blue absolute rounded-full"></div>
+    <div class="w-[405px] h-[405px] border border-gr-purple absolute rounded-full"></div>
+    <div class="flex flex-col gap-2 items-center text-main xl:gap-4 z-20">
       <h2 class="text-xl font-extrabold sm:text-3xl xl:text-5xl">
         Jämför och <span class="text-light-blue-gr">spara</span>
       </h2>

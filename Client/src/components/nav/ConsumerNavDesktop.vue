@@ -33,8 +33,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-screen p-8">
-    <div class="flex flex-row px-8 py-4 rounded-lg border-main bg-main-40 backdrop-blur-sm gap-4">
+  <div class="w-screen p-8 z-50">
+    <div
+      class="flex flex-row px-8 py-4 rounded-lg border-main bg-main-40 backdrop-blur-sm gap-4 z-20"
+    >
       <div class="w-full">
         <RouterLink to="/" class="text-deco-none"
           ><p class="text-deco-none O15rem text-main font-title-black">Vibe</p></RouterLink

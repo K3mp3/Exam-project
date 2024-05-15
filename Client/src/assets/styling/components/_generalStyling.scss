@@ -52,6 +52,12 @@
   background: linear-gradient(to right, #0d3ef100, #0d31f1, #0d3ef100);
 }
 
+.bg-gr-pink-orange {
+  background: -webkit-linear-gradient(#f700a8, #ff8000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .el-white-main {
   background-color: $el-white-main;
 }
@@ -1060,9 +1066,17 @@ p {
 }
 
 .border-gr-blue {
-  border: 2px solid transparent;
-  background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+  border: 1px solid transparent;
+  background-image: linear-gradient($bg-main, $bg-main),
     linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.border-gr-purple {
+  border: 1px solid transparent;
+  background-image: linear-gradient($bg-main, $bg-main),
+    linear-gradient(to bottom, rgb(168, 13, 241), rgb(247, 0, 169, 0.5), rgb(255, 128, 0, 0.1));
   background-origin: border-box;
   background-clip: padding-box, border-box;
 }
