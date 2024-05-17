@@ -208,67 +208,70 @@ onMounted(() => {
       <h2 class="text-xl">Kontakta oss</h2>
     </div>
     <form @submit.prevent="handleMessage" class="flex flex-col w-full gap-6">
-      <label for="name" class="text-main font-text-light">För- och efternamn</label>
-      <input
-        type="text"
-        name="name"
-        placeholder="Förnamn & efternamn"
-        v-model="name"
-        @input="checkInputDataName"
-        :class="
-          isNameCorrect
-            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-        "
-      />
-      <p
-        class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-        v-if="!isNameCorrect"
-      >
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange både
-        för- och efternman!
-      </p>
+      <label for="name" class="font-text-light flex flex-col gap-1"
+        ><span>För- och efternamn</span>
+        <input
+          type="text"
+          name="name"
+          placeholder="Förnamn & efternamn"
+          v-model="name"
+          @input="checkInputDataName"
+          :class="
+            isNameCorrect
+              ? 'text-input p-relative width-100 padding-8 z-index-1  '
+              : 'input-warning p-relative width-100 padding-8 z-index-1 '
+          "
+        />
+        <p
+          class="text-warning-orange font-text-light display-flex gap-2 align-items-center"
+          v-if="!isNameCorrect"
+        >
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange
+          både för- och efternman!
+        </p>
+      </label>
 
-      <label for="email" class="text-main font-text-light">Email adress</label>
-      <input
-        type="email"
-        name="name"
-        placeholder="namn@mail.se"
-        v-model="email"
-        @input="checkInputDataEmail"
-        :class="
-          isEmailReal
-            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-        "
-      />
-      <p
-        class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-        v-if="!isEmailReal"
-      >
-        <fontAwesome
-          :icon="['fas', 'triangle-exclamation']"
-          class="text-warning-orange"
-        />Kontrollera så att mailadressen stämmer!
-      </p>
+      <label for="email" class="font-text-light flex flex-col gap-1"
+        ><span>Email adress</span>
+        <input
+          type="email"
+          name="name"
+          placeholder="namn@mail.se"
+          v-model="email"
+          @input="checkInputDataEmail"
+          :class="
+            isEmailReal
+              ? 'text-input p-relative width-100 padding-8 z-index-1  '
+              : 'input-warning p-relative width-100 padding-8 z-index-1 '
+          "
+        />
+        <p
+          class="text-warning-orange font-text-light display-flex gap-2 align-items-center"
+          v-if="!isEmailReal"
+        >
+          <fontAwesome
+            :icon="['fas', 'triangle-exclamation']"
+            class="text-warning-orange"
+          />Kontrollera så att mailadressen stämmer!
+        </p>
+      </label>
 
-      <label for="message-input" class="text-main font-text-light">Meddelande</label>
-      <textarea
-        name="message-input"
-        v-model="message"
-        placeholder="Beskriv varför du kontaktar oss"
-        @input="checkInputDataMessage"
-        :class="['textarea-input', 'height-239px', 'margin-tp-4']"
-      ></textarea>
+      <label for="message-input" class="font-text-light flex flex-col gap-1"
+        ><span>Meddelande</span
+        ><textarea
+          name="message-input"
+          v-model="message"
+          placeholder="Beskriv varför du kontaktar oss"
+          @input="checkInputDataMessage"
+          :class="['textarea-input', 'height-239px']"
+        ></textarea>
+      </label>
 
       <button
         v-if="mobile"
         type="submit"
         :disabled="isBtnDisabled"
-        :class="{
-          'main-btn-disabled text-disabled font-title-bold': isBtnDisabled,
-          'main-btn w-full text-disabled font-title-bold': !isBtnDisabled
-        }"
+        :class="['mt-4 mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
       >
         Skicka
       </button>

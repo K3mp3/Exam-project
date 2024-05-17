@@ -185,7 +185,7 @@ onMounted(() => {
       <h2 class="text-xl sm:text-2xl">Registrera dig</h2>
     </div>
     <form @submit.prevent="handleRegistration" class="flex flex-col gap-6">
-      <label for="name"
+      <label for="name" class="font-text-light flex flex-col gap-1"
         ><span>För- och efternamn</span>
         <input
           type="text"
@@ -195,13 +195,13 @@ onMounted(() => {
           @input="checkInputDataName"
           :class="['w-full text-input px-2', isNotBothNames ? 'input-error' : '']"
         />
-        <p v-if="isNotBothNames">
+        <p v-if="isNotBothNames" class="text-warning-orange">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både
           för- och efternamn finns med!
         </p>
       </label>
 
-      <label for="email"
+      <label for="email" class="font-text-light flex flex-col gap-1"
         ><span>Email adress</span>
         <input
           type="email"
@@ -212,13 +212,13 @@ onMounted(() => {
           :class="['w-full text-input px-2', isEmailWrong ? 'input-error' : '']"
           :value="isFilledEmail ? filledEmail : email"
         />
-        <p v-if="isEmailWrong">
+        <p v-if="isEmailWrong" class="text-warning-orange">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
           adressen!
         </p>
       </label>
 
-      <label for="email"
+      <label for="email" class="font-text-light flex flex-col gap-1"
         ><span>Bekräfta email adress</span>
         <input
           type="email"
@@ -228,13 +228,13 @@ onMounted(() => {
           @input="checkInputDataConfirmEmail"
           :class="['w-full text-input px-2', isEmailWrong ? 'input-error' : '']"
         />
-        <p v-if="isEmailWrong">
+        <p v-if="isEmailWrong" class="text-warning-orange">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
           adressen!
         </p>
       </label>
 
-      <label for="password"
+      <label for="password" class="font-text-light flex flex-col gap-1"
         ><span>Lösenord</span>
         <input
           type="password"
@@ -248,7 +248,7 @@ onMounted(() => {
             isPasswordWrong && 'input-error'
           ]"
         />
-        <p class="warning-text" v-if="isPasswordWeak">
+        <p class="text-warning-orange" v-if="isPasswordWeak">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
           använda ett säkrare
         </p>
@@ -257,7 +257,7 @@ onMounted(() => {
         </p>
       </label>
 
-      <label for="password"
+      <label for="password" class="font-text-light flex flex-col gap-1"
         ><span>Bekräfta lösenord</span>
         <input
           type="password"
@@ -271,7 +271,7 @@ onMounted(() => {
             isPasswordWrong && 'input-error'
           ]"
         />
-        <p class="warning-text" v-if="isConfirmPasswordWeak">
+        <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
           använda ett säkrare
         </p>
@@ -283,7 +283,7 @@ onMounted(() => {
       <button
         type="submit"
         :disabled="isBtnDisabled"
-        :class="['mt-4', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
+        :class="['mt-4 mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
       >
         Registrera
       </button>
