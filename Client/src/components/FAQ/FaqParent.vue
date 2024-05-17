@@ -64,13 +64,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <h2
-    :class="{
-      'font-title-bold t-b-gradient O14rem': mobile,
-      'font-title-bold t-b-gradient O15rem': tablet
-    }"
-  >
-    FAQ
-  </h2>
+  <h2 class="t-b-gradient text-xl sm:text-2xl">FAQ</h2>
   <FaqDropdown v-for="Q in faqTexts" :key="Q.title" :question="Q"></FaqDropdown>
 </template>

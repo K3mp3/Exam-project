@@ -177,93 +177,113 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mobile-form-background">
-    <div class="mobile-form-nav">
-      <RouterLink to="/" class="router-link"
+  <div class="p-4 flex flex-col gap-8 text-main">
+    <div class="flex gap-4 items-center">
+      <RouterLink to="/" class="btn-back"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
-      <h2>Registrera dig</h2>
+      <h2 class="text-xl sm:text-2xl">Registrera dig</h2>
     </div>
-    <form @submit.prevent="handleRegistration" class="mobile-register-form">
-      <label for="name">För- och efternamn</label>
-      <input
-        type="text"
-        name="name"
-        placeholder="För- och efternammn"
-        v-model="name"
-        @input="checkInputDataName"
-        :class="isNotBothNames ? 'input-error' : ''"
-      />
-      <p v-if="isNotBothNames">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både för-
-        och efternamn finns med!
-      </p>
+    <form @submit.prevent="handleRegistration" class="flex flex-col gap-6">
+      <label for="name"
+        ><span>För- och efternamn</span>
+        <input
+          type="text"
+          name="name"
+          placeholder="För- och efternammn"
+          v-model="name"
+          @input="checkInputDataName"
+          :class="['w-full text-input px-2', isNotBothNames ? 'input-error' : '']"
+        />
+        <p v-if="isNotBothNames">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både
+          för- och efternamn finns med!
+        </p>
+      </label>
 
-      <label for="email">Email adress</label>
-      <input
-        type="email"
-        name="email"
-        placeholder="namn@mail.com"
-        v-model="email"
-        @input="checkInputDataEmail"
-        :class="isEmailWrong ? 'input-error' : ''"
-        :value="isFilledEmail ? filledEmail : email"
-      />
-      <p v-if="isEmailWrong">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!
-      </p>
+      <label for="email"
+        ><span>Email adress</span>
+        <input
+          type="email"
+          name="email"
+          placeholder="namn@mail.com"
+          v-model="email"
+          @input="checkInputDataEmail"
+          :class="['w-full text-input px-2', isEmailWrong ? 'input-error' : '']"
+          :value="isFilledEmail ? filledEmail : email"
+        />
+        <p v-if="isEmailWrong">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
+          adressen!
+        </p>
+      </label>
 
-      <label for="email">Bekräfta email adress</label>
-      <input
-        type="email"
-        name="email"
-        placeholder="namn@mail.com"
-        v-model="confirmEmail"
-        @input="checkInputDataConfirmEmail"
-        :class="isEmailWrong ? 'input-error' : ''"
-      />
-      <p v-if="isEmailWrong">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!
-      </p>
+      <label for="email"
+        ><span>Bekräfta email adress</span>
+        <input
+          type="email"
+          name="email"
+          placeholder="namn@mail.com"
+          v-model="confirmEmail"
+          @input="checkInputDataConfirmEmail"
+          :class="['w-full text-input px-2', isEmailWrong ? 'input-error' : '']"
+        />
+        <p v-if="isEmailWrong">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
+          adressen!
+        </p>
+      </label>
 
-      <label for="password">Lösenord</label>
-      <input
-        type="password"
-        name="password"
-        placeholder="Lösenord"
-        v-model="password"
-        @input="checkInputDataPassword"
-        :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }"
-      />
-      <p class="warning-text" v-if="isPasswordWeak">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-        använda ett säkrare
-      </p>
-      <p v-if="isPasswordWrong">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
-      </p>
+      <label for="password"
+        ><span>Lösenord</span>
+        <input
+          type="password"
+          name="password"
+          placeholder="Lösenord"
+          v-model="password"
+          @input="checkInputDataPassword"
+          :class="[
+            'w-full text-input px-2',
+            isPasswordWeak && 'input-password-weak',
+            isPasswordWrong && 'input-error'
+          ]"
+        />
+        <p class="warning-text" v-if="isPasswordWeak">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
+          använda ett säkrare
+        </p>
+        <p v-if="isPasswordWrong">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
+        </p>
+      </label>
 
-      <label for="password">Bekräfta lösenord</label>
-      <input
-        type="password"
-        name="password"
-        placeholder="Lösenord"
-        v-model="confirmPassword"
-        @input="checkInputDataConfirmPassword"
-        :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isConfirmPasswordWeak }"
-      />
-      <p class="warning-text" v-if="isConfirmPasswordWeak">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-        använda ett säkrare
-      </p>
-      <p v-if="isPasswordWrong">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
-      </p>
+      <label for="password"
+        ><span>Bekräfta lösenord</span>
+        <input
+          type="password"
+          name="password"
+          placeholder="Lösenord"
+          v-model="confirmPassword"
+          @input="checkInputDataConfirmPassword"
+          :class="[
+            'w-full text-input px-2',
+            isPasswordWeak && 'input-password-weak',
+            isPasswordWrong && 'input-error'
+          ]"
+        />
+        <p class="warning-text" v-if="isConfirmPasswordWeak">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
+          använda ett säkrare
+        </p>
+        <p v-if="isPasswordWrong">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
+        </p>
+      </label>
 
       <button
         type="submit"
         :disabled="isBtnDisabled"
-        :class="isBtnDisabled ? 'register-mobile-button-disable' : 'register-mobile-button'"
+        :class="['mt-4', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
       >
         Registrera
       </button>

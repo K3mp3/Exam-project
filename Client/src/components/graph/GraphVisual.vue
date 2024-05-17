@@ -25,14 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h2
-    :class="{
-      'font-title-bold O14rem text-align-center': mobile,
-      'font-title-bold O15rem text-align-center': tablet
-    }"
-  >
-    Öka antalet kunder som verkstad
-  </h2>
+  <h2 class="text-xl sm:text-2xl text-center">Öka antalet kunder som verkstad</h2>
 
   <div class="graph-container">
     <div class="graph graph-1"></div>

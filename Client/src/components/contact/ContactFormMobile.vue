@@ -201,16 +201,13 @@ onMounted(() => {
     <ConsumerNav></ConsumerNav>
   </nav>
   <div class="pt-[132px] flex flex-col gap-8 p-4 items-center text-main">
-    <div class="display-flex items-center justify-between width-100 m-width-1200 relative">
+    <div class="flex gap-4 items-center w-full">
       <RouterLink to="/" class="btn-back z-10"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
-
-      <div class="w-full absolute text-center">
-        <h2 class="text-xl">Kontakta oss</h2>
-      </div>
+      <h2 class="text-xl">Kontakta oss</h2>
     </div>
-    <form @submit.prevent="handleMessage" class="width-100 m-width-1200 text-align-left mt-1">
+    <form @submit.prevent="handleMessage" class="flex flex-col w-full gap-6">
       <label for="name" class="text-main font-text-light">För- och efternamn</label>
       <input
         type="text"
@@ -269,8 +266,8 @@ onMounted(() => {
         type="submit"
         :disabled="isBtnDisabled"
         :class="{
-          'main-btn-disabled margin-32-0 text-disabled font-title-bold': isBtnDisabled,
-          'main-btn w-full margin-32-0 text-disabled font-title-bold': !isBtnDisabled
+          'main-btn-disabled text-disabled font-title-bold': isBtnDisabled,
+          'main-btn w-full text-disabled font-title-bold': !isBtnDisabled
         }"
       >
         Skicka

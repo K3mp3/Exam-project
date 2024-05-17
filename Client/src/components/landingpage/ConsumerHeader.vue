@@ -30,7 +30,7 @@ function saveUserEmail() {
         type="text"
         placeholder="dinmail@mail.se"
         v-model="userEmail"
-        class="text-input px-4"
+        class="text-input px-2"
       />
       <button type="button" class="main-btn-white w-full mt-2" @click="saveUserEmail">
         Registrera

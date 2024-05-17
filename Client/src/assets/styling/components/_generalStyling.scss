@@ -574,6 +574,13 @@ p {
   margin: auto;
 }
 
+.gray-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, #23232300, #232323, #23232300);
+  margin: auto;
+}
+
 .blue-line-mb-16 {
   max-width: 100vw;
   height: 2px;
@@ -1048,6 +1055,45 @@ p {
     linear-gradient(to right, #a80df1, #3b178a, #0d3ef100);
   background-origin: border-box;
   background-clip: padding-box, border-box;
+}
+
+.graph-container {
+  margin-top: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 7%;
+
+  .graph {
+    width: 100%;
+    border: 2px solid transparent;
+    border-radius: 8px 8px 0 0;
+    background-image: linear-gradient($bg-main, $bg-main),
+      linear-gradient(to bottom, #a80df1, #3b178a, #0d3ef100);
+    // background-image: linear-gradient($bg-main, $bg-main),
+    //   linear-gradient(to bottom, #0d3ff1, #0d3ef100);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+
+  .graph-1 {
+    height: 48px;
+  }
+
+  .graph-2 {
+    height: 80px;
+  }
+
+  .graph-3 {
+    height: 112px;
+  }
+
+  .graph-4 {
+    height: 144px;
+  }
+
+  .graph-5 {
+    height: 176px;
+  }
 }
 
 .anw-silhouette {
