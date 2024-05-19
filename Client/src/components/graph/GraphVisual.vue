@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h2 class="text-xl sm:text-2xl text-center">Öka antalet kunder som verkstad</h2>
+  <h2 class="text-xl sm:text-2xl text-center xl:mt-32">Öka antalet kunder som verkstad</h2>
 
   <div class="graph-container">
     <div class="graph graph-1"></div>

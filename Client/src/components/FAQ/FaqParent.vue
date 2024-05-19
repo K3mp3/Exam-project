@@ -64,6 +64,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <h2 class="t-b-gradient text-xl sm:text-2xl">FAQ</h2>
+  <h2 class="t-b-gradient text-xl sm:text-2xl mt-16 xl:mt-32">FAQ</h2>
   <FaqDropdown v-for="Q in faqTexts" :key="Q.title" :question="Q"></FaqDropdown>
 </template>
