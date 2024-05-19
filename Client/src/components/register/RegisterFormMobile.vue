@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
-import { useShowUserEmail } from '@/stores/showUserEmail'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
-import DialogBox from '../dialogs/DialogBox.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
+const filledEmail = localStorage.getItem('userEmail')
+
 const name = ref('')
-const email = ref('')
+const email = ref(filledEmail || '')
 const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-
-const isName = ref(false)
-const isEmail = ref(false)
-const isConfirmEmail = ref(false)
-const isPassword = ref(false)
-const isConfirmPassword = ref(false)
 
 const isEmailValid = ref(true)
 const isConfirmEmailValid = ref(true)
@@ -24,18 +18,18 @@ const isNameCorrect = ref(true)
 const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
+const isEmailMatch = ref(true)
+const isPasswordMatch = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
-  { key: 'isEmail', value: false },
+  { key: 'isEmail', value: !!filledEmail },
   { key: 'isConfirmEmail', value: false },
   { key: 'isPassword', value: false },
   { key: 'isConfirmPassword', value: false }
 ]
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
-const filledEmail = computed(() => useShowUserEmail().userEmail)
-const isFilledEmail = computed(() => useShowUserEmail().isEmail)
 
 const newUser = computed(() => {
   return {
@@ -48,7 +42,11 @@ const newUser = computed(() => {
 })
 
 function checkInputData() {
-  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  isBtnDisabled.value =
+    !inputsArray.every((field) => field.value) ||
+    !isEmailMatch.value ||
+    !isNameCorrect.value ||
+    !isPasswordMatch.value
 }
 
 function checkInputsData(confirmKey: string) {
@@ -111,6 +109,34 @@ function checkInputDataName() {
   console.log(isNameCorrect.value)
 }
 
+function checkEmailMatch() {
+  if (email.value === '' || confirmEmail.value === '') {
+    isEmailMatch.value = true
+    return
+  }
+
+  if (email.value === confirmEmail.value) {
+    isEmailMatch.value = true
+  } else {
+    isEmailMatch.value = false
+  }
+
+  console.log(isEmailMatch.value)
+
+  checkInputData()
+}
+
+function checkPasswordMatch() {
+  if (password.value === '' || confirmPassword.value === '') {
+    isPasswordMatch.value = true
+    return
+  }
+
+  if (password.value === confirmPassword.value) {
+    isPasswordMatch.value = true
+  }
+}
+
 function checkInputDataEmail() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   isEmailValid.value = emailRegex.test(email.value.trim())
@@ -134,13 +160,15 @@ async function handleRegistration() {
 }
 
 onMounted(() => {
-  const storedEmail = localStorage.getItem('userEmail')
-
-  if (storedEmail) {
-    email.value = storedEmail
+  if (filledEmail) {
     checkInputDataEmail()
+    const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+    if (index !== -1) {
+      inputsArray[index].value = true
+    } else {
+      inputsArray.push({ key: 'isEmail', value: true })
+    }
   }
-
   checkInputData()
 })
 </script>
@@ -179,8 +207,10 @@ onMounted(() => {
           :inputName="'isEmail'"
           :isDataCorrect="isEmailValid"
           :placeholder="'namn@dinmail.se'"
+          :predefinedValue="filledEmail ? filledEmail : ''"
+          :onBlur="checkEmailMatch"
         />
-        <p v-if="!isEmailValid" class="text-warning-orange">
+        <p v-if="!isEmailValid || !isEmailMatch" class="text-warning-orange">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
           adressen!
         </p>
@@ -195,8 +225,9 @@ onMounted(() => {
           :inputName="'isConfirmEmail'"
           :isDataCorrect="isConfirmEmailValid"
           :placeholder="'namn@dinmail.se'"
+          :onBlur="checkEmailMatch"
         />
-        <p v-if="!isConfirmEmailValid" class="text-warning-orange">
+        <p v-if="!isConfirmEmailValid || !isEmailMatch" class="text-warning-orange">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
           adressen!
         </p>
@@ -211,6 +242,7 @@ onMounted(() => {
           :inputName="'isPassword'"
           :isDataCorrect="!isPasswordWeak"
           :placeholder="'lösenord'"
+          :onBlur="checkPasswordMatch"
         />
         <p class="text-warning-orange" v-if="isPasswordWeak">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
@@ -227,6 +259,7 @@ onMounted(() => {
           :inputName="'isConfirmPassword'"
           :isDataCorrect="!isConfirmPasswordWeak"
           :placeholder="'lösenord'"
+          :onBlur="checkPasswordMatch"
         />
         <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
           <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
@@ -252,10 +285,10 @@ onMounted(() => {
       </p>
       <p>
         Har du en verkstad och vill registrera dig?
-        <RouterLink to="/register-repair-shop" class="router-link-text">Klicka här</RouterLink>
+        <RouterLink to="/register-repair-shop" class="router-link-text"
+          >Registrera dig här</RouterLink
+        >
       </p>
     </div>
-
-    <DialogBox v-if="isDialog"></DialogBox>
   </div>
 </template>

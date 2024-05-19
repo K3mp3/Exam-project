@@ -25,6 +25,12 @@ const props = defineProps({
   placeholder: {
     type: String,
     required: true
+  },
+  predefinedValue: {
+    type: String
+  },
+  onBlur: {
+    type: Function
   }
 })
 
@@ -35,7 +41,13 @@ function handleChange() {
   props.inputData(data.value)
 }
 
-console.log(props.isDataCorrect)
+function handleBlur() {
+  if (props.onBlur) {
+    props.onBlur(data.value)
+  }
+}
+
+console.log(props.predefinedValue)
 </script>
 
 <template>
@@ -43,8 +55,10 @@ console.log(props.isDataCorrect)
     :type="props.inputType"
     :name="props.inputName"
     :placeholder="props.placeholder"
+    :value="predefinedValue ? predefinedValue : data"
     v-model="data"
     @input="handleChange"
+    @blur="handleBlur"
     :class="['w-full text-input px-2', props.isDataCorrect ? 'text-input' : 'input-warning']"
   />
 </template>
