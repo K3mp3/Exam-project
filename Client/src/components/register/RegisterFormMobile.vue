@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { registerUser } from '@/services/registerUser'
-import { useShowPopUp } from '@/stores/ShowPopUpStore'
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
+import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
 const filledEmail = localStorage.getItem('userEmail')
@@ -20,6 +23,9 @@ const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
 const isEmailMatch = ref(true)
 const isPasswordMatch = ref(true)
+const showErrorDialog = ref(false)
+const isConfirmationSuccess = ref(false)
+const isLoading = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
@@ -28,18 +34,6 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isPassword', value: false },
   { key: 'isConfirmPassword', value: false }
 ]
-
-const isDialog = computed(() => useShowPopUp().showPopUp)
-
-const newUser = computed(() => {
-  return {
-    name: name.value,
-    email: email.value,
-    password: password.value,
-    repairShop: false,
-    signedIn: false
-  }
-})
 
 function checkInputData() {
   isBtnDisabled.value =
@@ -156,7 +150,40 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
+  isLoading.value = true
+
+  const currentUser = getAuth().currentUser
+  const userId = currentUser ? currentUser.uid : ''
+
+  const newUser = computed(() => {
+    return {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      repairShop: false,
+      userId: userId
+    }
+  })
+
   const response = await registerUser(newUser.value)
+
+  if (response === 201) {
+    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+      .then(async (data) => {
+        isLoading.value = false
+        isConfirmationSuccess.value = true
+
+        setTimeout(() => {
+          isConfirmationSuccess.value = false
+        }, 4000)
+      })
+      .catch((error) => {
+        isLoading.value = false
+      })
+  } else {
+    isLoading.value = false
+    showErrorDialog.value = true
+  }
 }
 
 onMounted(() => {
@@ -174,121 +201,147 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4 flex flex-col gap-8 text-main">
-    <div class="flex gap-4 items-center">
-      <RouterLink to="/" class="btn-back"
-        ><fontAwesome :icon="['fas', 'chevron-left']"
-      /></RouterLink>
-      <h2 class="text-xl sm:text-2xl">Registrera dig</h2>
-    </div>
-    <form @submit.prevent="handleRegistration" class="flex flex-col gap-6">
-      <label for="name" class="font-text-light flex flex-col gap-1"
-        ><span>För- och efternamn</span>
-        <InfoInput
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :inputData="(e: string) => (name = e)"
-          :inputType="'text'"
-          :inputName="'isName'"
-          :isDataCorrect="isNameCorrect"
-          :placeholder="'För- och efternamn'"
-        />
-        <p v-if="!isNameCorrect" class="text-warning-orange">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både
-          för- och efternamn finns med!
-        </p>
-      </label>
+  <div class="flex items-center h-screen">
+    <div class="p-4 flex flex-col gap-8 text-main w-full">
+      <div class="flex gap-4 items-center">
+        <RouterLink to="/" class="btn-back"
+          ><fontAwesome :icon="['fas', 'chevron-left']"
+        /></RouterLink>
+        <h2 class="text-xl sm:text-2xl">Registrera dig</h2>
+      </div>
+      <form @submit.prevent="handleRegistration" class="flex flex-col gap-6">
+        <label for="name" class="font-text-light flex flex-col gap-1"
+          ><span>För- och efternamn</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (name = e)"
+            :inputType="'text'"
+            :inputName="'isName'"
+            :isDataCorrect="isNameCorrect"
+            :placeholder="'För- och efternamn'"
+          />
+          <p v-if="!isNameCorrect" class="text-warning-orange flex gap-2 items-center">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+              >Vänligen kontrollera så att både för- och efternamn finns med!</span
+            >
+          </p>
+        </label>
 
-      <label for="email" class="font-text-light flex flex-col gap-1"
-        ><span>Email adress</span>
-        <InfoInput
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :inputData="(e: string) => (email = e)"
-          :inputType="'email'"
-          :inputName="'isEmail'"
-          :isDataCorrect="isEmailValid"
-          :placeholder="'namn@dinmail.se'"
-          :predefinedValue="filledEmail ? filledEmail : ''"
-          :onBlur="checkEmailMatch"
-        />
-        <p v-if="!isEmailValid || !isEmailMatch" class="text-warning-orange">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
-          adressen!
-        </p>
-      </label>
+        <label for="email" class="font-text-light flex flex-col gap-1"
+          ><span>Email adress</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (email = e)"
+            :inputType="'email'"
+            :inputName="'isEmail'"
+            :isDataCorrect="isEmailValid"
+            :placeholder="'namn@dinmail.se'"
+            :predefinedValue="filledEmail ? filledEmail : ''"
+            :onBlur="checkEmailMatch"
+          />
+          <p
+            v-if="!isEmailValid || !isEmailMatch"
+            class="text-warning-orange flex gap-2 items-center"
+          >
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+              >Vänligen kontrollera email adressen!</span
+            >
+          </p>
+        </label>
 
-      <label for="email" class="font-text-light flex flex-col gap-1"
-        ><span>Bekräfta email adress</span>
-        <InfoInput
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :inputData="(e: string) => (confirmEmail = e)"
-          :inputType="'email'"
-          :inputName="'isConfirmEmail'"
-          :isDataCorrect="isConfirmEmailValid"
-          :placeholder="'namn@dinmail.se'"
-          :onBlur="checkEmailMatch"
-        />
-        <p v-if="!isConfirmEmailValid || !isEmailMatch" class="text-warning-orange">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
-          adressen!
-        </p>
-      </label>
+        <label for="email" class="font-text-light flex flex-col gap-1"
+          ><span>Bekräfta email adress</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (confirmEmail = e)"
+            :inputType="'email'"
+            :inputName="'isConfirmEmail'"
+            :isDataCorrect="isConfirmEmailValid"
+            :placeholder="'namn@dinmail.se'"
+            :onBlur="checkEmailMatch"
+          />
+          <p
+            v-if="!isConfirmEmailValid || !isEmailMatch"
+            class="text-warning-orange flex gap-2 items-center"
+          >
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+              >Vänligen kontrollera email adressen!</span
+            >
+          </p>
+        </label>
 
-      <label for="password" class="font-text-light flex flex-col gap-1"
-        ><span>Lösenord</span>
-        <InfoInput
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :inputData="(e: string) => (password = e)"
-          :inputType="'password'"
-          :inputName="'isPassword'"
-          :isDataCorrect="!isPasswordWeak"
-          :placeholder="'lösenord'"
-          :onBlur="checkPasswordMatch"
-        />
-        <p class="text-warning-orange" v-if="isPasswordWeak">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-          använda ett säkrare
-        </p>
-      </label>
+        <label for="password" class="font-text-light flex flex-col gap-1"
+          ><span>Lösenord</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (password = e)"
+            :inputType="'password'"
+            :inputName="'isPassword'"
+            :isDataCorrect="!isPasswordWeak"
+            :placeholder="'lösenord'"
+            :onBlur="checkPasswordMatch"
+          />
+          <p class="text-warning-orange flex gap-2 items-center" v-if="isPasswordWeak">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+              >Lösenordet är svagt! Överväg att använda ett säkrare</span
+            >
+          </p>
+        </label>
 
-      <label for="password" class="font-text-light flex flex-col gap-1"
-        ><span>Bekräfta lösenord</span>
-        <InfoInput
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :inputData="(e: string) => (confirmPassword = e)"
-          :inputType="'password'"
-          :inputName="'isConfirmPassword'"
-          :isDataCorrect="!isConfirmPasswordWeak"
-          :placeholder="'lösenord'"
-          :onBlur="checkPasswordMatch"
-        />
-        <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-          använda ett säkrare
-        </p>
-      </label>
+        <label for="password" class="font-text-light flex flex-col gap-1"
+          ><span>Bekräfta lösenord</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (confirmPassword = e)"
+            :inputType="'password'"
+            :inputName="'isConfirmPassword'"
+            :isDataCorrect="!isConfirmPasswordWeak"
+            :placeholder="'lösenord'"
+            :onBlur="checkPasswordMatch"
+          />
+          <p class="text-warning-orange flex gap-2 items-center" v-if="isConfirmPasswordWeak">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+              >Lösenordet är svagt! Överväg att använda ett säkrare</span
+            >
+          </p>
+        </label>
 
-      <button
-        type="submit"
-        :disabled="isBtnDisabled"
-        :class="['mt-4 mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
-      >
-        Registrera
-      </button>
-    </form>
-
-    <div class="blue-line"></div>
-
-    <div class="text-form-container">
-      <p>
-        Har du redan ett konto?
-        <RouterLink to="/sign-in" class="router-link-text">Logga in här</RouterLink>
-      </p>
-      <p>
-        Har du en verkstad och vill registrera dig?
-        <RouterLink to="/register-repair-shop" class="router-link-text"
-          >Registrera dig här</RouterLink
+        <button
+          type="submit"
+          :disabled="isBtnDisabled"
+          :class="['mt-4 mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
         >
-      </p>
+          Registrera
+        </button>
+      </form>
+
+      <div class="blue-line"></div>
+
+      <div class="text-form-container">
+        <p>
+          Har du redan ett konto?
+          <RouterLink to="/sign-in" class="router-link-text">Logga in här</RouterLink>
+        </p>
+        <p>
+          Har du en verkstad och vill registrera dig?
+          <RouterLink to="/register-repair-shop" class="router-link-text"
+            >Registrera dig här</RouterLink
+          >
+        </p>
+      </div>
     </div>
+    <RegisterErrorDialog
+      v-if="showErrorDialog"
+      :showErrorDialog="showErrorDialog"
+      :closeDialog="() => (showErrorDialog = false)"
+    />
+    <SentResponseDialog
+      :isConfirmationSuccess="isConfirmationSuccess"
+      v-if="isConfirmationSuccess"
+    />
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
