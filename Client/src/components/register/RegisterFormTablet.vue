@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { registerUser } from '@/services/registerUser'
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
+import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
 const filledEmail = localStorage.getItem('userEmail')
@@ -19,6 +23,9 @@ const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
 const isEmailMatch = ref(true)
 const isPasswordMatch = ref(true)
+const showErrorDialog = ref(false)
+const isConfirmationSuccess = ref(false)
+const isLoading = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
@@ -27,16 +34,6 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isPassword', value: false },
   { key: 'isConfirmPassword', value: false }
 ]
-
-const newUser = computed(() => {
-  return {
-    name: name.value,
-    email: email.value,
-    password: password.value,
-    repairShop: false,
-    signedIn: false
-  }
-})
 
 function checkInputData() {
   isBtnDisabled.value =
@@ -153,7 +150,40 @@ function checkPasswordStrength(type: string) {
 }
 
 async function handleRegistration() {
+  isLoading.value = true
+
+  const currentUser = getAuth().currentUser
+  const userId = currentUser ? currentUser.uid : ''
+
+  const newUser = computed(() => {
+    return {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      repairShop: false,
+      userId: userId
+    }
+  })
+
   const response = await registerUser(newUser.value)
+
+  if (response === 201) {
+    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+      .then(async (data) => {
+        isLoading.value = false
+        isConfirmationSuccess.value = true
+
+        setTimeout(() => {
+          isConfirmationSuccess.value = false
+        }, 4000)
+      })
+      .catch((error) => {
+        isLoading.value = false
+      })
+  } else {
+    isLoading.value = false
+    showErrorDialog.value = true
+  }
 }
 
 onMounted(() => {
@@ -192,8 +222,8 @@ onMounted(() => {
               :placeholder="'För- och efternamn'"
             />
             <p v-if="!isNameCorrect" class="text-warning-orange">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
-              både för- och efternamn finns med!
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera så att både för- och efternamn finns med!
             </p>
           </label>
 
@@ -210,8 +240,8 @@ onMounted(() => {
               :onBlur="checkEmailMatch"
             />
             <p v-if="!isEmailValid || !isEmailMatch" class="text-warning-orange">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
-              adressen!
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera email adressen!
             </p>
           </label>
 
@@ -227,8 +257,8 @@ onMounted(() => {
               :onBlur="checkEmailMatch"
             />
             <p v-if="!isConfirmEmailValid || !isEmailMatch" class="text-warning-orange">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
-              adressen!
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera email adressen!
             </p>
           </label>
         </div>
@@ -246,8 +276,8 @@ onMounted(() => {
               :onBlur="checkPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isPasswordWeak">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg
-              att använda ett säkrare
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Lösenordet är
+              svagt! Överväg att använda ett säkrare
             </p>
           </label>
 
@@ -263,8 +293,8 @@ onMounted(() => {
               :onBlur="checkPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg
-              att använda ett säkrare
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Lösenordet är
+              svagt! Överväg att använda ett säkrare
             </p>
           </label>
 
@@ -289,5 +319,18 @@ onMounted(() => {
         </p>
       </div>
     </div>
+    <RegisterErrorDialog
+      v-if="showErrorDialog"
+      :showErrorDialog="showErrorDialog"
+      :closeDialog="() => (showErrorDialog = false)"
+    />
+    <SentResponseDialog
+      :isConfirmationSuccess="isConfirmationSuccess"
+      v-if="isConfirmationSuccess"
+    />
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>

@@ -220,8 +220,8 @@ onMounted(() => {
             :isDataCorrect="isNameCorrect"
             :placeholder="'För- och efternamn'"
           />
-          <p v-if="!isNameCorrect" class="text-warning-orange flex gap-2 items-center">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+          <p v-if="!isNameCorrect" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Vänligen kontrollera så att både för- och efternamn finns med!</span
             >
           </p>
@@ -239,11 +239,8 @@ onMounted(() => {
             :predefinedValue="filledEmail ? filledEmail : ''"
             :onBlur="checkEmailMatch"
           />
-          <p
-            v-if="!isEmailValid || !isEmailMatch"
-            class="text-warning-orange flex gap-2 items-center"
-          >
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+          <p v-if="!isEmailValid || !isEmailMatch" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Vänligen kontrollera email adressen!</span
             >
           </p>
@@ -260,11 +257,8 @@ onMounted(() => {
             :placeholder="'namn@dinmail.se'"
             :onBlur="checkEmailMatch"
           />
-          <p
-            v-if="!isConfirmEmailValid || !isEmailMatch"
-            class="text-warning-orange flex gap-2 items-center"
-          >
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+          <p v-if="!isConfirmEmailValid || !isEmailMatch" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Vänligen kontrollera email adressen!</span
             >
           </p>
@@ -281,8 +275,8 @@ onMounted(() => {
             :placeholder="'lösenord'"
             :onBlur="checkPasswordMatch"
           />
-          <p class="text-warning-orange flex gap-2 items-center" v-if="isPasswordWeak">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+          <p class="text-warning-orange" v-if="isPasswordWeak">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Lösenordet är svagt! Överväg att använda ett säkrare</span
             >
           </p>
@@ -299,8 +293,8 @@ onMounted(() => {
             :placeholder="'lösenord'"
             :onBlur="checkPasswordMatch"
           />
-          <p class="text-warning-orange flex gap-2 items-center" v-if="isConfirmPasswordWeak">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" /><span
+          <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Lösenordet är svagt! Överväg att använda ett säkrare</span
             >
           </p>
