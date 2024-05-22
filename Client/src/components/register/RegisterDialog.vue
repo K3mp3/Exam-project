@@ -265,7 +265,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-main-90">
+  <div
+    class="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-main-90 backdrop-blur-sm"
+  >
     <div class="max-w-[1200px] flex flex-col gap-16 bg-main p-16 bg-blue-500">
       <div class="flex gap-4 items-center relative">
         <button type="button" to="/" class="btn-back z-10">
@@ -343,12 +345,12 @@ onMounted(() => {
               <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Lösenordet är
               svagt! Överväg att använda ett säkrare
             </p>
-          </label>
 
-          <p v-if="isPasswordWrong">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
-            lösenorden stämmer överens!
-          </p>
+            <p v-if="isPasswordWrong">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
+              lösenorden stämmer överens!
+            </p>
+          </label>
 
           <label for="password">Bekräfta lösenord</label>
           <input
