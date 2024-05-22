@@ -121,13 +121,18 @@ function checkEmailMatch() {
 }
 
 function checkPasswordMatch() {
+  console.log('hejsan knorr')
+
   if (password.value === '' || confirmPassword.value === '') {
     isPasswordMatch.value = true
     return
   }
 
   if (password.value === confirmPassword.value) {
+    console.log('jippiho')
     isPasswordMatch.value = true
+  } else {
+    isPasswordMatch.value = false
   }
 }
 
@@ -280,6 +285,11 @@ onMounted(() => {
               >Lösenordet är svagt! Överväg att använda ett säkrare</span
             >
           </p>
+
+          <p v-if="!isPasswordMatch" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen kontrollera
+            så att lösenorden stämmer överens!
+          </p>
         </label>
 
         <label for="password" class="font-text-light flex flex-col gap-1"
@@ -297,6 +307,11 @@ onMounted(() => {
             <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Lösenordet är svagt! Överväg att använda ett säkrare</span
             >
+          </p>
+
+          <p v-if="!isPasswordMatch" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen kontrollera
+            så att lösenorden stämmer överens!
           </p>
         </label>
 

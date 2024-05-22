@@ -11,6 +11,7 @@ import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
+import InfoInput from '../utils/components/InfoInput.vue'
 
 const props = defineProps({
   showRepairShopRegisterDialog: {
@@ -31,12 +32,15 @@ const isConfirmPassword = ref(false)
 const isLoading = ref(false)
 const showErrorDialog = ref(false)
 const isConfirmationSuccess = ref(false)
-const isEmailWrong = ref(false)
+const isEmailValid = ref(false)
 const isPasswordWrong = ref(false)
-const isNotBothNames = ref(false)
+const isNameValid = ref(false)
 const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
+const isEmailMatch = ref(true)
+const isPasswordMatch = ref(true)
+const isConfirmEmailValid = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
@@ -55,29 +59,36 @@ const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShop
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
 function checkInputData() {
-  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  isBtnDisabled.value =
+    !inputsArray.every((field) => field.value) ||
+    !isEmailMatch.value ||
+    !isNameValid.value ||
+    !isPasswordMatch.value
 }
 
 function checkInputsData(confirmKey: string) {
-  console.log(confirmKey)
-
   nextTick(() => {
     let refVariable: Ref<string> | null = null
     switch (confirmKey) {
       case 'isName':
         refVariable = name
+        checkInputDataName()
         break
       case 'isEmail':
         refVariable = email
+        checkInputDataEmail()
         break
       case 'isConfirmEmail':
         refVariable = confirmEmail
+        checkInputDataConfirmEmail()
         break
       case 'isPassword':
         refVariable = password
+        checkPasswordStrength('password')
         break
       case 'isConfirmPassword':
         refVariable = confirmPassword
+        checkPasswordStrength('confirmPassword')
         break
       default:
         break
@@ -108,24 +119,21 @@ function checkInputsData(confirmKey: string) {
   })
 }
 
-function checkInputDataPassword() {
-  checkInputsData('isPassword')
-  checkPasswordStrength('password')
-  nextTick(() => {
-    if (password.value === '') {
-      return
-    } else {
-      isPassword.value = true
+function checkInputDataName() {
+  const nameRegex = /^[^\s]+\s[^\s]+$/
+  isNameValid.value = nameRegex.test(name.value)
 
-      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
+  console.log(isNameValid.value)
+}
 
-      if (index !== -1) {
-        inputsArray[index].value = isPassword.value
-      } else {
-        inputsArray.push({ key: 'isPassword', value: isPassword.value })
-      }
-    }
-  })
+function checkInputDataEmail() {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  isEmailValid.value = emailRegex.test(email.value.trim())
+}
+
+function checkInputDataConfirmEmail() {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  isConfirmEmailValid.value = emailRegex.test(confirmEmail.value.trim())
 }
 
 function checkInputDataConfirmPassword() {
@@ -149,8 +157,6 @@ function checkInputDataConfirmPassword() {
 }
 
 function checkPasswordStrength(type: string) {
-  checkInputData()
-
   if (type === 'password') {
     isPasswordWeak.value = password.value.length < 5
   } else {
@@ -218,6 +224,34 @@ function showRegisterRepairShopDialog() {
   showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
 
+function checkEmailMatch() {
+  if (email.value === '' || confirmEmail.value === '') {
+    isEmailMatch.value = true
+    return
+  }
+
+  if (email.value === confirmEmail.value) {
+    isEmailMatch.value = true
+  } else {
+    isEmailMatch.value = false
+  }
+
+  console.log(isEmailMatch.value)
+
+  checkInputData()
+}
+
+function checkPasswordMatch() {
+  if (password.value === '' || confirmPassword.value === '') {
+    isPasswordMatch.value = true
+    return
+  }
+
+  if (password.value === confirmPassword.value) {
+    isPasswordMatch.value = true
+  }
+}
+
 onMounted(() => {
   const storedEmail = localStorage.getItem('userEmail')
 
@@ -231,74 +265,86 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="desktop-form-background">
-    <div class="desktop-dialog-container">
-      <div class="desktop-dialog-nav">
-        <button type="button" class="btn-back" @click="closeRegisterDialog">
+  <div class="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-main-90">
+    <div class="max-w-[1200px] flex flex-col gap-16 bg-main p-16 bg-blue-500">
+      <div class="flex gap-4 items-center relative">
+        <button type="button" to="/" class="btn-back z-10">
           <fontAwesome :icon="['fas', 'chevron-left']" />
         </button>
-        <h2>Registrera dig</h2>
+        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera dig</h2>
       </div>
-      <form @submit.prevent="handleRegistration" class="desktop-register-form">
-        <div class="input-container-left">
-          <label for="name">För- och efternamn</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="För- och efternammn"
-            v-model="name"
-            @input="() => checkInputsData('isName')"
-            :class="isNotBothNames ? 'input-error' : ''"
-          />
-          <p v-if="isNotBothNames">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att både
-            för- och efternamn finns med!
-          </p>
+      <form @submit.prevent="handleRegistration" class="flex gap-16">
+        <div class="w-full flex flex-col gap-7">
+          <label for="name" class="font-text-light flex flex-col gap-1"
+            ><span>För- och efternamn</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (name = e)"
+              :inputType="'text'"
+              :inputName="'isName'"
+              :isDataCorrect="isNameValid"
+              :placeholder="'För- och efternamn'"
+            />
+            <p v-if="!isNameValid" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera så att både för- och efternamn finns med!
+            </p>
+          </label>
 
-          <label for="email">Email adress</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="namn@mail.com"
-            v-model="email"
-            @input="() => checkInputsData('isEmail')"
-            :class="isEmailWrong ? 'input-error' : ''"
-            :value="isFilledEmail ? filledEmail : email"
-          />
-          <p v-if="isEmailWrong">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att email
-            adresserna stämmer överens!
-          </p>
+          <label for="email" class="font-text-light flex flex-col gap-1"
+            ><span>Email adress</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (email = e)"
+              :inputType="'email'"
+              :inputName="'isEmail'"
+              :isDataCorrect="isEmailValid"
+              :placeholder="'namn@dinmail.se'"
+              :predefinedValue="filledEmail ? filledEmail : ''"
+              :onBlur="checkEmailMatch"
+            />
+            <p v-if="!isEmailValid || !isEmailMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera email adressen!
+            </p>
+          </label>
 
-          <label for="email">Bekräfta email adress</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="namn@mail.com"
-            v-model="confirmEmail"
-            @input="() => checkInputsData('isConfirmEmail')"
-            :class="isEmailWrong ? 'input-error' : ''"
-          />
-          <p v-if="isEmailWrong">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att email
-            adresserna stämmer överens!
-          </p>
+          <label for="email" class="font-text-light flex flex-col gap-1"
+            ><span>Bekräfta email adress</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (confirmEmail = e)"
+              :inputType="'email'"
+              :inputName="'isConfirmEmail'"
+              :isDataCorrect="isConfirmEmailValid"
+              :placeholder="'namn@dinmail.se'"
+              :onBlur="checkEmailMatch"
+            />
+            <p v-if="!isConfirmEmailValid || !isEmailMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera email adressen!
+            </p>
+          </label>
         </div>
 
-        <div class="input-container-right">
-          <label for="password">Lösenord</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Lösenord"
-            v-model="password"
-            @input="checkInputDataPassword"
-            :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }"
-          />
-          <p class="warning-text" v-if="isPasswordWeak">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-            använda ett säkrare
-          </p>
+        <div class="w-full flex flex-col gap-7">
+          <label for="password" class="font-text-light flex flex-col gap-1"
+            ><span>Lösenord</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (password = e)"
+              :inputType="'password'"
+              :inputName="'isPassword'"
+              :isDataCorrect="!isPasswordWeak"
+              :placeholder="'lösenord'"
+              :onBlur="checkPasswordMatch"
+            />
+            <p class="text-warning-orange" v-if="isPasswordWeak">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Lösenordet är
+              svagt! Överväg att använda ett säkrare
+            </p>
+          </label>
+
           <p v-if="isPasswordWrong">
             <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
             lösenorden stämmer överens!
