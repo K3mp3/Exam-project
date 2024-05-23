@@ -32,9 +32,9 @@ const isConfirmPassword = ref(false)
 const isLoading = ref(false)
 const showErrorDialog = ref(false)
 const isConfirmationSuccess = ref(false)
-const isEmailValid = ref(false)
+const isEmailValid = ref(true)
 const isPasswordWrong = ref(false)
-const isNameValid = ref(false)
+const isNameValid = ref(true)
 const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
@@ -184,7 +184,7 @@ async function handleRegistration() {
 
   if (response === 201) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-      .then(async (data) => {
+      .then(async () => {
         isLoading.value = false
         isConfirmationSuccess.value = true
 
@@ -192,7 +192,7 @@ async function handleRegistration() {
           isConfirmationSuccess.value = false
         }, 4000)
       })
-      .catch((error) => {
+      .catch(() => {
         isLoading.value = false
       })
   } else {
@@ -268,9 +268,9 @@ onMounted(() => {
   <div
     class="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-main-90 backdrop-blur-sm"
   >
-    <div class="max-w-[1200px] flex flex-col gap-16 bg-main p-16 bg-blue-500">
+    <div class="w-[800px] max-w-[1200px] flex flex-col gap-8 bg-main p-16 text-main runded-lg">
       <div class="flex gap-4 items-center relative">
-        <button type="button" to="/" class="btn-back z-10">
+        <button type="button" to="/" class="btn-back z-10" @click="closeRegisterDialog">
           <fontAwesome :icon="['fas', 'chevron-left']" />
         </button>
         <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera dig</h2>
@@ -286,6 +286,7 @@ onMounted(() => {
               :inputName="'isName'"
               :isDataCorrect="isNameValid"
               :placeholder="'För- och efternamn'"
+              class="w-full"
             />
             <p v-if="!isNameValid" class="text-warning-orange">
               <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
@@ -352,31 +353,31 @@ onMounted(() => {
             </p>
           </label>
 
-          <label for="password">Bekräfta lösenord</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Lösenord"
-            v-model="confirmPassword"
-            @input="checkInputDataConfirmPassword"
-            :class="{
-              'input-error': isPasswordWrong,
-              'input-password-weak': isConfirmPasswordWeak
-            }"
-          />
-          <p class="warning-text" v-if="isConfirmPasswordWeak">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-            använda ett säkrare
-          </p>
-          <p v-if="isPasswordWrong">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
-            lösenorden stämmer överens!
-          </p>
+          <label for="password" class="font-text-light flex flex-col gap-1"
+            ><span>Bekräfta lösenord</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (confirmPassword = e)"
+              :inputType="'password'"
+              :inputName="'isConfirmPassword'"
+              :isDataCorrect="!isConfirmPasswordWeak"
+              :placeholder="'lösenord'"
+              :onBlur="checkPasswordMatch"
+            />
+            <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Lösenordet är
+              svagt! Överväg att använda ett säkrare
+            </p>
+            <p v-if="isPasswordWrong">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
+              lösenorden stämmer överens!
+            </p>
+          </label>
 
           <button
             type="submit"
             :disabled="isBtnDisabled"
-            :class="isBtnDisabled ? 'register-desktop-button-disable' : 'desktop-register-btn'"
+            :class="['mt-[27px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
           >
             Registrera
           </button>
