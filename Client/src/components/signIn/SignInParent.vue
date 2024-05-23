@@ -16,7 +16,7 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width = document.documentElement.clientWidth
 
-  if (width < 700) {
+  if (width < 640) {
     isMobileForm.value = true
     isTabletForm.value = false
   } else {

@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { signInUser } from '@/services/signInUser'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, type Ref } from 'vue'
+import InfoInput from '../utils/components/InfoInput.vue'
 
 const email = ref('')
 const password = ref('')
 
-const isEmail = ref(false)
-const isPassword = ref(false)
-
-const isEmailWrong = ref(false)
-const isPasswordWrong = ref(false)
+const isEmailValid = ref(true)
+const isPasswordValid = ref(true)
 const isBtnDisabled = ref(true)
 
 const inputsArray: { key: string; value: boolean }[] = [
@@ -26,42 +24,41 @@ const user = computed(() => {
 })
 
 function checkInputData() {
-  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  isBtnDisabled.value = !inputsArray.every((field) => field.value)
 }
 
-function checkInputDataEmail() {
+function checkInputsData(confirmKey: string) {
   nextTick(() => {
-    if (email.value === '') {
-      return
-    } else {
-      isEmail.value = true
+    let refVariable: Ref<string> | null = null
+    switch (confirmKey) {
+      case 'isEmail':
+        refVariable = email
+        break
+      case 'isPassword':
+        refVariable = password
+        break
+      default:
+        break
+    }
 
-      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
+    if (refVariable?.value === '') {
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isEmail.value
+        inputsArray[index].value = false
       } else {
-        inputsArray.push({ key: 'isEmail', value: isEmail.value })
+        inputsArray.push({ key: confirmKey, value: false })
       }
 
       checkInputData()
-    }
-  })
-}
-
-function checkInputDataPassword() {
-  nextTick(() => {
-    if (password.value === '') {
       return
     } else {
-      isPassword.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isPassword.value
+        inputsArray[index].value = true
       } else {
-        inputsArray.push({ key: 'isPassword', value: isPassword.value })
+        inputsArray.push({ key: confirmKey, value: true })
       }
 
       checkInputData()
@@ -71,58 +68,75 @@ function checkInputDataPassword() {
 
 async function handleSignIn() {
   const response = await signInUser(user.value)
-
-  if (response === 'Wrong email or password!') {
-    isEmailWrong.value = true
-    isPasswordWrong.value = true
-  }
 }
 </script>
 
 <template>
   <div class="flex items-center h-screen">
-    <div class="mobile-form-nav">
-      <RouterLink to="/" class="router-link"
-        ><fontAwesome :icon="['fas', 'chevron-left']"
-      /></RouterLink>
-      <h2>Logga in</h2>
+    <div class="p-4 flex flex-col gap-8 text-main w-full">
+      <div class="flex gap-4 items-center">
+        <RouterLink to="/" class="btn-back"
+          ><fontAwesome :icon="['fas', 'chevron-left']"
+        /></RouterLink>
+        <h2 class="text-xl sm:text-2xl">Logga in</h2>
+      </div>
+      <form @submit.prevent="handleSignIn" class="flex flex-col gap-6">
+        <label for="email" class="font-text-light flex flex-col gap-1"
+          ><span>Email adress</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (email = e)"
+            :inputType="'email'"
+            :inputName="'isEmail'"
+            :isDataCorrect="isEmailValid"
+            :placeholder="'namn@dinmail.se'"
+          />
+          <p v-if="!isEmailValid" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+              >Vänligen kontrollera email adressen!</span
+            >
+          </p>
+        </label>
+
+        <label for="password" class="font-text-light flex flex-col gap-1"
+          ><span>Lösenord</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (password = e)"
+            :inputType="'password'"
+            :inputName="'isPassword'"
+            :isDataCorrect="isPasswordValid"
+            :placeholder="'lösenord'"
+          />
+
+          <p v-if="!isPasswordValid" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen kontrollera
+            lösenordet!
+          </p>
+        </label>
+
+        <button
+          type="submit"
+          :disabled="isBtnDisabled"
+          :class="['mt-4 mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
+        >
+          Logga in
+        </button>
+
+        <div class="flex flex-col gap-2">
+          <p>
+            Glömt lösenord?
+            <RouterLink to="/forgot-password" class="font-semibold">Klicka här</RouterLink>
+          </p>
+
+          <p>
+            Har du inget konto?
+            <RouterLink to="/forgot-password" class="font-semibold">Registrera dig</RouterLink>
+          </p>
+        </div>
+      </form>
+
+      <div class="blue-line"></div>
     </div>
-    <form @submit.prevent="handleSignIn" class="mobile-sign-in-form">
-      <label for="email">Email adress</label>
-      <input
-        type="email"
-        name="email"
-        placeholder="namn@mail.com"
-        v-model="email"
-        :class="isEmailWrong ? 'input-error' : ''"
-        @input="checkInputDataEmail"
-      />
-      <p v-if="isEmailWrong">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email adressen!
-      </p>
-
-      <label for="password">Lösenord</label>
-      <input
-        type="password"
-        name="password"
-        placeholder="Lösenord"
-        v-model="password"
-        :class="isPasswordWrong ? 'input-error' : ''"
-        @input="checkInputDataPassword"
-      />
-      <p v-if="isEmailWrong">
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenorder!
-      </p>
-
-      <button
-        type="submit"
-        :disabled="isBtnDisabled"
-        :class="isBtnDisabled ? 'sign-in-mobile-button-disable' : 'sign-in-mobile-button'"
-      >
-        Logga in
-      </button>
-    </form>
-
-    <div class="blue-line"></div>
   </div>
 </template>
