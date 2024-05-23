@@ -121,15 +121,12 @@ function checkEmailMatch() {
 }
 
 function checkPasswordMatch() {
-  console.log('hejsan knorr')
-
   if (password.value === '' || confirmPassword.value === '') {
     isPasswordMatch.value = true
     return
   }
 
   if (password.value === confirmPassword.value) {
-    console.log('jippiho')
     isPasswordMatch.value = true
   } else {
     isPasswordMatch.value = false
@@ -174,7 +171,7 @@ async function handleRegistration() {
 
   if (response === 201) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-      .then(async (data) => {
+      .then(async () => {
         isLoading.value = false
         isConfirmationSuccess.value = true
 
@@ -182,8 +179,9 @@ async function handleRegistration() {
           isConfirmationSuccess.value = false
         }, 4000)
       })
-      .catch((error) => {
+      .catch(() => {
         isLoading.value = false
+        showErrorDialog.value = true
       })
   } else {
     isLoading.value = false

@@ -80,7 +80,7 @@ async function handleSignIn() {
 </script>
 
 <template>
-  <div class="mobile-form-background">
+  <div class="flex items-center h-screen">
     <div class="mobile-form-nav">
       <RouterLink to="/" class="router-link"
         ><fontAwesome :icon="['fas', 'chevron-left']"
