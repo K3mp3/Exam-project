@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { signInUser } from '@/services/signInUser'
+import router from '@/router'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { computed, nextTick, ref, type Ref } from 'vue'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
 const email = ref('')
@@ -9,6 +11,7 @@ const password = ref('')
 const isEmailValid = ref(true)
 const isPasswordValid = ref(true)
 const isBtnDisabled = ref(true)
+const isLoading = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isEmail', value: false },
@@ -67,7 +70,24 @@ function checkInputsData(confirmKey: string) {
 }
 
 async function handleSignIn() {
-  const response = await signInUser(user.value)
+  isBtnDisabled.value = true
+  isLoading.value = true
+
+  const auth = getAuth()
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .then(() => {
+      console.log(auth.currentUser?.uid)
+      router.push(`/user-home/${auth.currentUser?.uid}`)
+    })
+    .catch((error) => {
+      switch (error.code) {
+        case 'auth/invalid-credential':
+          isEmailValid.value = true
+          isPasswordValid.value = true
+          isLoading.value = false
+          break
+      }
+    })
 }
 </script>
 
@@ -138,5 +158,9 @@ async function handleSignIn() {
 
       <div class="blue-line"></div>
     </div>
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>

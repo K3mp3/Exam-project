@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { forgotPasswordService } from '@/services/forgotPasswordService'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { computed, onMounted, ref } from 'vue'
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
+import { onMounted, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import ConsumerNav from '../nav/ConsumerNav.vue'
 
@@ -28,33 +28,48 @@ function checkInputData() {
 }
 
 async function handleReset() {
+  const auth = getAuth()
+
   isBtnDisabled.value = true
   isLoading.value = true
 
-  const user = computed(() => {
-    return {
-      email: email.value
-    }
-  })
+  sendPasswordResetEmail(auth, email.value)
+    .then(() => {
+      isLoading.value = false
+      isConfirmation.value = true
 
-  const response = (await forgotPasswordService(user.value)) as { status: number; data: string }
+      setTimeout(() => {
+        isConfirmation.value = false
+      }, 4000)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 
-  if (response.status === 201) {
-    console.log('hejsan')
-    isLoading.value = false
-    isConfirmation.value = true
+  // const user = computed(() => {
+  //   return {
+  //     email: email.value
+  //   }
+  // })
 
-    setTimeout(() => {
-      isConfirmation.value = false
-    }, 4000)
-  } else if (response.status === 500) {
-    isLoading.value = false
-    isConfirmationError.value = true
+  // const response = (await forgotPasswordService(user.value)) as { status: number; data: string }
 
-    setTimeout(() => {
-      isConfirmationError.value = false
-    }, 4000)
-  }
+  // if (response.status === 201) {
+  //   console.log('hejsan')
+  //   isLoading.value = false
+  //   isConfirmation.value = true
+
+  //   setTimeout(() => {
+  //     isConfirmation.value = false
+  //   }, 4000)
+  // } else if (response.status === 500) {
+  //   isLoading.value = false
+  //   isConfirmationError.value = true
+
+  //   setTimeout(() => {
+  //     isConfirmationError.value = false
+  //   }, 4000)
+  // }
 }
 
 onMounted(() => {
@@ -110,7 +125,7 @@ onMounted(() => {
   <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
     <div class="confirmation-box" v-if="isConfirmation">
       <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
-      <p class="text-main font-title-bold O1rem">Email skickat!</p>
+      <p class="text-main font-title-bold O1rem">Återställningslänk har skickats</p>
     </div>
 
     <div class="confirmation-box-error" v-if="isConfirmationError">
