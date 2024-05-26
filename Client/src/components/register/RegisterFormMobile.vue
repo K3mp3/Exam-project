@@ -5,6 +5,7 @@ import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
+import ConsumerNav from '../nav/ConsumerNav.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
 const filledEmail = localStorage.getItem('userEmail')
@@ -17,7 +18,7 @@ const confirmPassword = ref('')
 
 const isEmailValid = ref(true)
 const isConfirmEmailValid = ref(true)
-const isNameCorrect = ref(true)
+const isNameValid = ref(true)
 const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
@@ -39,7 +40,7 @@ function checkInputData() {
   isBtnDisabled.value =
     !inputsArray.every((field) => field.value) ||
     !isEmailMatch.value ||
-    !isNameCorrect.value ||
+    !isNameValid.value ||
     !isPasswordMatch.value
 }
 
@@ -98,9 +99,9 @@ function checkInputsData(confirmKey: string) {
 
 function checkInputDataName() {
   const nameRegex = /^[^\s]+\s[^\s]+$/
-  isNameCorrect.value = nameRegex.test(name.value)
+  isNameValid.value = nameRegex.test(name.value)
 
-  console.log(isNameCorrect.value)
+  console.log(isNameValid.value)
 }
 
 function checkEmailMatch() {
@@ -204,7 +205,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex items-center h-screen">
+  <nav>
+    <ConsumerNav />
+  </nav>
+  <div class="flex items-center h-screen mt-[92px]">
     <div class="p-4 flex flex-col gap-8 text-main w-full">
       <div class="flex gap-4 items-center">
         <RouterLink to="/" class="btn-back"
@@ -220,10 +224,10 @@ onMounted(() => {
             :inputData="(e: string) => (name = e)"
             :inputType="'text'"
             :inputName="'isName'"
-            :isDataCorrect="isNameCorrect"
+            :isDataCorrect="isNameValid"
             :placeholder="'För- och efternamn'"
           />
-          <p v-if="!isNameCorrect" class="text-warning-orange">
+          <p v-if="!isNameValid" class="text-warning-orange">
             <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Vänligen kontrollera så att både för- och efternamn finns med!</span
             >
@@ -324,14 +328,14 @@ onMounted(() => {
 
       <div class="blue-line"></div>
 
-      <div class="text-form-container">
+      <div class="flex flex-col gap-2">
         <p>
           Har du redan ett konto?
-          <RouterLink to="/sign-in" class="router-link-text">Logga in här</RouterLink>
+          <RouterLink to="/sign-in" class="font-semibold">Logga in här</RouterLink>
         </p>
         <p>
           Har du en verkstad och vill registrera dig?
-          <RouterLink to="/register-repair-shop" class="router-link-text"
+          <RouterLink to="/register-repair-shop" class="font-semibold"
             >Registrera dig här</RouterLink
           >
         </p>
@@ -340,10 +344,14 @@ onMounted(() => {
     <RegisterErrorDialog
       v-if="showErrorDialog"
       :showErrorDialog="showErrorDialog"
+      :title="'Whoops! Tyvärr kunde inte ditt konto registreras just nu.'"
+      :text="'Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support.'"
+      :btnText="'Kontakta support'"
       :closeDialog="() => (showErrorDialog = false)"
     />
     <SentResponseDialog
       :isConfirmationSuccess="isConfirmationSuccess"
+      :text="'Ditt konto är nu skapat!'"
       v-if="isConfirmationSuccess"
     />
   </div>

@@ -3,6 +3,7 @@ import router from '@/router'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { computed, nextTick, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
+import ConsumerNav from '../nav/ConsumerNav.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
 const email = ref('')
@@ -92,6 +93,9 @@ async function handleSignIn() {
 </script>
 
 <template>
+  <nav>
+    <ConsumerNav />
+  </nav>
   <div class="flex items-center h-screen">
     <div class="p-4 flex flex-col gap-8 text-main w-full">
       <div class="flex gap-4 items-center">
