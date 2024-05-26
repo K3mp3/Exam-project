@@ -15,16 +15,11 @@ const props = defineProps({
     required: true
   },
   options: {
-    type: [],
+    type: Array<{ value: string; label: string }>,
     required: true
   },
-  optionValue: {
-    type: String,
-    required: true
-  },
-  optionLabel: {
-    type: String,
-    required: true
+  defaultValue: {
+    type: String
   }
 })
 
@@ -38,8 +33,8 @@ function handleChange() {
 
 <template>
   <select :name="props.inputName" v-model="data" @change="handleChange">
-    <option v-for="option in props.options" :key="option" :value="props.optionValue">
-      {{ props.optionLabel }}
+    <option v-for="option in props.options" :key="option.label" :value="option.label">
+      {{ option.label }}
     </option>
   </select>
 </template>

@@ -28,6 +28,11 @@ const showErrorDialog = ref(false)
 const isConfirmationSuccess = ref(false)
 const isLoading = ref(false)
 
+const locations: { key: string; value: string }[] = [
+  { key: 'Sundsvall', value: 'Sundsvall' },
+  { key: 'Bjurholm', value: 'Bjurholm' }
+]
+
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
   { key: 'isEmail', value: !!filledEmail },
@@ -230,17 +235,14 @@ onMounted(() => {
         </label>
 
         <label for="name" class="font-text-light flex flex-col gap-1"
-          ><span>För- och efternamn</span>
-          <select
-            name="location"
-            class="mobile-register-form-select"
-            v-model="location"
-            :key="location"
-            @change="checkInputDataLocation"
-          >
-            <option value="sundsvall">Sundsvall</option>
-          </select>
-          <CustomSelect :inputName="'location'" />
+          ><span>Kommun</span>
+          <CustomSelect
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (location = e)"
+            :inputName="'location'"
+            :options="[{ value: 'sundsvall', label: 'Sundsvall' }]"
+            class="select"
+          />
         </label>
 
         <label for="location">Kommun</label>

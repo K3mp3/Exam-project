@@ -819,6 +819,30 @@ p {
   }
 }
 
+.select {
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  width: calc(100vw - 32px);
+  height: 42px;
+  background-color: $el-bg-gray;
+  color: $text-main;
+  border: 2px solid $el-border-gray;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 1;
+
+  &:focus {
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+      linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+}
+
 // Buttons
 .btn-back {
   background: transparent;
