@@ -33,9 +33,11 @@ export async function registerRepairShop(user: IUserRegistration) {
       user
     )
 
-    window.location = process.env.PRICE_KEY as Location | (string & Location)
+    console.log(response.status)
 
-    return response.data
+    window.location = response.data.url as Location | (string & Location)
+
+    return response.status
   } catch (error: any) {
     if (
       error.response &&

@@ -208,7 +208,7 @@ onMounted(() => {
   <nav>
     <ConsumerNav />
   </nav>
-  <div class="flex items-center h-screen mt-[92px]">
+  <div class="flex items-center h-screen mt-[94px]">
     <div class="p-4 flex flex-col gap-8 text-main w-full">
       <div class="flex gap-4 items-center">
         <RouterLink to="/" class="btn-back"
@@ -241,7 +241,7 @@ onMounted(() => {
             :inputData="(e: string) => (email = e)"
             :inputType="'email'"
             :inputName="'isEmail'"
-            :isDataCorrect="isEmailValid"
+            :isDataCorrect="isEmailValid && isEmailMatch"
             :placeholder="'namn@dinmail.se'"
             :predefinedValue="filledEmail ? filledEmail : ''"
             :onBlur="checkEmailMatch"
@@ -260,7 +260,7 @@ onMounted(() => {
             :inputData="(e: string) => (confirmEmail = e)"
             :inputType="'email'"
             :inputName="'isConfirmEmail'"
-            :isDataCorrect="isConfirmEmailValid"
+            :isDataCorrect="isConfirmEmailValid && isEmailMatch"
             :placeholder="'namn@dinmail.se'"
             :onBlur="checkEmailMatch"
           />
@@ -278,7 +278,7 @@ onMounted(() => {
             :inputData="(e: string) => (password = e)"
             :inputType="'password'"
             :inputName="'isPassword'"
-            :isDataCorrect="!isPasswordWeak"
+            :isDataCorrect="!isPasswordWeak && isPasswordMatch"
             :placeholder="'lösenord'"
             :onBlur="checkPasswordMatch"
           />
@@ -301,7 +301,7 @@ onMounted(() => {
             :inputData="(e: string) => (confirmPassword = e)"
             :inputType="'password'"
             :inputName="'isConfirmPassword'"
-            :isDataCorrect="!isConfirmPasswordWeak"
+            :isDataCorrect="!isConfirmPasswordWeak && isPasswordMatch"
             :placeholder="'lösenord'"
             :onBlur="checkPasswordMatch"
           />
