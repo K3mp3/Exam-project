@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router'
 import { registerUser } from '@/services/registerUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
@@ -12,13 +13,6 @@ import DialogBox from '../dialogs/DialogBox.vue'
 import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
-
-const props = defineProps({
-  showRepairShopRegisterDialog: {
-    type: Function,
-    required: true
-  }
-})
 
 const name = ref('')
 const email = ref('')
@@ -215,13 +209,14 @@ function showSignInDialog() {
 }
 
 function showRegisterRepairShopDialog() {
-  props.showRepairShopRegisterDialog(true)
+  router.push({ query: { registerform: 'repairshop' } })
+  // props.showRepairShopRegisterDialog(true)
 
-  const showRepairShopRegisterDialog = useShowRepairShopDialog()
-  showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value)
+  // const showRepairShopRegisterDialog = useShowRepairShopDialog()
+  // showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value)
 
-  const showRegisterDialog = useShowRegisterDialog()
-  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+  // const showRegisterDialog = useShowRegisterDialog()
+  // showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 }
 
 function checkEmailMatch() {
