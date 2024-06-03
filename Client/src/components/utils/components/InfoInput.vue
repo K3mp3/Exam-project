@@ -22,6 +22,9 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
+  dataError: {
+    type: Boolean
+  },
   placeholder: {
     type: String,
     required: true
@@ -59,6 +62,10 @@ console.log(props.predefinedValue)
     v-model="data"
     @input="handleChange"
     @blur="handleBlur"
-    :class="['w-full text-input px-2', props.isDataCorrect ? 'text-input' : 'input-warning']"
+    :class="[
+      'w-full text-input px-2',
+      !props.isDataCorrect && 'input-warning',
+      props.dataError && 'input-error'
+    ]"
   />
 </template>

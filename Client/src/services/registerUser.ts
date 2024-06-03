@@ -39,16 +39,8 @@ export async function registerRepairShop(user: IUserRegistration) {
 
     return response.status
   } catch (error: any) {
-    if (
-      error.response &&
-      error.response.status === 400 &&
-      error.response.data.message === 'Email is already in use!'
-    ) {
-      const showErrorPopUp = useShowPopUp()
-      showErrorPopUp.showPopUpTab(
-        true,
-        'Whoops, ser ut som att email adressen redan används. Vänligen logga in om du redan har ett konto'
-      )
+    if (error.response && error.response.status === 409) {
+      return error.response.status
     } else {
       return error
     }

@@ -36,6 +36,7 @@ const showPasswordMatch = ref(false)
 const showErrorDialog = ref(false)
 const isConfirmationSuccess = ref(false)
 const isLoading = ref(false)
+const showEmailAlreadyExist = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
@@ -228,6 +229,9 @@ async function handleRegistration() {
         isLoading.value = false
         showErrorDialog.value = true
       })
+  } else if (response === 409) {
+    isLoading.value = false
+    showEmailAlreadyExist.value = true
   } else {
     isLoading.value = false
     showErrorDialog.value = true
@@ -239,7 +243,7 @@ async function handleRegistration() {
   <nav>
     <ConsumerNav />
   </nav>
-  <div class="flex items-center h-screen mt-[189px]">
+  <div class="flex items-center h-full mt-[111px]">
     <div class="p-4 flex flex-col gap-8 text-main w-full">
       <div class="flex gap-4 items-center">
         <RouterLink to="/" class="btn-back"
@@ -297,6 +301,7 @@ async function handleRegistration() {
             :inputType="'email'"
             :inputName="'isEmail'"
             :isDataCorrect="!showEmailError && !showEmailMatch"
+            :dataError="showEmailAlreadyExist"
             :placeholder="'namn@dinmail.se'"
             :predefinedValue="filledEmail ? filledEmail : ''"
             :onBlur="validateEmail"
@@ -312,6 +317,12 @@ async function handleRegistration() {
               >Vänligen kontrollera så att email adresserna stämmer överens!</span
             >
           </p>
+
+          <p v-if="showEmailAlreadyExist" class="text-error-red">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+              >Email adressen är redan registrerad!</span
+            >
+          </p>
         </label>
 
         <label for="email" class="font-text-light flex flex-col gap-1"
@@ -322,6 +333,7 @@ async function handleRegistration() {
             :inputType="'email'"
             :inputName="'isConfirmEmail'"
             :isDataCorrect="!showConfirmEmailError && !showEmailMatch"
+            :dataError="showEmailAlreadyExist"
             :placeholder="'namn@dinmail.se'"
             :onBlur="validateConfirmEmail"
           />
@@ -334,6 +346,12 @@ async function handleRegistration() {
           <p v-if="showEmailMatch" class="text-warning-orange">
             <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
               >Vänligen kontrollera så att email adresserna stämmer överens!</span
+            >
+          </p>
+
+          <p v-if="showEmailAlreadyExist" class="text-error-red">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+              >Email adressen är redan registrerad!</span
             >
           </p>
         </label>
