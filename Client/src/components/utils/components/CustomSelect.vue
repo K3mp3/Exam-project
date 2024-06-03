@@ -32,7 +32,7 @@ function handleChange() {
 </script>
 
 <template>
-  <select :name="props.inputName" v-model="data" @change="handleChange">
+  <select :name="props.inputName" v-model="data" @change="handleChange" class="w-full">
     <option v-for="option in props.options" :key="option.label" :value="option.label">
       {{ option.label }}
     </option>

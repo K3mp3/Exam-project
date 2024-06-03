@@ -13,23 +13,23 @@
   align-items: center;
   justify-content: center;
 }
-.confirmation-box {
-  transition: all 0.2s ease-in-out;
-  border: 2px solid transparent;
-  background-color: $bg-main;
-  background-image: linear-gradient($bg-main, $bg-main),
-    linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  padding: 32px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-}
+// .confirmation-box {
+//   transition: all 0.2s ease-in-out;
+//   border: 2px solid transparent;
+//   background-color: $bg-main;
+//   background-image: linear-gradient($bg-main, $bg-main),
+//     linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+//   background-origin: border-box;
+//   background-clip: padding-box, border-box;
+//   padding: 32px;
+//   z-index: 2;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 32px;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 16px;
+// }
 
 .confirmation-box-error {
   transition: all 0.2s ease-in-out;

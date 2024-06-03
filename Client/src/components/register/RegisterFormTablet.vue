@@ -202,7 +202,7 @@ onMounted(() => {
 
 <template>
   <div class="flex items-center h-screen justify-center">
-    <div class="p-8 flex flex-col gap-16 text-main0 w-full text-main max-w-[1200px]">
+    <div class="p-8 flex flex-col gap-16 text-main w-full text-main">
       <div class="flex gap-4 items-center relative">
         <RouterLink to="/" class="btn-back z-10"
           ><fontAwesome :icon="['fas', 'chevron-left']"
@@ -301,7 +301,7 @@ onMounted(() => {
           <button
             type="submit"
             :disabled="isBtnDisabled"
-            :class="['mt-[27px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
+            :class="['mt-[26.5px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
           >
             Registrera
           </button>

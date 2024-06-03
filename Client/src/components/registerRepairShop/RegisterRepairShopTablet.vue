@@ -1,73 +1,127 @@
 <script setup lang="ts">
-import { useShowPopUp } from '@/stores/ShowPopUpStore'
-import { computed, nextTick, ref } from 'vue'
-import { registerRepairShop } from '../../services/registerUser'
-import DialogBox from '../dialogs/DialogBox.vue'
+import { registerRepairShop } from '@/services/registerUser'
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
+import { computed, nextTick, ref, type Ref } from 'vue'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
+import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
+import ConsumerNav from '../nav/ConsumerNav.vue'
+import CustomSelect from '../utils/components/CustomSelect.vue'
+import InfoInput from '../utils/components/InfoInput.vue'
+
+const filledEmail = localStorage.getItem('userEmail')
 
 const name = ref('')
 const location = ref('')
-const phoneNumber = ref('')
+const phoneNumber = ref()
 const email = ref('')
 const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
-const isName = ref(false)
-const isLocation = ref(false)
-const isPhoneNumber = ref(false)
-const isEmail = ref(false)
-const isConfirmEmail = ref(false)
-const isPassword = ref(false)
-const isConfirmPassword = ref(false)
-
-const isPhoneNumberWrong = ref(false)
-const isEmailWrong = ref(false)
-const isPasswordWrong = ref(false)
+const isNameValid = ref(true)
+const isPhoneNumberValid = ref(true)
+const showPhoneError = ref(false)
+const isEmailValid = ref(true)
+const isConfirmEmailValid = ref(true)
+const showEmailError = ref(false)
+const showEmailMatch = ref(false)
+const showConfirmEmailError = ref(false)
 const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
+const isEmailMatch = ref(true)
+const isPasswordMatch = ref(true)
+const showPasswordMatch = ref(false)
+const showErrorDialog = ref(false)
+const isConfirmationSuccess = ref(false)
+const isLoading = ref(false)
+const showEmailAlreadyExist = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
   { key: 'isLocation', value: false },
   { key: 'isPhoneNumber', value: false },
-  { key: 'isEmail', value: false },
+  { key: 'isEmail', value: !!filledEmail },
   { key: 'isConfirmEmail', value: false },
   { key: 'isPassword', value: false },
   { key: 'isConfirmPassword', value: false }
 ]
 
-const isDialog = computed(() => useShowPopUp().showPopUp)
-
-const newUser = computed(() => {
-  return {
-    name: name.value,
-    location: location.value,
-    phoneNumber: phoneNumber.value,
-    email: email.value,
-    password: password.value,
-    repairShop: true,
-    signedIn: false
-  }
-})
-
 function checkInputData() {
-  isBtnDisabled.value = !inputsArray.every((filed) => filed.value)
+  isBtnDisabled.value =
+    !inputsArray.every((field) => field.value) ||
+    !isEmailMatch.value ||
+    !isNameValid.value ||
+    !isPhoneNumberValid.value ||
+    !isPasswordMatch.value
 }
 
-function checkInputDataName() {
+function checkInputsData(confirmKey: string) {
   nextTick(() => {
-    if (name.value === '') {
-      return
-    } else {
-      isName.value = true
+    let refVariable: Ref<string> | null = null
+    switch (confirmKey) {
+      case 'isName':
+        refVariable = name
+        break
+      case 'isLocation':
+        refVariable = location
+        break
+      case 'isPhoneNumber':
+        {
+          const numberRegex = /^(?:\+46|0046|0)[\d\s-]{6,15}$/
+          isPhoneNumberValid.value = numberRegex.test(phoneNumber.value.trim())
+        }
+        refVariable = phoneNumber
+        break
+      case 'isEmail':
+        {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          checkEmailMatch()
+          isEmailValid.value = emailRegex.test(email.value.trim())
+        }
+        refVariable = email
+        break
+      case 'isConfirmEmail':
+        {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          checkEmailMatch()
+          isConfirmEmailValid.value = emailRegex.test(confirmEmail.value.trim())
+        }
+        refVariable = confirmEmail
+        break
+      case 'isPassword':
+        refVariable = password
+        checkPasswordMatch()
+        isPasswordWeak.value = password.value.length < 5
+        break
+      case 'isConfirmPassword':
+        refVariable = confirmPassword
+        checkPasswordMatch()
+        isConfirmPasswordWeak.value = confirmPassword.value.length < 5
+        break
+      default:
+        break
+    }
 
-      const index = inputsArray.findIndex((field) => field.key === 'isName')
+    if (refVariable?.value === '') {
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
 
       if (index !== -1) {
-        inputsArray[index].value = isName.value
+        inputsArray[index].value = false
       } else {
-        inputsArray.push({ key: 'isName', value: isName.value })
+        inputsArray.push({ key: confirmKey, value: false })
+      }
+
+      checkInputData()
+      return
+    } else {
+      const index = inputsArray.findIndex((field) => field.key === confirmKey)
+
+      if (index !== -1) {
+        inputsArray[index].value = true
+      } else {
+        inputsArray.push({ key: confirmKey, value: true })
       }
 
       checkInputData()
@@ -75,291 +129,322 @@ function checkInputDataName() {
   })
 }
 
-function checkInputDataLocation() {
-  nextTick(() => {
-    if (location.value === '') {
-      return
-    } else {
-      isLocation.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isLocation')
-
-      if (index !== -1) {
-        inputsArray[index].value = isLocation.value
-      } else {
-        inputsArray.push({ key: 'isLocation', value: isLocation.value })
-      }
-
-      checkInputData()
-    }
-  })
+function validateSwedishPhoneNumber() {
+  if (!isPhoneNumberValid.value) {
+    showPhoneError.value = true
+  } else showPhoneError.value = false
 }
 
-function checkInputDataPhone() {
-  nextTick(() => {
-    if (phoneNumber.value === '') {
-      return
-    } else {
-      isPhoneNumber.value = true
+function validateEmail() {
+  if (!isEmailValid.value) {
+    showEmailError.value = true
+  } else showEmailError.value = false
 
-      const index = inputsArray.findIndex((field) => field.key === 'isPhoneNumber')
-
-      if (index !== -1) {
-        inputsArray[index].value = isPhoneNumber.value
-      } else {
-        inputsArray.push({ key: 'isPhoneNumber', value: isPhoneNumber.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataEmail() {
-  nextTick(() => {
-    if (email.value === '') {
-      return
-    } else {
-      isEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isEmail')
-
-      if (index !== -1) {
-        inputsArray[index].value = isEmail.value
-      } else {
-        inputsArray.push({ key: 'isEmail', value: isEmail.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataConfirmEmail() {
-  nextTick(() => {
-    if (confirmEmail.value === '') {
-      return
-    } else {
-      isConfirmEmail.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isConfirmEmail')
-
-      if (index !== -1) {
-        inputsArray[index].value = isConfirmEmail.value
-      } else {
-        inputsArray.push({ key: 'isConfirmEmail', value: isConfirmEmail.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkEmail() {
-  if (email.value === '') return
-  if (confirmEmail.value === '') return
-
-  if (email.value === confirmEmail.value) return
-  else {
-    isEmailWrong.value = true
+  if (email.value !== '' && confirmEmail.value !== '') {
+    if (email.value === confirmEmail.value) showEmailMatch.value = false
+    else showEmailMatch.value = true
   }
 }
 
-function checkInputDataPassword() {
-  checkPasswordStrength('password')
-  nextTick(() => {
-    if (password.value === '') {
-      return
-    } else {
-      isPassword.value = true
+function validateConfirmEmail() {
+  if (!isConfirmEmailValid.value) {
+    showConfirmEmailError.value = true
+  } else showConfirmEmailError.value = false
 
-      const index = inputsArray.findIndex((field) => field.key === 'isPassword')
-
-      if (index !== -1) {
-        inputsArray[index].value = isPassword.value
-      } else {
-        inputsArray.push({ key: 'isPassword', value: isPassword.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkInputDataConfirmPassword() {
-  checkPasswordStrength('confirmPassword')
-  nextTick(() => {
-    if (confirmPassword.value === '') {
-      return
-    } else {
-      isConfirmPassword.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isConfirmPassword')
-
-      if (index !== -1) {
-        inputsArray[index].value = isConfirmPassword.value
-      } else {
-        inputsArray.push({ key: 'isConfirmPassword', value: isConfirmPassword.value })
-      }
-
-      checkInputData()
-    }
-  })
-}
-
-function checkPassword() {
-  if (password.value === '') return
-  if (confirmPassword.value === '') return
-  if (password.value === confirmPassword.value) return
-  else {
-    isPasswordWrong.value = true
+  if (email.value !== '' && confirmEmail.value !== '') {
+    if (email.value === confirmEmail.value) showEmailMatch.value = false
+    else showEmailMatch.value = true
   }
 }
 
-function checkPasswordStrength(type: string) {
-  if (type === 'password') {
-    isPasswordWeak.value = password.value.length < 5
+function checkEmailMatch() {
+  if (email.value === '' || confirmEmail.value === '') {
+    isEmailMatch.value = true
+    return
+  }
+
+  if (email.value === confirmEmail.value) {
+    isEmailMatch.value = true
   } else {
-    isConfirmPasswordWeak.value = confirmPassword.value.length < 5
+    isEmailMatch.value = false
+  }
+
+  console.log(isEmailMatch.value)
+
+  checkInputData()
+}
+
+function showIfPasswordMatch() {
+  if (password.value !== '' && confirmPassword.value !== '') {
+    if (password.value === confirmPassword.value) showPasswordMatch.value = false
+    else showPasswordMatch.value = true
   }
 }
 
+function checkPasswordMatch() {
+  if (password.value === '' || confirmPassword.value === '') {
+    isPasswordMatch.value = true
+    return
+  }
+
+  if (password.value === confirmPassword.value) {
+    isPasswordMatch.value = true
+  } else {
+    isPasswordMatch.value = false
+  }
+  console.log(isPasswordMatch.value)
+}
 async function handleRegistration() {
+  isLoading.value = true
+
+  const currentUser = getAuth().currentUser
+  const userId = currentUser ? currentUser.uid : ''
+
+  const newUser = computed(() => {
+    return {
+      name: name.value,
+      location: location.value,
+      phoneNumber: phoneNumber.value,
+      email: email.value,
+      repairShop: true,
+      userId: userId
+    }
+  })
+
+  console.log(newUser.value)
+
   const response = await registerRepairShop(newUser.value)
+
+  if (response === 201) {
+    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+      .then(async () => {
+        isLoading.value = false
+        isConfirmationSuccess.value = true
+
+        setTimeout(() => {
+          isConfirmationSuccess.value = false
+        }, 4000)
+      })
+      .catch(() => {
+        isLoading.value = false
+        showErrorDialog.value = true
+      })
+  } else if (response === 409) {
+    isLoading.value = false
+    showEmailAlreadyExist.value = true
+  } else {
+    isLoading.value = false
+    showErrorDialog.value = true
+  }
 }
 </script>
 
 <template>
-  <div class="tablet-form-background">
-    <div class="tablet-form-nav">
-      <RouterLink to="/" class="router-link"
-        ><fontAwesome :icon="['fas', 'chevron-left']"
-      /></RouterLink>
-      <h2>Registrera din verkstad</h2>
-    </div>
-    <form @submit.prevent="handleRegistration" class="tablet-register-form">
-      <div class="tablet-input-container-left">
-        <label for="name">Namn</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="Namn på verkstaden"
-          v-model="name"
-          @input="checkInputDataName"
-        />
+  <nav>
+    <ConsumerNav />
+  </nav>
+  <div class="flex items-center h-screen justify-center">
+    <div class="p-8 flex flex-col gap-16 text-main0 w-full text-main max-w-[1200px mt-[116px]">
+      <div class="flex gap-4 items-center relative">
+        <RouterLink to="/" class="btn-back z-10"
+          ><fontAwesome :icon="['fas', 'chevron-left']"
+        /></RouterLink>
+        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera dig</h2>
+      </div>
+      <form @submit.prevent="handleRegistration" class="flex gap-16">
+        <div class="w-full flex flex-col gap-7">
+          <label for="name" class="font-text-light flex flex-col gap-1"
+            ><span>Namn på din verkstad</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (name = e)"
+              :inputType="'text'"
+              :inputName="'isName'"
+              :isDataCorrect="isNameValid"
+              :placeholder="'Namn på din verkstad'"
+            />
+          </label>
 
-        <label for="location">Kommun</label>
-        <select
-          name="location"
-          class="mobile-register-form-select"
-          v-model="location"
-          :key="location"
-          @change="checkInputDataLocation"
-        >
-          <option value="sundsvall">Sundsvall</option>
-        </select>
+          <label for="location" class="font-text-light flex flex-col gap-1"
+            ><span>Kommun</span>
+            <CustomSelect
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (location = e)"
+              :inputName="'isLocation'"
+              :options="[{ value: 'sundsvall', label: 'Sundsvall' }]"
+              class="select"
+            />
+          </label>
 
-        <label for="phone-number">Telefonnummer</label>
-        <input
-          type="tel"
-          name="phone-number"
-          placeholder="Telefonnummer till din verkstad"
-          v-model="phoneNumber"
-          @input="checkInputDataPhone"
-          :class="isPhoneNumberWrong ? 'input-error' : ''"
-        />
-        <p v-if="isPhoneNumberWrong">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen skriv ett telefon /
-          mobilnummer!
+          <label for="phone-number" class="font-text-light flex flex-col gap-1"
+            ><span>Telefonnummer</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (phoneNumber = e)"
+              :inputType="'tel'"
+              :inputName="'isPhoneNumber'"
+              :isDataCorrect="!showPhoneError"
+              :placeholder="'Telefonnummer'"
+              :onBlur="validateSwedishPhoneNumber"
+            />
+
+            <p class="text-warning-orange" v-if="showPhoneError">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />
+              <span>Vänligen skriv ett giltigt telefon / mobilnummer!</span>
+            </p>
+          </label>
+
+          <label for="email" class="font-text-light flex flex-col gap-1"
+            ><span>Email adress</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (email = e)"
+              :inputType="'email'"
+              :inputName="'isEmail'"
+              :isDataCorrect="!showEmailError && !showEmailMatch"
+              :dataError="showEmailAlreadyExist"
+              :placeholder="'namn@dinmail.se'"
+              :predefinedValue="filledEmail ? filledEmail : ''"
+              :onBlur="validateEmail"
+            />
+            <p v-if="showEmailError" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen skriv en giltig email adress!</span
+              >
+            </p>
+
+            <p v-if="showEmailMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen kontrollera så att email adresserna stämmer överens!</span
+              >
+            </p>
+
+            <p v-if="showEmailAlreadyExist" class="text-error-red">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Email adressen är redan registrerad!</span
+              >
+            </p>
+          </label>
+        </div>
+
+        <div class="w-full flex flex-col gap-7">
+          <label for="email" class="font-text-light flex flex-col gap-1"
+            ><span>Bekräfta email adress</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (confirmEmail = e)"
+              :inputType="'email'"
+              :inputName="'isConfirmEmail'"
+              :isDataCorrect="!showConfirmEmailError && !showEmailMatch"
+              :dataError="showEmailAlreadyExist"
+              :placeholder="'namn@dinmail.se'"
+              :onBlur="validateConfirmEmail"
+            />
+            <p v-if="showConfirmEmailError" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen skriv en giltig email adress!</span
+              >
+            </p>
+
+            <p v-if="showEmailMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen kontrollera så att email adresserna stämmer överens!</span
+              >
+            </p>
+
+            <p v-if="showEmailAlreadyExist" class="text-error-red">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Email adressen är redan registrerad!</span
+              >
+            </p>
+          </label>
+
+          <label for="password" class="font-text-light flex flex-col gap-1"
+            ><span>Lösenord</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (password = e)"
+              :inputType="'password'"
+              :inputName="'isPassword'"
+              :isDataCorrect="!isPasswordWeak && !showPasswordMatch"
+              :placeholder="'lösenord'"
+              :onBlur="showIfPasswordMatch"
+            />
+            <p class="text-warning-orange" v-if="isPasswordWeak">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Lösenordet är svagt! Överväg att använda ett säkrare</span
+              >
+            </p>
+
+            <p v-if="showPasswordMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera så att lösenorden stämmer överens!
+            </p>
+          </label>
+
+          <label for="password" class="font-text-light flex flex-col gap-1"
+            ><span>Bekräfta lösenord</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (confirmPassword = e)"
+              :inputType="'password'"
+              :inputName="'isConfirmPassword'"
+              :isDataCorrect="!isConfirmPasswordWeak && !showPasswordMatch"
+              :placeholder="'lösenord'"
+              :onBlur="showIfPasswordMatch"
+            />
+            <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Lösenordet är svagt! Överväg att använda ett säkrare</span
+              >
+            </p>
+
+            <p v-if="showPasswordMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera så att lösenorden stämmer överens!
+            </p>
+          </label>
+
+          <button
+            type="submit"
+            :disabled="isBtnDisabled"
+            :class="['mt-[26.5px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
+          >
+            Registrera
+          </button>
+        </div>
+      </form>
+      <div class="blue-line"></div>
+
+      <div class="flex flex-col gap-2">
+        <p>
+          Har du redan ett konto?
+          <RouterLink to="/sign-in" class="font-semibold">Logga in här</RouterLink>
         </p>
-
-        <label for="email">Email adress</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="namn@mail.com"
-          v-model="email"
-          @input="checkInputDataEmail"
-          @blur="checkEmail"
-          :class="isEmailWrong ? 'input-error' : ''"
-        />
-        <p v-if="isEmailWrong">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
-          adressen!
+        <p>
+          Har du en verkstad och vill registrera dig?
+          <RouterLink to="/register-repair-shop" class="font-semibold"
+            >Registrera dig här</RouterLink
+          >
         </p>
       </div>
-
-      <div class="tablet-input-container-right">
-        <label for="email">Bekräfta email adress</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="namn@mail.com"
-          v-model="confirmEmail"
-          @input="checkInputDataConfirmEmail"
-          @blur="checkEmail"
-          :class="isEmailWrong ? 'input-error' : ''"
-        />
-        <p v-if="isEmailWrong">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera email
-          adressen!
-        </p>
-
-        <label for="password">Lösenord</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Lösenord"
-          v-model="password"
-          @input="checkInputDataPassword"
-          @blur="checkPassword"
-          :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isPasswordWeak }"
-        />
-        <p class="warning-text" v-if="isPasswordWeak">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-          använda ett säkrare
-        </p>
-        <p v-if="isPasswordWrong">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenordet!
-        </p>
-
-        <label for="password">Bekräfta lösenord</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Lösenord"
-          v-model="confirmPassword"
-          @input="checkInputDataConfirmPassword"
-          @blur="checkPassword"
-          :class="{ 'input-error': isPasswordWrong, 'input-password-weak': isConfirmPasswordWeak }"
-        />
-        <p class="warning-text" v-if="isConfirmPasswordWeak">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Lösenordet är svagt! Överväg att
-          använda ett säkrare
-        </p>
-        <p v-if="isPasswordWrong">
-          <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera lösenordet!
-        </p>
-
-        <button
-          type="submit"
-          :disabled="isBtnDisabled"
-          :class="isBtnDisabled ? 'register-tablet-button-disable' : 'tablet-register-btn'"
-        >
-          Registrera
-        </button>
-      </div>
-    </form>
-
-    <div class="blue-line"></div>
-
-    <div class="tablet-text-form-container">
-      <p>
-        Har du redan ett konto?
-        <RouterLink to="/sign-in" class="router-link-text">Logga in här</RouterLink>
-      </p>
     </div>
-
-    <DialogBox v-if="isDialog"></DialogBox>
+    <RegisterErrorDialog
+      v-if="showErrorDialog"
+      :showErrorDialog="showErrorDialog"
+      :title="'Whoops! Tyvärr kunde inte ditt konto registreras just nu.'"
+      :text="'Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support.'"
+      :btnText="'Kontakta support'"
+      :closeDialog="() => (showErrorDialog = false)"
+    />
+    <SentResponseDialog
+      :isConfirmationSuccess="isConfirmationSuccess"
+      :text="'Ditt konto är nu skapat!'"
+      v-if="isConfirmationSuccess"
+    />
+  </div>
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
