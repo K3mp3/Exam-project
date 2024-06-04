@@ -33,6 +33,12 @@ function updateScreenSize() {
   }
 }
 
+function showAccountDialog(e: boolean) {
+  console.log(e)
+}
+
+// v-if="navDesktop"
+
 onMounted(() => {
   updateScreenSize()
 })
@@ -41,7 +47,7 @@ onMounted(() => {
 <template>
   <MagicTokenDialog v-if="isMagicTokenDialog"></MagicTokenDialog>
   <ConsumerNavMobile v-if="navMobile"></ConsumerNavMobile>
-  <ConsumerNavDesktop v-if="navDesktop"></ConsumerNavDesktop>
+  <ConsumerNavDesktop :isAccountDialogOpen="(e: boolean) => showAccountDialog(e)" />
 
   <AccountDialog v-if="isRegister" />
   <!-- <RegisterDialog /> -->

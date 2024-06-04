@@ -1,4 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// const props = defineProps({
+//   showPrivateRegisterDialog: {
+//     type: Function,
+//     required: true
+//   },
+//   showRepairShopRegisterDialog: {
+//     type: Function,
+//     required: true
+//   }
+// })
+
+function showPrivateRegisterForm() {
+  // props.showPrivateRegisterDialog(true)
+}
+
+function showRepairShopRegisterForm() {}
+</script>
 
 <template>
   <div
@@ -8,12 +25,14 @@
       <button
         type="button"
         class="bg-main w-full text-2xl py-20 font-title-bold text-main account-btn rounded-l-lg"
+        @click="showPrivateRegisterForm"
       >
         Registrera som privatperson
       </button>
       <button
         type="button"
         class="bg-main w-full text-2xl py-20 font-title-bold text-main account-btn rounded-r-lg"
+        @click="showRepairShopRegisterForm"
       >
         Registrera som verkstad
       </button>

@@ -3,14 +3,23 @@ import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, onMounted, ref } from 'vue'
 
+const props = defineProps({
+  isAccountDialogOpen: {
+    type: Function,
+    required: true
+  }
+})
+
 const navScroll = ref(false)
 
 const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
-function showRegisterForm() {
-  const showRegisterDialog = useShowRegisterDialog()
-  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+function showAccountDialog() {
+  // const showRegisterDialog = useShowRegisterDialog()
+  // showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+
+  props.isAccountDialogOpen(true)
 }
 
 async function showSignInForm() {
@@ -51,7 +60,7 @@ onMounted(() => {
         >
       </div>
       <div class="w-full flex gap-4 items-center justify-end">
-        <button type="button" class="outline-btn text-main px-8 h-8" @click="showRegisterForm">
+        <button type="button" class="outline-btn text-main px-8 h-8" @click="showAccountDialog">
           Registrera
         </button>
         <button type="button" class="main-btn text-main px-8 h-8" @click="showSignInForm">
