@@ -8,6 +8,13 @@ import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import CustomSelect from '../utils/components/CustomSelect.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
+const props = defineProps({
+  closeRepairShopRegisterDialog: {
+    type: Function,
+    required: true
+  },
+})
+
 const name = ref('')
 const location = ref('')
 const phoneNumber = ref()
@@ -39,13 +46,14 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
   { key: 'isLocation', value: false },
   { key: 'isPhoneNumber', value: false },
-  { key: 'isEmail', value: !!filledEmail },
+  { key: 'isEmail', value: false },
   { key: 'isConfirmEmail', value: false },
   { key: 'isPassword', value: false },
   { key: 'isConfirmPassword', value: false }
 ]
 
 function closeRegisterDialog() {
+  console.log("hejsan")
   props.closeRepairShopRegisterDialog(false)
 }
 
@@ -304,7 +312,6 @@ async function handleRegistration() {
               :isDataCorrect="!showEmailError && !showEmailMatch"
               :dataError="showEmailAlreadyExist"
               :placeholder="'namn@dinmail.se'"
-              :predefinedValue="filledEmail ? filledEmail : ''"
               :onBlur="validateEmail"
             />
             <p v-if="showEmailError" class="text-warning-orange">

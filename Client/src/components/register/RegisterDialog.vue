@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import router from '@/router'
 import { registerUser } from '@/services/registerUser'
-import { useShowPopUp } from '@/stores/ShowPopUpStore'
-import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
-import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { useShowUserEmail } from '@/stores/showUserEmail'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
-import { useShowRepairShopDialog } from '../../stores/useShowRepairShopDialog'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import DialogBox from '../dialogs/DialogBox.vue'
 import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
+
+const props = defineProps({
+  closePrivateRegisterDialog: {
+    type: Function,
+    required: true
+  },
+})
 
 const name = ref('')
 const email = ref('')
@@ -20,21 +20,23 @@ const confirmEmail = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
-const isPassword = ref(false)
-const isConfirmPassword = ref(false)
-
-const isLoading = ref(false)
-const showErrorDialog = ref(false)
-const isConfirmationSuccess = ref(false)
-const isEmailValid = ref(true)
-const isPasswordWrong = ref(false)
 const isNameValid = ref(true)
+const showNameError = ref(false)
+const isEmailValid = ref(true)
+const isConfirmEmailValid = ref(true)
+const showEmailError = ref(false)
+const showEmailMatch = ref(false)
+const showConfirmEmailError = ref(false)
 const isBtnDisabled = ref(true)
 const isPasswordWeak = ref(false)
 const isConfirmPasswordWeak = ref(false)
 const isEmailMatch = ref(true)
 const isPasswordMatch = ref(true)
-const isConfirmEmailValid = ref(true)
+const showPasswordMatch = ref(false)
+const showErrorDialog = ref(false)
+const isConfirmationSuccess = ref(false)
+const isLoading = ref(false)
+const showEmailAlreadyExist = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
@@ -44,13 +46,9 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isConfirmPassword', value: false }
 ]
 
-const isDialog = computed(() => useShowPopUp().showPopUp)
-const filledEmail = computed(() => useShowUserEmail().userEmail)
-const isFilledEmail = computed(() => useShowUserEmail().isEmail)
-
-const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
-const isRepairShopDialog = computed(() => useShowRepairShopDialog().isRepairShopDialog)
-const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
+function closeRegisterDialog() {
+  props.closePrivateRegisterDialog(false)
+}
 
 function checkInputData() {
   isBtnDisabled.value =
@@ -65,24 +63,37 @@ function checkInputsData(confirmKey: string) {
     let refVariable: Ref<string> | null = null
     switch (confirmKey) {
       case 'isName':
+        {
+          const nameRegex = /^[^\s]+\s[^\s]+$/
+          isNameValid.value = nameRegex.test(name.value)
+        }
         refVariable = name
-        checkInputDataName()
         break
       case 'isEmail':
+        {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          checkEmailMatch()
+          isEmailValid.value = emailRegex.test(email.value.trim())
+        }
         refVariable = email
-        checkInputDataEmail()
         break
       case 'isConfirmEmail':
+        {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          checkEmailMatch()
+          isConfirmEmailValid.value = emailRegex.test(confirmEmail.value.trim())
+        }
         refVariable = confirmEmail
-        checkInputDataConfirmEmail()
         break
       case 'isPassword':
         refVariable = password
-        checkPasswordStrength('password')
+        checkPasswordMatch()
+        isPasswordWeak.value = password.value.length < 5
         break
       case 'isConfirmPassword':
         refVariable = confirmPassword
-        checkPasswordStrength('confirmPassword')
+        checkPasswordMatch()
+        isConfirmPasswordWeak.value = confirmPassword.value.length < 5
         break
       default:
         break
@@ -113,49 +124,71 @@ function checkInputsData(confirmKey: string) {
   })
 }
 
-function checkInputDataName() {
-  const nameRegex = /^[^\s]+\s[^\s]+$/
-  isNameValid.value = nameRegex.test(name.value)
-
-  console.log(isNameValid.value)
+function validateName() {
+  if (!isNameValid.value) {
+    showNameError.value = true
+  } else showNameError.value = false
 }
 
-function checkInputDataEmail() {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  isEmailValid.value = emailRegex.test(email.value.trim())
-}
 
-function checkInputDataConfirmEmail() {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  isConfirmEmailValid.value = emailRegex.test(confirmEmail.value.trim())
-}
+function validateEmail() {
+  if (!isEmailValid.value) {
+    showEmailError.value = true
+  } else showEmailError.value = false
 
-function checkInputDataConfirmPassword() {
-  checkInputsData('isConfirmPassword')
-  checkPasswordStrength('confirmPassword')
-  nextTick(() => {
-    if (confirmPassword.value === '') {
-      return
-    } else {
-      isConfirmPassword.value = true
-
-      const index = inputsArray.findIndex((field) => field.key === 'isConfirmPassword')
-
-      if (index !== -1) {
-        inputsArray[index].value = isConfirmPassword.value
-      } else {
-        inputsArray.push({ key: 'isConfirmPassword', value: isConfirmPassword.value })
-      }
-    }
-  })
-}
-
-function checkPasswordStrength(type: string) {
-  if (type === 'password') {
-    isPasswordWeak.value = password.value.length < 5
-  } else {
-    isConfirmPasswordWeak.value = confirmPassword.value.length < 5
+  if (email.value !== '' && confirmEmail.value !== '') {
+    if (email.value === confirmEmail.value) showEmailMatch.value = false
+    else showEmailMatch.value = true
   }
+}
+
+function validateConfirmEmail() {
+  if (!isConfirmEmailValid.value) {
+    showConfirmEmailError.value = true
+  } else showConfirmEmailError.value = false
+
+  if (email.value !== '' && confirmEmail.value !== '') {
+    if (email.value === confirmEmail.value) showEmailMatch.value = false
+    else showEmailMatch.value = true
+  }
+}
+
+function checkEmailMatch() {
+  if (email.value === '' || confirmEmail.value === '') {
+    isEmailMatch.value = true
+    return
+  }
+
+  if (email.value === confirmEmail.value) {
+    isEmailMatch.value = true
+  } else {
+    isEmailMatch.value = false
+  }
+
+  console.log(isEmailMatch.value)
+
+  checkInputData()
+}
+
+function showIfPasswordMatch() {
+  if (password.value !== '' && confirmPassword.value !== '') {
+    if (password.value === confirmPassword.value) showPasswordMatch.value = false
+    else showPasswordMatch.value = true
+  }
+}
+
+function checkPasswordMatch() {
+  if (password.value === '' || confirmPassword.value === '') {
+    isPasswordMatch.value = true
+    return
+  }
+
+  if (password.value === confirmPassword.value) {
+    isPasswordMatch.value = true
+  } else {
+    isPasswordMatch.value = false
+  }
+  console.log(isPasswordMatch.value)
 }
 
 async function handleRegistration() {
@@ -195,56 +228,12 @@ async function handleRegistration() {
   }
 }
 
-function closeRegisterDialog() {
-  const showRegisterDialog = useShowRegisterDialog()
-  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
-}
-
 function showSignInDialog() {
-  const showRegisterDialog = useShowRegisterDialog()
-  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
 
-  const showSignInDialog = useShowSignInDialog()
-  showSignInDialog.showSignInDialogForm(!isSignIn.value)
 }
 
 function showRegisterRepairShopDialog() {
-  router.push({ query: { registerform: 'repairshop' } })
-  // props.showRepairShopRegisterDialog(true)
 
-  // const showRepairShopRegisterDialog = useShowRepairShopDialog()
-  // showRepairShopRegisterDialog.showRepairShopRegisterDialogForm(!isRepairShopDialog.value)
-
-  // const showRegisterDialog = useShowRegisterDialog()
-  // showRegisterDialog.showRegisterDialogForm(!isRegister.value)
-}
-
-function checkEmailMatch() {
-  if (email.value === '' || confirmEmail.value === '') {
-    isEmailMatch.value = true
-    return
-  }
-
-  if (email.value === confirmEmail.value) {
-    isEmailMatch.value = true
-  } else {
-    isEmailMatch.value = false
-  }
-
-  console.log(isEmailMatch.value)
-
-  checkInputData()
-}
-
-function checkPasswordMatch() {
-  if (password.value === '' || confirmPassword.value === '') {
-    isPasswordMatch.value = true
-    return
-  }
-
-  if (password.value === confirmPassword.value) {
-    isPasswordMatch.value = true
-  }
 }
 
 onMounted(() => {
@@ -268,22 +257,23 @@ onMounted(() => {
         <button type="button" to="/" class="btn-back z-10" @click="closeRegisterDialog">
           <fontAwesome :icon="['fas', 'chevron-left']" />
         </button>
-        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera dig</h2>
+        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera din verkstad</h2>
       </div>
       <form @submit.prevent="handleRegistration" class="flex gap-16">
         <div class="w-full flex flex-col gap-7">
           <label for="name" class="font-text-light flex flex-col gap-1"
-            ><span>För- och efternamn</span>
+            ><span>Namn på din verkstad</span>
             <InfoInput
               :checkInputData="(e: string) => checkInputsData(e)"
               :inputData="(e: string) => (name = e)"
               :inputType="'text'"
               :inputName="'isName'"
-              :isDataCorrect="isNameValid"
-              :placeholder="'För- och efternamn'"
-              class="w-full"
+              :isDataCorrect="!showNameError"
+              :placeholder="'Namn på din verkstad'"
+              :onBlur="validateName"
             />
-            <p v-if="!isNameValid" class="text-warning-orange">
+
+            <p v-if="showNameError" class="text-warning-orange">
               <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
               kontrollera så att både för- och efternamn finns med!
             </p>
@@ -296,14 +286,27 @@ onMounted(() => {
               :inputData="(e: string) => (email = e)"
               :inputType="'email'"
               :inputName="'isEmail'"
-              :isDataCorrect="isEmailValid"
+              :isDataCorrect="!showEmailError && !showEmailMatch"
+              :dataError="showEmailAlreadyExist"
               :placeholder="'namn@dinmail.se'"
-              :predefinedValue="filledEmail ? filledEmail : ''"
-              :onBlur="checkEmailMatch"
+              :onBlur="validateEmail"
             />
-            <p v-if="!isEmailValid || !isEmailMatch" class="text-warning-orange">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
-              kontrollera email adressen!
+            <p v-if="showEmailError" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen skriv en giltig email adress!</span
+              >
+            </p>
+
+            <p v-if="showEmailMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen kontrollera så att email adresserna stämmer överens!</span
+              >
+            </p>
+
+            <p v-if="showEmailAlreadyExist" class="text-error-red">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Email adressen är redan registrerad!</span
+              >
             </p>
           </label>
 
@@ -314,13 +317,27 @@ onMounted(() => {
               :inputData="(e: string) => (confirmEmail = e)"
               :inputType="'email'"
               :inputName="'isConfirmEmail'"
-              :isDataCorrect="isConfirmEmailValid"
+              :isDataCorrect="!showConfirmEmailError && !showEmailMatch"
+              :dataError="showEmailAlreadyExist"
               :placeholder="'namn@dinmail.se'"
-              :onBlur="checkEmailMatch"
+              :onBlur="validateConfirmEmail"
             />
-            <p v-if="!isConfirmEmailValid || !isEmailMatch" class="text-warning-orange">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
-              kontrollera email adressen!
+            <p v-if="showConfirmEmailError" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen skriv en giltig email adress!</span
+              >
+            </p>
+
+            <p v-if="showEmailMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen kontrollera så att email adresserna stämmer överens!</span
+              >
+            </p>
+
+            <p v-if="showEmailAlreadyExist" class="text-error-red">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Email adressen är redan registrerad!</span
+              >
             </p>
           </label>
         </div>
@@ -333,18 +350,19 @@ onMounted(() => {
               :inputData="(e: string) => (password = e)"
               :inputType="'password'"
               :inputName="'isPassword'"
-              :isDataCorrect="!isPasswordWeak"
+              :isDataCorrect="!isPasswordWeak && !showPasswordMatch"
               :placeholder="'lösenord'"
-              :onBlur="checkPasswordMatch"
+              :onBlur="showIfPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isPasswordWeak">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Lösenordet är
-              svagt! Överväg att använda ett säkrare
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Lösenordet är svagt! Överväg att använda ett säkrare</span
+              >
             </p>
 
-            <p v-if="isPasswordWrong">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
-              lösenorden stämmer överens!
+            <p v-if="showPasswordMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera så att lösenorden stämmer överens!
             </p>
           </label>
 
@@ -355,24 +373,26 @@ onMounted(() => {
               :inputData="(e: string) => (confirmPassword = e)"
               :inputType="'password'"
               :inputName="'isConfirmPassword'"
-              :isDataCorrect="!isConfirmPasswordWeak"
+              :isDataCorrect="!isConfirmPasswordWeak && !showPasswordMatch"
               :placeholder="'lösenord'"
-              :onBlur="checkPasswordMatch"
+              :onBlur="showIfPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Lösenordet är
-              svagt! Överväg att använda ett säkrare
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Lösenordet är svagt! Överväg att använda ett säkrare</span
+              >
             </p>
-            <p v-if="isPasswordWrong">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" />Vänligen kontrollera så att
-              lösenorden stämmer överens!
+
+            <p v-if="showPasswordMatch" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera så att lösenorden stämmer överens!
             </p>
           </label>
 
           <button
             type="submit"
             :disabled="isBtnDisabled"
-            :class="['mt-[27px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
+            :class="['mt-[26.5px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
           >
             Registrera
           </button>
@@ -380,30 +400,30 @@ onMounted(() => {
       </form>
       <div class="dialog-blue-line"></div>
 
-      <div class="dialog-text-form-container">
+      <div class="flex flex-col gap-2">
         <p>
           Har du redan ett konto?
-          <button type="button" class="router-link-text" @click="showSignInDialog">
-            Logga in här
-          </button>
+          <RouterLink to="/sign-in" class="font-semibold">Logga in här</RouterLink>
         </p>
         <p>
           Har du en verkstad och vill registrera dig?
-          <button type="button" class="router-link-text" @click="showRegisterRepairShopDialog">
-            Klicka här
-          </button>
+          <RouterLink to="/register-repair-shop" class="font-semibold"
+            >Registrera dig här</RouterLink
+          >
         </p>
       </div>
-
-      <DialogBox v-if="isDialog"></DialogBox>
     </div>
     <RegisterErrorDialog
       v-if="showErrorDialog"
       :showErrorDialog="showErrorDialog"
+      :title="'Whoops! Tyvärr kunde inte ditt konto registreras just nu.'"
+      :text="'Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support.'"
+      :btnText="'Kontakta support'"
       :closeDialog="() => (showErrorDialog = false)"
     />
     <SentResponseDialog
       :isConfirmationSuccess="isConfirmationSuccess"
+      :text="'Ditt konto är nu skapat!'"
       v-if="isConfirmationSuccess"
     />
   </div>

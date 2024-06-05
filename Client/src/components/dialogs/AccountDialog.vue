@@ -1,20 +1,22 @@
 <script setup lang="ts">
-// const props = defineProps({
-//   showPrivateRegisterDialog: {
-//     type: Function,
-//     required: true
-//   },
-//   showRepairShopRegisterDialog: {
-//     type: Function,
-//     required: true
-//   }
-// })
+const props = defineProps({
+  showPrivateRegisterDialog: {
+    type: Function,
+    required: true
+  },
+  showRepairShopRegisterDialog : {
+    type: Function,
+    required: true
+  }
+})
 
 function showPrivateRegisterForm() {
-  // props.showPrivateRegisterDialog(true)
+  props.showPrivateRegisterDialog(true)
 }
 
-function showRepairShopRegisterForm() {}
+function showRepairShopRegisterForm() {
+  props.showRepairShopRegisterDialog(true)
+}
 </script>
 
 <template>
