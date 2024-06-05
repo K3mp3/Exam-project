@@ -194,6 +194,7 @@ function checkPasswordMatch() {
   }
   console.log(isPasswordMatch.value)
 }
+
 async function handleRegistration() {
   isLoading.value = true
 

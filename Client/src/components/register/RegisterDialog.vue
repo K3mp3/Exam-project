@@ -262,7 +262,7 @@ onMounted(() => {
       <form @submit.prevent="handleRegistration" class="flex gap-16">
         <div class="w-full flex flex-col gap-7">
           <label for="name" class="font-text-light flex flex-col gap-1"
-            ><span>Namn på din verkstad</span>
+            ><span>För- och efternman</span>
             <InfoInput
               :checkInputData="(e: string) => checkInputsData(e)"
               :inputData="(e: string) => (name = e)"

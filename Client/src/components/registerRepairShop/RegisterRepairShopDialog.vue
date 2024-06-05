@@ -53,7 +53,6 @@ const inputsArray: { key: string; value: boolean }[] = [
 ]
 
 function closeRegisterDialog() {
-  console.log("hejsan")
   props.closeRepairShopRegisterDialog(false)
 }
 
@@ -203,6 +202,7 @@ function checkPasswordMatch() {
   }
   console.log(isPasswordMatch.value)
 }
+
 async function handleRegistration() {
   isLoading.value = true
 

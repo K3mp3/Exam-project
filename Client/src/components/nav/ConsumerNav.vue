@@ -51,8 +51,6 @@ function showRepairShopForm(e: boolean) {
   isAccountDialog.value = false
 }
 
-// v-if="navDesktop"
-
 onMounted(() => {
   updateScreenSize()
 })
@@ -61,7 +59,7 @@ onMounted(() => {
 <template>
   <MagicTokenDialog v-if="isMagicTokenDialog"></MagicTokenDialog>
   <ConsumerNavMobile v-if="navMobile"></ConsumerNavMobile>
-  <ConsumerNavDesktop :isAccountDialogOpen="(e: boolean) => showAccountDialog(e)" />
+  <ConsumerNavDesktop :isAccountDialogOpen="(e: boolean) => showAccountDialog(e)"  v-if="navDesktop"/>
 
   <AccountDialog v-if="isAccountDialog" :showPrivateRegisterDialog="(e: boolean) => showPrivateForm(e)" :showRepairShopRegisterDialog="(e: boolean) => showRepairShopForm(e)" />
   <RegisterDialog v-if="isPrivateForm" :closePrivateRegisterDialog="(e: boolean) => isPrivateForm = e"/> 
