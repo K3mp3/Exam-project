@@ -32,7 +32,7 @@ const inputsArray: { key: string; value: boolean }[] = [
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > 1481) {
+  if (document.documentElement.clientWidth > 1281) {
     desktop.value = true
     tablet.value = false
   }
@@ -196,21 +196,15 @@ onMounted(() => {
   <nav>
     <ConsumerNav></ConsumerNav>
   </nav>
-  <div
-    class="padding-tp-137 padding-rt-32 padding-bm-0 padding-lt-32 margin-au display-flex flex-dir-col justify-center align-items-center gap-48"
-  >
-    <div class="display-flex align-items-center gap-24 width-100 m-width-1200">
-      <RouterLink to="/" class="btn-back"
+  <div class="pt-[132px] flex flex-col gap-8 p-4 xl:p-8 items-center xl:pt-[196px] text-main">
+    <div class="display-flex align-items-center gap-24 width-100 m-width-1200 relative">
+      <RouterLink to="/" class="btn-back z-10"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
-      <h2
-        :class="{
-          'font-title-bold O15rem': tablet,
-          'font-title-bold O16rem': desktop
-        }"
-      >
-        Kontakta oss
-      </h2>
+
+      <div class="w-full absolute text-center">
+        <h2 class="text-2xl">Kontakta oss</h2>
+      </div>
     </div>
     <form class="contact-form" @submit.prevent="handleMessage">
       <div class="contact-form-left-side">
@@ -285,7 +279,7 @@ onMounted(() => {
           :disabled="isBtnDisabled"
           :class="{
             'main-btn-disabled margin-16-0 text-disabled font-title-bold': isBtnDisabled,
-            'main-btn margin-32-0 text-disabled font-title-bold': !isBtnDisabled
+            'main-btn w-full margin-32-0 text-disabled font-title-bold': !isBtnDisabled
           }"
         >
           Skicka

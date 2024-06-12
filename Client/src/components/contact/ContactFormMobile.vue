@@ -33,13 +33,13 @@ const inputsArray: { key: string; value: boolean }[] = [
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
 
-  if (document.documentElement.clientWidth > 1481) {
+  if (document.documentElement.clientWidth > 1280) {
     desktop.value = true
     tablet.value = false
     mobile.value = false
   }
 
-  if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1482) {
+  if (document.documentElement.clientWidth > 699 && document.documentElement.clientWidth < 1281) {
     desktop.value = false
     tablet.value = true
     mobile.value = false
@@ -200,83 +200,78 @@ onMounted(() => {
   <nav>
     <ConsumerNav></ConsumerNav>
   </nav>
-  <div
-    class="padding-tp-105 padding-rt-16 padding-bm-0 padding-lt-16 margin-au display-flex flex-dir-col justify-center align-items-center gap-32"
-  >
-    <div class="display-flex align-items-center gap-16 width-100 m-width-1200">
-      <RouterLink to="/" class="btn-back"
+  <div class="pt-[132px] flex flex-col gap-8 p-4 items-center text-main">
+    <div class="flex gap-4 items-center w-full">
+      <RouterLink to="/" class="btn-back z-10"
         ><fontAwesome :icon="['fas', 'chevron-left']"
       /></RouterLink>
-      <h2
-        :class="{
-          'font-title-bold O14rem': mobile
-        }"
-      >
-        Kontakta oss
-      </h2>
+      <h2 class="text-xl">Kontakta oss</h2>
     </div>
-    <form @submit.prevent="handleMessage" class="width-100 m-width-1200 text-align-left">
-      <label for="name" class="text-main font-text-light">För- och efternamn</label>
-      <input
-        type="text"
-        name="name"
-        placeholder="Förnamn & efternamn"
-        v-model="name"
-        @input="checkInputDataName"
-        :class="
-          isNameCorrect
-            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-        "
-      />
-      <p
-        class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-        v-if="!isNameCorrect"
-      >
-        <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange både
-        för- och efternman!
-      </p>
+    <form @submit.prevent="handleMessage" class="flex flex-col w-full gap-6">
+      <label for="name" class="font-text-light flex flex-col gap-1"
+        ><span>För- och efternamn</span>
+        <input
+          type="text"
+          name="name"
+          placeholder="Förnamn & efternamn"
+          v-model="name"
+          @input="checkInputDataName"
+          :class="
+            isNameCorrect
+              ? 'text-input p-relative width-100 padding-8 z-index-1  '
+              : 'input-warning p-relative width-100 padding-8 z-index-1 '
+          "
+        />
+        <p
+          class="text-warning-orange font-text-light display-flex gap-2 align-items-center"
+          v-if="!isNameCorrect"
+        >
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange
+          både för- och efternman!
+        </p>
+      </label>
 
-      <label for="email" class="text-main font-text-light">Email adress</label>
-      <input
-        type="email"
-        name="name"
-        placeholder="namn@mail.se"
-        v-model="email"
-        @input="checkInputDataEmail"
-        :class="
-          isEmailReal
-            ? 'text-input p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-            : 'input-warning p-relative width-100 padding-8 z-index-1 margin-bm-16 margin-tp-4'
-        "
-      />
-      <p
-        class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-        v-if="!isEmailReal"
-      >
-        <fontAwesome
-          :icon="['fas', 'triangle-exclamation']"
-          class="text-warning-orange"
-        />Kontrollera så att mailadressen stämmer!
-      </p>
+      <label for="email" class="font-text-light flex flex-col gap-1"
+        ><span>Email adress</span>
+        <input
+          type="email"
+          name="name"
+          placeholder="namn@mail.se"
+          v-model="email"
+          @input="checkInputDataEmail"
+          :class="
+            isEmailReal
+              ? 'text-input p-relative width-100 padding-8 z-index-1  '
+              : 'input-warning p-relative width-100 padding-8 z-index-1 '
+          "
+        />
+        <p
+          class="text-warning-orange font-text-light display-flex gap-2 align-items-center"
+          v-if="!isEmailReal"
+        >
+          <fontAwesome
+            :icon="['fas', 'triangle-exclamation']"
+            class="text-warning-orange"
+          />Kontrollera så att mailadressen stämmer!
+        </p>
+      </label>
 
-      <label for="message-input" class="text-main font-text-light">Meddelande</label>
-      <textarea
-        name="message-input"
-        v-model="message"
-        placeholder="Beskriv varför du kontaktar oss"
-        @input="checkInputDataMessage"
-        :class="['textarea-input', 'height-239px', 'margin-tp-4']"
-      ></textarea>
+      <label for="message-input" class="font-text-light flex flex-col gap-1"
+        ><span>Meddelande</span
+        ><textarea
+          name="message-input"
+          v-model="message"
+          placeholder="Beskriv varför du kontaktar oss"
+          @input="checkInputDataMessage"
+          :class="['textarea-input', 'height-239px']"
+        ></textarea>
+      </label>
 
       <button
         v-if="mobile"
         type="submit"
         :disabled="isBtnDisabled"
-        :class="{
-          'main-btn-disabled margin-32-0 text-disabled font-title-bold': isBtnDisabled,
-          'main-btn margin-32-0 text-disabled font-title-bold': !isBtnDisabled
-        }"
+        :class="['mt-4 mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
       >
         Skicka
       </button>

@@ -18,7 +18,7 @@ function closeDialog() {
       <p class="font-text-light text-main">{{ dialogMessage }}</p>
 
       <div class="display-flex justify-between gap-16">
-        <RouterLink to="sign-in" class="outline-btn font-text-light text-main text-deco-none"
+        <RouterLink to="sign-in" class="outline-btn font-text-light text-main text-deco-none w-full"
           >Logga in</RouterLink
         >
         <button type="button" class="filled-btn el-white-main text-secondary" @click="closeDialog">

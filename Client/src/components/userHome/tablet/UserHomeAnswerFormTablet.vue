@@ -279,7 +279,7 @@ onMounted(() => {
               :disabled="isBtnDisabled"
               :class="{
                 'main-btn-disabled m-h-42': isBtnDisabled,
-                'main-btn m-h-42 text-main': !isBtnDisabled
+                'main-btn w-full m-h-42 text-main': !isBtnDisabled
               }"
               @click="sendAnswer(index)"
             >

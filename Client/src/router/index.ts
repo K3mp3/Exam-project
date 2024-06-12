@@ -1,4 +1,5 @@
 import AboutUsView from '@/views/AboutUsView.vue'
+import ChangePasswordView from '@/views/ChangePasswordView.vue'
 import ConsumerLandingViewVue from '@/views/ConsumerLandingView.vue'
 import ContactViewVue from '@/views/ContactView.vue'
 import ForgotPasswordView from '@/views/ForgotPasswordView.vue'
@@ -92,6 +93,12 @@ const router = createRouter({
           path: '/forgot-password',
           name: 'forgot password view',
           component: ForgotPasswordView,
+          meta: { index: true }
+        },
+        {
+          path: '/change-password',
+          name: 'change password view',
+          component: ChangePasswordView,
           meta: { index: true }
         }
         // {

@@ -152,7 +152,7 @@ async function removeRequest() {
       :disabled="isBtnDisabled"
       :class="{
         'main-btn-disabled margin-bm-16': isBtnDisabled,
-        'main-btn margin-bm-16': !isBtnDisabled
+        'main-btn w-full margin-bm-16': !isBtnDisabled
       }"
       @click="sendAnswer"
     >

@@ -3,20 +3,20 @@ import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { computed, onMounted, ref } from 'vue'
+import AccountDialog from '../dialogs/AccountDialog.vue'
 import MagicTokenDialog from '../dialogs/MagicTokenDialog.vue'
-import RegisterDialog from '../register/RegisterDialog.vue'
 import RegisterRepairShopDialog from '../registerRepairShop/RegisterRepairShopDialog.vue'
+import RegisterDialog from '../register/RegisterDialog.vue'
 import SignInDialog from '../signIn/SignInDialog.vue'
 import ConsumerNavDesktop from './ConsumerNavDesktop.vue'
 import ConsumerNavMobile from './ConsumerNavMobile.vue'
-import ConsumerNavTablet from './ConsumerNavTablet.vue'
 
 const navMobile = ref(true)
-const navTablet = ref(false)
 const navDesktop = ref(false)
-const isRepairShopDialog = ref(false)
+const isAccountDialog = ref(false)
+const isPrivateForm = ref(false)
+const isRepairShopForm = ref(false)
 
-const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 const isMagicTokenDialog = computed(() => useShowMagicTokenDialog().showMagicTokenDialog)
 let width = document.documentElement.clientWidth
@@ -25,33 +25,30 @@ function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width = document.documentElement.clientWidth
 
-  if (width < 700) {
-    navMobile.value = true
-
-    navTablet.value = false
-    navDesktop.value = false
-    return
-  }
-
-  if (width > 1481) {
+  if (width > 1279) {
     navDesktop.value = true
-    navTablet.value = false
     navMobile.value = false
     return
   } else {
     navDesktop.value = false
-  }
-
-  if (width > 699) {
-    navTablet.value = true
-    navMobile.value = false
-  } else {
-    navTablet.value = false
+    navMobile.value = true
   }
 }
 
-function changeRepairDialogStatus(showRepairShopRegisterDialog: boolean) {
-  isRepairShopDialog.value = showRepairShopRegisterDialog
+function showAccountDialog(e: boolean) {
+  isAccountDialog.value = e
+}
+
+function showPrivateForm(e: boolean) {
+  isPrivateForm.value = e
+  isRepairShopForm.value = !e
+  isAccountDialog.value = false
+}
+
+function showRepairShopForm(e: boolean) {
+  isRepairShopForm.value = e
+  isPrivateForm.value = !e
+  isAccountDialog.value = false
 }
 
 onMounted(() => {
@@ -62,16 +59,10 @@ onMounted(() => {
 <template>
   <MagicTokenDialog v-if="isMagicTokenDialog"></MagicTokenDialog>
   <ConsumerNavMobile v-if="navMobile"></ConsumerNavMobile>
-  <ConsumerNavTablet v-if="navTablet"></ConsumerNavTablet>
-  <ConsumerNavDesktop v-if="navDesktop"></ConsumerNavDesktop>
+  <ConsumerNavDesktop :isAccountDialogOpen="(e: boolean) => showAccountDialog(e)"  v-if="navDesktop"/>
 
-  <RegisterDialog
-    v-if="isRegister"
-    :showRepairShopRegisterDialog="changeRepairDialogStatus"
-  ></RegisterDialog>
-  <RegisterRepairShopDialog
-    v-if="isRepairShopDialog"
-    :closeRepairShopRegisterDialog="changeRepairDialogStatus"
-  ></RegisterRepairShopDialog>
+  <AccountDialog v-if="isAccountDialog" :showPrivateRegisterDialog="(e: boolean) => showPrivateForm(e)" :showRepairShopRegisterDialog="(e: boolean) => showRepairShopForm(e)" />
+  <RegisterDialog v-if="isPrivateForm" :closePrivateRegisterDialog="(e: boolean) => isPrivateForm = e"/> 
+  <RegisterRepairShopDialog v-if="isRepairShopForm" :closeRepairShopRegisterDialog="(e: boolean) => isRepairShopForm = e"/>
   <SignInDialog v-if="isSignIn" :loadingState="isMagicTokenDialog"></SignInDialog>
 </template>

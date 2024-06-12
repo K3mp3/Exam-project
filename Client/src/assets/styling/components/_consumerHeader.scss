@@ -36,7 +36,7 @@ header {
         margin-bottom: 8px;
 
         span {
-          background: linear-gradient(to right, #0d3ff1, #0d31f1);
+          background: linear-gradient(to right, #2c8be2, #0d31f1);
           -webkit-background-clip: text;
           color: transparent;
           display: inline-block;
@@ -104,7 +104,7 @@ header {
   }
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 640px) {
   header {
     img {
       max-height: 400px;
@@ -112,17 +112,20 @@ header {
 
     .header-parent-container {
       max-height: 400px;
-      padding: 32px;
+      padding: 64px 32px 32px 32px;
+      justify-content: center;
+      align-items: center;
 
       .register-tab {
-        width: 200px;
+        width: 220px;
+        text-align: center;
 
         h2 {
-          font-size: 1.5rem;
+          font-size: 1.6rem;
         }
 
         p {
-          font-size: 1rem;
+          font-size: 1.1rem;
         }
 
         input {
@@ -148,7 +151,7 @@ header {
   }
 }
 
-@media screen and (min-width: 1482px) {
+@media screen and (min-width: 1280px) {
   header {
     img {
       max-height: 600px;

@@ -1,16 +1,25 @@
 <script setup lang="ts">
 import { useShowRegisterDialog } from '@/stores/showRegisterDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+
+const props = defineProps({
+  isAccountDialogOpen: {
+    type: Function,
+    required: true
+  }
+})
 
 const navScroll = ref(false)
 
 const isRegister = computed(() => useShowRegisterDialog().isRegisterDialog)
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 
-function showRegisterForm() {
-  const showRegisterDialog = useShowRegisterDialog()
-  showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+function showAccountDialog() {
+  // const showRegisterDialog = useShowRegisterDialog()
+  // showRegisterDialog.showRegisterDialogForm(!isRegister.value)
+
+  props.isAccountDialogOpen(true)
 }
 
 async function showSignInForm() {
@@ -29,34 +38,35 @@ function changeNavColor() {
 
 onMounted(() => {
   changeNavColor()
-
-  nextTick(() => {
-    const faqSection = document.getElementById('faq-component')
-  })
 })
 </script>
 
 <template>
-  <div
-    class="nav-parent-container"
-    :style="{ backgroundColor: navScroll ? '#090909de' : 'transparent' }"
-  >
-    <div class="nav-child-container left">
-      <RouterLink to="/" class="text-deco-none"
-        ><p class="text-deco-none O15rem text-main font-title-black">FixerFinder</p></RouterLink
-      >
-    </div>
-    <div class="nav-child-container center">
-      <RouterLink to="/" class="router-link"
-        ><fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
-      >
-      <RouterLink to="contact" class="router-link"
-        ><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink
-      >
-    </div>
-    <div class="nav-child-container right">
-      <button type="button" class="btn-register" @click="showRegisterForm">Registrera</button>
-      <button type="button" class="btn-sign-in" @click="showSignInForm">Logga in</button>
+  <div class="w-screen p-8 z-50">
+    <div
+      class="flex flex-row px-8 py-4 rounded-lg border-main bg-main-40 backdrop-blur-sm gap-4 z-20"
+    >
+      <div class="w-full">
+        <RouterLink to="/" class="text-deco-none"
+          ><p class="text-deco-none O15rem text-main font-title-black">Vibe</p></RouterLink
+        >
+      </div>
+      <div class="w-full text-main flex gap-8 items-center justify-center">
+        <RouterLink to="/" class="router-link"
+          ><fontAwesome :icon="['fas', 'house']" /> Hem</RouterLink
+        >
+        <RouterLink to="contact" class="router-link"
+          ><fontAwesome :icon="['fas', 'address-book']" /> Kontakt</RouterLink
+        >
+      </div>
+      <div class="w-full flex gap-4 items-center justify-end">
+        <button type="button" class="outline-btn text-main px-8 h-8" @click="showAccountDialog">
+          Registrera
+        </button>
+        <button type="button" class="main-btn text-main px-8 h-8" @click="showSignInForm">
+          Logga in
+        </button>
+      </div>
     </div>
   </div>
 </template>
