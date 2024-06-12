@@ -150,8 +150,10 @@ function closeSignInDialog() {
           >
             Logga in
           </button>
-          <p class="text-main display-flex gap-4 margin-tp-24">
-            Glömt lösenord?<RouterLink to="/forgot-password" class="text-main">Byt här</RouterLink>
+          <p class="text-main flex gap-2 mt-16">
+            Glömt lösenord?<RouterLink to="/forgot-password" class="font-semibold"
+              >Byt här</RouterLink
+            >
           </p>
         </div>
       </form>
