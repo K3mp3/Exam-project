@@ -11,7 +11,7 @@ const props = defineProps({
   closePrivateRegisterDialog: {
     type: Function,
     required: true
-  },
+  }
 })
 
 const name = ref('')
@@ -130,7 +130,6 @@ function validateName() {
   } else showNameError.value = false
 }
 
-
 function validateEmail() {
   if (!isEmailValid.value) {
     showEmailError.value = true
@@ -226,14 +225,6 @@ async function handleRegistration() {
     isLoading.value = false
     showErrorDialog.value = true
   }
-}
-
-function showSignInDialog() {
-
-}
-
-function showRegisterRepairShopDialog() {
-
 }
 
 onMounted(() => {

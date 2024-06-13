@@ -3,6 +3,8 @@ import router from '@/router'
 
 import { signOutUser } from '@/services/signOutUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
+import axios from 'axios'
+import { getAuth } from 'firebase/auth'
 import { computed, onMounted, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 import SideNav from '../sideNav/SideNav.vue'
@@ -18,6 +20,7 @@ const userId = computed(() => {
 const isUserSettings = ref(false)
 const desktop = ref(false)
 const showEmptyMessage = ref(false)
+const firstName = ref('')
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
@@ -50,8 +53,6 @@ function updateScreenSize() {
   if (document.documentElement.clientWidth > 1639) desktop.value = true
   else desktop.value = false
 }
-
-const firstName = fullName ? fullName.split(' ')[0] : ''
 
 const user = computed(() => {
   return {
@@ -88,12 +89,15 @@ function closeSettingsMenu() {
   isUserSettings.value = !isUserSettings.value
 }
 
-onMounted(() => {
-  // controllUserAuthentication()
-  // updateScreenSize()
-  // if (getSignInStatus() === 'false') {
-  //   router.push('/')
-  // }
+onMounted(async () => {
+  const auth = getAuth()
+  console.log(auth.currentUser?.email)
+  const user = {
+    userEmail: auth.currentUser?.email
+  }
+  const response = await axios.post('http://localhost:3000/users/signedInUser', user)
+
+  firstName.value = response.data.message ? response.data.message.split(' ')[0] : ''
 })
 </script>
 
@@ -105,21 +109,19 @@ onMounted(() => {
   ></UserSettings>
   <DialogBox v-if="isDialog"></DialogBox>
   <SideNav v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNav>
-  <div class="signed-in-header">
-    <h2>Hej {{ firstName }}</h2>
+  <div class="bg-red-500 flex justify-between p-4 text-xl sm:text-2xl">
+    <h2>Hej {{ firstName }}!</h2>
     <button
       type="button"
       class="btn-transparent text-main z-index-2"
       @click="showUserSettings"
       v-if="!desktop"
     >
-      <fontAwesome :icon="['fas', 'user']" />
+      <fontAwesome :icon="['fas', 'user']" class="w-4 h-4" />
     </button>
   </div>
   <div class="signed-in-main">
-    <button type="button" class="user-home-new-btn text-main z-index-2" @click="newRequest">
-      Ny förfrågan
-    </button>
+    <button type="button" class="main-btn px-6 text-main" @click="newRequest">Ny förfrågan</button>
     <p v-if="showEmptyMessage" class="text-main font-title-bold margin-tp-32">
       Whoops, här var det tomt!
     </p>
