@@ -9,13 +9,6 @@ import ConfirmDialog from '../../dialogs/ConfirmDialog.vue'
 import UserHomeAnswerForm from '../UserHomeAnswerForm.vue'
 import UserHomeMessages from '../UserHomeMessages.vue'
 
-const props = defineProps({
-  numberOfAnswers: {
-    type: Function,
-    required: true
-  }
-})
-
 const mobile = ref(true)
 const tablet = ref(false)
 const isData = ref(false)
@@ -60,8 +53,6 @@ async function getAnswers() {
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
     (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
   )
-
-  props.numberOfAnswers(allRepairShopAnswers.value.length)
 }
 
 function checkInputData() {

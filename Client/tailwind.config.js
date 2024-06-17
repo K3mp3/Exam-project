@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}', './node_modules/flowbite/**/*.js'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {}
@@ -8,5 +8,6 @@ module.exports = {
   variants: {
     extend: {}
   },
-  plugins: []
+  // eslint-disable-next-line no-undef
+  plugins: [require('flowbite/plugin')]
 }
