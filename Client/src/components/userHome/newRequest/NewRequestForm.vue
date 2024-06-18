@@ -6,8 +6,10 @@ import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LocationSelect from './LocationSelect.vue'
 import NewRequestTopNav from './NewRequestTopNav.vue'
 import RegistrationNumberInput from './RegistrationNumberInput.vue'
+import SelectedWorkType from './SelectedWorkType.vue'
 import TextareaInput from './TextareaInput.vue'
 import TroubleShootTimeSelect from './TroubleShootTimeSelect.vue'
+import WorkTypeSelect from './WorkTypeSelect.vue'
 
 const userId = computed(() => {
   const routeParams = router.currentRoute.value.params
@@ -15,6 +17,7 @@ const userId = computed(() => {
 })
 
 const location = ref('')
+const typeOfWork = ref('')
 const registrationNumber = ref('')
 const troubleshootTime = ref('')
 const message = ref('')
@@ -30,7 +33,8 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
   { key: 'isTroubleshootTime', value: false },
   { key: 'isRegistrationNumber', value: false },
-  { key: 'isMessage', value: false }
+  { key: 'isMessage', value: false },
+  { key: 'isTypeOfWork', value: false }
 ]
 
 let width = document.documentElement.clientWidth
@@ -46,6 +50,9 @@ function checkInputsData(confirmKey: string) {
   nextTick(() => {
     let refVariable: Ref<string> | null = null
     switch (confirmKey) {
+      case 'isTypeOfWork':
+        refVariable = typeOfWork
+        break
       case 'isLocation':
         refVariable = location
         break
@@ -164,11 +171,18 @@ onMounted(() => {
   <div class="new-request-surrounding-container">
     <NewRequestTopNav :userId="userId"></NewRequestTopNav>
 
-    <form @submit.prevent="handleMessage" v-if="!isLargeScreen">
+    <form @submit.prevent="handleMessage" v-if="!isLargeScreen" class="flex flex-col">
+      <WorkTypeSelect
+        :checkInputData="(e: string) => checkInputsData(e)"
+        :selectData="(e: string) => (typeOfWork = e)"
+      />
+
+      <SelectedWorkType v-if="typeOfWork !== ''" :selectedWorkType="typeOfWork" />
+
       <LocationSelect
         :checkInputData="(e: string) => checkInputsData(e)"
         :selectData="(e: string) => (location = e)"
-      ></LocationSelect>
+      />
 
       <RegistrationNumberInput
         :checkInputData="(e: string) => checkInputsData(e)"

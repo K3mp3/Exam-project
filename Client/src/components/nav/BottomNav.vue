@@ -5,6 +5,8 @@ import { ref } from 'vue'
 import NavMoreDialog from '../dialogs/NavMoreDialog.vue'
 
 const activeButton = ref('')
+const showMoreDialog = ref(false)
+
 const auth = getAuth()
 
 function signOutUser() {
@@ -17,7 +19,7 @@ function signOutUser() {
 </script>
 
 <template>
-  <NavMoreDialog v-if="activeButton === 'more'" />
+  <NavMoreDialog v-if="showMoreDialog" />
   <div class="w-screen p-4 z-10 fixed bottom-0 left-0">
     <div class="flex flex-col px-4 rounded-lg border-main bg-main-40 backdrop-blur-sm gap-8">
       <ul class="flex flex-row justify-center items-center gap-4">
@@ -38,9 +40,9 @@ function signOutUser() {
             type="button"
             :class="[
               'w-full text-main font-text-light flex flex-col gap-1 p-4',
-              activeButton === 'more' && 'ease-in-out duration-300 text-active-blue'
+              showMoreDialog && 'ease-in-out duration-300 text-active-blue'
             ]"
-            @click="() => (activeButton = 'more')"
+            @click="() => (showMoreDialog = !showMoreDialog)"
           >
             <fontAwesome :icon="['fas', 'plus']" />
           </button>
