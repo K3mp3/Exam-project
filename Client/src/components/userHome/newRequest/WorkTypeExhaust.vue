@@ -14,10 +14,20 @@ import { ref } from 'vue'
 
 const location = ref('')
 const activeButton = ref('')
+const workChosen = ref<number[]>([])
 
 function handleChange() {
   //   props.checkInputData('isLocation')
   //   props.selectData(location.value)
+}
+
+function toggleWorkChoice(choice: number) {
+  const index = workChosen.value.indexOf(choice)
+  if (index === -1) {
+    workChosen.value.push(choice)
+  } else {
+    workChosen.value.splice(index, 1)
+  }
 }
 </script>
 
@@ -39,30 +49,54 @@ function handleChange() {
   <div class="flex flex-col gap-6 mb-4">
     <button
       type="button"
-      :class="['text-main', activeButton === 'first' ? 'border-button-active' : 'border-button']"
-      @click="activeButton = 'first'"
+      :class="['text-main', workChosen.includes(1) ? 'border-button-active' : 'border-button']"
+      @click="toggleWorkChoice(1)"
     >
-      <p>AC-Service</p>
+      <p>Byte av partikelfilter</p>
     </button>
 
     <button
       type="button"
-      :class="['text-main', activeButton === 'second' ? 'border-button-active' : 'border-button']"
-      @click="activeButton = 'second'"
+      :class="['text-main', workChosen.includes(2) ? 'border-button-active' : 'border-button']"
+      @click="toggleWorkChoice(2)"
     >
-      <p>AC-Service + rengöring</p>
+      <p>Eftermontering av partikelfilter</p>
     </button>
 
     <button
       type="button"
-      :class="['text-main', activeButton === 'third' ? 'border-button-active' : 'border-button']"
-      @click="activeButton = 'third'"
+      :class="['text-main', workChosen.includes(3) ? 'border-button-active' : 'border-button']"
+      @click="toggleWorkChoice(3)"
+    >
+      <p>Byte av katalysator</p>
+    </button>
+
+    <button
+      type="button"
+      :class="['text-main', workChosen.includes(4) ? 'border-button-active' : 'border-button']"
+      @click="toggleWorkChoice(4)"
+    >
+      <p>Byte av ljuddämpare</p>
+    </button>
+
+    <button
+      type="button"
+      :class="['text-main', workChosen.includes(5) ? 'border-button-active' : 'border-button']"
+      @click="toggleWorkChoice(5)"
+    >
+      <p>Byte av lambdasond</p>
+    </button>
+
+    <button
+      type="button"
+      :class="['text-main', workChosen.includes(6) ? 'border-button-active' : 'border-button']"
+      @click="toggleWorkChoice(6)"
     >
       <p>Beskriv felet själv</p>
     </button>
 
     <textarea
-      v-if="activeButton === 'third'"
+      v-if="workChosen.includes(6)"
       name="message-input"
       class="text-editor"
       placeholder="Beskriv vad du vill ha hjälp med..."

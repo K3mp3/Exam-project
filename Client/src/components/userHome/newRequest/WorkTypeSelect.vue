@@ -30,9 +30,9 @@ function handleChange() {
   >
     <option value="AC">AC</option>
     <option value="Exhaust">Avgaser</option>
-    <option value="Batteri">Batteri</option>
+    <option value="Battery">Batteri</option>
     <option value="Service">Service</option>
-    <option value="Fordonsvård">Fordonsvård</option>
-    <option value="Besiktning och förkontroll">Besiktning och förkontroll</option>
+    <option value="Detailing">Fordonsvård</option>
+    <option value="Inspection">Besiktning och förkontroll</option>
   </select>
 </template>

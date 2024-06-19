@@ -50,6 +50,7 @@ function formatRegistrationNumber() {
     placeholder="ABC 123"
     v-model="registrationNumber"
     @input="formatRegistrationNumber"
+    class="px-2"
     maxlength="7"
   />
   <p
