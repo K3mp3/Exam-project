@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import SelectButton from "./SelectButton.vue"
 
 const props = defineProps({
   selectedWorkType: {
@@ -48,19 +49,16 @@ const options = computed(() => {
       return []
   }
 })
+
+function handleSelectedOption(option: string) {
+  console.log("option:", option)
+}
+
 </script>
 
 <template>
   <div class="flex flex-col gap-6 mb-4">
-    <button
-      v-for="option in options"
-      :key="option.key"
-      type="button"
-      :class="['text-main border-button']"
-    >
-      <p>{{ option.value }}</p>
-    </button>
-
+    <SelectButton :options="options" :setSelectedOption="() => handleSelectedOption"/>
     <textarea
       name="message-input"
       class="textarea-input h-36"
