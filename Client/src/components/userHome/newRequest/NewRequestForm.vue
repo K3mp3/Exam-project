@@ -168,10 +168,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="new-request-surrounding-container">
+  <div class="new-request-surrounding-container text-main">
     <NewRequestTopNav :userId="userId"></NewRequestTopNav>
 
-    <form @submit.prevent="handleMessage" v-if="!isLargeScreen" class="flex flex-col">
+    <form @submit.prevent="handleMessage" v-if="!isLargeScreen" class="flex flex-col gap-4">
       <WorkTypeSelect
         :checkInputData="(e: string) => checkInputsData(e)"
         :selectData="(e: string) => (typeOfWork = e)"
@@ -194,17 +194,12 @@ onMounted(() => {
         :selectData="(e: string) => (troubleshootTime = e)"
       ></TroubleShootTimeSelect>
 
-      <TextareaInput
-        :checkInputData="(e: string) => checkInputsData(e)"
-        :inputData="(e: string) => (message = e)"
-      ></TextareaInput>
-
       <button
         type="submit"
         :disabled="isBtnDisabled"
         :class="{
-          'user-home-send-btn-disabled': isBtnDisabled,
-          'user-home-send-btn': !isBtnDisabled,
+          'main-btn-disabled mt-5 mb-9': isBtnDisabled,
+          'main-btn mt-4 mb-2': !isBtnDisabled,
           hidden: hideMobileBtn
         }"
       >

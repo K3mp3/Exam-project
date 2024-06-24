@@ -757,6 +757,29 @@ p {
   }
 }
 
+.textarea-input-warning {
+  width: 100%;
+  padding: 8px;
+  color: $text-main;
+  border: 2px solid $el-border-gray;
+  background-color: $el-bg-gray;
+  border-radius: 10px;
+  resize: none;
+  font-family: map-get($font-text-light, font-family);
+  font-weight: map-get($font-text-light, font-weight);
+  font-size: 0.9rem;
+
+  &:focus {
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    border: 2px solid transparent;
+    background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
+      linear-gradient(to bottom, #f1550d, #f1550d5b);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+}
+
 .text-input {
   transition: all 0.2s ease-in-out;
   height: 42px;

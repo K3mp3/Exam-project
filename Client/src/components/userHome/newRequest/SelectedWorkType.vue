@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import SelectButton from "./SelectButton.vue"
+import { computed, ref } from 'vue'
+import SelectButton from './SelectButton.vue'
 
 const props = defineProps({
   selectedWorkType: {
@@ -50,20 +50,50 @@ const options = computed(() => {
   }
 })
 
-function handleSelectedOption(option: string) {
-  console.log("option:", option)
-}
+const isBtnDisabled = ref(true)
+const textInput = ref('')
+const selectedOptions = ref<String[]>([])
 
+function handleSelectedOption(option?: String[]) {
+  if (option) {
+    selectedOptions.value = option
+  }
+  console.log('option:', selectedOptions.value.length)
+  console.log('textInput:', textInput.value)
+
+  if (selectedOptions.value.length === 0 && textInput.value.trim() === '') {
+    isBtnDisabled.value = true
+  } else {
+    isBtnDisabled.value = false
+  }
+  console.log(isBtnDisabled.value)
+}
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 mb-4">
-    <SelectButton :options="options" :setSelectedOption="() => handleSelectedOption"/>
-    <textarea
-      name="message-input"
-      class="textarea-input h-36"
-      placeholder="Beskriv själv"
-    ></textarea>
+  <div class="flex flex-col gap-4 mb-2">
+    <SelectButton :options="options" :setSelectedOption="(e) => handleSelectedOption(e)" />
+    <label for="message-input" class="font-text-light flex flex-col gap-1"
+      ><span>Meddelande</span>
+      <textarea
+        name="message-input"
+        class="textarea-input h-40 text-sm"
+        placeholder="Beskriv själv"
+        v-model="textInput"
+        @input="handleSelectedOption()"
+      ></textarea>
+    </label>
+
+    <button
+      type="submit"
+      :disabled="isBtnDisabled"
+      :class="{
+        'main-btn-disabled text-sm': isBtnDisabled,
+        'main-btn text-sm': !isBtnDisabled
+      }"
+    >
+      Lägg till arbeten
+    </button>
   </div>
 
   <!-- <WorkTypeAc v-if="props.selectedWorkType === 'AC'" />

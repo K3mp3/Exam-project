@@ -45,11 +45,14 @@ function handleChange() {
 </script>
 
 <template>
-  <label for="message-input">Meddelande</label>
+  <label for="message-input" class="font-text-light flex flex-col gap-1">Meddelande</label>
   <textarea
     name="message-input"
     v-model="message"
-    :class="isMessageValid ? 'text-editor' : 'text-editor-warning'"
+    :class="[
+      'text-sm mt-[-14px]',
+      isMessageValid ? 'textarea-input h-40' : 'textarea-input-warning h-40'
+    ]"
     placeholder="Beskriv vad du vill ha hjälp med..."
     @input="handleChange"
   ></textarea>
