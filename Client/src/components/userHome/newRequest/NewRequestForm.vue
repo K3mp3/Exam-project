@@ -29,6 +29,7 @@ const isConfirmationError = ref(false)
 const isBtnDisabled = ref(true)
 const hideMobileBtn = ref(false)
 const isLargeScreen = ref(false)
+const isWorkDetails = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
@@ -163,12 +164,22 @@ async function handleMessage() {
   }
 }
 
-function checkWorkTypeArray(values: Array<String>, type: string) {
-  console.log('values:', values)
-  console.log('type:', type)
+function showWorkDetails() {
+  isWorkDetails.value = !isWorkDetails.value
+}
 
-  selectedWork.value.push([values, type])
-  console.log('selectedWork.value:', selectedWork.value)
+function checkWorkTypeArray(values: Array<String>, type: string) {
+  const index = selectedWork.value.findIndex((entry) => entry[1] === type)
+
+  if (index !== -1) {
+    selectedWork.value[index][0].push(...values)
+  } else {
+    selectedWork.value.push([values, type])
+  }
+}
+
+function cleanArrayString(array: String[]): string {
+  return array.join(', ')
 }
 
 onMounted(() => {
@@ -182,21 +193,33 @@ onMounted(() => {
 
     <div class="flex flex-col gap-4 mb-4">
       <div
-        class="w-full h-20 bg-blue-500 rounded-lg"
+        class="w-full el-bg-gray rounded-lg px-2 py-1 border-main"
         v-for="(work, index) in selectedWork"
         :key="index"
       >
-        <p>{{ work[1] }}</p>
+        <div class="flex justify-between items-center">
+          <h3 class="font-title-bold text-base">{{ work[1] }}</h3>
+          <button type="button" @click="showWorkDetails">
+            <fontAwesome :icon="['fas', 'chevron-down']" v-if="!isWorkDetails" /><fontAwesome
+              :icon="['fas', 'chevron-up']"
+              v-if="isWorkDetails"
+            />
+          </button>
+        </div>
+
+        <p v-if="isWorkDetails">{{ cleanArrayString(work[0]) }}</p>
       </div>
 
       <WorkTypeSelect
         :checkInputData="(e: string) => checkInputsData(e)"
         :selectData="(e: string) => (typeOfWork = e)"
+        :selectedWork="selectedWork"
       />
 
       <SelectedWorkType
         v-if="typeOfWork !== ''"
         :selectedWorkType="typeOfWork"
+        :selectedWork="selectedWork"
         @selectedWorkTypeArray="checkWorkTypeArray"
       />
     </div>

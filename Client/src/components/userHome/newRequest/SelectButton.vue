@@ -4,6 +4,7 @@ import { ref, watch } from 'vue'
 const props = defineProps<{
   options: Option[]
   setSelectedOption: (option: String[]) => void
+  emptyValues: Boolean
 }>()
 
 type Option = {
@@ -39,6 +40,10 @@ watch(
     } else {
       keyType.value = ''
     }
+    if (props.emptyValues) {
+      selectedOption.value = []
+    }
+    props.setSelectedOption(selectedOption.value)
     console.log(keyType.value)
   },
   { immediate: true }

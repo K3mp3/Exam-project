@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import SelectButton from './SelectButton.vue'
 
 const props = defineProps({
   selectedWorkType: {
     type: String,
     required: true
+  },
+  selectedWork: {
+    type: Array,
+    required: true
   }
 })
+
+const emptyValues = ref(false)
 
 const Ac: { key: string; value: string }[] = [
   { key: 'radio', value: 'AC-Service' },
@@ -75,12 +81,25 @@ function handleSelectedOption(option?: String[]) {
 
 function handleAddOptions() {
   emits('selectedWorkTypeArray', selectedOptions.value, props.selectedWorkType)
+  emptyValues.value = true
 }
+
+watch(
+  () => props.selectedWork,
+  (newVal) => {
+    console.log('selectedWork in WorkTypeSelect updated:', newVal)
+  },
+  { deep: true }
+)
 </script>
 
 <template>
   <div class="flex flex-col gap-4 mb-2">
-    <SelectButton :options="options" :setSelectedOption="(e) => handleSelectedOption(e)" />
+    <SelectButton
+      :options="options"
+      :setSelectedOption="(e) => handleSelectedOption(e)"
+      :emptyValues="emptyValues"
+    />
     <label for="message-input" class="font-text-light flex flex-col gap-1"
       ><span>Meddelande</span>
       <textarea
