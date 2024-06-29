@@ -54,12 +54,16 @@ const isBtnDisabled = ref(true)
 const textInput = ref('')
 const selectedOptions = ref<String[]>([])
 
+const emits = defineEmits<{
+  (e: 'selectedWorkTypeArray', values: Array<String>, workType: string): void
+}>()
+
 function handleSelectedOption(option?: String[]) {
   if (option) {
     selectedOptions.value = option
   }
-  console.log('option:', selectedOptions.value.length)
-  console.log('textInput:', textInput.value)
+  // console.log('option:', option)
+  // console.log('textInput:', textInput.value)
 
   if (selectedOptions.value.length === 0 && textInput.value.trim() === '') {
     isBtnDisabled.value = true
@@ -67,6 +71,10 @@ function handleSelectedOption(option?: String[]) {
     isBtnDisabled.value = false
   }
   console.log(isBtnDisabled.value)
+}
+
+function handleAddOptions() {
+  emits('selectedWorkTypeArray', selectedOptions.value, props.selectedWorkType)
 }
 </script>
 
@@ -91,11 +99,9 @@ function handleSelectedOption(option?: String[]) {
         'main-btn-disabled text-sm': isBtnDisabled,
         'main-btn text-sm': !isBtnDisabled
       }"
+      @click="handleAddOptions"
     >
       Lägg till arbeten
     </button>
   </div>
-
-  <!-- <WorkTypeAc v-if="props.selectedWorkType === 'AC'" />
-  <WorkTypeExhaust v-if="props.selectedWorkType === 'Exhaust'" /> -->
 </template>

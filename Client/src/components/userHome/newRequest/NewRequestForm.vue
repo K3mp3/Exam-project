@@ -18,6 +18,7 @@ const userId = computed(() => {
 
 const location = ref('')
 const typeOfWork = ref('')
+const selectedWork = ref<[String[], string][]>([])
 const registrationNumber = ref('')
 const troubleshootTime = ref('')
 const message = ref('')
@@ -41,11 +42,11 @@ let width = document.documentElement.clientWidth
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  console.log(inputsArray)
+  // console.log(inputsArray)
 }
 
 function checkInputsData(confirmKey: string) {
-  console.log(confirmKey)
+  // console.log(confirmKey)
 
   nextTick(() => {
     let refVariable: Ref<string> | null = null
@@ -117,7 +118,7 @@ const messageData = computed(() => {
 })
 
 function showConfirmationBox(response: any) {
-  console.log(response)
+  // console.log(response)
 
   if (response.status === 201) {
     isConfirmation.value = true
@@ -138,7 +139,7 @@ async function handleMessage() {
   isLoading.value = true
   const response = await contactRepairShops(messageData.value)
 
-  console.log(response)
+  // console.log(response)
 
   const responseData = response as { status: number }
 
@@ -162,6 +163,14 @@ async function handleMessage() {
   }
 }
 
+function checkWorkTypeArray(values: Array<String>, type: string) {
+  console.log('values:', values)
+  console.log('type:', type)
+
+  selectedWork.value.push([values, type])
+  console.log('selectedWork.value:', selectedWork.value)
+}
+
 onMounted(() => {
   updateScreenSize()
 })
@@ -171,14 +180,28 @@ onMounted(() => {
   <div class="new-request-surrounding-container text-main">
     <NewRequestTopNav :userId="userId"></NewRequestTopNav>
 
-    <form @submit.prevent="handleMessage" v-if="!isLargeScreen" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 mb-4">
+      <div
+        class="w-full h-20 bg-blue-500 rounded-lg"
+        v-for="(work, index) in selectedWork"
+        :key="index"
+      >
+        <p>{{ work[1] }}</p>
+      </div>
+
       <WorkTypeSelect
         :checkInputData="(e: string) => checkInputsData(e)"
         :selectData="(e: string) => (typeOfWork = e)"
       />
 
-      <SelectedWorkType v-if="typeOfWork !== ''" :selectedWorkType="typeOfWork" />
+      <SelectedWorkType
+        v-if="typeOfWork !== ''"
+        :selectedWorkType="typeOfWork"
+        @selectedWorkTypeArray="checkWorkTypeArray"
+      />
+    </div>
 
+    <form @submit.prevent="handleMessage" v-if="!isLargeScreen" class="flex flex-col gap-4">
       <LocationSelect
         :checkInputData="(e: string) => checkInputsData(e)"
         :selectData="(e: string) => (location = e)"
