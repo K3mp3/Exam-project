@@ -2,10 +2,12 @@
 import LoadingSpinner from '@/components/assets/LoadingSpinner.vue'
 import router from '@/router'
 import { contactRepairShops } from '@/services/userContact'
+import type { SelectedJobType } from '@/types/selectedJobType'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LocationSelect from './LocationSelect.vue'
 import NewRequestTopNav from './NewRequestTopNav.vue'
 import RegistrationNumberInput from './RegistrationNumberInput.vue'
+import SelectedJobs from './SelectedJobs.vue'
 import SelectedWorkType from './SelectedWorkType.vue'
 import TextareaInput from './TextareaInput.vue'
 import TroubleShootTimeSelect from './TroubleShootTimeSelect.vue'
@@ -18,7 +20,7 @@ const userId = computed(() => {
 
 const location = ref('')
 const typeOfWork = ref('')
-const selectedWork = ref<[String[], string][]>([])
+const selectedWork = ref<SelectedJobType[]>([])
 const registrationNumber = ref('')
 const troubleshootTime = ref('')
 const message = ref('')
@@ -29,7 +31,6 @@ const isConfirmationError = ref(false)
 const isBtnDisabled = ref(true)
 const hideMobileBtn = ref(false)
 const isLargeScreen = ref(false)
-const isWorkDetails = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
@@ -164,22 +165,21 @@ async function handleMessage() {
   }
 }
 
-function showWorkDetails() {
-  isWorkDetails.value = !isWorkDetails.value
-}
-
-function checkWorkTypeArray(values: Array<String>, type: string) {
+function checkWorkTypeArray(values: string[], type: string, key: string[]) {
+  console.log('key:', key)
+  typeOfWork.value = ''
   const index = selectedWork.value.findIndex((entry) => entry[1] === type)
 
   if (index !== -1) {
-    selectedWork.value[index][0].push(...values)
+    if (key.includes('radio')) {
+      selectedWork.value[index][0] = values
+    }
+
+    const newValues = values.filter((value) => !selectedWork.value[index][0].includes(value))
+    selectedWork.value[index][0].push(...newValues)
   } else {
     selectedWork.value.push([values, type])
   }
-}
-
-function cleanArrayString(array: String[]): string {
-  return array.join(', ')
 }
 
 onMounted(() => {
@@ -192,23 +192,7 @@ onMounted(() => {
     <NewRequestTopNav :userId="userId"></NewRequestTopNav>
 
     <div class="flex flex-col gap-4 mb-4">
-      <div
-        class="w-full el-bg-gray rounded-lg px-2 py-1 border-main"
-        v-for="(work, index) in selectedWork"
-        :key="index"
-      >
-        <div class="flex justify-between items-center">
-          <h3 class="font-title-bold text-base">{{ work[1] }}</h3>
-          <button type="button" @click="showWorkDetails">
-            <fontAwesome :icon="['fas', 'chevron-down']" v-if="!isWorkDetails" /><fontAwesome
-              :icon="['fas', 'chevron-up']"
-              v-if="isWorkDetails"
-            />
-          </button>
-        </div>
-
-        <p v-if="isWorkDetails">{{ cleanArrayString(work[0]) }}</p>
-      </div>
+      <SelectedJobs v-for="(work, index) in selectedWork" :key="index" :work="work" />
 
       <WorkTypeSelect
         :checkInputData="(e: string) => checkInputsData(e)"
@@ -218,6 +202,7 @@ onMounted(() => {
 
       <SelectedWorkType
         v-if="typeOfWork !== ''"
+        :key="typeOfWork"
         :selectedWorkType="typeOfWork"
         :selectedWork="selectedWork"
         @selectedWorkTypeArray="checkWorkTypeArray"

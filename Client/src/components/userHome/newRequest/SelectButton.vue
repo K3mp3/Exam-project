@@ -3,8 +3,10 @@ import { ref, watch } from 'vue'
 
 const props = defineProps<{
   options: Option[]
-  setSelectedOption: (option: String[]) => void
+  setSelectedOption: (option: string[]) => void
+  setSelectedKey: (key: string[]) => void
   emptyValues: Boolean
+  selectedWork: [string[], string][]
 }>()
 
 type Option = {
@@ -12,14 +14,18 @@ type Option = {
   value: string
 }
 
-const selectedOption = ref<String[]>([])
+const selectedOption = ref<string[]>([])
+const selectedKey = ref<string[]>([])
+const selectedOptions = ref<Option[]>([])
 const keyType = ref('')
+const selectedTypes = ref<string[]>([])
 
-function handleSelectedValueRadio(optionValue: string) {
+function handleSelectedValueRadio(optionValue: string, optionKey: string) {
   selectedOption.value = [optionValue]
+  selectedKey.value = [optionKey]
   props.setSelectedOption(selectedOption.value)
-
-  console.log(selectedOption.value)
+  props.setSelectedKey(selectedKey.value)
+  // console.log(selectedOption.value)
 }
 
 function handleSelectedValueCheckBox(optionValue: string) {
@@ -37,30 +43,40 @@ watch(
   (newOptions) => {
     if (newOptions.length > 0) {
       keyType.value = newOptions[0].key
+      selectedOptions.value = [...newOptions]
     } else {
       keyType.value = ''
+      selectedOptions.value = []
     }
     if (props.emptyValues) {
       selectedOption.value = []
     }
     props.setSelectedOption(selectedOption.value)
-    console.log(keyType.value)
+    // console.log(keyType.value)
   },
-  { immediate: true }
+  { immediate: true, deep: true }
+)
+
+watch(
+  () => props.selectedWork,
+  (newVal) => {
+    selectedTypes.value = newVal.map((work) => work[1])
+  },
+  { immediate: true, deep: true }
 )
 </script>
 
 <template>
   <div v-if="keyType === 'radio'" class="flex flex-col gap-4">
     <button
-      v-for="option in props.options"
+      v-for="option in selectedOptions"
       :key="option.key"
       type="button"
       :class="[
         'text-main border-button text-sm',
         selectedOption.includes(option.value) && 'border-button-active'
       ]"
-      @click="handleSelectedValueRadio(option.value)"
+      @click="handleSelectedValueRadio(option.value, option.key)"
     >
       <p>{{ option.value }}</p>
     </button>

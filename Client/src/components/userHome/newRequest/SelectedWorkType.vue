@@ -2,18 +2,17 @@
 import { computed, ref, watch } from 'vue'
 import SelectButton from './SelectButton.vue'
 
-const props = defineProps({
-  selectedWorkType: {
-    type: String,
-    required: true
-  },
-  selectedWork: {
-    type: Array,
-    required: true
-  }
-})
+const props = defineProps<{
+  selectedWorkType: string
+  selectedWork: [string[], string][]
+}>()
 
 const emptyValues = ref(false)
+const isBtnDisabled = ref(true)
+const textInput = ref('')
+const selectedOptions = ref<string[]>([])
+const selectedTypes = ref('')
+const selectedKeys = ref<string[]>([])
 
 const Ac: { key: string; value: string }[] = [
   { key: 'radio', value: 'AC-Service' },
@@ -40,7 +39,9 @@ const Detailing: { key: string; value: string }[] = [
 ]
 
 const options = computed(() => {
-  switch (props.selectedWorkType) {
+  console.log('Computing options. selectedTypes.value:', selectedTypes.value)
+
+  switch (selectedTypes.value) {
     case 'AC':
       return Ac
     case 'Exhaust':
@@ -56,15 +57,11 @@ const options = computed(() => {
   }
 })
 
-const isBtnDisabled = ref(true)
-const textInput = ref('')
-const selectedOptions = ref<String[]>([])
-
 const emits = defineEmits<{
-  (e: 'selectedWorkTypeArray', values: Array<String>, workType: string): void
+  (e: 'selectedWorkTypeArray', values: string[], workType: string, key: string[]): void
 }>()
 
-function handleSelectedOption(option?: String[]) {
+function handleSelectedOption(option?: string[]) {
   if (option) {
     selectedOptions.value = option
   }
@@ -76,20 +73,32 @@ function handleSelectedOption(option?: String[]) {
   } else {
     isBtnDisabled.value = false
   }
-  console.log(isBtnDisabled.value)
+  // console.log(isBtnDisabled.value)
 }
 
 function handleAddOptions() {
-  emits('selectedWorkTypeArray', selectedOptions.value, props.selectedWorkType)
+  emits('selectedWorkTypeArray', selectedOptions.value, props.selectedWorkType, selectedKeys.value)
   emptyValues.value = true
+  selectedOptions.value = []
+  selectedTypes.value = ''
+}
+
+function resetComponent() {
+  selectedOptions.value = []
+  selectedKeys.value = []
+  emptyValues.value = false
+  isBtnDisabled.value = true
+  textInput.value = ''
+  selectedTypes.value = props.selectedWorkType
 }
 
 watch(
-  () => props.selectedWork,
+  () => props.selectedWorkType,
   (newVal) => {
-    console.log('selectedWork in WorkTypeSelect updated:', newVal)
+    console.log('selectedWorkType changed:', newVal)
+    resetComponent()
   },
-  { deep: true }
+  { immediate: true }
 )
 </script>
 
@@ -99,6 +108,8 @@ watch(
       :options="options"
       :setSelectedOption="(e) => handleSelectedOption(e)"
       :emptyValues="emptyValues"
+      :selectedWork="selectedWork"
+      :setSelectedKey="(e) => (selectedKeys = e)"
     />
     <label for="message-input" class="font-text-light flex flex-col gap-1"
       ><span>Meddelande</span>
