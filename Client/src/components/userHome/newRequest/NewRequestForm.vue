@@ -165,20 +165,21 @@ async function handleMessage() {
   }
 }
 
-function checkWorkTypeArray(values: string[], type: string, key: string[]) {
-  console.log('key:', key)
+function checkWorkTypeArray(values: string[], textInput: string, type: string, key: string[]) {
+  console.log('textInput:', textInput)
   typeOfWork.value = ''
   const index = selectedWork.value.findIndex((entry) => entry[1] === type)
 
   if (index !== -1) {
     if (key.includes('radio')) {
       selectedWork.value[index][0] = values
+      selectedWork.value[index][1] = textInput
     }
 
     const newValues = values.filter((value) => !selectedWork.value[index][0].includes(value))
     selectedWork.value[index][0].push(...newValues)
   } else {
-    selectedWork.value.push([values, type])
+    selectedWork.value.push([values, textInput, type])
   }
 }
 

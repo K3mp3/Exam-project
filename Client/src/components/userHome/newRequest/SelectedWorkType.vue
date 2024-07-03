@@ -4,7 +4,7 @@ import SelectButton from './SelectButton.vue'
 
 const props = defineProps<{
   selectedWorkType: string
-  selectedWork: [string[], string][]
+  selectedWork: [string[], string, string][]
 }>()
 
 const emptyValues = ref(false)
@@ -58,26 +58,36 @@ const options = computed(() => {
 })
 
 const emits = defineEmits<{
-  (e: 'selectedWorkTypeArray', values: string[], workType: string, key: string[]): void
+  (
+    e: 'selectedWorkTypeArray',
+    values: string[],
+    textInput: string,
+    workType: string,
+    key: string[]
+  ): void
 }>()
 
 function handleSelectedOption(option?: string[]) {
+  console.log('textInput:', textInput.value)
   if (option) {
     selectedOptions.value = option
   }
-  // console.log('option:', option)
-  // console.log('textInput:', textInput.value)
 
   if (selectedOptions.value.length === 0 && textInput.value.trim() === '') {
     isBtnDisabled.value = true
   } else {
     isBtnDisabled.value = false
   }
-  // console.log(isBtnDisabled.value)
 }
 
 function handleAddOptions() {
-  emits('selectedWorkTypeArray', selectedOptions.value, props.selectedWorkType, selectedKeys.value)
+  emits(
+    'selectedWorkTypeArray',
+    selectedOptions.value,
+    textInput.value,
+    props.selectedWorkType,
+    selectedKeys.value
+  )
   emptyValues.value = true
   selectedOptions.value = []
   selectedTypes.value = ''

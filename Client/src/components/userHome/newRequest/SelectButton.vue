@@ -6,7 +6,7 @@ const props = defineProps<{
   setSelectedOption: (option: string[]) => void
   setSelectedKey: (key: string[]) => void
   emptyValues: Boolean
-  selectedWork: [string[], string][]
+  selectedWork: [string[], string, string][]
 }>()
 
 type Option = {
@@ -60,7 +60,7 @@ watch(
 watch(
   () => props.selectedWork,
   (newVal) => {
-    selectedTypes.value = newVal.map((work) => work[1])
+    selectedTypes.value = newVal.map((work) => work[2])
   },
   { immediate: true, deep: true }
 )

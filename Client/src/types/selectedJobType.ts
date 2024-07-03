@@ -1,1 +1,1 @@
-export type SelectedJobType = [string[], string]
+export type SelectedJobType = [string[], string, string]

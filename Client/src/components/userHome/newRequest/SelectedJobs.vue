@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 const props = defineProps<{
-  work: [string[], string]
+  work: [string[], string, string]
 }>()
 
 const isWorkDetails = ref(false)
@@ -11,15 +11,19 @@ function showWorkDetails() {
   isWorkDetails.value = !isWorkDetails.value
 }
 
-function cleanArrayString(array: String[]): string {
-  return array.join(', ')
+function cleanArrayString(array: String[], text: string) {
+  const data = {
+    array: array.join(', '),
+    text: text
+  }
+  return data
 }
 </script>
 
 <template>
   <div class="w-full el-bg-gray rounded-lg px-2 py-1 border-main">
     <div class="flex justify-between items-center relative">
-      <h3 class="font-title-bold text-base">{{ props.work[1] }}</h3>
+      <h3 class="font-title-bold text-base">{{ props.work[2] }}</h3>
       <button
         type="button"
         @click="showWorkDetails"
@@ -32,6 +36,7 @@ function cleanArrayString(array: String[]): string {
       </button>
     </div>
 
-    <p v-if="isWorkDetails">{{ cleanArrayString(props.work[0]) }}</p>
+    <p>{{ cleanArrayString(props.work[0], props.work[1]).array }}</p>
+    <p>{{ cleanArrayString(props.work[0], props.work[1]).text }}</p>
   </div>
 </template>
