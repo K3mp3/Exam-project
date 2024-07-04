@@ -12,9 +12,8 @@ const emits = defineEmits<{
 }>()
 
 function showWorkDetails() {
-  console.log('hello')
   isWorkDetails.value = !isWorkDetails.value
-  console.log(isWorkDetails.value)
+  // console.log(isWorkDetails.value)
 }
 
 function deleteWork() {

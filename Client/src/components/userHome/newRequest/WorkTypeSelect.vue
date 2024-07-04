@@ -2,10 +2,10 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps({
-  checkInputData: {
-    type: Function,
-    required: true
-  },
+  // checkInputData: {
+  //   type: Function,
+  //   required: true
+  // },
   selectData: {
     type: Function,
     required: true
@@ -24,8 +24,8 @@ const workType = ref('')
 const selectedTypes = ref<string[]>([])
 
 function handleChange() {
-  console.log('workType.value:', workType.value)
-  props.checkInputData('isTypeOfWork')
+  // console.log('workType.value:', workType.value)
+  // props.checkInputData('isTypeOfWork')
   props.selectData(workType.value)
 }
 

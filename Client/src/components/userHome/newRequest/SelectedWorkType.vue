@@ -39,7 +39,7 @@ const Detailing: { key: string; value: string }[] = [
 ]
 
 const options = computed(() => {
-  console.log('Computing options. selectedTypes.value:', selectedTypes.value)
+  // console.log('Computing options. selectedTypes.value:', selectedTypes.value)
 
   switch (selectedTypes.value) {
     case 'AC':
@@ -68,7 +68,7 @@ const emits = defineEmits<{
 }>()
 
 function handleSelectedOption(option?: string[]) {
-  console.log('textInput:', textInput.value)
+  // console.log('textInput:', textInput.value)
   if (option) {
     selectedOptions.value = option
   }
@@ -105,7 +105,7 @@ function resetComponent() {
 watch(
   () => props.selectedWorkType,
   (newVal) => {
-    console.log('selectedWorkType changed:', newVal)
+    // console.log('selectedWorkType changed:', newVal)
     resetComponent()
   },
   { immediate: true }

@@ -3,6 +3,7 @@ import LoadingSpinner from '@/components/assets/LoadingSpinner.vue'
 import router from '@/router'
 import { contactRepairShops } from '@/services/userContact'
 import type { SelectedJobType } from '@/types/selectedJobType'
+import { getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LocationSelect from './LocationSelect.vue'
 import NewRequestTopNav from './NewRequestTopNav.vue'
@@ -36,8 +37,7 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
   { key: 'isTroubleshootTime', value: false },
   { key: 'isRegistrationNumber', value: false },
-  { key: 'isTypeOfWork', value: false },
-  { key: 'selectedWork', value: false }
+  { key: 'isTypeOfWork', value: false }
 ]
 
 let width = document.documentElement.clientWidth
@@ -48,7 +48,7 @@ function checkInputData() {
 }
 
 function checkInputsData(confirmKey: string) {
-  // console.log(confirmKey)
+  console.log('confirmKey:', confirmKey)
 
   nextTick(() => {
     let refVariable: Ref<string> | null = null
@@ -108,13 +108,21 @@ function updateScreenSize() {
   }
 }
 
+const auth = getAuth()
+
 const messageData = computed(() => {
   return {
-    customerId: userId.value as unknown as string,
+    email: auth.currentUser?.email ? auth.currentUser.email : '',
     location: location.value,
     registrationNumber: registrationNumber.value,
     troubleshootTime: troubleshootTime.value,
-    customerMessage: selectedWork.value,
+    customerMessage: selectedWork.value.map((work) => ({
+      work: work[0].join(', '),
+      message: work[1],
+      type: work[2],
+      date: new Date(),
+      name: ''
+    })),
     answeredByRepairShop: false
   }
 })
@@ -123,8 +131,6 @@ function deleteWork(work: string) {
   console.log('work:', work)
   const updatedArray = selectedWork.value.filter((entry) => entry[2] !== work)
   selectedWork.value = updatedArray
-
-  console.log(selectedWork.value)
 }
 
 function showConfirmationBox(response: any) {
@@ -174,20 +180,27 @@ async function handleMessage() {
 
 function checkWorkTypeArray(values: string[], textInput: string, type: string, key: string[]) {
   console.log('key:', key)
-  typeOfWork.value = ''
-  const index = selectedWork.value.findIndex((entry) => entry[2] === type)
+  checkInputsData('isTypeOfWork')
+  typeOfWork.value = type
 
-  if (index !== -1) {
-    if (key.includes('radio')) {
-      selectedWork.value[index][0] = values
-      selectedWork.value[index][1] = textInput
+  nextTick(() => {
+    typeOfWork.value = ''
+    const index = selectedWork.value.findIndex((entry) => entry[2] === type)
+
+    if (index !== -1) {
+      if (key.includes('radio')) {
+        selectedWork.value[index][0] = values
+        selectedWork.value[index][1] = textInput
+      }
+
+      const newValues = values.filter((value) => !selectedWork.value[index][0].includes(value))
+      selectedWork.value[index][0].push(...newValues)
+    } else {
+      selectedWork.value.push([values, textInput, type])
     }
 
-    const newValues = values.filter((value) => !selectedWork.value[index][0].includes(value))
-    selectedWork.value[index][0].push(...newValues)
-  } else {
-    selectedWork.value.push([values, textInput, type])
-  }
+    console.log(selectedWork.value)
+  })
 }
 
 onMounted(() => {
@@ -213,11 +226,7 @@ onMounted(() => {
         :selectedWork="selectedWork"
       /> -->
 
-      <WorkTypeSelect
-        :checkInputData="(e: string) => checkInputsData(e)"
-        :selectData="(e: string) => (typeOfWork = e)"
-        :selectedWork="selectedWork"
-      />
+      <WorkTypeSelect :selectData="(e: string) => (typeOfWork = e)" :selectedWork="selectedWork" />
 
       <SelectedWorkType
         v-if="typeOfWork !== ''"

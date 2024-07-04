@@ -1,6 +1,7 @@
 export interface IUserContact {
   _id?: string
   customerId?: string
+  email: string
   messageId?: string
   customerName?: string
   customerEmail?: string
@@ -9,7 +10,13 @@ export interface IUserContact {
   location: string
   registrationNumber: string
   troubleshootTime: string
-  customerMessage: [string[], string, string][]
+  customerMessage: {
+    work: string
+    message: string
+    type: string
+    date: Date
+    name: string
+  }[]
   repairShopAnswer?: string
   customerAnswer?: string
   priceOffer?: string
