@@ -25,7 +25,7 @@ const selectedTypes = ref<string[]>([])
 
 function handleChange() {
   console.log('workType.value:', workType.value)
-  props.checkInputData('isTypeOfWork')
+  props.checkInputData('isWorkType')
   props.selectData(workType.value)
 }
 
@@ -46,7 +46,7 @@ watch(
 </script>
 
 <template>
-  <label for="workType" class="font-text-light flex flex-col gap-1"
+  <!-- <label for="workType" class="font-text-light flex flex-col gap-1"
     ><span>Typ av arbete</span>
     <select name="workType" class="select text-sm" v-model="workType" @change="handleChange">
       <option value="" selected default disabled>Välj typ av arbete</option>
@@ -57,5 +57,6 @@ watch(
       <option value="Detailing">Fordonsvård</option>
       <option value="Inspection">Besiktning och förkontroll</option>
     </select>
-  </label>
+  </label> -->
+  <!-- <div class="w-full h-10 bg-blue-500 rounded-[10px]"></div> -->
 </template>

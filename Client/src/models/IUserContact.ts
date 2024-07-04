@@ -9,7 +9,7 @@ export interface IUserContact {
   location: string
   registrationNumber: string
   troubleshootTime: string
-  customerMessage: string
+  customerMessage: [string[], string, string][]
   repairShopAnswer?: string
   customerAnswer?: string
   priceOffer?: string

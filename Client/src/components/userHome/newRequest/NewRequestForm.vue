@@ -36,15 +36,15 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
   { key: 'isTroubleshootTime', value: false },
   { key: 'isRegistrationNumber', value: false },
-  { key: 'isMessage', value: false },
-  { key: 'isTypeOfWork', value: false }
+  { key: 'isTypeOfWork', value: false },
+  { key: 'selectedWork', value: false }
 ]
 
 let width = document.documentElement.clientWidth
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
-  // console.log(inputsArray)
+  console.log(inputsArray)
 }
 
 function checkInputsData(confirmKey: string) {
@@ -53,6 +53,9 @@ function checkInputsData(confirmKey: string) {
   nextTick(() => {
     let refVariable: Ref<string> | null = null
     switch (confirmKey) {
+      case 'selectedWork':
+        refVariable = typeOfWork
+        break
       case 'isTypeOfWork':
         refVariable = typeOfWork
         break
@@ -64,9 +67,6 @@ function checkInputsData(confirmKey: string) {
         break
       case 'isTroubleshootTime':
         refVariable = troubleshootTime
-        break
-      case 'isMessage':
-        refVariable = message
         break
       default:
         break
@@ -114,10 +114,18 @@ const messageData = computed(() => {
     location: location.value,
     registrationNumber: registrationNumber.value,
     troubleshootTime: troubleshootTime.value,
-    customerMessage: message.value,
+    customerMessage: selectedWork.value,
     answeredByRepairShop: false
   }
 })
+
+function deleteWork(work: string) {
+  console.log('work:', work)
+  const updatedArray = selectedWork.value.filter((entry) => entry[2] !== work)
+  selectedWork.value = updatedArray
+
+  console.log(selectedWork.value)
+}
 
 function showConfirmationBox(response: any) {
   // console.log(response)
@@ -147,7 +155,6 @@ async function handleMessage() {
 
   if (responseData && responseData.status === 201) {
     isLoading.value = false
-
     location.value = ''
     registrationNumber.value = ''
     troubleshootTime.value = ''
@@ -166,9 +173,9 @@ async function handleMessage() {
 }
 
 function checkWorkTypeArray(values: string[], textInput: string, type: string, key: string[]) {
-  console.log('textInput:', textInput)
+  console.log('key:', key)
   typeOfWork.value = ''
-  const index = selectedWork.value.findIndex((entry) => entry[1] === type)
+  const index = selectedWork.value.findIndex((entry) => entry[2] === type)
 
   if (index !== -1) {
     if (key.includes('radio')) {
@@ -193,7 +200,18 @@ onMounted(() => {
     <NewRequestTopNav :userId="userId"></NewRequestTopNav>
 
     <div class="flex flex-col gap-4 mb-4">
-      <SelectedJobs v-for="(work, index) in selectedWork" :key="index" :work="work" />
+      <SelectedJobs
+        v-for="(work, index) in selectedWork"
+        :key="index"
+        :work="work"
+        @deleteWork="deleteWork"
+      />
+
+      <!-- <NewSelectTag
+        :checkInputData="(e: string) => checkInputsData(e)"
+        :selectData="(e: string) => (typeOfWork = e)"
+        :selectedWork="selectedWork"
+      /> -->
 
       <WorkTypeSelect
         :checkInputData="(e: string) => checkInputsData(e)"
