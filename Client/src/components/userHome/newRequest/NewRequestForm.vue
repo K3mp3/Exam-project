@@ -11,7 +11,6 @@ import RegistrationNumberInput from './RegistrationNumberInput.vue'
 import SelectedJobs from './SelectedJobs.vue'
 import SelectedWorkType from './SelectedWorkType.vue'
 import TextareaInput from './TextareaInput.vue'
-import TroubleShootTimeSelect from './TroubleShootTimeSelect.vue'
 import WorkTypeSelect from './WorkTypeSelect.vue'
 
 const userId = computed(() => {
@@ -65,9 +64,6 @@ function checkInputsData(confirmKey: string) {
       case 'isRegistrationNumber':
         refVariable = registrationNumber
         break
-      case 'isTroubleshootTime':
-        refVariable = troubleshootTime
-        break
       default:
         break
     }
@@ -115,13 +111,10 @@ const messageData = computed(() => {
     email: auth.currentUser?.email ? auth.currentUser.email : '',
     location: location.value,
     registrationNumber: registrationNumber.value,
-    troubleshootTime: troubleshootTime.value,
     customerMessage: selectedWork.value.map((work) => ({
       work: work[0].join(', '),
       message: work[1],
-      type: work[2],
-      date: new Date(),
-      name: ''
+      type: work[2]
     })),
     answeredByRepairShop: false
   }
@@ -248,11 +241,6 @@ onMounted(() => {
         :inputData="(e: string) => (registrationNumber = e)"
       ></RegistrationNumberInput>
 
-      <TroubleShootTimeSelect
-        :checkInputData="(e: string) => checkInputsData(e)"
-        :selectData="(e: string) => (troubleshootTime = e)"
-      ></TroubleShootTimeSelect>
-
       <button
         type="submit"
         :disabled="isBtnDisabled"
@@ -284,11 +272,6 @@ onMounted(() => {
           :checkInputData="(e: string) => checkInputsData(e)"
           :inputData="(e: string) => (registrationNumber = e)"
         ></RegistrationNumberInput>
-
-        <TroubleShootTimeSelect
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :selectData="(e: string) => (troubleshootTime = e)"
-        ></TroubleShootTimeSelect>
 
         <button
           type="submit"

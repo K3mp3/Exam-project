@@ -9,13 +9,10 @@ export interface IUserContact {
   repairShopName?: string
   location: string
   registrationNumber: string
-  troubleshootTime: string
   customerMessage: {
     work: string
     message: string
     type: string
-    date: Date
-    name: string
   }[]
   repairShopAnswer?: string
   customerAnswer?: string

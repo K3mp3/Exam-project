@@ -7,7 +7,18 @@ const BASE_URL = 'http://localhost:3000'
 
 export async function contactRepairShops(messageData: IUserContact) {
   try {
-    console.log(messageData)
+    console.log('Original messageData:', messageData)
+
+    // const transformedData = {
+    //   ...messageData,
+    //   customerMessage: messageData.customerMessage.map((msg) => ({
+    //     ...msg,
+    //     date: msg.date.toISOString()
+    //   }))
+    // }
+
+    console.log('Transformed messageData:', messageData)
+
     const response = await axios.post<IUserContact>(
       `${BASE_URL}/contactRepairShops/contactRepairShops`,
       messageData
