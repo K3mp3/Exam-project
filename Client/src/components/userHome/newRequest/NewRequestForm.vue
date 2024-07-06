@@ -10,7 +10,6 @@ import NewRequestTopNav from './NewRequestTopNav.vue'
 import RegistrationNumberInput from './RegistrationNumberInput.vue'
 import SelectedJobs from './SelectedJobs.vue'
 import SelectedWorkType from './SelectedWorkType.vue'
-import TextareaInput from './TextareaInput.vue'
 import WorkTypeSelect from './WorkTypeSelect.vue'
 
 const userId = computed(() => {
@@ -34,7 +33,6 @@ const isLargeScreen = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isLocation', value: false },
-  { key: 'isTroubleshootTime', value: false },
   { key: 'isRegistrationNumber', value: false },
   { key: 'isTypeOfWork', value: false }
 ]
@@ -53,9 +51,6 @@ function checkInputsData(confirmKey: string) {
     let refVariable: Ref<string> | null = null
     switch (confirmKey) {
       case 'selectedWork':
-        refVariable = typeOfWork
-        break
-      case 'isTypeOfWork':
         refVariable = typeOfWork
         break
       case 'isLocation':
@@ -202,71 +197,38 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="new-request-surrounding-container text-main">
-    <NewRequestTopNav :userId="userId"></NewRequestTopNav>
+  <div class="new-request-surrounding-container text-main flex flex.col items-center h-screen">
+    <div class="w-full max-w-[500px] m-auto">
+      <NewRequestTopNav :userId="userId"></NewRequestTopNav>
+      <div class="flex flex-col gap-4 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          <SelectedJobs
+            v-for="(work, index) in selectedWork"
+            :key="index"
+            :work="work"
+            @deleteWork="deleteWork"
+          />
+        </div>
 
-    <div class="flex flex-col gap-4 mb-4">
-      <SelectedJobs
-        v-for="(work, index) in selectedWork"
-        :key="index"
-        :work="work"
-        @deleteWork="deleteWork"
-      />
+        <WorkTypeSelect
+          :selectData="(e: string) => (typeOfWork = e)"
+          :selectedWork="selectedWork"
+        />
 
-      <!-- <NewSelectTag
-        :checkInputData="(e: string) => checkInputsData(e)"
-        :selectData="(e: string) => (typeOfWork = e)"
-        :selectedWork="selectedWork"
-      /> -->
-
-      <WorkTypeSelect :selectData="(e: string) => (typeOfWork = e)" :selectedWork="selectedWork" />
-
-      <SelectedWorkType
-        v-if="typeOfWork !== ''"
-        :key="typeOfWork"
-        :selectedWorkType="typeOfWork"
-        :selectedWork="selectedWork"
-        @selectedWorkTypeArray="checkWorkTypeArray"
-      />
-    </div>
-
-    <form @submit.prevent="handleMessage" v-if="!isLargeScreen" class="flex flex-col gap-4">
-      <LocationSelect
-        :checkInputData="(e: string) => checkInputsData(e)"
-        :selectData="(e: string) => (location = e)"
-      />
-
-      <RegistrationNumberInput
-        :checkInputData="(e: string) => checkInputsData(e)"
-        :inputData="(e: string) => (registrationNumber = e)"
-      ></RegistrationNumberInput>
-
-      <button
-        type="submit"
-        :disabled="isBtnDisabled"
-        :class="{
-          'main-btn-disabled mt-5 mb-9': isBtnDisabled,
-          'main-btn mt-4 mb-2': !isBtnDisabled,
-          hidden: hideMobileBtn
-        }"
-      >
-        Skicka
-      </button>
-    </form>
-
-    <form @submit.prevent="handleMessage" v-if="isLargeScreen">
-      <div class="left-side-contact-form">
-        <TextareaInput
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :inputData="(e: string) => (message = e)"
-        ></TextareaInput>
+        <SelectedWorkType
+          v-if="typeOfWork !== ''"
+          :key="typeOfWork"
+          :selectedWorkType="typeOfWork"
+          :selectedWork="selectedWork"
+          @selectedWorkTypeArray="checkWorkTypeArray"
+        />
       </div>
 
-      <div class="right-side-contact-form">
+      <form @submit.prevent="handleMessage" class="flex flex-col gap-4 max-w-full">
         <LocationSelect
           :checkInputData="(e: string) => checkInputsData(e)"
           :selectData="(e: string) => (location = e)"
-        ></LocationSelect>
+        />
 
         <RegistrationNumberInput
           :checkInputData="(e: string) => checkInputsData(e)"
@@ -277,16 +239,16 @@ onMounted(() => {
           type="submit"
           :disabled="isBtnDisabled"
           :class="{
-            'user-home-send-btn-disabled': isBtnDisabled,
-            'user-home-send-btn': !isBtnDisabled
+            'main-btn-disabled mt-5 mb-9': isBtnDisabled,
+            'main-btn mt-5 mb-9': !isBtnDisabled,
+            hidden: hideMobileBtn
           }"
         >
           Skicka
         </button>
-      </div>
-    </form>
-
-    <div class="blue-line"></div>
+      </form>
+      <div class="blue-line"></div>
+    </div>
   </div>
   <div class="spinner-component" v-if="isLoading">
     <LoadingSpinner />

@@ -23,7 +23,7 @@ function handleChange() {
 <template>
   <label for="location" class="font-text-light flex flex-col gap-1 mt-[-5px]"
     ><span>Kommun</span>
-    <select name="location" class="select text-sm" v-model="location" @change="handleChange">
+    <select name="location" class="select text-sm w-full" v-model="location" @change="handleChange">
       <option value="Sundsvall">Sundsvall</option>
     </select>
   </label>

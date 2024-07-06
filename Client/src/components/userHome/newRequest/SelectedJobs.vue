@@ -30,7 +30,7 @@ function cleanArrayString(array: String[], text: string) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 py1-1">
+  <div class="flex flex-col gap-2 py1-1 w-full">
     <button type="button" @click="deleteWork" class="w-full flex px-2">
       <fontAwesome :icon="['fas', 'trash']" class="w-3" />
     </button>

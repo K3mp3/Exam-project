@@ -48,7 +48,7 @@ watch(
 <template>
   <label for="workType" class="font-text-light flex flex-col gap-1"
     ><span>Typ av arbete</span>
-    <select name="workType" class="select text-sm" v-model="workType" @change="handleChange">
+    <select name="workType" class="select text-sm w-full" v-model="workType" @change="handleChange">
       <option value="" selected default disabled>Välj typ av arbete</option>
       <option value="AC">AC</option>
       <option value="Exhaust">Avgaser</option>

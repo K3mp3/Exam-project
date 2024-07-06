@@ -17,7 +17,7 @@ const userId = computed(() => {
   return routeParams.userId || ''
 })
 
-const desktop = ref(false)
+const width = ref<number>()
 const firstName = ref('')
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
@@ -47,9 +47,7 @@ const userAuth = computed(() => {
 
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
-
-  if (document.documentElement.clientWidth > 1639) desktop.value = true
-  else desktop.value = false
+  width.value = document.documentElement.clientWidth
 }
 
 const user = computed(() => {
@@ -76,6 +74,8 @@ function newRequest() {
 }
 
 onMounted(async () => {
+  updateScreenSize()
+
   const auth = getAuth()
   console.log(auth.currentUser?.email)
   const user = {
@@ -89,14 +89,31 @@ onMounted(async () => {
 
 <template>
   <DialogBox v-if="isDialog"></DialogBox>
-  <SideNav v-if="desktop" :signOutFunction="changeUserSignInStatus"></SideNav>
-  <div class="p-4 text-xl sm:text-2xl">
-    <h2>Hej {{ firstName }}!</h2>
-  </div>
-  <div class="signed-in-main">
-    <button type="button" class="main-btn px-6 text-main" @click="newRequest">Ny förfrågan</button>
+  <div v-if="width && width < 768">
+    <div class="p-4 text-xl sm:text-2xl">
+      <h2>Hej {{ firstName }}!</h2>
+    </div>
+    <div class="signed-in-main">
+      <button
+        type="button"
+        class="flex gap-2 items-center main-btn px-6 text-main"
+        @click="newRequest"
+      >
+        <fontAwesome :icon="['fa-solid', 'fa-pen-to-square']" />Ny förfrågan
+      </button>
+    </div>
+
+    <UserHomeAnswers />
+    <BottomNav />
   </div>
 
-  <UserHomeAnswers />
-  <BottomNav />
+  <div v-if="width && width > 767">
+    <div class="flex gap-8 w-screen">
+      <SideNav :signOutFunction="changeUserSignInStatus" @newRequest="newRequest"></SideNav>
+
+      <div class="p-8">
+        <!-- <UserHomeAnswers /> -->
+      </div>
+    </div>
+  </div>
 </template>
