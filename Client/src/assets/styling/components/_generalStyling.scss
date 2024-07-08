@@ -1134,15 +1134,6 @@ p {
 
 // Details
 
-.silhouette {
-  border-radius: 20px;
-  border: 2px solid transparent;
-  background-image: linear-gradient($bg-main, $bg-main),
-    linear-gradient(to right, #a80df1, #3b178a, #0d3ef100);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-}
-
 .graph-container {
   margin-top: 24px;
   display: flex;

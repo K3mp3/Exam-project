@@ -6,8 +6,7 @@ import { answerCustomerBack, answerFromRepairShop } from '@/services/RepariShopA
 import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
 import { computed, onMounted, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import RepairShopAnsweredContent from './RepairShopAnsweredContent.vue'
-import RepairShopMessageContent from './RepairShopMessageContent.vue'
+import RequestContent from './RequestContent.vue'
 
 const isLoading = ref(false)
 const isConfirmation = ref(false)
@@ -32,17 +31,15 @@ const repairShopName = localStorage.getItem('userName')
 
 async function getMessages() {
   if (userId.value) {
+    console.log('verkstad')
     const response = await getContactRepairShops(repairShopId as IRepairShopId)
-    const responseArray: IUserContact[] = Array.isArray(response) ? response : []
+    console.log(response)
+    const responseArray: IUserContact[] = Array.isArray(response) ? response : [response]
 
-    const filteredResponse = responseArray.filter((message: IUserContact) => {
-      return (
-        !message.repairShopAnswers || // If repairShopAnswers is not defined
-        message.repairShopAnswers.every((answer) => answer.repairShop !== repairShopName)
-      )
-    })
+    console.log(responseArray)
 
-    unansweredMessages.value = filteredResponse
+    unansweredMessages.value = responseArray
+    console.log('unansweredMessages:', unansweredMessages.value) // Add this line for debugging
   }
 }
 
@@ -109,43 +106,56 @@ onMounted(() => {
 </script>
 
 <template>
-  <h3></h3>
-  <h3>Dina förfrågningar</h3>
+  <div class="p-4 flex flex-col gap-2">
+    <h2 class="text-text-lg sm:text-xl">Dina förfrågningar</h2>
 
-  <form @submit.prevent="" class="repair-shop-requests-form">
-    <RepairShopMessageContent
-      v-for="index in unansweredMessages"
-      :key="index._id"
-      :index="index"
-      class="repair-shop-message-content-component"
-      :onAnswer="handleAnswer"
-    ></RepairShopMessageContent>
-    <RepairShopAnsweredContent
-      v-for="index in answeredMessages"
-      :key="index._id"
-      :index="index"
-      class="repair-shop-message-content-component"
-      :onAnswer="handleAnswerCustomerBack"
-      :hideAnswerInput="true"
-    >
-    </RepairShopAnsweredContent>
-
-    <div class="spinner-component" v-if="isLoading">
-      <LoadingSpinner />
-      <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
-    </div>
-    <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
-      <div class="confirmation-box" v-if="isConfirmation">
-        <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
-        <p class="text-main font-title-bold O1rem">Meddelande skickat!</p>
+    <form @submit.prevent="" class="repair-shop-requests-form">
+      <div
+        class="flex flex-col gap-6 w-ful"
+        v-for="message in unansweredMessages"
+        :key="message._id"
+      >
+        <div
+          v-for="(customerMessage, index) in message.customerMessage"
+          :key="`${message._id}-${index}`"
+          class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main"
+        >
+          <RequestContent :customerMessage="customerMessage" :message="message" />
+        </div>
       </div>
+      <!-- <RepairShopMessageContent
+        v-for="(message, messageIndex) in unansweredMessages"
+        :key="`${message._id}-${messageIndex}`"
+        :userContact="message"
+        :messageData="message.customerMessage[messageIndex]"
+        class="repair-shop-message-content-component"
+        :onAnswer="handleAnswer"
+      ></RepairShopMessageContent>
+      <RepairShopAnsweredContent
+        v-for="index in answeredMessages"
+        :key="index._id"
+        :index="index"
+        class="repair-shop-message-content-component"
+        :onAnswer="handleAnswerCustomerBack"
+        :hideAnswerInput="true"
+      >
+      </RepairShopAnsweredContent> -->
 
-      <div class="confirmation-box-error" v-if="isConfirmationError">
-        <fontAwesome :icon="['fas', 'x']" class="text-main font-title-bold O35rem" />
-        <p class="text-main font-title-bold O1rem">Meddelande kunde ej skickas!</p>
+      <div class="spinner-component" v-if="isLoading">
+        <LoadingSpinner />
+        <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
       </div>
-    </div>
-  </form>
+      <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
+        <div class="confirmation-box" v-if="isConfirmation">
+          <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />
+          <p class="text-main font-title-bold O1rem">Meddelande skickat!</p>
+        </div>
 
-  <div class="blue-line"></div>
+        <div class="confirmation-box-error" v-if="isConfirmationError">
+          <fontAwesome :icon="['fas', 'x']" class="text-main font-title-bold O35rem" />
+          <p class="text-main font-title-bold O1rem">Meddelande kunde ej skickas!</p>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>

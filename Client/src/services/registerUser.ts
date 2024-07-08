@@ -33,8 +33,6 @@ export async function registerRepairShop(user: IUserRegistration) {
       user
     )
 
-    console.log(response.status)
-
     window.location = response.data.url as Location | (string & Location)
 
     return response.status

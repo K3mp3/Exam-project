@@ -6,6 +6,8 @@ import { computed, onMounted } from 'vue'
 const currentUrl = window.location.href
 const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
 
+const isRepairShop = localStorage.getItem('isRepairShop')
+
 const emits = defineEmits<{
   (e: 'newRequest'): void
 }>()
@@ -34,6 +36,7 @@ onMounted(() => {
       <div class="flex flex-col gap-6">
         <h2 class="sm:text-3xl xl:text-5xl">FixerFinder</h2>
         <button
+          v-if="!isRepairShop"
           type="button"
           class="flex gap-2 items-center main-btn px-6 text-main"
           @click="newRequest"

@@ -39,11 +39,14 @@ const props = defineProps({
 
 const inputValue = ref(props.predefinedValue || '')
 
-watch(() => props.predefinedValue, (newValue) => {
-  if (newValue !== undefined) {
-    inputValue.value = newValue
+watch(
+  () => props.predefinedValue,
+  (newValue) => {
+    if (newValue !== undefined) {
+      inputValue.value = newValue
+    }
   }
-})
+)
 
 const emit = defineEmits(['update:predefinedValue'])
 
@@ -64,16 +67,16 @@ console.log(props.predefinedValue)
 
 <template>
   <input
-  :type="props.inputType"
-  :name="props.inputName"
-  :placeholder="props.placeholder"
-  v-model="inputValue"
-  @input="handleChange"
-  @blur="handleBlur"
-  :class="[
-    'w-full text-input px-2',
-    !props.isDataCorrect && 'input-warning',
-    props.dataError && 'input-error'
-  ]"
+    :type="props.inputType"
+    :name="props.inputName"
+    :placeholder="props.placeholder"
+    v-model="inputValue"
+    @input="handleChange"
+    @blur="handleBlur"
+    :class="[
+      'w-full text-input px-2',
+      !props.isDataCorrect && 'input-warning',
+      props.dataError && 'input-error'
+    ]"
   />
 </template>

@@ -8,6 +8,7 @@ import { getAuth } from 'firebase/auth'
 import { computed, onMounted, ref } from 'vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 import BottomNav from '../nav/BottomNav.vue'
+import RepairShopForm from '../repairShopHome/RepairShopForm.vue'
 import SideNav from '../sideNav/SideNav.vue'
 import { getSignInStatus } from '../utils/signInStatus'
 import UserHomeAnswers from './UserHomeAnswers.vue'
@@ -19,10 +20,11 @@ const userId = computed(() => {
 
 const width = ref<number>()
 const firstName = ref('')
+const fullName = ref('')
+const isRepairShop = ref(false)
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
 
-const fullName = localStorage.getItem('userName')
 const email = localStorage.getItem('userEmail')
 const id = localStorage.getItem('user')
 
@@ -83,7 +85,9 @@ onMounted(async () => {
   }
   const response = await axios.post('http://localhost:3000/users/signedInUser', user)
 
-  firstName.value = response.data.message ? response.data.message.split(' ')[0] : ''
+  firstName.value = response.data.message.name ? response.data.message.name.split(' ')[0] : ''
+  fullName.value = response.data.message.name
+  isRepairShop.value = response.data.message.repairShop
 })
 </script>
 
@@ -91,10 +95,12 @@ onMounted(async () => {
   <DialogBox v-if="isDialog"></DialogBox>
   <div v-if="width && width < 768">
     <div class="p-4 text-xl sm:text-2xl">
-      <h2>Hej {{ firstName }}!</h2>
+      <h2 v-if="!isRepairShop">Hej {{ firstName }}!</h2>
+      <h2 v-if="isRepairShop">Hej {{ fullName }}!</h2>
     </div>
     <div class="signed-in-main">
       <button
+        v-if="!isRepairShop"
         type="button"
         class="flex gap-2 items-center main-btn px-6 text-main"
         @click="newRequest"
@@ -103,7 +109,8 @@ onMounted(async () => {
       </button>
     </div>
 
-    <UserHomeAnswers />
+    <UserHomeAnswers v-if="!isRepairShop" />
+    <RepairShopForm v-if="isRepairShop" />
     <BottomNav />
   </div>
 
@@ -114,6 +121,8 @@ onMounted(async () => {
       <div class="p-8">
         <!-- <UserHomeAnswers /> -->
       </div>
+
+      <RepairShopForm v-if="isRepairShop" />
     </div>
   </div>
 </template>
