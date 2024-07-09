@@ -107,9 +107,11 @@ const messageData = computed(() => {
     location: location.value,
     registrationNumber: registrationNumber.value,
     customerMessage: selectedWork.value.map((work) => ({
+      id: '',
       work: work[0].join(', '),
       message: work[1],
-      type: work[2]
+      type: work[2],
+      answeredByRepairShop: false
     })),
     answeredByRepairShop: false
   }

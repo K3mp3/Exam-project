@@ -118,6 +118,7 @@ onMounted(() => {
         <div
           v-for="(customerMessage, index) in message.customerMessage"
           :key="`${message._id}-${index}`"
+          v-if="!message.customerMessage[0].answeredByRepairShop"
           class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main"
         >
           <RequestContent :customerMessage="customerMessage" :message="message" />

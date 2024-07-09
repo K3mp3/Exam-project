@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { requestDataStore } from '@/stores/requestDataStore'
+import { computed, nextTick, ref } from 'vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
 const props = defineProps({
@@ -16,7 +17,40 @@ const props = defineProps({
 const setButtonValue = ref('')
 const priceOption = ref('')
 
-console.log(props.customerMessage)
+const isBtnDisabled = ref(true)
+
+const repairShopName = computed(() => requestDataStore().repairShopName)
+const repairShopEmail = computed(() => requestDataStore().repairShopEmail)
+const repairShopPhoneNumber = computed(() => requestDataStore().repairShopNumber)
+
+function checkInputsData() {
+  nextTick(() => {
+    if (priceOption.value === '') isBtnDisabled.value = true
+    else isBtnDisabled.value = false
+  })
+}
+
+console.log('props.message:', props.message)
+
+function handleAnswer() {
+  const messageData = computed(() => {
+    return {
+      repairShopName: repairShopName.value,
+      repairShopEmail: repairShopEmail.value,
+      repairShopPhoneNumber: repairShopPhoneNumber.value,
+      customerName: props.message.customerName,
+      email: props.message.customerEmail,
+      type: props.customerMessage[0].type,
+      work: props.customerMessage[0].work,
+      message: props.customerMessage[0].message,
+      registrationNumber: props.message.registrationNumber,
+      price: priceOption.value,
+      typeOfFix: setButtonValue.value
+    }
+  })
+
+  console.log(messageData.value)
+}
 </script>
 
 <template>
@@ -31,7 +65,7 @@ console.log(props.customerMessage)
   <p><span class="font-title-bold">Registreringsnummer: </span>{{ message.registrationNumber }}</p>
 
   <InfoInput
-    :checkInputData="(e: string) => checkInputsData(e)"
+    :checkInputData="checkInputsData"
     :inputData="(e: string) => (priceOption = e)"
     :inputType="'text'"
     :inputName="'isPrice'"
@@ -58,4 +92,11 @@ console.log(props.customerMessage)
     ></button>
     <p>Reparation</p></span
   >
+  <button
+    type="button"
+    :class="['text-center px-6 text-main mt-4', isBtnDisabled ? 'main-btn-disabled' : 'main-btn ']"
+    @click="handleAnswer"
+  >
+    <p>Skicka</p>
+  </button>
 </template>

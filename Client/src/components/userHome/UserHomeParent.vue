@@ -2,6 +2,7 @@
 import router from '@/router'
 
 import { signOutUser } from '@/services/signOutUser'
+import { requestDataStore } from '@/stores/requestDataStore'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import axios from 'axios'
 import { getAuth } from 'firebase/auth'
@@ -24,6 +25,8 @@ const fullName = ref('')
 const isRepairShop = ref(false)
 
 const isDialog = computed(() => useShowPopUp().showPopUp)
+
+const requestData = requestDataStore()
 
 const email = localStorage.getItem('userEmail')
 const id = localStorage.getItem('user')
@@ -84,6 +87,12 @@ onMounted(async () => {
     userEmail: auth.currentUser?.email
   }
   const response = await axios.post('http://localhost:3000/users/signedInUser', user)
+
+  requestData.sendUserRequestData(
+    response.data.message.name,
+    response.data.message.email,
+    response.data.message.phoneNumber
+  )
 
   firstName.value = response.data.message.name ? response.data.message.name.split(' ')[0] : ''
   fullName.value = response.data.message.name

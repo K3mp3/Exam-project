@@ -10,9 +10,11 @@ export interface IUserContact {
   location: string
   registrationNumber: string
   customerMessage: {
+    id: string
     work: string
     message: string
     type: string
+    answeredByRepairShop: boolean
   }[]
   repairShopAnswer?: string
   customerAnswer?: string
