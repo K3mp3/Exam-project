@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
 import type { IRepairShopId } from '@/models/IRepairShopId'
 import type { IUserContact } from '@/models/IUserContact'
 import router from '@/router'
 import { answerCustomerBack, answerFromRepairShop } from '@/services/RepariShopAnswer'
 import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
-import { computed, onMounted, ref } from 'vue'
+import { repairShopSelectedJobs } from '@/stores/repairShopSelectedJobs'
+import { computed, onMounted, ref, watch } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import RequestContent from './RequestContent.vue'
 
@@ -19,15 +21,26 @@ const userId = computed(() => {
 
 const unansweredMessages = ref<IUserContact[]>([])
 const answeredMessages = ref<IUserContact[]>([])
+const selectedJobsArray = ref<IRepairShopAnswer[]>([])
+const selectedJobs = computed(() => repairShopSelectedJobs().selectedWork)
 
-// const repairShopEmail = localStorage.getItem('userEmail')
-// const repairShopName = localStorage.getItem('userName')
+watch(
+  selectedJobs,
+  (newValue) => {
+    console.log('selectedJobs updated:', newValue)
+    selectedJobsArray.value = newValue
+    console.log('selectedJobsArray updated:', selectedJobsArray.value)
+  },
+  { deep: true }
+)
 
 const repairShopId = {
   repairShopId: userId.value
 }
 
-const repairShopName = localStorage.getItem('userName')
+const totalPrice = computed(() => {
+  return selectedJobsArray.value.reduce((sum, job) => sum + (job.priceOffer || 0), 0)
+})
 
 async function getMessages() {
   if (userId.value) {
@@ -101,7 +114,6 @@ async function handleAnswerCustomerBack(answerData: Object) {
 onMounted(() => {
   getMessages()
   getAnsweredMessages()
-  console.log(unansweredMessages.value)
 })
 </script>
 
@@ -111,15 +123,28 @@ onMounted(() => {
 
     <form @submit.prevent="" class="repair-shop-requests-form">
       <div
-        class="flex flex-col gap-6 w-ful"
+        class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main mb-6"
+        v-if="selectedJobsArray.length > 0"
+      >
+        <div class="flex flex-col gap-2" v-for="job in selectedJobsArray" :key="job.work">
+          <h2>{{ job.type }}</h2>
+          <p>{{ `${job.priceOffer} kr` }}</p>
+          <div class="h-[2px] w-full gray-line-horizontal"></div>
+        </div>
+        <h2>
+          Totalt:
+          {{ totalPrice }} kr
+        </h2>
+      </div>
+
+      <div
+        class="flex flex-col gap-6 w-ful mb-[83px]"
         v-for="message in unansweredMessages"
         :key="message._id"
       >
         <div
           v-for="(customerMessage, index) in message.customerMessage"
           :key="`${message._id}-${index}`"
-          v-if="!message.customerMessage[0].answeredByRepairShop"
-          class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main"
         >
           <RequestContent :customerMessage="customerMessage" :message="message" />
         </div>

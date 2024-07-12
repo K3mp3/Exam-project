@@ -1204,6 +1204,15 @@ p {
   background-clip: padding-box, border-box;
 }
 
+.gray-line-horizontal {
+  background: linear-gradient(
+    to right,
+    rgba(62, 62, 62, 0) 0%,
+    rgba(62, 62, 62, 0.5) 50%,
+    rgba(62, 62, 62, 0) 100%
+  );
+}
+
 .gray-line-vertical {
   background: linear-gradient(
     to bottom,
