@@ -18,7 +18,7 @@ const props = defineProps({
 const selectedWork = repairShopSelectedJobs()
 
 const setButtonValue = ref('')
-const priceOption = ref('')
+const priceOption = ref()
 
 const isBtnDisabled = ref(true)
 

@@ -5,9 +5,14 @@ import { ref } from 'vue'
 export const repairShopSelectedJobs = defineStore('selectedJobs', () => {
   const selectedWork = ref<IRepairShopAnswer[]>([])
 
+  function filterSelectedWork(jobType?: string, price?: number) {
+    selectedWork.value = selectedWork.value.filter((job) => {
+      return job.type !== jobType || job.priceOffer !== price
+    })
+  }
+
   function saveSelectedJob(job: IRepairShopAnswer, emptyArray: boolean) {
     selectedWork.value.push(job)
-    // console.log('selectedWork.value:', selectedWork.value)
 
     if (emptyArray) {
       selectedWork.value = []
@@ -16,6 +21,7 @@ export const repairShopSelectedJobs = defineStore('selectedJobs', () => {
 
   return {
     selectedWork,
-    saveSelectedJob
+    saveSelectedJob,
+    filterSelectedWork
   }
 })
