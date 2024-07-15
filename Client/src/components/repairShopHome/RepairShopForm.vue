@@ -126,38 +126,34 @@ onMounted(() => {
 
 <template>
   <div class="p-4 flex flex-col gap-2">
+    <div
+      class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main mb-6"
+      v-if="selectedJobsArray.length > 0"
+    >
+      <div class="flex flex-col gap-2 relative" v-for="job in selectedJobsArray" :key="job.work">
+        <h2>{{ job.type }}</h2>
+        <p>{{ `${job.priceOffer} kr` }}</p>
+        <div class="h-[2px] w-full gray-line-horizontal"></div>
+        <button
+          type="button"
+          class="absolute right-0"
+          @click="() => removeSelectedJob(job.type, job.priceOffer)"
+        >
+          <fontAwesome :icon="['fas', 'trash']" />
+        </button>
+      </div>
+      <h2>
+        Totalt:
+        {{ totalPrice }} kr
+      </h2>
+      <button type="button" class="text-center px-6 text-main mt-4 main-btn" @click="handleAnswer">
+        <p>Skicka</p>
+      </button>
+    </div>
+
     <h2 class="text-text-lg sm:text-xl">Dina förfrågningar</h2>
 
     <form @submit.prevent="" class="repair-shop-requests-form">
-      <div
-        class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main mb-6"
-        v-if="selectedJobsArray.length > 0"
-      >
-        <div class="flex flex-col gap-2 relative" v-for="job in selectedJobsArray" :key="job.work">
-          <h2>{{ job.type }}</h2>
-          <p>{{ `${job.priceOffer} kr` }}</p>
-          <div class="h-[2px] w-full gray-line-horizontal"></div>
-          <button
-            type="button"
-            class="absolute right-0"
-            @click="() => removeSelectedJob(job.type, job.priceOffer)"
-          >
-            <fontAwesome :icon="['fas', 'trash']" />
-          </button>
-        </div>
-        <h2>
-          Totalt:
-          {{ totalPrice }} kr
-        </h2>
-        <button
-          type="button"
-          class="text-center px-6 text-main mt-4 main-btn"
-          @click="handleAnswer"
-        >
-          <p>Skicka</p>
-        </button>
-      </div>
-
       <div
         class="flex flex-col gap-6 w-ful mb-[83px]"
         v-for="message in unansweredMessages"
@@ -206,3 +202,5 @@ onMounted(() => {
     </form>
   </div>
 </template>
+
+<style></style>

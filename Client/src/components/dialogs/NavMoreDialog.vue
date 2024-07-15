@@ -1,9 +1,23 @@
 <script setup lang="ts">
+import axios from 'axios'
 import { getAuth } from 'firebase/auth'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const activeButton = ref('')
+
+const isRepairShop = ref(false)
+
 const auth = getAuth()
+
+onMounted(async () => {
+  const user = {
+    userEmail: auth.currentUser?.email
+  }
+
+  const response = await axios.post('http://localhost:3000/users/signedInUser', user)
+
+  isRepairShop.value = response.data.message.repairShop
+})
 </script>
 
 <template>
@@ -32,6 +46,19 @@ const auth = getAuth()
             @click="() => (activeButton = 'inbox')"
           >
             <fontAwesome :icon="['fas', 'user']" /> Profil
+          </RouterLink>
+        </li>
+        <li class="flex gap-2 w-full items-center justify-center">
+          <RouterLink
+            v-if="isRepairShop"
+            :to="`/user-calendar/${auth.currentUser?.uid}`"
+            :class="[
+              'flex gap-2 w-full items-center justify-center',
+              activeButton === 'inbox' && 'ease-in-out duration-300 text-active-blue'
+            ]"
+            @click="() => (activeButton = 'inbox')"
+          >
+            <fontAwesome :icon="['fas', 'calendar-days']" /> Kalender
           </RouterLink>
         </li>
       </ul>

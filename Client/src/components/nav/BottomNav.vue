@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import router from '@/router'
+import axios from 'axios'
 import { getAuth, signOut } from 'firebase/auth'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import NavMoreDialog from '../dialogs/NavMoreDialog.vue'
 
 const activeButton = ref('')
+
 const showMoreDialog = ref(false)
+const isRepairShop = ref(false)
 
 const auth = getAuth()
 
@@ -16,6 +19,17 @@ function signOutUser() {
     router.push('/')
   })
 }
+
+onMounted(async () => {
+  const auth = getAuth()
+  const user = {
+    userEmail: auth.currentUser?.email
+  }
+
+  const response = await axios.post('http://localhost:3000/users/signedInUser', user)
+
+  isRepairShop.value = response.data.message.repairShop
+})
 </script>
 
 <template>
@@ -63,3 +77,4 @@ function signOutUser() {
     </div>
   </div>
 </template>
+import axios from 'axios';
