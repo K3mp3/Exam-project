@@ -1,7 +1,7 @@
 export interface IRepairShopRegistration {
   name: string
-  openingHour: string
-  closeningHour: string
+  openTime: string
+  closeTime: string
   location: string
   phoneNumber: string
   email: string

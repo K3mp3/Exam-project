@@ -41,16 +41,6 @@ const isConfirmationSuccess = ref(false)
 const isLoading = ref(false)
 const showEmailAlreadyExist = ref(false)
 
-const openingHour = ref({
-  hours: new Date().getHours(),
-  minutes: new Date().getMinutes()
-})
-
-const closeningHour = ref({
-  hours: new Date().getHours(),
-  minutes: new Date().getMinutes()
-})
-
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
   { key: 'isOpen', value: false },
@@ -239,11 +229,17 @@ async function handleRegistration() {
 
   const response = await registerRepairShop(newUser.value)
 
-  if (response === 201) {
+  console.log('response:', response)
+
+  if (response.status === 201) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then(async () => {
         isLoading.value = false
         isConfirmationSuccess.value = true
+
+        nextTick(() => {
+          window.location = response.data.url as Location | (string & Location)
+        })
 
         setTimeout(() => {
           isConfirmationSuccess.value = false
@@ -493,24 +489,3 @@ async function handleRegistration() {
     <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
-
-<style>
-.custom-datepicker.dp__theme_dark {
-  --dp-background-color: #171717; /* Tailwind's bg-blue-500 */
-  --dp-text-color: #d9d9d9; /* Adjust text color for contrast if needed */
-  --dp-hover-color: #171717; /* A darker blue for hover state */
-  --dp-hover-text-color: #d9d9d9;
-  --dp-border-color: #232323;
-  --dp-border-color-hover: #1750d6;
-  --dp-border-color-focus: var(--dp-focus-border-color);
-
-  --dp-focus-border-width: 2px;
-  --dp-focus-border-style: solid;
-  --dp-focus-border-color: transparent;
-  --dp-focus-bg-image: linear-gradient(var(--dp-background-color), var(--dp-background-color)),
-    linear-gradient(to bottom, rgb(13, 63, 241), rgba(13, 63, 241, 0.2));
-  --dp-focus-bg-origin: border-box;
-  --dp-focus-bg-clip: padding-box, border-box;
-  /* You can override other variables as needed */
-}
-</style>

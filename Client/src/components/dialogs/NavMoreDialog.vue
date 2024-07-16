@@ -51,7 +51,7 @@ onMounted(async () => {
         <li class="flex gap-2 w-full items-center justify-center">
           <RouterLink
             v-if="isRepairShop"
-            :to="`/user-calendar/${auth.currentUser?.uid}`"
+            :to="`/user-schedule/${auth.currentUser?.uid}`"
             :class="[
               'flex gap-2 w-full items-center justify-center',
               activeButton === 'inbox' && 'ease-in-out duration-300 text-active-blue'

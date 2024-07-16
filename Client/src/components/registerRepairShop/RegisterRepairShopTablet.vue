@@ -12,6 +12,8 @@ import InfoInput from '../utils/components/InfoInput.vue'
 const filledEmail = localStorage.getItem('userEmail')
 
 const name = ref('')
+const openTime = ref('')
+const closeTime = ref('')
 const location = ref('')
 const phoneNumber = ref()
 const email = ref('')
@@ -40,6 +42,8 @@ const showEmailAlreadyExist = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
+  { key: 'isOpen', value: false },
+  { key: 'isClose', value: false },
   { key: 'isLocation', value: false },
   { key: 'isPhoneNumber', value: false },
   { key: 'isEmail', value: !!filledEmail },
@@ -63,6 +67,12 @@ function checkInputsData(confirmKey: string) {
     switch (confirmKey) {
       case 'isName':
         refVariable = name
+        break
+      case 'isOpen':
+        refVariable = openTime
+        break
+      case 'isClose':
+        refVariable = closeTime
         break
       case 'isLocation':
         refVariable = location
@@ -203,6 +213,8 @@ async function handleRegistration() {
   const newUser = computed(() => {
     return {
       name: name.value,
+      openTime: openTime.value,
+      closeTime: closeTime.value,
       location: location.value,
       phoneNumber: phoneNumber.value,
       email: email.value,
@@ -253,6 +265,31 @@ async function handleRegistration() {
       </div>
       <form @submit.prevent="handleRegistration" class="flex gap-16">
         <div class="w-full flex flex-col gap-7">
+          <label for="hours" class="font-text-light flex flex-col gap-6"
+            ><div class="flex flex-col gap-1">
+              <span>Öppnar</span>
+              <InfoInput
+                :checkInputData="(e: string) => checkInputsData(e)"
+                :inputData="(e: string) => (openTime = e)"
+                :inputType="'time'"
+                :inputName="'isOpen'"
+                :isDataCorrect="isNameValid"
+                :placeholder="'07:00'"
+              />
+            </div>
+            <div class="flex flex-col gap-1">
+              <span>Stänger</span>
+              <InfoInput
+                :checkInputData="(e: string) => checkInputsData(e)"
+                :inputData="(e: string) => (closeTime = e)"
+                :inputType="'time'"
+                :inputName="'isClose'"
+                :isDataCorrect="isNameValid"
+                :placeholder="'17:00'"
+              />
+            </div>
+          </label>
+
           <label for="name" class="font-text-light flex flex-col gap-1"
             ><span>Namn på din verkstad</span>
             <InfoInput
@@ -293,7 +330,9 @@ async function handleRegistration() {
               <span>Vänligen skriv ett giltigt telefon / mobilnummer!</span>
             </p>
           </label>
+        </div>
 
+        <div class="w-full flex flex-col gap-7">
           <label for="email" class="font-text-light flex flex-col gap-1"
             ><span>Email adress</span>
             <InfoInput
@@ -325,9 +364,7 @@ async function handleRegistration() {
               >
             </p>
           </label>
-        </div>
 
-        <div class="w-full flex flex-col gap-7">
           <label for="email" class="font-text-light flex flex-col gap-1"
             ><span>Bekräfta email adress</span>
             <InfoInput
@@ -408,7 +445,7 @@ async function handleRegistration() {
           <button
             type="submit"
             :disabled="isBtnDisabled"
-            :class="['mt-[26.5px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
+            :class="['mt-[23px] mb-2', isBtnDisabled ? 'main-btn-disabled' : 'main-btn']"
           >
             Registrera
           </button>

@@ -34,9 +34,7 @@ export async function registerRepairShop(user: IRepairShopRegistration) {
       user
     )
 
-    window.location = response.data.url as Location | (string & Location)
-
-    return response.status
+    return response
   } catch (error: any) {
     if (error.response && error.response.status === 409) {
       return error.response.status
