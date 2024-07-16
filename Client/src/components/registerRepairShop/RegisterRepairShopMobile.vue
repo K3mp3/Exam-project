@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { registerRepairShop } from '@/services/registerUser'
+import '@vuepic/vue-datepicker/dist/main.css'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
@@ -12,6 +13,8 @@ import InfoInput from '../utils/components/InfoInput.vue'
 const filledEmail = localStorage.getItem('userEmail')
 
 const name = ref('')
+const openTime = ref('')
+const closeTime = ref('')
 const location = ref('')
 const phoneNumber = ref()
 const email = ref('')
@@ -38,8 +41,20 @@ const isConfirmationSuccess = ref(false)
 const isLoading = ref(false)
 const showEmailAlreadyExist = ref(false)
 
+const openingHour = ref({
+  hours: new Date().getHours(),
+  minutes: new Date().getMinutes()
+})
+
+const closeningHour = ref({
+  hours: new Date().getHours(),
+  minutes: new Date().getMinutes()
+})
+
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
+  { key: 'isOpen', value: false },
+  { key: 'isClose', value: false },
   { key: 'isLocation', value: false },
   { key: 'isPhoneNumber', value: false },
   { key: 'isEmail', value: !!filledEmail },
@@ -63,6 +78,12 @@ function checkInputsData(confirmKey: string) {
     switch (confirmKey) {
       case 'isName':
         refVariable = name
+        break
+      case 'isOpen':
+        refVariable = openTime
+        break
+      case 'isClose':
+        refVariable = closeTime
         break
       case 'isLocation':
         refVariable = location
@@ -204,6 +225,8 @@ async function handleRegistration() {
   const newUser = computed(() => {
     return {
       name: name.value,
+      openTime: openTime.value,
+      closeTime: closeTime.value,
       location: location.value,
       phoneNumber: phoneNumber.value,
       email: email.value,
@@ -253,6 +276,31 @@ async function handleRegistration() {
         <h2 class="text-xl sm:text-2xl">Registrera din verkstad</h2>
       </div>
       <form @submit.prevent="handleRegistration" class="flex flex-col gap-6">
+        <label for="hours" class="font-text-light flex flex-col gap-6"
+          ><div class="flex flex-col gap-1">
+            <span>Öppnar</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (openTime = e)"
+              :inputType="'time'"
+              :inputName="'isOpen'"
+              :isDataCorrect="isNameValid"
+              :placeholder="'07:00'"
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <span>Stänger</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (closeTime = e)"
+              :inputType="'time'"
+              :inputName="'isClose'"
+              :isDataCorrect="isNameValid"
+              :placeholder="'17:00'"
+            />
+          </div>
+        </label>
+
         <label for="name" class="font-text-light flex flex-col gap-1"
           ><span>Namn på din verkstad</span>
           <InfoInput
@@ -445,3 +493,24 @@ async function handleRegistration() {
     <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
+
+<style>
+.custom-datepicker.dp__theme_dark {
+  --dp-background-color: #171717; /* Tailwind's bg-blue-500 */
+  --dp-text-color: #d9d9d9; /* Adjust text color for contrast if needed */
+  --dp-hover-color: #171717; /* A darker blue for hover state */
+  --dp-hover-text-color: #d9d9d9;
+  --dp-border-color: #232323;
+  --dp-border-color-hover: #1750d6;
+  --dp-border-color-focus: var(--dp-focus-border-color);
+
+  --dp-focus-border-width: 2px;
+  --dp-focus-border-style: solid;
+  --dp-focus-border-color: transparent;
+  --dp-focus-bg-image: linear-gradient(var(--dp-background-color), var(--dp-background-color)),
+    linear-gradient(to bottom, rgb(13, 63, 241), rgba(13, 63, 241, 0.2));
+  --dp-focus-bg-origin: border-box;
+  --dp-focus-bg-clip: padding-box, border-box;
+  /* You can override other variables as needed */
+}
+</style>
