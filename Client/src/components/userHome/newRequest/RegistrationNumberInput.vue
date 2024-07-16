@@ -43,20 +43,23 @@ function formatRegistrationNumber() {
 </script>
 
 <template>
-  <label for="registrationNumber">Registreringsnummer</label>
-  <input
-    type="text"
-    name="registrationNumber"
-    placeholder="ABC 123"
-    v-model="registrationNumber"
-    @input="formatRegistrationNumber"
-    maxlength="7"
-  />
-  <p
-    class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-    v-if="!isRegistrationNumberValid"
-  >
-    <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange ett
-    giltigt registreringsnummer!
-  </p>
+  <label for="registrationNumber" class="font-text-light flex flex-col gap-1"
+    ><span>Registreringsnummer</span>
+    <input
+      type="text"
+      name="registrationNumber"
+      placeholder="ABC 123"
+      v-model="registrationNumber"
+      @input="formatRegistrationNumber"
+      class="w-full text-input px-2 text-sm"
+      maxlength="7"
+    />
+    <p
+      class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
+      v-if="!isRegistrationNumberValid"
+    >
+      <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange ett
+      giltigt registreringsnummer!
+    </p>
+  </label>
 </template>

@@ -1,13 +1,14 @@
+import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
 import type { IUserContact } from '@/models/IUserContact'
 import axios from 'axios'
 
 const BASE_URL = 'http://localhost:3000'
 // https://shark-app-mvsjk.ondigitalocean.app
 
-export async function answerFromRepairShop(messageData: IUserContact) {
+export async function answerFromRepairShop(messageData: IRepairShopAnswer[]) {
   try {
     console.log(messageData)
-    const response = await axios.post<IUserContact>(
+    const response = await axios.post<IUserContact[]>(
       `${BASE_URL}/answerFromRepairShops/answerFromRepairShop`,
       messageData
     )

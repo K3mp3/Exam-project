@@ -9,13 +9,6 @@ import ConfirmDialog from '../../dialogs/ConfirmDialog.vue'
 import UserHomeAnswerForm from '../UserHomeAnswerForm.vue'
 import UserHomeMessages from '../UserHomeMessages.vue'
 
-const props = defineProps({
-  numberOfAnswers: {
-    type: Function,
-    required: true
-  }
-})
-
 const mobile = ref(true)
 const tablet = ref(false)
 const isData = ref(false)
@@ -60,8 +53,6 @@ async function getAnswers() {
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
     (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
   )
-
-  props.numberOfAnswers(allRepairShopAnswers.value.length)
 }
 
 function checkInputData() {
@@ -186,7 +177,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="request-form-main">
+  <div class="bg-blue-500">
     <form @submit.prevent="" class="user-sent-answer-form-mobile" v-if="mobile">
       <UserHomeAnswerForm
         v-for="index in allRepairShopAnswers"
@@ -286,16 +277,6 @@ onMounted(() => {
               Skicka
             </button>
           </div>
-        </div>
-        <div class="display-flex flex-dir-col gap-16 p-relative" v-if="!isData">
-          <div class="width-50p h-40 silhouette"></div>
-          <div class="width-60p h-40 silhouette"></div>
-          <div class="width-100 h-80 silhouette"></div>
-          <div class="width-100 h-80 silhouette"></div>
-          <div class="width-100 h-250 silhouette"></div>
-          <div class="width-100 h-40 silhouette"></div>
-          <div class="width-100 h-40 silhouette"></div>
-          <div class="p-absolute top-0 left-0 width-100 h-100p bg-main-40"></div>
         </div>
       </div>
     </form>

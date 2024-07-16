@@ -12,7 +12,7 @@ const props = defineProps({
   closeRepairShopRegisterDialog: {
     type: Function,
     required: true
-  },
+  }
 })
 
 const name = ref('')
@@ -222,7 +222,11 @@ async function handleRegistration() {
 
   console.log(newUser.value)
 
+  console.log(email.value, password.value)
+
   const response = await registerRepairShop(newUser.value)
+
+  console.log('response:', response)
 
   if (response === 201) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
@@ -236,11 +240,7 @@ async function handleRegistration() {
       })
       .catch(() => {
         isLoading.value = false
-        showErrorDialog.value = true
       })
-  } else if (response === 409) {
-    isLoading.value = false
-    showEmailAlreadyExist.value = true
   } else {
     isLoading.value = false
     showErrorDialog.value = true

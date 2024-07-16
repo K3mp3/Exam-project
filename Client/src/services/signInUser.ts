@@ -1,7 +1,6 @@
 import type { IUserSignIn } from '@/models/IUserSignIn'
 import type { IUserToken } from '@/models/IUserToken'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
-import { useShowMagicTokenDialog } from '@/stores/showMagicTokenDialog'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import axios from 'axios'
 import { computed } from 'vue'
@@ -12,22 +11,20 @@ const BASE_URL = 'http://localhost:3000'
 let userId = ''
 
 export async function signInUser(user: IUserSignIn) {
-  console.log('user:', user)
-
   try {
-    const response = await axios.post<IUserSignIn>(`${BASE_URL}/account/signin`, user)
+    console.log('hejsan hoppsan karin')
+    const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
 
     console.log(response)
-
-    const showMagicTokenDialog = useShowMagicTokenDialog()
-    showMagicTokenDialog.showMagicTokenInput(true, response.data.email, response.data.id)
 
     userId = response.data.id || ''
 
     const data = response.data
-    const status = !!showMagicTokenDialog
+    const status = response.status
 
-    return { data, status }
+    console.log(response)
+
+    return response.status
   } catch (error: any) {
     const showErrorDialog = useShowPopUp()
     const data = error.response.data

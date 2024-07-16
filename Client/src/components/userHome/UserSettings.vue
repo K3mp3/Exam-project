@@ -37,7 +37,7 @@ onMounted(() => {
           <fontAwesome :icon="['fas', 'fa-x']" />
         </button>
         <ul
-          class="padding-0 display-flex flex-dir-col justify-center align-items-center gap-32 h-100p"
+          class="padding-0 display-flex flex-dir-col justify-center align-items-center gap-8 h-100p"
         >
           <li class="list-style-none">
             <RouterLink :to="userSentRoute" class="text-deco-none text-main font-text-light">

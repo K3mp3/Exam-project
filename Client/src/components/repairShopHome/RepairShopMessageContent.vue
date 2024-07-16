@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { IUserContact } from '@/models/IUserContact'
 import router from '@/router'
 import { computed, nextTick, onMounted, ref } from 'vue'
 
@@ -7,16 +8,11 @@ const userId = computed(() => {
   return routeParams.userId || ''
 })
 
-const props = defineProps({
-  index: {
-    type: Object,
-    required: true
-  },
-  onAnswer: {
-    type: Function,
-    required: true
-  }
-})
+const props = defineProps<{
+  index: IUserContact
+  message: Array<{ message: string; date: string }>
+  onAnswer: (answerData: any) => void
+}>()
 
 const messageAnswer = ref('')
 const priceOffer = ref('')
@@ -106,6 +102,7 @@ onMounted(() => {
         </button>
       </div>
       <div class="message-content-text" v-if="isMessageBox">
+        <p>Message: {{ message[0].message }}</p>
         <p v-for="index in messageArray" :key="index.date">
           <span :class="repairShopName === index.name ? 'text-active-blue' : ''">{{
             repairShopName === index.name ? 'Du' : index.name

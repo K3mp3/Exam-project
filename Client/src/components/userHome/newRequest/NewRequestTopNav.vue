@@ -18,6 +18,6 @@ function handleReturnClick() {
     <button type="button" class="btn-back" @click="handleReturnClick">
       <fontAwesome :icon="['fas', 'chevron-left']" />
     </button>
-    <h3>Kontakta verkstäder</h3>
+    <h2 class="text-xl sm:text-2xl">Kontakta verkstäder</h2>
   </div>
 </template>

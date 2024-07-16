@@ -6,13 +6,6 @@ import { onMounted, ref } from 'vue'
 import UserHomeAnswerForm from './UserHomeAnswerForm.vue'
 import UserHomeAnswerFormTablet from './tablet/UserHomeAnswerFormTablet.vue'
 
-const props = defineProps({
-  numberOfAnswers: {
-    type: Function,
-    required: true
-  }
-})
-
 const mobile = ref(true)
 const tablet = ref(false)
 const isData = ref(false)
@@ -46,8 +39,6 @@ async function getAnswers() {
   allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
     (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
   )
-
-  props.numberOfAnswers(allRepairShopAnswers.value.length)
 }
 
 async function handleAnswerMobile(answerDataMobileForm: IUserContact) {
@@ -72,6 +63,6 @@ onMounted(() => {
         :reFetch="getAnswers"
       ></UserHomeAnswerForm>
     </form>
-    <UserHomeAnswerFormTablet v-if="tablet" :numberOfAnswers="numberOfAnswers" />
+    <UserHomeAnswerFormTablet v-if="tablet" />
   </div>
 </template>

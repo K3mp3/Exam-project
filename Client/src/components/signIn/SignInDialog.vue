@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
+import { signInUser } from '@/services/signInUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
@@ -46,24 +47,28 @@ function checkInputData() {
 async function handleSignIn() {
   isBtnDisabled.value = true
   isLoading.value = true
-  // const response = await signInUser(user.value)
+  const response = await signInUser(user.value)
 
-  const auth = getAuth()
-  signInWithEmailAndPassword(auth, email.value, password.value)
-    .then((data) => {
-      console.log(auth.currentUser?.uid)
-      router.push(`/user-home/${auth.currentUser?.uid}`)
-    })
-    .catch((error) => {
-      console.log(error.code)
-      switch (error.code) {
-        case 'auth/invalid-credential':
-          isEmailWrong.value = true
-          isPasswordWrong.value = true
-          isLoading.value = false
-          break
-      }
-    })
+  console.log(response)
+
+  if (response === 201) {
+    const auth = getAuth()
+    signInWithEmailAndPassword(auth, email.value, password.value)
+      .then(() => {
+        console.log(auth.currentUser?.uid)
+        router.push(`/user-home/${auth.currentUser?.uid}`)
+      })
+      .catch((error) => {
+        console.log(error.code)
+        switch (error.code) {
+          case 'auth/invalid-credential':
+            isEmailWrong.value = true
+            isPasswordWrong.value = true
+            isLoading.value = false
+            break
+        }
+      })
+  }
 
   // const responseStatus = response as unknown as { status: number }
   // const responseData = response as { data: { message: string } }

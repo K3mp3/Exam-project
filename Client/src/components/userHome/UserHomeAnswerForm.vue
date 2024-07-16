@@ -142,7 +142,7 @@ async function removeRequest() {
       name="priceOffer"
       :value="props.index.priceOffer === '' ? 'Ej angivet' : props.index.priceOffer"
       maxlength="7"
-      class="text-input padding-10 margin-bm-32"
+      class="text-input px-2 padding-10 margin-bm-32"
       disabled
     />
 

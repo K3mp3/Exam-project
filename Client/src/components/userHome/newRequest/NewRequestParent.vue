@@ -3,7 +3,7 @@ import NewRequestForm from './NewRequestForm.vue'
 </script>
 
 <template>
-  <div class="new-request-parent-container">
+  <div class="p-4">
     <NewRequestForm></NewRequestForm>
   </div>
 </template>

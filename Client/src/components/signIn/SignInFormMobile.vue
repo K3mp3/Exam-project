@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
+import { signInUser } from '@/services/signInUser'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { computed, nextTick, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
@@ -11,6 +12,8 @@ const password = ref('')
 
 const isEmailValid = ref(true)
 const isPasswordValid = ref(true)
+const isEmailWrong = ref(false)
+const isPasswordWrong = ref(false)
 const isBtnDisabled = ref(true)
 const isLoading = ref(false)
 
@@ -73,22 +76,28 @@ function checkInputsData(confirmKey: string) {
 async function handleSignIn() {
   isBtnDisabled.value = true
   isLoading.value = true
+  const response = await signInUser(user.value)
 
-  const auth = getAuth()
-  signInWithEmailAndPassword(auth, email.value, password.value)
-    .then(() => {
-      console.log(auth.currentUser?.uid)
-      router.push(`/user-home/${auth.currentUser?.uid}`)
-    })
-    .catch((error) => {
-      switch (error.code) {
-        case 'auth/invalid-credential':
-          isEmailValid.value = true
-          isPasswordValid.value = true
-          isLoading.value = false
-          break
-      }
-    })
+  console.log(response)
+
+  if (response === 201) {
+    const auth = getAuth()
+    signInWithEmailAndPassword(auth, email.value, password.value)
+      .then(() => {
+        console.log(auth.currentUser?.uid)
+        router.push(`/user-home/${auth.currentUser?.uid}`)
+      })
+      .catch((error) => {
+        console.log(error.code)
+        switch (error.code) {
+          case 'auth/invalid-credential':
+            isEmailWrong.value = true
+            isPasswordWrong.value = true
+            isLoading.value = false
+            break
+        }
+      })
+  }
 }
 </script>
 
@@ -96,7 +105,7 @@ async function handleSignIn() {
   <nav>
     <ConsumerNav />
   </nav>
-  <div class="flex items-center h-screen">
+  <div class="flex items-center h-screen max-w-[800px] m-auto">
     <div class="p-4 flex flex-col gap-8 text-main w-full">
       <div class="flex gap-4 items-center">
         <RouterLink to="/" class="btn-back"
@@ -105,39 +114,52 @@ async function handleSignIn() {
         <h2 class="text-xl sm:text-2xl">Logga in</h2>
       </div>
       <form @submit.prevent="handleSignIn" class="flex flex-col gap-6">
-        <label for="email" class="font-text-light flex flex-col gap-1"
-          ><span>Email adress</span>
-          <InfoInput
-            :checkInputData="(e: string) => checkInputsData(e)"
-            :inputData="(e: string) => (email = e)"
-            :inputType="'email'"
-            :inputName="'isEmail'"
-            :isDataCorrect="isEmailValid"
-            :placeholder="'namn@dinmail.se'"
-          />
-          <p v-if="!isEmailValid" class="text-warning-orange">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
-              >Vänligen kontrollera email adressen!</span
+        <div class="flex flex-col gap-6 sm:flex-row sm:gap-16">
+          <label for="email" class="font-text-light flex flex-col gap-1 w-full"
+            ><span>Email adress</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (email = e)"
+              :inputType="'email'"
+              :inputName="'isEmail'"
+              :isDataCorrect="isEmailValid"
+              :dataError="isEmailWrong"
+              :placeholder="'namn@dinmail.se'"
+            />
+            <p
+              v-if="!isEmailValid || isEmailWrong"
+              :class="[!isEmailValid && 'text-warning-orange', isEmailWrong && 'text-error-red']"
             >
-          </p>
-        </label>
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen kontrollera email adressen!</span
+              >
+            </p>
+          </label>
 
-        <label for="password" class="font-text-light flex flex-col gap-1"
-          ><span>Lösenord</span>
-          <InfoInput
-            :checkInputData="(e: string) => checkInputsData(e)"
-            :inputData="(e: string) => (password = e)"
-            :inputType="'password'"
-            :inputName="'isPassword'"
-            :isDataCorrect="isPasswordValid"
-            :placeholder="'lösenord'"
-          />
+          <label for="password" class="font-text-light flex flex-col gap-1 w-full"
+            ><span>Lösenord</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (password = e)"
+              :inputType="'password'"
+              :inputName="'isPassword'"
+              :isDataCorrect="isPasswordValid"
+              :dataError="isEmailWrong"
+              :placeholder="'lösenord'"
+            />
 
-          <p v-if="!isPasswordValid" class="text-warning-orange">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen kontrollera
-            lösenordet!
-          </p>
-        </label>
+            <p
+              v-if="!isPasswordValid || isPasswordWrong"
+              :class="[
+                !isPasswordValid && 'text-warning-orange',
+                isPasswordWrong && 'text-error-red'
+              ]"
+            >
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
+              kontrollera lösenordet!
+            </p>
+          </label>
+        </div>
 
         <button
           type="submit"
