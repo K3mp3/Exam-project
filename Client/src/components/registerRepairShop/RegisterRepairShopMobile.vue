@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { registerRepairShop } from '@/services/registerUser'
-import '@vuepic/vue-datepicker/dist/main.css'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'

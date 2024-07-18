@@ -13,6 +13,9 @@ import router from './router'
 
 import { initializeApp } from 'firebase/app'
 
+import Aura from '@primevue/themes/aura'
+import PrimeVue from 'primevue/config'
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -37,5 +40,10 @@ library.add(fas)
 app.component('fontAwesome', FontAwesomeIcon)
 app.use(createPinia())
 app.use(router)
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura
+  }
+})
 
 app.mount('#app')

@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import RepairShopSchedule from '../components/schedule/RepairShopSchedule.vue'
+</script>
 
 <template>
-  <h2>hello</h2>
+  <RepairShopSchedule />
 </template>
