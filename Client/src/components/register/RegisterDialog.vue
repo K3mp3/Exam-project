@@ -248,7 +248,7 @@ onMounted(() => {
         <button type="button" to="/" class="btn-back z-10" @click="closeRegisterDialog">
           <fontAwesome :icon="['fas', 'chevron-left']" />
         </button>
-        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera din verkstad</h2>
+        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera dig</h2>
       </div>
       <form @submit.prevent="handleRegistration" class="flex gap-16">
         <div class="w-full flex flex-col gap-7">

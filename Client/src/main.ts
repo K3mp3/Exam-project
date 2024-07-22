@@ -41,8 +41,16 @@ app.component('fontAwesome', FontAwesomeIcon)
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {
+  // Default theme configuration
   theme: {
-    preset: Aura
+    preset: Aura,
+    options: {
+      prefix: 'p',
+      cssLayer: {
+        name: 'primevue',
+        order: 'primevue, tailwind-base, tailwind-utilities'
+      }
+    }
   }
 })
 

@@ -238,13 +238,19 @@ async function handleRegistration() {
 
   const response = await registerRepairShop(newUser.value)
 
+  console.log(response)
+
   console.log('response:', response)
 
-  if (response === 201) {
+  if (response.status === 201) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then(async () => {
         isLoading.value = false
         isConfirmationSuccess.value = true
+
+        nextTick(() => {
+          window.location = response.data.url as Location | (string & Location)
+        })
 
         setTimeout(() => {
           isConfirmationSuccess.value = false
@@ -252,6 +258,7 @@ async function handleRegistration() {
       })
       .catch(() => {
         isLoading.value = false
+        showErrorDialog.value = true
       })
   } else {
     isLoading.value = false

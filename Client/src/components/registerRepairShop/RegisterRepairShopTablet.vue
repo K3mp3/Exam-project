@@ -233,6 +233,10 @@ async function handleRegistration() {
         isLoading.value = false
         isConfirmationSuccess.value = true
 
+        nextTick(() => {
+          window.location = response.data.url as Location | (string & Location)
+        })
+
         setTimeout(() => {
           isConfirmationSuccess.value = false
         }, 4000)
@@ -261,7 +265,7 @@ async function handleRegistration() {
         <RouterLink to="/" class="btn-back z-10"
           ><fontAwesome :icon="['fas', 'chevron-left']"
         /></RouterLink>
-        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera dig</h2>
+        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera din verkstad</h2>
       </div>
       <form @submit.prevent="handleRegistration" class="flex gap-16">
         <div class="w-full flex flex-col gap-7">
