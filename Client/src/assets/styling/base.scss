@@ -13,6 +13,15 @@
   padding: 10px; /* Adjust padding as needed */
 }
 
+.p-datepicker-panel {
+  margin-top: 18px;
+}
+
+.p-datepicker-day-selected {
+  background-color: $el-active-blue;
+  color: $text-main;
+}
+
 body {
   min-height: 100vh;
   color: var(--color-text);

@@ -78,7 +78,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <h3></h3>
   <h3>Dina förfrågningar</h3>
 
   <form @submit.prevent="" class="repair-shop-requests-form">

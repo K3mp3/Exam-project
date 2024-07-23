@@ -43,7 +43,7 @@ function formatRegistrationNumber() {
 </script>
 
 <template>
-  <label for="registrationNumber" class="font-text-light flex flex-col gap-1"
+  <label for="registrationNumber" class="font-text-light flex flex-col gap-1 w-full"
     ><span>Registreringsnummer</span>
     <input
       type="text"

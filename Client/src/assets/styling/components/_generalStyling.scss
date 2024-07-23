@@ -33,6 +33,10 @@
   color: $el-warning-orange;
 }
 
+.test-green {
+  color: $test-green;
+}
+
 .text-light-blue-gr {
   background: linear-gradient(to right, #2c8be2, #0d31f1);
   -webkit-background-clip: text;
@@ -795,7 +799,7 @@ p {
     border: 2px solid transparent;
     border-radius: 10px;
     background-image: linear-gradient($el-border-gray-focus, $el-border-gray-focus),
-      linear-gradient(to bottom, rgb(13, 63, 241), rgb(13, 63, 241, 0.2));
+      linear-gradient(to bottom, rgb(52, 211, 153), rgb(52, 211, 153, 0.2));
     background-origin: border-box;
     background-clip: padding-box, border-box;
   }
