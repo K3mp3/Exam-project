@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { INewJob } from '@/models/INewJob'
+import { getJob, saveJob } from '@/services/saveJob'
+import { getAuth } from 'firebase/auth'
 import DatePicker from 'primevue/datepicker'
-import { computed, nextTick, ref, watch, type Ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
 import RegistrationNumberInput from '../userHome/newRequest/RegistrationNumberInput.vue'
 
 const date = ref('')
@@ -13,7 +16,9 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isRegistrationNumber', value: false }
 ]
 
-const bookedJobs = ref<{ date: string; registrationNumber: string; time: number }[]>([])
+const bookedJobs = ref<INewJob[]>([])
+
+const auth = getAuth()
 
 function checkInputData() {
   isBtnDisabled.value = !inputsArray.every((field) => field.value)
@@ -66,13 +71,16 @@ function saveBooking() {
     return {
       date: date.value,
       registrationNumber: registrationNumber.value,
-      time: new Date().getTime()
+      time: new Date().getTime(),
+      repairShopEmail: auth.currentUser?.email as string
     }
   })
 
   bookedJobs.value.push(job.value)
 
   console.log('bookedJobs:', bookedJobs)
+
+  const response = saveJob(job.value)
 
   nextTick(() => {})
 
@@ -99,6 +107,18 @@ function formatDate(dateString: string): string {
 watch(date, (newValue) => {
   checkInputsData('isDate')
   console.log('Selected date:', newValue)
+})
+
+onMounted(async () => {
+  try {
+    const response = await getJob()
+
+    bookedJobs.value = Array.isArray(response) ? response : [response]
+
+    console.log('response:', response)
+  } catch (error) {
+    alert('Kunde inte hämta bokade jobb')
+  }
 })
 </script>
 
@@ -137,6 +157,7 @@ watch(date, (newValue) => {
       Spara
     </button>
 
+    <h2>Bokningar</h2>
     <div
       class="w-full el-bg-gray rounded-lg p-2 border-main flex flex-col gap-1"
       v-for="job in bookedJobs"
