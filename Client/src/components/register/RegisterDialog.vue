@@ -260,7 +260,7 @@ onMounted(() => {
               :inputType="'text'"
               :inputName="'isName'"
               :isDataCorrect="!showNameError"
-              :placeholder="'Namn på din verkstad'"
+              :placeholder="'För- och efternman'"
               :onBlur="validateName"
             />
 

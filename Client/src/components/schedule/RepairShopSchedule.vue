@@ -1,19 +1,29 @@
 <script setup lang="ts">
 import type { INewJob } from '@/models/INewJob'
+import router from '@/router'
 import { getJob, saveJob } from '@/services/saveJob'
+import axios from 'axios'
 import { getAuth } from 'firebase/auth'
 import DatePicker from 'primevue/datepicker'
 import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
 import RegistrationNumberInput from '../userHome/newRequest/RegistrationNumberInput.vue'
+import InfoInput from '../utils/components/InfoInput.vue'
 
 const date = ref('')
 const registrationNumber = ref('')
+const customerEmail = ref('')
 
 const isBtnDisabled = ref(true)
+const showEmailError = ref(false)
+const showRegistrationNumberError = ref(false)
+const isEmailValid = ref(true)
+const isRegistrationNumberValid = ref(true)
+const isRepairShop = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isDate', value: false },
-  { key: 'isRegistrationNumber', value: false }
+  { key: 'isRegistrationNumber', value: false },
+  { key: 'isEmail', value: false }
 ]
 
 const bookedJobs = ref<INewJob[]>([])
@@ -21,7 +31,10 @@ const bookedJobs = ref<INewJob[]>([])
 const auth = getAuth()
 
 function checkInputData() {
-  isBtnDisabled.value = !inputsArray.every((field) => field.value)
+  isBtnDisabled.value =
+    !inputsArray.every((field) => field.value) ||
+    !isEmailValid.value ||
+    !isRegistrationNumberValid.value
   console.log(inputsArray)
 }
 
@@ -34,8 +47,16 @@ function checkInputsData(confirmKey: string) {
       case 'isDate':
         refVariable = date
         break
+
       case 'isRegistrationNumber':
         refVariable = registrationNumber
+        break
+      case 'isEmail':
+        {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          isEmailValid.value = emailRegex.test(customerEmail.value.trim())
+        }
+        refVariable = customerEmail
         break
       default:
         break
@@ -66,13 +87,26 @@ function checkInputsData(confirmKey: string) {
   })
 }
 
+function validateEmail() {
+  if (!isEmailValid.value) {
+    showEmailError.value = true
+  } else showEmailError.value = false
+}
+
+function validateRegistrationNumber() {
+  if (!isRegistrationNumberValid.value) {
+    showRegistrationNumberError.value = true
+  } else showRegistrationNumberError.value = false
+}
+
 function saveBooking() {
   const job = computed(() => {
     return {
       date: date.value,
       registrationNumber: registrationNumber.value,
       time: new Date().getTime(),
-      repairShopEmail: auth.currentUser?.email as string
+      repairShopEmail: auth.currentUser?.email as string,
+      customerEmail: customerEmail.value
     }
   })
 
@@ -110,6 +144,19 @@ watch(date, (newValue) => {
 })
 
 onMounted(async () => {
+  const user = {
+    userEmail: auth.currentUser?.email
+  }
+
+  const response = await axios.post('http://localhost:3000/users/signedInUser', user)
+
+  isRepairShop.value = response.data.message.repairShop
+  console.log(user)
+
+  if (!isRepairShop.value) {
+    router.push(`/user-home/${auth.currentUser?.uid}`)
+  }
+
   try {
     const response = await getJob()
 
@@ -143,6 +190,24 @@ onMounted(async () => {
         :checkInputData="(e: string) => checkInputsData(e)"
         :inputData="(e: string) => (registrationNumber = e)"
       ></RegistrationNumberInput>
+
+      <label for="email" class="font-text-light flex flex-col gap-1"
+        ><span>Kundens email adress</span>
+        <InfoInput
+          :checkInputData="(e: string) => checkInputsData(e)"
+          :inputData="(e: string) => (customerEmail = e)"
+          :inputType="'email'"
+          :inputName="'isEmail'"
+          :isDataCorrect="!showEmailError"
+          :placeholder="'namn@dinmail.se'"
+          :onBlur="validateEmail"
+        />
+        <p v-if="showEmailError" class="text-warning-orange">
+          <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+            >Vänligen skriv en giltig email adress!</span
+          >
+        </p>
+      </label>
     </div>
 
     <button

@@ -3,5 +3,6 @@ export interface INewJob {
   registrationNumber: string
   time: number
   repairShopEmail: string
+  customerEmail: string
   error?: unknown
 }
