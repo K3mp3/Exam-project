@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { INewJob } from '@/models/INewJob'
 import router from '@/router'
+import { getUser } from '@/services/getUserType'
 import { getJob, saveJob } from '@/services/saveJob'
-import axios from 'axios'
 import { getAuth } from 'firebase/auth'
 import DatePicker from 'primevue/datepicker'
-import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
+import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
+import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
 import RegistrationNumberInput from '../userHome/newRequest/RegistrationNumberInput.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
@@ -15,10 +16,9 @@ const customerEmail = ref('')
 
 const isBtnDisabled = ref(true)
 const showEmailError = ref(false)
-const showRegistrationNumberError = ref(false)
 const isEmailValid = ref(true)
 const isRegistrationNumberValid = ref(true)
-const isRepairShop = ref(false)
+// const isRepairShop = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isDate', value: false },
@@ -28,18 +28,33 @@ const inputsArray: { key: string; value: boolean }[] = [
 
 const bookedJobs = ref<INewJob[]>([])
 
+interface IChachedJobs {
+  jobs: INewJob[]
+  timestamp: number
+}
+
 const auth = getAuth()
+
+async function fetchJobsFromServer(): Promise<INewJob[]> {
+  try {
+    const response = await getJob()
+    return Array.isArray(response) ? response : [response]
+  } catch (error) {
+    console.error('Could not fetch jobs from server:', error)
+    throw error
+  }
+}
 
 function checkInputData() {
   isBtnDisabled.value =
     !inputsArray.every((field) => field.value) ||
     !isEmailValid.value ||
     !isRegistrationNumberValid.value
-  console.log(inputsArray)
+  // console.log(inputsArray)
 }
 
 function checkInputsData(confirmKey: string) {
-  console.log('confirmKey:', confirmKey)
+  // console.log('confirmKey:', confirmKey)
 
   nextTick(() => {
     let refVariable: Ref<string> | null = null
@@ -93,12 +108,6 @@ function validateEmail() {
   } else showEmailError.value = false
 }
 
-function validateRegistrationNumber() {
-  if (!isRegistrationNumberValid.value) {
-    showRegistrationNumberError.value = true
-  } else showRegistrationNumberError.value = false
-}
-
 function saveBooking() {
   const job = computed(() => {
     return {
@@ -112,9 +121,11 @@ function saveBooking() {
 
   bookedJobs.value.push(job.value)
 
-  console.log('bookedJobs:', bookedJobs)
+  fetchJobsFromServer()
 
-  const response = saveJob(job.value)
+  // console.log('bookedJobs:', bookedJobs)
+
+  saveJob(job.value)
 
   nextTick(() => {})
 
@@ -138,33 +149,17 @@ function formatDate(dateString: string): string {
   })
 }
 
-watch(date, (newValue) => {
-  checkInputsData('isDate')
-  console.log('Selected date:', newValue)
-})
+function navigateWithQuery() {
+  router.push({ query: { removeBooking: 'true' } })
+}
 
 onMounted(async () => {
-  const user = {
-    userEmail: auth.currentUser?.email
-  }
+  const response = await getUser()
 
-  const response = await axios.post('http://localhost:3000/users/signedInUser', user)
+  bookedJobs.value = await fetchJobsFromServer()
 
-  isRepairShop.value = response.data.message.repairShop
-  console.log(user)
-
-  if (!isRepairShop.value) {
+  if (!response.userType) {
     router.push(`/user-home/${auth.currentUser?.uid}`)
-  }
-
-  try {
-    const response = await getJob()
-
-    bookedJobs.value = Array.isArray(response) ? response : [response]
-
-    console.log('response:', response)
-  } catch (error) {
-    alert('Kunde inte hämta bokade jobb')
   }
 })
 </script>
@@ -224,13 +219,24 @@ onMounted(async () => {
 
     <h2>Bokningar</h2>
     <div
-      class="w-full el-bg-gray rounded-lg p-2 border-main flex flex-col gap-1"
+      class="w-full el-bg-gray rounded-lg border-main flex flex-col gap-1 relative"
       v-for="job in bookedJobs"
       :key="job.time"
     >
-      <h3>Registreringsnummer: {{ job.registrationNumber }}</h3>
-      <p>Datum: {{ formatDate(job.date) }}</p>
+      <button
+        type="button"
+        @click="navigateWithQuery"
+        class="absolute right-0 p-2 hover:text-error-red"
+      >
+        <fontAwesome :icon="['fas', 'trash']" />
+      </button>
+      <div class="p-2">
+        <h3>Registreringsnummer: {{ job.registrationNumber }}</h3>
+        <p>Datum: {{ formatDate(job.date) }}</p>
+      </div>
     </div>
+
+    <ConfirmDialog :removeRequest="removeBooking" />
   </div>
 </template>
 

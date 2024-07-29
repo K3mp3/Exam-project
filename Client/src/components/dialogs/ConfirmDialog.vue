@@ -7,6 +7,14 @@ const props = defineProps({
   closeDialog: {
     type: Function,
     required: true
+  },
+  heading: {
+    type: String,
+    required: true
+  },
+  text: {
+    type: String,
+    required: true
   }
 })
 </script>
@@ -19,8 +27,8 @@ const props = defineProps({
       class="confirmation-box-error width-100 padding-16 display-flex align-items-center justify-center flex-dir-col m-width-330px"
     >
       <p>
-        <span class="font-title-bold">Vill du verkligen radera konversationen?</span> <br />
-        Den kommer inte gå att återställa igen.
+        <span class="font-title-bold">{{ props.heading }}</span> <br />
+        {{ props.text }}
       </p>
       <div class="display-flex gap-16 width-100">
         <button
