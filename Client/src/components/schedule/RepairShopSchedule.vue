@@ -2,13 +2,13 @@
 import type { INewJob } from '@/models/INewJob'
 import router from '@/router'
 import { getUser } from '@/services/getUserType'
-import { getJob, saveJob } from '@/services/saveJob'
+import { getJob, saveJob } from '@/services/schedule'
 import { getAuth } from 'firebase/auth'
 import DatePicker from 'primevue/datepicker'
-import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
-import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
+import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
 import RegistrationNumberInput from '../userHome/newRequest/RegistrationNumberInput.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
+import BookedJobs from './BookedJobs.vue'
 
 const date = ref('')
 const registrationNumber = ref('')
@@ -26,18 +26,16 @@ const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isEmail', value: false }
 ]
 
-const bookedJobs = ref<INewJob[]>([])
+console.log(inputsArray)
 
-interface IChachedJobs {
-  jobs: INewJob[]
-  timestamp: number
-}
+const bookedJobs = ref<INewJob[]>([])
 
 const auth = getAuth()
 
 async function fetchJobsFromServer(): Promise<INewJob[]> {
   try {
     const response = await getJob()
+    console.log('getJobs:', response)
     return Array.isArray(response) ? response : [response]
   } catch (error) {
     console.error('Could not fetch jobs from server:', error)
@@ -136,27 +134,16 @@ function saveBooking() {
   checkInputsData('isRegistrationNumber')
 }
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleString('en-SE', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  })
-}
-
-function navigateWithQuery() {
-  router.push({ query: { removeBooking: 'true' } })
-}
+watch(date, () => {
+  checkInputsData('isDate')
+})
 
 onMounted(async () => {
   const response = await getUser()
 
   bookedJobs.value = await fetchJobsFromServer()
+
+  console.log(bookedJobs.value)
 
   if (!response.userType) {
     router.push(`/user-home/${auth.currentUser?.uid}`)
@@ -217,27 +204,6 @@ onMounted(async () => {
       Spara
     </button>
 
-    <h2>Bokningar</h2>
-    <div
-      class="w-full el-bg-gray rounded-lg border-main flex flex-col gap-1 relative"
-      v-for="job in bookedJobs"
-      :key="job.time"
-    >
-      <button
-        type="button"
-        @click="navigateWithQuery"
-        class="absolute right-0 p-2 hover:text-error-red"
-      >
-        <fontAwesome :icon="['fas', 'trash']" />
-      </button>
-      <div class="p-2">
-        <h3>Registreringsnummer: {{ job.registrationNumber }}</h3>
-        <p>Datum: {{ formatDate(job.date) }}</p>
-      </div>
-    </div>
-
-    <ConfirmDialog :removeRequest="removeBooking" />
+    <BookedJobs :bookedJobs="bookedJobs" />
   </div>
 </template>
-
-<style scoped></style>

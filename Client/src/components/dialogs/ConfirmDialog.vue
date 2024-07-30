@@ -21,24 +21,25 @@ const props = defineProps({
 
 <template>
   <div
-    class="width-100 height-100vh bg-main-90 p-absolute top-0 left-0 z-index-2 padding-16 display-flex align-items-center justify-center"
+    class="w-full h-screen bg-main-90 absolute top-0 left-0 z-index-2 p-4 flex items-center justify-center"
   >
     <div
-      class="confirmation-box-error width-100 padding-16 display-flex align-items-center justify-center flex-dir-col m-width-330px"
+      class="confirmation-box-error w-full p-4 flex items-center justify-center flex-col max-w-[330px]"
     >
-      <p>
+      <p class="text-center">
         <span class="font-title-bold">{{ props.heading }}</span> <br />
         {{ props.text }}
       </p>
-      <div class="display-flex gap-16 width-100">
+
+      <div class="flex gap-5">
         <button
-          class="filled-btn text-main font-text-light h-42px display-flex gap-8 align-items-center justify-center width-100"
+          class="main-btn-white px-5 text-main font-text-light h-42px flex gap-2 items-center justify-center w-full"
           @click="props.removeRequest(true)"
         >
           <fontAwesome :icon="['fas', 'trash']" /> Radera
         </button>
         <button
-          class="outline-btn text-main font-text-light width-100"
+          class="outline-btn px-5 text-main font-text-light w-full"
           @click="props.closeDialog(true)"
         >
           Tillbaka
