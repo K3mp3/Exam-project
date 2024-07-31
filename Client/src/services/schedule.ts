@@ -19,7 +19,7 @@ export async function getJob(): Promise<INewJob[]> {
   return response.data
 }
 
-export async function removeJob(job: INewJob) {
+export async function removeJob(job: object) {
   const response = await axios.post(`${BASE_URL}/jobs/removeJob`, job)
   return response.data
 }

@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import type { INewJob } from '@/models/INewJob'
 import router from '@/router'
+import { removeJob } from '@/services/schedule'
+import type { Auth } from 'firebase/auth'
 import { computed, type PropType } from 'vue'
 import { useRoute } from 'vue-router'
 import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
 
 const props = defineProps({
-  bookedJobs: {
-    type: Array as PropType<INewJob[]>,
+  booking: {
+    type: Object as PropType<INewJob>,
+    required: true
+  },
+  auth: {
+    type: Object as PropType<Auth>,
     required: true
   }
 })
+
+const emits = defineEmits<{
+  (e: 'fetchJobs'): void
+}>()
 
 const route = useRoute()
 
@@ -30,17 +40,24 @@ function formatDate(dateString: string): string {
 }
 
 function removeBooking() {
-  console.log('hejsan')
+  console.log(props.booking.customerEmail)
+  const jobToRemove = computed(() => {
+    return {
+      id: props.booking.id,
+      repairShopEmail: props.auth.currentUser?.email,
+      customerEmail: props.booking.customerEmail,
+      date: props.booking.date
+    }
+  })
+
+  removeJob(jobToRemove.value)
+  router.replace({ query: {} })
+  emits('fetchJobs')
 }
 </script>
 
 <template>
-  <h2>Bokningar</h2>
-  <div
-    class="w-full el-bg-gray rounded-lg border-main flex flex-col gap-1 relative"
-    v-for="job in props.bookedJobs"
-    :key="job.time"
-  >
+  <div class="w-full el-bg-gray rounded-lg border-main flex flex-col gap-1 relative">
     <button
       type="button"
       @click="() => router.push({ query: { removeBooking: 'true' } })"
@@ -49,8 +66,8 @@ function removeBooking() {
       <fontAwesome :icon="['fas', 'trash']" />
     </button>
     <div class="p-2">
-      <h3>Registreringsnummer: {{ job.registrationNumber }}</h3>
-      <p>Datum: {{ formatDate(job.date) }}</p>
+      <h3>Registreringsnummer: {{ props.booking.registrationNumber }}</h3>
+      <p>Datum: {{ formatDate(props.booking.date) }}</p>
     </div>
   </div>
 

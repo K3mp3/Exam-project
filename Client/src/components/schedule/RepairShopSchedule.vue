@@ -2,12 +2,13 @@
 import type { INewJob } from '@/models/INewJob'
 import router from '@/router'
 import { getUser } from '@/services/getUserType'
-import { getJob, saveJob } from '@/services/schedule'
+import { saveJob } from '@/services/schedule'
 import { getAuth } from 'firebase/auth'
 import DatePicker from 'primevue/datepicker'
 import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
 import RegistrationNumberInput from '../userHome/newRequest/RegistrationNumberInput.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
+import { fetchJobsFromServer } from '../utils/fecthBookingJobs'
 import BookedJobs from './BookedJobs.vue'
 
 const date = ref('')
@@ -31,17 +32,6 @@ console.log(inputsArray)
 const bookedJobs = ref<INewJob[]>([])
 
 const auth = getAuth()
-
-async function fetchJobsFromServer(): Promise<INewJob[]> {
-  try {
-    const response = await getJob()
-    console.log('getJobs:', response)
-    return Array.isArray(response) ? response : [response]
-  } catch (error) {
-    console.error('Could not fetch jobs from server:', error)
-    throw error
-  }
-}
 
 function checkInputData() {
   isBtnDisabled.value =
@@ -106,7 +96,7 @@ function validateEmail() {
   } else showEmailError.value = false
 }
 
-function saveBooking() {
+async function saveBooking() {
   const job = computed(() => {
     return {
       date: date.value,
@@ -117,15 +107,9 @@ function saveBooking() {
     }
   })
 
-  bookedJobs.value.push(job.value)
+  const response = await saveJob(job.value)
 
-  fetchJobsFromServer()
-
-  // console.log('bookedJobs:', bookedJobs)
-
-  saveJob(job.value)
-
-  nextTick(() => {})
+  bookedJobs.value = await fetchJobsFromServer()
 
   date.value = ''
   registrationNumber.value = ''
@@ -134,14 +118,22 @@ function saveBooking() {
   checkInputsData('isRegistrationNumber')
 }
 
+async function retrieveJobs() {
+  console.log('retrieveJobs')
+  bookedJobs.value = await fetchJobsFromServer()
+  console.log(bookedJobs.value)
+}
+
 watch(date, () => {
   checkInputsData('isDate')
+  console.log(date.value)
 })
 
 onMounted(async () => {
+  console.log('onMounted')
   const response = await getUser()
 
-  bookedJobs.value = await fetchJobsFromServer()
+  retrieveJobs()
 
   console.log(bookedJobs.value)
 
@@ -204,6 +196,13 @@ onMounted(async () => {
       Spara
     </button>
 
-    <BookedJobs :bookedJobs="bookedJobs" />
+    <h2>Bokningar</h2>
+    <BookedJobs
+      v-for="job in bookedJobs"
+      :key="job.time"
+      :booking="job"
+      :auth="auth"
+      @fetchJobs="retrieveJobs"
+    />
   </div>
 </template>
