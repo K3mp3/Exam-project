@@ -43,7 +43,7 @@ onMounted(() => {
       <div class="text-parent-container top-container flex flex-col gap-3 xl:gap-4 sm:text-center">
         <h2 class="text-xl sm:text-2xl">Varför borde du använda vår tjänst?</h2>
         <ul class="flex flex-col gap-2 xl:flex-row justify-center xl:gap-16">
-          <li><span>&#x2022; Smidigt - </span>Allt sammlat på ett ställe</li>
+          <li><span>&#x2022; Smidigt - </span>Allt samlat på ett ställe</li>
           <li><span>&#x2022; Kostnadsfritt - </span>Tjänsten är helt gratis att använda</li>
           <li>
             <span>&#x2022; Ekonomiskt - </span>Du sparar pengar genom att välja det billigaste

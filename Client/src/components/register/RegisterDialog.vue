@@ -206,10 +206,9 @@ async function handleRegistration() {
     }
   })
 
-  const response = await registerUser(newUser.value)
-
-  if (response === 201) {
-    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+  try {
+    console.log(email.value, password.value)
+    await createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then(async () => {
         isLoading.value = false
         isConfirmationSuccess.value = true
@@ -221,9 +220,13 @@ async function handleRegistration() {
       .catch(() => {
         isLoading.value = false
       })
-  } else {
-    isLoading.value = false
+
+    const response = await registerUser(newUser.value)
+    console.log(response)
+  } catch (error) {
+    console.error('Firebase registration error:', error)
     showErrorDialog.value = true
+    isLoading.value = false
   }
 }
 
