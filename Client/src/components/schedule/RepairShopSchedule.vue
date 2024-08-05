@@ -6,6 +6,7 @@ import { saveJob } from '@/services/schedule'
 import { getAuth } from 'firebase/auth'
 import DatePicker from 'primevue/datepicker'
 import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
+import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import RegistrationNumberInput from '../userHome/newRequest/RegistrationNumberInput.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 import { fetchJobsFromServer } from '../utils/fecthBookingJobs'
@@ -19,6 +20,7 @@ const isBtnDisabled = ref(true)
 const showEmailError = ref(false)
 const isEmailValid = ref(true)
 const isRegistrationNumberValid = ref(true)
+const isLoading = ref(false)
 // const isRepairShop = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
@@ -97,6 +99,8 @@ function validateEmail() {
 }
 
 async function saveBooking() {
+  isLoading.value = true
+
   const job = computed(() => {
     return {
       date: date.value,
@@ -107,12 +111,17 @@ async function saveBooking() {
     }
   })
 
-  const response = await saveJob(job.value)
+  console.log(job.value)
+
+  await saveJob(job.value)
 
   bookedJobs.value = await fetchJobsFromServer()
 
+  isLoading.value = false
+
   date.value = ''
   registrationNumber.value = ''
+  customerEmail.value = ''
 
   checkInputsData('isDate')
   checkInputsData('isRegistrationNumber')
@@ -168,6 +177,7 @@ onMounted(async () => {
       <label for="email" class="font-text-light flex flex-col gap-1"
         ><span>Kundens email adress</span>
         <InfoInput
+          v-model="customerEmail"
           :checkInputData="(e: string) => checkInputsData(e)"
           :inputData="(e: string) => (customerEmail = e)"
           :inputType="'email'"
@@ -204,5 +214,10 @@ onMounted(async () => {
       :auth="auth"
       @fetchJobs="retrieveJobs"
     />
+  </div>
+
+  <div class="spinner-component" v-if="isLoading">
+    <LoadingSpinner />
+    <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
