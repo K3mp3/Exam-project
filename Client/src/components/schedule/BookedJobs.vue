@@ -3,9 +3,10 @@ import type { INewJob } from '@/models/INewJob'
 import router from '@/router'
 import { removeJob } from '@/services/schedule'
 import type { Auth } from 'firebase/auth'
-import { computed, type PropType } from 'vue'
+import { computed, ref, type PropType } from 'vue'
 import { useRoute } from 'vue-router'
 import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
+import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 
 const props = defineProps({
   booking: {
@@ -17,6 +18,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const isConfirmationSuccess = ref(false)
 
 const emits = defineEmits<{
   (e: 'fetchJobs'): void
@@ -39,7 +42,7 @@ function formatDate(dateString: string): string {
   })
 }
 
-function removeBooking() {
+async function removeBooking() {
   console.log(props.booking.customerEmail)
   const jobToRemove = computed(() => {
     return {
@@ -50,9 +53,21 @@ function removeBooking() {
     }
   })
 
-  removeJob(jobToRemove.value)
+  const response = await removeJob(jobToRemove.value)
+  console.log('response:', response)
   router.replace({ query: {} })
-  emits('fetchJobs')
+
+  if (response === 201) {
+    isConfirmationSuccess.value = true
+    setTimeout(() => {
+      console.log('timeout')
+      isConfirmationSuccess.value = false
+    }, 4000)
+  }
+
+  setTimeout(() => {
+    emits('fetchJobs')
+  }, 4002)
 }
 </script>
 
@@ -70,6 +85,12 @@ function removeBooking() {
       <p>Datum: {{ formatDate(props.booking.date) }}</p>
     </div>
   </div>
+
+  <SentResponseDialog
+    v-if="isConfirmationSuccess"
+    :isConfirmationSuccess="isConfirmationSuccess"
+    :text="'Bokningen har raderats'"
+  />
 
   <ConfirmDialog
     :removeRequest="removeBooking"

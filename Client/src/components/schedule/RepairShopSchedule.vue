@@ -3,26 +3,36 @@ import type { INewJob } from '@/models/INewJob'
 import router from '@/router'
 import { getUser } from '@/services/getUserType'
 import { saveJob } from '@/services/schedule'
+import { useAuthStore } from '@/stores/storeSignedInUser'
 import { getAuth } from 'firebase/auth'
 import DatePicker from 'primevue/datepicker'
 import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
+import { useRoute } from 'vue-router'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
+import ErrorDialog from '../dialogs/ErrorDialog.vue'
 import RegistrationNumberInput from '../userHome/newRequest/RegistrationNumberInput.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 import { fetchJobsFromServer } from '../utils/fecthBookingJobs'
 import BookedJobs from './BookedJobs.vue'
 
+// Define reactive references for form fields
 const date = ref('')
 const registrationNumber = ref('')
 const customerEmail = ref('')
 
+// Define reactive references for validation and loading states
 const isBtnDisabled = ref(true)
 const showEmailError = ref(false)
 const isEmailValid = ref(true)
 const isRegistrationNumberValid = ref(true)
 const isLoading = ref(false)
-// const isRepairShop = ref(false)
 
+// Get the authentication store instance
+const authStore = useAuthStore()
+const userEmail = computed(() => authStore.getUser?.email)
+const userUid = computed(() => authStore.getUser?.uid)
+
+// Define the array for tracking input validation states
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isDate', value: false },
   { key: 'isRegistrationNumber', value: false },
@@ -31,28 +41,29 @@ const inputsArray: { key: string; value: boolean }[] = [
 
 console.log(inputsArray)
 
+// Define reactive reference for booked jobs
 const bookedJobs = ref<INewJob[]>([])
 
 const auth = getAuth()
+const route = useRoute()
+const showErrorDialog = computed(() => route.query.errorSavingBooking === 'true')
 
+// Function to check if all inputs are valid
 function checkInputData() {
   isBtnDisabled.value =
     !inputsArray.every((field) => field.value) ||
     !isEmailValid.value ||
     !isRegistrationNumberValid.value
-  // console.log(inputsArray)
 }
 
+// Function to validate individual input fields
 function checkInputsData(confirmKey: string) {
-  // console.log('confirmKey:', confirmKey)
-
   nextTick(() => {
     let refVariable: Ref<string> | null = null
     switch (confirmKey) {
       case 'isDate':
         refVariable = date
         break
-
       case 'isRegistrationNumber':
         refVariable = registrationNumber
         break
@@ -69,51 +80,46 @@ function checkInputsData(confirmKey: string) {
 
     if (refVariable?.value === '' || refVariable?.value === null) {
       const index = inputsArray.findIndex((field) => field.key === confirmKey)
-
       if (index !== -1) {
         inputsArray[index].value = false
       } else {
         inputsArray.push({ key: confirmKey, value: false })
       }
-
-      checkInputData()
-      return
     } else {
       const index = inputsArray.findIndex((field) => field.key === confirmKey)
-
       if (index !== -1) {
         inputsArray[index].value = true
       } else {
         inputsArray.push({ key: confirmKey, value: true })
       }
-
-      checkInputData()
     }
+    checkInputData()
   })
 }
 
+// Function to validate email format
 function validateEmail() {
   if (!isEmailValid.value) {
     showEmailError.value = true
   } else showEmailError.value = false
 }
 
+// Function to save the booking
 async function saveBooking() {
   isLoading.value = true
 
-  const job = computed(() => {
-    return {
-      date: date.value,
-      registrationNumber: registrationNumber.value,
-      time: new Date().getTime(),
-      repairShopEmail: auth.currentUser?.email as string,
-      customerEmail: customerEmail.value
-    }
-  })
+  const job = {
+    date: date.value,
+    registrationNumber: registrationNumber.value,
+    time: new Date().getTime(),
+    repairShopEmail: userEmail.value,
+    customerEmail: customerEmail.value
+  }
 
-  console.log(job.value)
+  console.log(job)
 
-  await saveJob(job.value)
+  const response = await saveJob(job)
+  console.log(response)
 
   bookedJobs.value = await fetchJobsFromServer()
 
@@ -125,29 +131,33 @@ async function saveBooking() {
 
   checkInputsData('isDate')
   checkInputsData('isRegistrationNumber')
+
+  if (response === 500) {
+    router.push({ query: { errorSavingBooking: 'true' } })
+  }
 }
 
+// Function to retrieve booked jobs from the server
 async function retrieveJobs() {
   console.log('retrieveJobs')
   bookedJobs.value = await fetchJobsFromServer()
   console.log(bookedJobs.value)
 }
 
+// Watchers to monitor changes in date and validate input data
 watch(date, () => {
   checkInputsData('isDate')
   console.log(date.value)
 })
 
+// onMounted lifecycle hook to fetch user data and retrieve jobs on component mount
 onMounted(async () => {
-  console.log('onMounted')
   const response = await getUser()
-
   retrieveJobs()
-
   console.log(bookedJobs.value)
 
   if (!response.userType) {
-    router.push(`/user-home/${auth.currentUser?.uid}`)
+    router.push(`/user-home/${userUid.value}`)
   }
 })
 </script>
@@ -215,6 +225,15 @@ onMounted(async () => {
       @fetchJobs="retrieveJobs"
     />
   </div>
+
+  <ErrorDialog
+    v-if="showErrorDialog"
+    :showEmailError="showEmailError"
+    :title="'Whoops! Det gick tyvärr inte att spara bokningen just nu.'"
+    :text="'Vänligen försök igen senare. Om problemet kvarstår ber vi dig att kontakta support.'"
+    :btnText="'Kontakta support'"
+    :closeDialog="() => router.replace({ query: {} })"
+  />
 
   <div class="spinner-component" v-if="isLoading">
     <LoadingSpinner />

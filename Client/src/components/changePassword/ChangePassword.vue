@@ -3,7 +3,7 @@ import { useShowSignInDialog } from '@/stores/showSignInDialog'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { onMounted, ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import ErrorDialog from '../dialogs/ErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import ConsumerNav from '../nav/ConsumerNav.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
@@ -127,7 +127,7 @@ onMounted(() => {
         </button>
       </form>
     </div>
-    <RegisterErrorDialog
+    <ErrorDialog
       v-if="showErrorDialog"
       :showErrorDialog="showErrorDialog"
       :title="'Whoops! Tyvärr gick inte mailet att skicka.'"

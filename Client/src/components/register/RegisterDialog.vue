@@ -3,7 +3,7 @@ import { registerUser } from '@/services/registerUser'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import ErrorDialog from '../dialogs/ErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
@@ -407,7 +407,7 @@ onMounted(() => {
         </p>
       </div>
     </div>
-    <RegisterErrorDialog
+    <ErrorDialog
       v-if="showErrorDialog"
       :showErrorDialog="showErrorDialog"
       :title="'Whoops! Tyvärr kunde inte ditt konto registreras just nu.'"

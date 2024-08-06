@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import router from '@/router'
-import { signInUser } from '@/services/signInUser'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import { useShowSignInDialog } from '@/stores/showSignInDialog'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { useAuthStore } from '@/stores/storeSignedInUser'
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
 import DialogBox from '../dialogs/DialogBox.vue'
 
@@ -22,6 +21,9 @@ const isEmailWrong = ref(false)
 const isPasswordWrong = ref(false)
 const isBtnDisabled = ref(true)
 const isLoading = ref(false)
+
+const authStore = useAuthStore()
+const router = useRouter()
 
 const isSignIn = computed(() => useShowSignInDialog().isSignInDialog)
 const isDialog = computed(() => useShowPopUp().showPopUp)
@@ -44,47 +46,24 @@ function checkInputData() {
   }
 }
 
-async function handleSignIn() {
+const handleSignIn = async () => {
   isBtnDisabled.value = true
   isLoading.value = true
-  const response = await signInUser(user.value)
-
-  console.log(response)
-
-  if (response === 201) {
-    const auth = getAuth()
-    signInWithEmailAndPassword(auth, email.value, password.value)
-      .then(() => {
-        console.log(auth.currentUser?.uid)
-        router.push(`/user-home/${auth.currentUser?.uid}`)
-      })
-      .catch((error) => {
-        console.log(error.code)
-        switch (error.code) {
-          case 'auth/invalid-credential':
-            isEmailWrong.value = true
-            isPasswordWrong.value = true
-            isLoading.value = false
-            break
-        }
-      })
+  try {
+    const user = await authStore.customSignIn(email.value, password.value)
+    router.push(`/user-home/${user.uid}`)
+  } catch (error: unknown) {
+    console.log(error)
+    if (error instanceof Error && error.message.includes('auth/invalid-credential')) {
+      isEmailWrong.value = true
+      isPasswordWrong.value = true
+    } else {
+      console.error('An unknown error occurred during sign-in')
+    }
+  } finally {
+    isLoading.value = false
+    isBtnDisabled.value = false
   }
-
-  // const responseStatus = response as unknown as { status: number }
-  // const responseData = response as { data: { message: string } }
-
-  // if (responseData.data.message === 'Wrong email or password!') {
-  //   isEmailWrong.value = true
-  //   isPasswordWrong.value = true
-  //   isLoading.value = false
-  // }
-
-  // if (responseStatus) {
-  //   isLoading.value = false
-  //   nextTick(() => {
-  //     isBtnDisabled.value = false
-  //   })
-  // }
 }
 
 function closeSignInDialog() {
@@ -170,4 +149,3 @@ function closeSignInDialog() {
     <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
   </div>
 </template>
-import router from '@/router' import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'

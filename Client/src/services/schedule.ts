@@ -8,7 +8,7 @@ export async function saveJob(job: object) {
   try {
     const response = await axios.post(`${BASE_URL}/jobs/saveJob`, job)
 
-    return response.data
+    return response.status
   } catch (error) {
     return error
   }
@@ -21,5 +21,5 @@ export async function getJob(): Promise<INewJob[]> {
 
 export async function removeJob(job: object) {
   const response = await axios.post(`${BASE_URL}/jobs/removeJob`, job)
-  return response.data
+  return response.status
 }
