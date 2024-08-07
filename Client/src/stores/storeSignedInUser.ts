@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
           const auth = getAuth()
           const userCredential = await signInWithEmailAndPassword(auth, email, password)
           const { email: userEmail, uid } = userCredential.user
-          this.user = { email: userEmail!, uid }
+          this.user = { email: userEmail!, uid } // email should never be null after successful sign-in
           this.loading = false
           return this.user
         } else {
@@ -54,5 +54,6 @@ export const useAuthStore = defineStore('auth', {
     getUser: (state) => state.user,
     isLoading: (state) => state.loading,
     getError: (state) => state.error
-  }
+  },
+  persist: true // Enable persistence
 })

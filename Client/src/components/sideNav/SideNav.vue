@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import router from '@/router'
+import { useAuthStore } from '@/stores/storeSignedInUser'
+import axios from 'axios'
 import { getAuth, signOut } from 'firebase/auth'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const currentUrl = window.location.href
 const userId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
 
-const isRepairShop = localStorage.getItem('isRepairShop')
+const isRepairShop = ref(false)
+
+const authStore = useAuthStore()
+const userEmail = computed(() => authStore.getUser?.email)
 
 const emits = defineEmits<{
   (e: 'newRequest'): void
@@ -25,8 +30,20 @@ function signOutUser() {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
   auth = getAuth()
+
+  const user = {
+    userEmail: userEmail.value
+  }
+
+  console.log(user)
+
+  const response = await axios.post('http://localhost:3000/users/signedInUser', user)
+
+  console.log(response.data)
+
+  isRepairShop.value = response.data.message.repairShop
 })
 </script>
 
@@ -54,7 +71,7 @@ onMounted(() => {
                   'flex justify-between py-1.5 px-3'
                 ]"
               >
-                inkorg <span>4</span>
+                inkorg
               </p></RouterLink
             >
           </li>
@@ -66,7 +83,7 @@ onMounted(() => {
                   'flex justify-between py-1.5 px-3'
                 ]"
               >
-                Skickat <span>4</span>
+                Skickat
               </p></RouterLink
             >
           </li>
@@ -78,7 +95,19 @@ onMounted(() => {
                   'flex justify-between py-1.5 px-3'
                 ]"
               >
-                Profil <span>4</span>
+                Profil
+              </p></RouterLink
+            >
+          </li>
+          <li>
+            <RouterLink v-if="isRepairShop" :to="`/user-schedule/${auth.currentUser?.uid}`">
+              <p
+                :class="[
+                  currentUrl.includes('user-schedule') && 'border-gr-blue rounded-[10px]',
+                  'flex justify-between py-1.5 px-3'
+                ]"
+              >
+                Kalender
               </p></RouterLink
             >
           </li>

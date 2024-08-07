@@ -27,6 +27,7 @@
     "axios": "^1.6.3",
     "firebase": "^10.11.1",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "primevue": "^4.0.0",
     "sass": "^1.69.6",
     "tailwindcss-primeui": "^0.3.4",

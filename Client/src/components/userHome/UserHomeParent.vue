@@ -28,28 +28,6 @@ const isDialog = computed(() => useShowPopUp().showPopUp)
 
 const requestData = requestDataStore()
 
-const email = localStorage.getItem('userEmail')
-const id = localStorage.getItem('user')
-
-const userAuth = computed(() => {
-  return {
-    userEmail: email,
-    userName: fullName,
-    userId: userId.value
-  }
-})
-
-// async function controllUserAuthentication() {
-//   const response = await controllUserAuth(userAuth.value)
-
-//   console.log(response)
-
-//   if (response === 201) return
-//   else if (response === 401) {
-//     router.push({ params: { userId: id } })
-//   }
-// }
-
 function updateScreenSize() {
   window.addEventListener('resize', updateScreenSize)
   width.value = document.documentElement.clientWidth
@@ -123,14 +101,12 @@ onMounted(async () => {
     <BottomNav />
   </div>
 
-  <div v-if="width && width > 767">
-    <div class="flex gap-8 w-screen">
-      <SideNav :signOutFunction="changeUserSignInStatus" @newRequest="newRequest"></SideNav>
+  <div v-if="width && width > 767" class="flex gap-8 w-screen">
+    <div class="fixed">
+      <SideNav :signOutFunction="changeUserSignInStatus" @newRequest="newRequest" />
+    </div>
 
-      <div class="p-8">
-        <!-- <UserHomeAnswers /> -->
-      </div>
-
+    <div class="max-w-[600px] w-full margin-auto">
       <RepairShopForm v-if="isRepairShop" />
     </div>
   </div>

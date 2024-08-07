@@ -2,6 +2,7 @@ import './assets/styling/main.scss'
 import './index.css'
 
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -33,12 +34,15 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig)
 
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
 const app = createApp(App)
 
 library.add(fas)
 
 app.component('fontAwesome', FontAwesomeIcon)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(PrimeVue, {
   // Default theme configuration
