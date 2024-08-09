@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { removeUserRequest } from '@/services/removeRequest'
 import { computed, nextTick, onMounted, ref } from 'vue'
-import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
-import UserHomeMessages from './UserHomeMessages.vue'
 
 const props = defineProps({
   index: {
@@ -93,7 +91,8 @@ async function removeRequest() {
 </script>
 
 <template>
-  <div class="display-flex flex-dir-col margin-tp-16 m-width-100">
+  <h2>Hello</h2>
+  <!-- <div class="display-flex flex-dir-col margin-tp-16 m-width-100">
     <p>{{ props.index.repairShopName }}</p>
 
     <div class="user-sent-message-content-container">
@@ -159,10 +158,10 @@ async function removeRequest() {
       Skicka
     </button>
   </div>
-  <div class="line-inactive"></div>
-  <ConfirmDialog
+  <div class="line-inactive"></div> -->
+  <!-- <ConfirmDialog
     :removeRequest="removeRequest"
     :closeDialog="() => (isConfirmDialog = false)"
     v-if="isConfirmDialog"
-  ></ConfirmDialog>
+  ></ConfirmDialog> -->
 </template>

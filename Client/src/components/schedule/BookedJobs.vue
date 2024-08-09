@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { INewJob } from '@/models/INewJob'
-import router from '@/router'
 import { removeJob } from '@/services/schedule'
 import type { Auth } from 'firebase/auth'
-import { computed, ref, type PropType } from 'vue'
+import { ref, type PropType } from 'vue'
 import { useRoute } from 'vue-router'
 import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
@@ -19,15 +18,17 @@ const props = defineProps({
   }
 })
 
+console.log(props.booking)
+
 const isConfirmationSuccess = ref(false)
+const showConfirmDialog = ref(false)
+const bookingIdToRemove = ref<string | null>(null)
 
 const emits = defineEmits<{
   (e: 'fetchJobs'): void
 }>()
 
 const route = useRoute()
-
-const showConfirmDialog = computed(() => route.query.removeBooking === 'true')
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
@@ -42,32 +43,39 @@ function formatDate(dateString: string): string {
   })
 }
 
+function confirmRemoveBooking(bookingId: string) {
+  bookingIdToRemove.value = bookingId
+  console.log('Attempting to remove booking with ID:', bookingIdToRemove.value)
+  showConfirmDialog.value = true
+}
+
 async function removeBooking() {
-  console.log(props.booking.customerEmail)
-  const jobToRemove = computed(() => {
-    return {
-      id: props.booking.id,
+  if (bookingIdToRemove.value) {
+    console.log('Attempting to remove booking with ID:', bookingIdToRemove.value)
+
+    const jobToRemove = {
+      id: bookingIdToRemove.value,
       repairShopEmail: props.auth.currentUser?.email,
       customerEmail: props.booking.customerEmail,
       date: props.booking.date
     }
-  })
 
-  const response = await removeJob(jobToRemove.value)
-  console.log('response:', response)
-  router.replace({ query: {} })
+    console.log(jobToRemove)
 
-  if (response === 201) {
-    isConfirmationSuccess.value = true
-    setTimeout(() => {
-      console.log('timeout')
-      isConfirmationSuccess.value = false
-    }, 4000)
+    const response = await removeJob(jobToRemove)
+    console.log('response:', response)
+
+    if (response === 201) {
+      isConfirmationSuccess.value = true
+      setTimeout(() => {
+        isConfirmationSuccess.value = false
+      }, 4000)
+    }
+
+    emits('fetchJobs')
   }
 
-  setTimeout(() => {
-    emits('fetchJobs')
-  }, 4002)
+  showConfirmDialog.value = false
 }
 </script>
 
@@ -75,7 +83,7 @@ async function removeBooking() {
   <div class="w-full el-bg-gray rounded-lg border-main flex flex-col gap-1 relative">
     <button
       type="button"
-      @click="() => router.push({ query: { removeBooking: 'true' } })"
+      @click="() => confirmRemoveBooking(props.booking.id as string)"
       class="absolute right-0 p-2 hover:text-error-red"
     >
       <fontAwesome :icon="['fas', 'trash']" />
@@ -94,7 +102,7 @@ async function removeBooking() {
 
   <ConfirmDialog
     :removeRequest="removeBooking"
-    :closeDialog="() => router.replace({ query: {} })"
+    :closeDialog="() => (showConfirmDialog = false)"
     :heading="'Vill du verkligen radera denna bokning?'"
     :text="'Den går inte att återställa'"
     v-if="showConfirmDialog"

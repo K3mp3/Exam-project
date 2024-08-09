@@ -102,11 +102,12 @@ onMounted(async () => {
   </div>
 
   <div v-if="width && width > 767" class="flex gap-8 w-screen">
-    <div class="fixed">
+    <div class="z-10">
       <SideNav :signOutFunction="changeUserSignInStatus" @newRequest="newRequest" />
     </div>
 
-    <div class="max-w-[600px] w-full margin-auto">
+    <div class="w-full margin-auto overflow-y-auto h-screen xl:absolute">
+      <UserHomeAnswers v-if="!isRepairShop" />
       <RepairShopForm v-if="isRepairShop" />
     </div>
   </div>

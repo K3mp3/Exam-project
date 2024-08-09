@@ -177,7 +177,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-blue-500">
+  <div class="">
     <form @submit.prevent="" class="user-sent-answer-form-mobile" v-if="mobile">
       <UserHomeAnswerForm
         v-for="index in allRepairShopAnswers"

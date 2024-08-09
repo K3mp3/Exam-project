@@ -3,7 +3,7 @@ import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
 import type { IRepairShopId } from '@/models/IRepairShopId'
 import type { IUserContact } from '@/models/IUserContact'
 import router from '@/router'
-import { answerCustomerBack, answerFromRepairShop } from '@/services/RepariShopAnswer'
+import { answerFromRepairShop } from '@/services/RepariShopAnswer'
 import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
 import { repairShopSelectedJobs } from '@/stores/repairShopSelectedJobs'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -88,32 +88,9 @@ function showConfirmationBox(response: number) {
   }
 }
 
-async function handleAnswer(answerData: Object) {
-  // isLoading.value = true
-
-  // const response = await answerFromRepairShop(answerData as IUserContact)
-
-  // const responseData = response as { status: number }
-
-  // console.log(responseData.status)
-
-  // if (responseData && responseData.status === 201) {
-  //   isLoading.value = false
-  //   showConfirmationBox(201)
-  // } else {
-  //   setTimeout(() => {
-  //     isLoading.value = false
-  //     showConfirmationBox(responseData.status)
-  //   }, 5000)
-  // }
-
-  const response = answerFromRepairShop(selectedJobsArray.value)
-
-  getMessages()
-}
-
-async function handleAnswerCustomerBack(answerData: Object) {
-  const response = await answerCustomerBack(answerData as IUserContact)
+async function handleAnswer() {
+  console.log(selectedJobsArray.value)
+  answerFromRepairShop(selectedJobsArray.value)
 
   getMessages()
 }
@@ -125,7 +102,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4 flex flex-col gap-2 md:p-8">
+  <div class="max-w-[350px] xl:max-w-[500px] w-full p-4 flex flex-col gap-2 md:p-8 margin-auto">
     <div
       class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main mb-6"
       v-if="selectedJobsArray.length > 0"
@@ -151,11 +128,11 @@ onMounted(() => {
       </button>
     </div>
 
-    <h2 class="text-text-lg sm:text-xl">Dina förfrågningar</h2>
+    <form @submit.prevent="" class="flex flex-col gap-6 md:gap-8">
+      <h2 class="text-text-lg sm:text-xl">Dina förfrågningar</h2>
 
-    <form @submit.prevent="" class="repair-shop-requests-form">
       <div
-        class="flex flex-col gap-6 w-ful mb-[83px]"
+        class="flex flex-col gap-4 md:gap-6"
         v-for="message in unansweredMessages"
         :key="message._id"
       >
@@ -166,28 +143,12 @@ onMounted(() => {
           <RequestContent :customerMessage="customerMessage" :message="message" />
         </div>
       </div>
-      <!-- <RepairShopMessageContent
-        v-for="(message, messageIndex) in unansweredMessages"
-        :key="`${message._id}-${messageIndex}`"
-        :userContact="message"
-        :messageData="message.customerMessage[messageIndex]"
-        class="repair-shop-message-content-component"
-        :onAnswer="handleAnswer"
-      ></RepairShopMessageContent>
-      <RepairShopAnsweredContent
-        v-for="index in answeredMessages"
-        :key="index._id"
-        :index="index"
-        class="repair-shop-message-content-component"
-        :onAnswer="handleAnswerCustomerBack"
-        :hideAnswerInput="true"
-      >
-      </RepairShopAnsweredContent> -->
 
       <div class="spinner-component" v-if="isLoading">
         <LoadingSpinner />
         <!-- Spinner by: https://codepen.io/jkantner/pen/QWrLOXW -->
       </div>
+
       <div class="confirmation-box-background" v-if="isConfirmation || isConfirmationError">
         <div class="confirmation-box" v-if="isConfirmation">
           <fontAwesome :icon="['fas', 'check']" class="text-main font-title-bold O35rem" />

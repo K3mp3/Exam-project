@@ -21,6 +21,15 @@ export async function answerFromRepairShop(messageData: IRepairShopAnswer[]) {
   }
 }
 
+export async function getRepairShopOffer() {
+  try {
+    const response = await axios.get(`${BASE_URL}/answerFromRepairShops/answerFromRepairShop`)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
 export async function answerCustomerBack(messageData: IUserContact) {
   try {
     console.log(messageData)
