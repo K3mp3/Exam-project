@@ -7,6 +7,7 @@ import LayoutVue from '@/views/Layout.vue'
 import RegisterRepairShopView from '@/views/RegisterRepairShopView.vue'
 import RegisterViewVue from '@/views/RegisterView.vue'
 import RepairShopHomeViewVue from '@/views/RepairShopHomeView.vue'
+import RepairShopScheduleView from '@/views/RepairShopScheduleView.vue'
 import RepairShopSentView from '@/views/RepairShopSentView.vue'
 import SignInViewVue from '@/views/SignInView.vue'
 import UserHomeNewRequestViewVue from '@/views/UserHomeNewRequestView.vue'
@@ -99,6 +100,12 @@ const router = createRouter({
           path: '/change-password',
           name: 'change password view',
           component: ChangePasswordView,
+          meta: { index: true }
+        },
+        {
+          path: '/user-schedule/:id',
+          name: 'repair shop schedule view',
+          component: RepairShopScheduleView,
           meta: { index: true }
         }
         // {

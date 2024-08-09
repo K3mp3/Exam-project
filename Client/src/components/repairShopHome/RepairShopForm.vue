@@ -125,7 +125,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4 flex flex-col gap-2">
+  <div class="p-4 flex flex-col gap-2 md:p-8">
     <div
       class="flex flex-col gap-2 w-full rounded-lg p-3 border-main text-main mb-6"
       v-if="selectedJobsArray.length > 0"

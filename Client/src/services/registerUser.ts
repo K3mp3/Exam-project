@@ -1,3 +1,4 @@
+import type { IRepairShopRegistration } from '@/models/IRepairShopRegistration'
 import type { IUserRegistration } from '@/models/IUserRegistration'
 import { useShowPopUp } from '@/stores/ShowPopUpStore'
 import axios from 'axios'
@@ -26,16 +27,14 @@ export async function registerUser(user: IUserRegistration) {
   }
 }
 
-export async function registerRepairShop(user: IUserRegistration) {
+export async function registerRepairShop(user: IRepairShopRegistration) {
   try {
-    const response = await axios.post<IUserRegistration>(
+    const response = await axios.post<IRepairShopRegistration>(
       `${BASE_URL}/users/createRepairShopUser`,
       user
     )
 
-    window.location = response.data.url as Location | (string & Location)
-
-    return response.status
+    return response
   } catch (error: any) {
     if (error.response && error.response.status === 409) {
       return error.response.status

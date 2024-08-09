@@ -3,7 +3,7 @@ import { registerUser } from '@/services/registerUser'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import ErrorDialog from '../dialogs/ErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
@@ -193,37 +193,42 @@ function checkPasswordMatch() {
 async function handleRegistration() {
   isLoading.value = true
 
-  const currentUser = getAuth().currentUser
-  const userId = currentUser ? currentUser.uid : ''
+  try {
+    console.log(email.value, password.value)
+    const userCredential = await createUserWithEmailAndPassword(
+      getAuth(),
+      email.value,
+      password.value
+    )
 
-  const newUser = computed(() => {
-    return {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      repairShop: false,
-      userId: userId
-    }
-  })
+    const currentUser = userCredential.user
+    console.log('currentUser:', currentUser)
 
-  const response = await registerUser(newUser.value)
+    const newUser = computed(() => {
+      return {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        repairShop: false,
+        userId: currentUser.uid
+      }
+    })
 
-  if (response === 201) {
-    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-      .then(async () => {
-        isLoading.value = false
-        isConfirmationSuccess.value = true
+    console.log(newUser.value)
 
-        setTimeout(() => {
-          isConfirmationSuccess.value = false
-        }, 4000)
-      })
-      .catch(() => {
-        isLoading.value = false
-      })
-  } else {
+    const response = await registerUser(newUser.value)
+    console.log(response)
+
     isLoading.value = false
+    isConfirmationSuccess.value = true
+
+    setTimeout(() => {
+      isConfirmationSuccess.value = false
+    }, 4000)
+  } catch (error) {
+    console.error('Firebase registration error:', error)
     showErrorDialog.value = true
+    isLoading.value = false
   }
 }
 
@@ -248,7 +253,7 @@ onMounted(() => {
         <button type="button" to="/" class="btn-back z-10" @click="closeRegisterDialog">
           <fontAwesome :icon="['fas', 'chevron-left']" />
         </button>
-        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera din verkstad</h2>
+        <h2 class="text-xl sm:text-2xl absolute w-full text-center">Registrera dig</h2>
       </div>
       <form @submit.prevent="handleRegistration" class="flex gap-16">
         <div class="w-full flex flex-col gap-7">
@@ -260,7 +265,7 @@ onMounted(() => {
               :inputType="'text'"
               :inputName="'isName'"
               :isDataCorrect="!showNameError"
-              :placeholder="'Namn på din verkstad'"
+              :placeholder="'För- och efternman'"
               :onBlur="validateName"
             />
 
@@ -404,7 +409,7 @@ onMounted(() => {
         </p>
       </div>
     </div>
-    <RegisterErrorDialog
+    <ErrorDialog
       v-if="showErrorDialog"
       :showErrorDialog="showErrorDialog"
       :title="'Whoops! Tyvärr kunde inte ditt konto registreras just nu.'"

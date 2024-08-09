@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   checkInputData: {
@@ -9,21 +9,27 @@ const props = defineProps({
   inputData: {
     type: Function,
     required: true
+  },
+  modelValue: {
+    type: String,
+    default: ''
   }
 })
 
-const registrationNumber = ref('')
-
+const registrationNumber = ref(props.modelValue || '')
 const isRegistrationNumberValid = ref(true)
+const showWrongRegistrationNumber = ref(false)
 
 function controlRegistrationNumber(value: string) {
-  const registrationRegex = /^[a-zA-Z0-9\s]*$/
-  isRegistrationNumberValid.value = registrationRegex.test(value)
+  const registrationRegex = /^[A-Z]{3}\s?([0-9]{3}|[0-9]{2}[A-Z])$/
+  showWrongRegistrationNumber.value = !registrationRegex.test(value)
   console.log(isRegistrationNumberValid.value)
 }
 
 function handleChange() {
-  controlRegistrationNumber(registrationNumber.value)
+  const registrationRegex = /^[A-Z]{3}\s?([0-9]{3}|[0-9]{2}[A-Z])$/
+  isRegistrationNumberValid.value = registrationRegex.test(registrationNumber.value)
+  console.log(isRegistrationNumberValid.value)
 
   props.checkInputData('isRegistrationNumber')
   props.inputData(isRegistrationNumberValid.value ? registrationNumber.value : '')
@@ -40,10 +46,17 @@ function formatRegistrationNumber() {
 
   handleChange()
 }
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    registrationNumber.value = newValue
+  }
+)
 </script>
 
 <template>
-  <label for="registrationNumber" class="font-text-light flex flex-col gap-1"
+  <label for="registrationNumber" class="font-text-light flex flex-col gap-1 w-full"
     ><span>Registreringsnummer</span>
     <input
       type="text"
@@ -51,12 +64,13 @@ function formatRegistrationNumber() {
       placeholder="ABC 123"
       v-model="registrationNumber"
       @input="formatRegistrationNumber"
-      class="w-full text-input px-2 text-sm"
+      :class="['w-full text-input px-2 text-sm', showWrongRegistrationNumber && 'input-warning']"
       maxlength="7"
+      @blur="(e) => controlRegistrationNumber((e.target as HTMLInputElement).value)"
     />
     <p
-      class="text-warning-orange font-text-light display-flex gap-8 align-items-center margin-top-n11 margin-bm-16"
-      v-if="!isRegistrationNumberValid"
+      class="text-warning-orange font-text-light flex gap-2 items-center"
+      v-if="showWrongRegistrationNumber"
     >
       <fontAwesome :icon="['fas', 'triangle-exclamation']" class="text-warning-orange" />Ange ett
       giltigt registreringsnummer!

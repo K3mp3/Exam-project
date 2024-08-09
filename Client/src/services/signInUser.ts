@@ -12,7 +12,6 @@ let userId = ''
 
 export async function signInUser(user: IUserSignIn) {
   try {
-    console.log('hejsan hoppsan karin')
     const response = await axios.post<IUserSignIn>(`${BASE_URL}/users/signin`, user)
 
     console.log(response)

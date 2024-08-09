@@ -3,7 +3,7 @@ import { registerRepairShop } from '@/services/registerUser'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import ErrorDialog from '../dialogs/ErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import ConsumerNav from '../nav/ConsumerNav.vue'
 import CustomSelect from '../utils/components/CustomSelect.vue'
@@ -12,6 +12,8 @@ import InfoInput from '../utils/components/InfoInput.vue'
 const filledEmail = localStorage.getItem('userEmail')
 
 const name = ref('')
+const openTime = ref('')
+const closeTime = ref('')
 const location = ref('')
 const phoneNumber = ref()
 const email = ref('')
@@ -40,6 +42,8 @@ const showEmailAlreadyExist = ref(false)
 
 const inputsArray: { key: string; value: boolean }[] = [
   { key: 'isName', value: false },
+  { key: 'isOpen', value: false },
+  { key: 'isClose', value: false },
   { key: 'isLocation', value: false },
   { key: 'isPhoneNumber', value: false },
   { key: 'isEmail', value: !!filledEmail },
@@ -63,6 +67,12 @@ function checkInputsData(confirmKey: string) {
     switch (confirmKey) {
       case 'isName':
         refVariable = name
+        break
+      case 'isOpen':
+        refVariable = openTime
+        break
+      case 'isClose':
+        refVariable = closeTime
         break
       case 'isLocation':
         refVariable = location
@@ -204,6 +214,8 @@ async function handleRegistration() {
   const newUser = computed(() => {
     return {
       name: name.value,
+      openTime: openTime.value,
+      closeTime: closeTime.value,
       location: location.value,
       phoneNumber: phoneNumber.value,
       email: email.value,
@@ -216,11 +228,17 @@ async function handleRegistration() {
 
   const response = await registerRepairShop(newUser.value)
 
-  if (response === 201) {
+  console.log('response:', response)
+
+  if (response.status === 201) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then(async () => {
         isLoading.value = false
         isConfirmationSuccess.value = true
+
+        nextTick(() => {
+          window.location = response.data.url as Location | (string & Location)
+        })
 
         setTimeout(() => {
           isConfirmationSuccess.value = false
@@ -253,6 +271,31 @@ async function handleRegistration() {
         <h2 class="text-xl sm:text-2xl">Registrera din verkstad</h2>
       </div>
       <form @submit.prevent="handleRegistration" class="flex flex-col gap-6">
+        <label for="hours" class="font-text-light flex flex-col gap-6"
+          ><div class="flex flex-col gap-1">
+            <span>Öppnar</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (openTime = e)"
+              :inputType="'time'"
+              :inputName="'isOpen'"
+              :isDataCorrect="isNameValid"
+              :placeholder="'07:00'"
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <span>Stänger</span>
+            <InfoInput
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (closeTime = e)"
+              :inputType="'time'"
+              :inputName="'isClose'"
+              :isDataCorrect="isNameValid"
+              :placeholder="'17:00'"
+            />
+          </div>
+        </label>
+
         <label for="name" class="font-text-light flex flex-col gap-1"
           ><span>Namn på din verkstad</span>
           <InfoInput
@@ -426,7 +469,7 @@ async function handleRegistration() {
         </p>
       </div>
     </div>
-    <RegisterErrorDialog
+    <ErrorDialog
       v-if="showErrorDialog"
       :showErrorDialog="showErrorDialog"
       :title="'Whoops! Tyvärr kunde inte ditt konto registreras just nu.'"

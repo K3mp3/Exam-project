@@ -34,26 +34,28 @@ const props = defineProps({
   },
   onBlur: {
     type: Function
+  },
+  modelValue: {
+    type: String,
+    default: ''
   }
 })
 
-const inputValue = ref(props.predefinedValue || '')
+const emit = defineEmits(['update:modelValue'])
+
+const inputValue = ref(props.modelValue || '')
 
 watch(
-  () => props.predefinedValue,
+  () => props.modelValue,
   (newValue) => {
-    if (newValue !== undefined) {
-      inputValue.value = newValue
-    }
+    inputValue.value = newValue
   }
 )
-
-const emit = defineEmits(['update:predefinedValue'])
 
 function handleChange() {
   props.checkInputData(props.inputName)
   props.inputData(inputValue.value)
-  emit('update:predefinedValue', inputValue.value)
+  emit('update:modelValue', inputValue.value)
 }
 
 function handleBlur() {

@@ -3,7 +3,7 @@ import { registerUser } from '@/services/registerUser'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { computed, nextTick, onMounted, ref, type Ref } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
-import RegisterErrorDialog from '../dialogs/RegisterErrorDialog.vue'
+import ErrorDialog from '../dialogs/ErrorDialog.vue'
 import SentResponseDialog from '../dialogs/SentResponseDialog.vue'
 import ConsumerNav from '../nav/ConsumerNav.vue'
 import InfoInput from '../utils/components/InfoInput.vue'
@@ -250,22 +250,22 @@ onMounted(() => {
       </div>
       <form @submit.prevent="handleRegistration" class="flex flex-col gap-6">
         <label for="name" class="font-text-light flex flex-col gap-1"
-            ><span>För- och efternman</span>
-            <InfoInput
-              :checkInputData="(e: string) => checkInputsData(e)"
-              :inputData="(e: string) => (name = e)"
-              :inputType="'text'"
-              :inputName="'isName'"
-              :isDataCorrect="!showNameError"
-              :placeholder="'Namn på din verkstad'"
-              :onBlur="validateName"
-            />
+          ><span>För- och efternman</span>
+          <InfoInput
+            :checkInputData="(e: string) => checkInputsData(e)"
+            :inputData="(e: string) => (name = e)"
+            :inputType="'text'"
+            :inputName="'isName'"
+            :isDataCorrect="!showNameError"
+            :placeholder="'Namn på din verkstad'"
+            :onBlur="validateName"
+          />
 
-            <p v-if="showNameError" class="text-warning-orange">
-              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
-              kontrollera så att både för- och efternamn finns med!
-            </p>
-          </label>
+          <p v-if="showNameError" class="text-warning-orange">
+            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen kontrollera
+            så att både för- och efternamn finns med!
+          </p>
+        </label>
 
         <label for="email" class="font-text-light flex flex-col gap-1"
           ><span>Email adress</span>
@@ -279,7 +279,7 @@ onMounted(() => {
             :placeholder="'namn@dinmail.se'"
             :predefinedValue="filledEmail ? filledEmail : ''"
             :onBlur="validateEmail"
-            @update:predefinedValue="(newValue) => filledEmail = newValue"
+            @update:predefinedValue="(newValue) => (filledEmail = newValue)"
           />
           <p v-if="showEmailError" class="text-warning-orange">
             <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
@@ -400,7 +400,7 @@ onMounted(() => {
         </p>
       </div>
     </div>
-    <RegisterErrorDialog
+    <ErrorDialog
       v-if="showErrorDialog"
       :showErrorDialog="showErrorDialog"
       :title="'Whoops! Tyvärr kunde inte ditt konto registreras just nu.'"

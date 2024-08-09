@@ -2,6 +2,7 @@ import './assets/styling/main.scss'
 import './index.css'
 
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -12,6 +13,9 @@ import App from './App.vue'
 import router from './router'
 
 import { initializeApp } from 'firebase/app'
+
+import Aura from '@primevue/themes/aura'
+import PrimeVue from 'primevue/config'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -30,12 +34,27 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig)
 
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
 const app = createApp(App)
 
 library.add(fas)
 
 app.component('fontAwesome', FontAwesomeIcon)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
+app.use(PrimeVue, {
+  // Default theme configuration
+  theme: {
+    preset: Aura,
+    options: {
+      cssLayer: {
+        name: 'primevue',
+        order: 'primevue, tailwind-base, tailwind-utilities'
+      }
+    }
+  }
+})
 
 app.mount('#app')
