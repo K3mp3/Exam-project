@@ -35,8 +35,15 @@ function updateScreenSize() {
 async function getAnswers() {
   isData.value = false
   const allResponses = await getRepairShopOffer()
-  console.log(allResponses)
+  allRepairShopAnswers.value = [...allResponses]
+  console.log(allRepairShopAnswers.value)
   console.log(userEmail.value)
+
+  allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
+    (response: IUserContact) => response.customerEmail === userEmail.value
+  )
+
+  console.log('allResponses:', allRepairShopAnswers.value)
 
   // allRepairShopAnswers.value = allResponses.map((response: []) => ({
   //   ...response,
