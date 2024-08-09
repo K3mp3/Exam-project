@@ -11,7 +11,7 @@
     <div class="text-center flex flex-col gap-1">
       <h2 class="text-xl sm:text-2xl">Kontakta oss</h2>
       <RouterLink to="contact" class="underline decoration-solid">Kontakta oss</RouterLink>
-      <p>kontakt@vibe.se</p>
+      <p>kontakt@fixerfinder.se</p>
       <p>060 - 146 37 12</p>
     </div>
   </div>
