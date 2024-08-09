@@ -193,36 +193,38 @@ function checkPasswordMatch() {
 async function handleRegistration() {
   isLoading.value = true
 
-  const currentUser = getAuth().currentUser
-  const userId = currentUser ? currentUser.uid : ''
-
-  const newUser = computed(() => {
-    return {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      repairShop: false,
-      userId: userId
-    }
-  })
-
   try {
     console.log(email.value, password.value)
-    await createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-      .then(async () => {
-        isLoading.value = false
-        isConfirmationSuccess.value = true
+    const userCredential = await createUserWithEmailAndPassword(
+      getAuth(),
+      email.value,
+      password.value
+    )
 
-        setTimeout(() => {
-          isConfirmationSuccess.value = false
-        }, 4000)
-      })
-      .catch(() => {
-        isLoading.value = false
-      })
+    const currentUser = userCredential.user
+    console.log('currentUser:', currentUser)
+
+    const newUser = computed(() => {
+      return {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        repairShop: false,
+        userId: currentUser.uid
+      }
+    })
+
+    console.log(newUser.value)
 
     const response = await registerUser(newUser.value)
     console.log(response)
+
+    isLoading.value = false
+    isConfirmationSuccess.value = true
+
+    setTimeout(() => {
+      isConfirmationSuccess.value = false
+    }, 4000)
   } catch (error) {
     console.error('Firebase registration error:', error)
     showErrorDialog.value = true

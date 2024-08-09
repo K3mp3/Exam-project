@@ -202,7 +202,7 @@ onMounted(async () => {
 
 <template>
   <div class="md:flex md:gap-8">
-    <div class="fixed">
+    <div class="z-10">
       <SideNav
         v-if="width && width > 767"
         :signOutFunction="changeUserSignInStatus"
@@ -211,69 +211,72 @@ onMounted(async () => {
     </div>
 
     <div
-      class="p-4 md:p-8 text-main flex flex-col gap-4 md:gap-8 xl:gap-16 max-w-[600px] w-full margin-auto"
+      class="p-4 md:p-8 text-main flex flex-col gap-4 md:gap-8 xl:gap-16 w-full h-screen overflow-y-auto items-center xl:absolute"
     >
-      <h2 class="text-xl sm:text-2xl w-full md:text-center">Boka in kund</h2>
+      <div class="max-w-[350px] xl:max-w-[500px] w-full">
+        <div class="flex flex-col gap-4">
+          <h2 class="text-xl sm:text-2xl w-full md:text-center">Boka in kund</h2>
 
-      <div class="flex flex-col gap-4">
-        <label class="flex flex-col gap-1 w-full">
-          <p>Datum och tid</p>
-          <DatePicker
-            v-model="date"
-            dateFormat="yy/mm/dd"
-            showButtonBar
-            showTime
-            hourFormat="24"
-            fluid
-          />
-        </label>
+          <label class="flex flex-col gap-1 w-full">
+            <p>Datum och tid</p>
+            <DatePicker
+              v-model="date"
+              dateFormat="yy/mm/dd"
+              showButtonBar
+              showTime
+              hourFormat="24"
+              :numberOfMonths="width && width < 768 ? 1 : 2"
+              fluid
+            />
+          </label>
 
-        <RegistrationNumberInput
-          :checkInputData="(e: string) => checkInputsData(e)"
-          :inputData="(e: string) => (registrationNumber = e)"
-        ></RegistrationNumberInput>
-
-        <label for="email" class="font-text-light flex flex-col gap-1"
-          ><span>Kundens email adress</span>
-          <InfoInput
-            v-model="customerEmail"
+          <RegistrationNumberInput
             :checkInputData="(e: string) => checkInputsData(e)"
-            :inputData="(e: string) => (customerEmail = e)"
-            :inputType="'email'"
-            :inputName="'isEmail'"
-            :isDataCorrect="!showEmailError"
-            :placeholder="'namn@dinmail.se'"
-            :onBlur="validateEmail"
+            :inputData="(e: string) => (registrationNumber = e)"
+          ></RegistrationNumberInput>
+
+          <label for="email" class="font-text-light flex flex-col gap-1"
+            ><span>Kundens email adress</span>
+            <InfoInput
+              v-model="customerEmail"
+              :checkInputData="(e: string) => checkInputsData(e)"
+              :inputData="(e: string) => (customerEmail = e)"
+              :inputType="'email'"
+              :inputName="'isEmail'"
+              :isDataCorrect="!showEmailError"
+              :placeholder="'namn@dinmail.se'"
+              :onBlur="validateEmail"
+            />
+            <p v-if="showEmailError" class="text-warning-orange">
+              <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
+                >Vänligen skriv en giltig email adress!</span
+              >
+            </p>
+          </label>
+
+          <button
+            type="submit"
+            :disabled="isBtnDisabled"
+            :class="{
+              'main-btn-disabled mt-5 mb-9': isBtnDisabled,
+              'main-btn mt-5 mb-9': !isBtnDisabled
+            }"
+            @click="saveBooking"
+          >
+            Spara
+          </button>
+        </div>
+
+        <div class="flex flex-col gap-4 md:gap-6">
+          <h2>Bokningar</h2>
+          <BookedJobs
+            v-for="job in bookedJobs"
+            :key="job.time"
+            :booking="job"
+            :auth="auth"
+            @fetchJobs="retrieveJobs"
           />
-          <p v-if="showEmailError" class="text-warning-orange">
-            <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
-              >Vänligen skriv en giltig email adress!</span
-            >
-          </p>
-        </label>
-      </div>
-
-      <button
-        type="submit"
-        :disabled="isBtnDisabled"
-        :class="{
-          'main-btn-disabled mt-5 mb-9': isBtnDisabled,
-          'main-btn mt-5 mb-9': !isBtnDisabled
-        }"
-        @click="saveBooking"
-      >
-        Spara
-      </button>
-
-      <div class="flex flex-col gap-4 md:gap-6">
-        <h2>Bokningar</h2>
-        <BookedJobs
-          v-for="job in bookedJobs"
-          :key="job.time"
-          :booking="job"
-          :auth="auth"
-          @fetchJobs="retrieveJobs"
-        />
+        </div>
       </div>
     </div>
   </div>

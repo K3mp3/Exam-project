@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   checkInputData: {
@@ -9,10 +9,14 @@ const props = defineProps({
   inputData: {
     type: Function,
     required: true
+  },
+  modelValue: {
+    type: String,
+    default: ''
   }
 })
 
-const registrationNumber = ref('')
+const registrationNumber = ref(props.modelValue || '')
 const isRegistrationNumberValid = ref(true)
 const showWrongRegistrationNumber = ref(false)
 
@@ -42,6 +46,13 @@ function formatRegistrationNumber() {
 
   handleChange()
 }
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    registrationNumber.value = newValue
+  }
+)
 </script>
 
 <template>
