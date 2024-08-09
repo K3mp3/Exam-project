@@ -278,7 +278,7 @@ async function handleRegistration() {
                 :inputType="'time'"
                 :inputName="'isOpen'"
                 :isDataCorrect="isNameValid"
-                :placeholder="'07:00'"
+                placeholder="07:00"
               />
             </div>
             <div class="flex flex-col gap-1">
@@ -289,7 +289,7 @@ async function handleRegistration() {
                 :inputType="'time'"
                 :inputName="'isClose'"
                 :isDataCorrect="isNameValid"
-                :placeholder="'17:00'"
+                placeholder="17:00"
               />
             </div>
           </label>
@@ -302,7 +302,7 @@ async function handleRegistration() {
               :inputType="'text'"
               :inputName="'isName'"
               :isDataCorrect="isNameValid"
-              :placeholder="'Namn på din verkstad'"
+              placeholder="Namn på din verkstad"
             />
           </label>
 
@@ -325,7 +325,7 @@ async function handleRegistration() {
               :inputType="'tel'"
               :inputName="'isPhoneNumber'"
               :isDataCorrect="!showPhoneError"
-              :placeholder="'Telefonnummer'"
+              placeholder="Telefonnummer"
               :onBlur="validateSwedishPhoneNumber"
             />
 
@@ -346,7 +346,7 @@ async function handleRegistration() {
               :inputName="'isEmail'"
               :isDataCorrect="!showEmailError && !showEmailMatch"
               :dataError="showEmailAlreadyExist"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
               :predefinedValue="filledEmail ? filledEmail : ''"
               :onBlur="validateEmail"
             />
@@ -378,7 +378,7 @@ async function handleRegistration() {
               :inputName="'isConfirmEmail'"
               :isDataCorrect="!showConfirmEmailError && !showEmailMatch"
               :dataError="showEmailAlreadyExist"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
               :onBlur="validateConfirmEmail"
             />
             <p v-if="showConfirmEmailError" class="text-warning-orange">
@@ -408,7 +408,7 @@ async function handleRegistration() {
               :inputType="'password'"
               :inputName="'isPassword'"
               :isDataCorrect="!isPasswordWeak && !showPasswordMatch"
-              :placeholder="'lösenord'"
+              placeholder="lösenord"
               :onBlur="showIfPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isPasswordWeak">
@@ -431,7 +431,7 @@ async function handleRegistration() {
               :inputType="'password'"
               :inputName="'isConfirmPassword'"
               :isDataCorrect="!isConfirmPasswordWeak && !showPasswordMatch"
-              :placeholder="'lösenord'"
+              placeholder="lösenord"
               :onBlur="showIfPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isConfirmPasswordWeak">

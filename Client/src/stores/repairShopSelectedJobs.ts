@@ -12,7 +12,11 @@ export const repairShopSelectedJobs = defineStore('selectedJobs', () => {
   }
 
   function saveSelectedJob(job: IRepairShopAnswer, emptyArray: boolean) {
-    selectedWork.value.push(job)
+    const jobExists = selectedWork.value.some((existingJob) => existingJob.id === job.id)
+
+    console.log(job.id)
+
+    if (!jobExists) selectedWork.value.push(job)
 
     if (emptyArray) {
       selectedWork.value = []

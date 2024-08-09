@@ -219,7 +219,7 @@ onMounted(() => {
               :inputType="'text'"
               :inputName="'isName'"
               :isDataCorrect="isNameCorrect"
-              :placeholder="'För- och efternamn'"
+              placeholder="För- och efternamn"
             />
             <p v-if="!isNameCorrect" class="text-warning-orange">
               <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" />Vänligen
@@ -235,7 +235,7 @@ onMounted(() => {
               :inputType="'email'"
               :inputName="'isEmail'"
               :isDataCorrect="isEmailValid"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
               :predefinedValue="filledEmail ? filledEmail : ''"
               :onBlur="checkEmailMatch"
             />
@@ -253,7 +253,7 @@ onMounted(() => {
               :inputType="'email'"
               :inputName="'isConfirmEmail'"
               :isDataCorrect="isConfirmEmailValid"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
               :onBlur="checkEmailMatch"
             />
             <p v-if="!isConfirmEmailValid || !isEmailMatch" class="text-warning-orange">
@@ -272,7 +272,7 @@ onMounted(() => {
               :inputType="'password'"
               :inputName="'isPassword'"
               :isDataCorrect="!isPasswordWeak"
-              :placeholder="'lösenord'"
+              placeholder="lösenord"
               :onBlur="checkPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isPasswordWeak">
@@ -289,7 +289,7 @@ onMounted(() => {
               :inputType="'password'"
               :inputName="'isConfirmPassword'"
               :isDataCorrect="!isConfirmPasswordWeak"
-              :placeholder="'lösenord'"
+              placeholder="lösenord"
               :onBlur="checkPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isConfirmPasswordWeak">

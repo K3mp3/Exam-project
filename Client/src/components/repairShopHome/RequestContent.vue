@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { repairShopSelectedJobs } from '@/stores/repairShopSelectedJobs'
 import { requestDataStore } from '@/stores/requestDataStore'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import InfoInput from '../utils/components/InfoInput.vue'
 
 const props = defineProps({
@@ -64,6 +64,12 @@ function handleAnswer() {
 watch([priceOption, setButtonValue], () => {
   checkInputsData()
 })
+
+onMounted(() => {
+  priceOption.value = ''
+  setButtonValue.value = ''
+  checkInputsData()
+})
 </script>
 
 <template>
@@ -89,7 +95,8 @@ watch([priceOption, setButtonValue], () => {
       :inputType="'number'"
       :inputName="'isPrice'"
       :isDataCorrect="true"
-      :placeholder="'Prisförslag'"
+      placeholder="Prisförslag"
+      min="0"
     />
 
     <span class="flex gap-2 mt-2"

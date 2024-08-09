@@ -119,7 +119,7 @@ const handleSignIn = async () => {
               :inputName="'isEmail'"
               :isDataCorrect="isEmailValid"
               :dataError="isEmailWrong"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
             />
             <p
               v-if="!isEmailValid || isEmailWrong"
@@ -140,7 +140,7 @@ const handleSignIn = async () => {
               :inputName="'isPassword'"
               :isDataCorrect="isPasswordValid"
               :dataError="isEmailWrong"
-              :placeholder="'lösenord'"
+              placeholder="lösenord"
             />
 
             <p

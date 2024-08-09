@@ -1,4 +1,5 @@
 export interface IRepairShopAnswer {
+  id: string
   repairShopName: string
   repairShopEmail: string
   repairShopPhoneNumber: string

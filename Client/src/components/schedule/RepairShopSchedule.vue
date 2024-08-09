@@ -244,7 +244,7 @@ onMounted(async () => {
               :inputType="'email'"
               :inputName="'isEmail'"
               :isDataCorrect="!showEmailError"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
               :onBlur="validateEmail"
             />
             <p v-if="showEmailError" class="text-warning-orange">

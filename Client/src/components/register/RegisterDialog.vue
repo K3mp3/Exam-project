@@ -284,7 +284,7 @@ onMounted(() => {
               :inputName="'isEmail'"
               :isDataCorrect="!showEmailError && !showEmailMatch"
               :dataError="showEmailAlreadyExist"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
               :onBlur="validateEmail"
             />
             <p v-if="showEmailError" class="text-warning-orange">
@@ -315,7 +315,7 @@ onMounted(() => {
               :inputName="'isConfirmEmail'"
               :isDataCorrect="!showConfirmEmailError && !showEmailMatch"
               :dataError="showEmailAlreadyExist"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
               :onBlur="validateConfirmEmail"
             />
             <p v-if="showConfirmEmailError" class="text-warning-orange">
@@ -347,7 +347,7 @@ onMounted(() => {
               :inputType="'password'"
               :inputName="'isPassword'"
               :isDataCorrect="!isPasswordWeak && !showPasswordMatch"
-              :placeholder="'lösenord'"
+              placeholder="lösenord"
               :onBlur="showIfPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isPasswordWeak">
@@ -370,7 +370,7 @@ onMounted(() => {
               :inputType="'password'"
               :inputName="'isConfirmPassword'"
               :isDataCorrect="!isConfirmPasswordWeak && !showPasswordMatch"
-              :placeholder="'lösenord'"
+              placeholder="lösenord"
               :onBlur="showIfPasswordMatch"
             />
             <p class="text-warning-orange" v-if="isConfirmPasswordWeak">

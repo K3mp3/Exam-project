@@ -105,7 +105,7 @@ onMounted(() => {
               :inputType="'email'"
               :inputName="'isEmail'"
               :isDataCorrect="isEmailValid"
-              :placeholder="'namn@dinmail.se'"
+              placeholder="namn@dinmail.se"
             />
             <p v-if="!isEmailValid" class="text-warning-orange">
               <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span

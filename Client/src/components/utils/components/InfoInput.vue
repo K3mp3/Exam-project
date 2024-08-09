@@ -25,10 +25,6 @@ const props = defineProps({
   dataError: {
     type: Boolean
   },
-  placeholder: {
-    type: String,
-    required: true
-  },
   predefinedValue: {
     type: String
   },
@@ -71,7 +67,7 @@ console.log(props.predefinedValue)
   <input
     :type="props.inputType"
     :name="props.inputName"
-    :placeholder="props.placeholder"
+    placeholder=""
     v-model="inputValue"
     @input="handleChange"
     @blur="handleBlur"

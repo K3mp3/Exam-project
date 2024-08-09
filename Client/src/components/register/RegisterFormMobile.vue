@@ -257,7 +257,7 @@ onMounted(() => {
             :inputType="'text'"
             :inputName="'isName'"
             :isDataCorrect="!showNameError"
-            :placeholder="'Namn på din verkstad'"
+            placeholder="Namn på din verkstad"
             :onBlur="validateName"
           />
 
@@ -276,10 +276,10 @@ onMounted(() => {
             :inputName="'isEmail'"
             :isDataCorrect="!showEmailError && !showEmailMatch"
             :dataError="showEmailAlreadyExist"
-            :placeholder="'namn@dinmail.se'"
+            placeholder="namn@dinmail.se"
             :predefinedValue="filledEmail ? filledEmail : ''"
             :onBlur="validateEmail"
-            @update:predefinedValue="(newValue) => (filledEmail = newValue)"
+            @update:predefinedValue="(newValue: string) => (filledEmail = newValue)"
           />
           <p v-if="showEmailError" class="text-warning-orange">
             <fontAwesome :icon="['fas', 'triangle-exclamation']" class="mr-1" /><span
@@ -309,7 +309,7 @@ onMounted(() => {
             :inputName="'isConfirmEmail'"
             :isDataCorrect="!showConfirmEmailError && !showEmailMatch"
             :dataError="showEmailAlreadyExist"
-            :placeholder="'namn@dinmail.se'"
+            placeholder="namn@dinmail.se"
             :onBlur="validateConfirmEmail"
           />
           <p v-if="showConfirmEmailError" class="text-warning-orange">
@@ -339,7 +339,7 @@ onMounted(() => {
             :inputType="'password'"
             :inputName="'isPassword'"
             :isDataCorrect="!isPasswordWeak && !showPasswordMatch"
-            :placeholder="'lösenord'"
+            placeholder="lösenord"
             :onBlur="showIfPasswordMatch"
           />
           <p class="text-warning-orange" v-if="isPasswordWeak">
@@ -362,7 +362,7 @@ onMounted(() => {
             :inputType="'password'"
             :inputName="'isConfirmPassword'"
             :isDataCorrect="!isConfirmPasswordWeak && !showPasswordMatch"
-            :placeholder="'lösenord'"
+            placeholder="lösenord"
             :onBlur="showIfPasswordMatch"
           />
           <p class="text-warning-orange" v-if="isConfirmPasswordWeak">
