@@ -73,7 +73,7 @@ async function handleAnswerCustomerBack(answerData: Object) {
 onMounted(() => {
   getMessages()
   getAnsweredMessages()
-  console.log(unansweredMessages.value)
+  console.log('answeredMessages.value:', answeredMessages.value)
 })
 </script>
 

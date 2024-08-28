@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { IRepairShopAnswer } from '@/models/IRepairShopAnswer'
-import type { IRepairShopId } from '@/models/IRepairShopId'
 import type { IUserContact } from '@/models/IUserContact'
 import router from '@/router'
 import { answerFromRepairShop } from '@/services/RepariShopAnswer'
-import { getAnswerRepairShops, getContactRepairShops } from '@/services/userContact'
+import { getContactRepairShops } from '@/services/userContact'
 import { repairShopSelectedJobs } from '@/stores/repairShopSelectedJobs'
 import { computed, onMounted, ref, watch } from 'vue'
 import LoadingSpinner from '../assets/LoadingSpinner.vue'
@@ -46,28 +45,27 @@ const totalPrice = computed(() => {
 async function getMessages() {
   if (userId.value) {
     console.log('verkstad')
-    const response = await getContactRepairShops(repairShopId as IRepairShopId)
+    const response = await getContactRepairShops()
     console.log(response)
     const responseArray: IUserContact[] = Array.isArray(response) ? response : [response]
 
     console.log(responseArray)
 
-    unansweredMessages.value = responseArray
+    unansweredMessages.value = responseArray.filter((message: IUserContact) => {
+      const flattenedMessages = message.customerMessage.flat()
+
+      const hasUnansweredMessage = flattenedMessages.some((customerMessage) => {
+        return customerMessage.answeredByRepairShop === false
+      })
+
+      return hasUnansweredMessage
+    })
     console.log('unansweredMessages:', unansweredMessages.value) // Add this line for debugging
   }
 }
 
 function removeSelectedJob(jobType: string, price: number) {
   selectedWork.filterSelectedWork(jobType, price)
-}
-
-async function getAnsweredMessages() {
-  const response = await getAnswerRepairShops()
-  answeredMessages.value = response
-
-  answeredMessages.value = answeredMessages.value.filter(
-    (answer) => answer.answeredByRepairShop === false
-  )
 }
 
 function showConfirmationBox(response: number) {
@@ -97,7 +95,6 @@ async function handleAnswer() {
 
 onMounted(() => {
   getMessages()
-  getAnsweredMessages()
 })
 </script>
 

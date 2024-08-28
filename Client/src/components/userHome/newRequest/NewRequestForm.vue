@@ -169,7 +169,7 @@ async function handleMessage() {
 }
 
 function checkWorkTypeArray(values: string[], textInput: string, type: string, key: string[]) {
-  console.log('key:', key)
+  console.log('values:', values)
   checkInputsData('isTypeOfWork')
   typeOfWork.value = type
 
@@ -185,8 +185,10 @@ function checkWorkTypeArray(values: string[], textInput: string, type: string, k
 
       const newValues = values.filter((value) => !selectedWork.value[index][0].includes(value))
       selectedWork.value[index][0].push(...newValues)
+      console.log('selectedWork.value:', selectedWork.value)
     } else {
       selectedWork.value.push([values, textInput, type])
+      console.log('selectedWork.value:', selectedWork.value)
     }
 
     console.log(selectedWork.value)
@@ -203,7 +205,7 @@ onMounted(() => {
     <div class="w-full max-w-[500px] m-auto">
       <NewRequestTopNav :userId="userId"></NewRequestTopNav>
       <div class="flex flex-col gap-4 mb-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        <div class="grid grid-cols-1 gap-4">
           <SelectedJobs
             v-for="(work, index) in selectedWork"
             :key="index"

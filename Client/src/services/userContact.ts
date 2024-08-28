@@ -33,7 +33,7 @@ export async function contactRepairShops(messageData: IUserContact) {
   }
 }
 
-export async function getContactRepairShops(repairShopId: IRepairShopId) {
+export async function getContactRepairShops(repairShopId?: IRepairShopId) {
   try {
     const response = await axios.post(
       `${BASE_URL}/contactRepairShops/getContactRepairShops`,

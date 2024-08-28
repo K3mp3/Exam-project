@@ -39,8 +39,6 @@ const Detailing: { key: string; value: string }[] = [
 ]
 
 const options = computed(() => {
-  // console.log('Computing options. selectedTypes.value:', selectedTypes.value)
-
   switch (selectedTypes.value) {
     case 'AC':
       return Ac
@@ -104,8 +102,7 @@ function resetComponent() {
 
 watch(
   () => props.selectedWorkType,
-  (newVal) => {
-    // console.log('selectedWorkType changed:', newVal)
+  () => {
     resetComponent()
   },
   { immediate: true }
@@ -136,8 +133,8 @@ watch(
       type="submit"
       :disabled="isBtnDisabled"
       :class="{
-        'main-btn-disabled text-sm': isBtnDisabled,
-        'main-btn text-sm': !isBtnDisabled
+        'main-btn-disabled text-sm mt-6': isBtnDisabled,
+        'main-btn text-sm mt-6': !isBtnDisabled
       }"
       @click="handleAddOptions"
     >
