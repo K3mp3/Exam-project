@@ -21,9 +21,9 @@ export async function answerFromRepairShop(messageData: IRepairShopAnswer[]) {
   }
 }
 
-export async function getRepairShopOffer() {
+export async function getRepairShopOffer(user: Object) {
   try {
-    const response = await axios.get(`${BASE_URL}/answerFromRepairShops/answerFromRepairShop`)
+    const response = await axios.post(`${BASE_URL}/answerFromRepairShops/getRepairShopAnswer`, user)
     return response.data
   } catch (error) {
     return error

@@ -34,27 +34,27 @@ function updateScreenSize() {
 
 async function getAnswers() {
   isData.value = false
-  const allResponses = await getRepairShopOffer()
-  allRepairShopAnswers.value = [...allResponses]
+  const user = computed(() => {
+    return {
+      email: userEmail.value
+    }
+  })
+  const allResponses = await getRepairShopOffer(user.value)
+  console.log('allResponses:', allResponses)
   console.log(allRepairShopAnswers.value)
   console.log(userEmail.value)
 
-  allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
-    (response: IUserContact) => response.customerEmail === userEmail.value
-  )
+  allRepairShopAnswers.value = allResponses.filter((message: IUserContact) => {
+    const flattenedMessages = message.customerMessage.flat()
+
+    const hasUnansweredMessage = flattenedMessages.some((customerMessage) => {
+      return customerMessage.answeredByRepairShop === true
+    })
+
+    return hasUnansweredMessage
+  })
 
   console.log('allResponses:', allRepairShopAnswers.value)
-
-  // allRepairShopAnswers.value = allResponses.map((response: []) => ({
-  //   ...response,
-  //   isLineActive: false
-  // }))
-
-  // allRepairShopAnswers.value = allRepairShopAnswers.value.filter(
-  //   (answer) => answer.customerEmail === customerEmail && answer.answeredByRepairShop === true
-  // )
-
-  console.log(allRepairShopAnswers.value)
 }
 
 async function handleAnswerMobile(answerDataMobileForm: IUserContact) {
@@ -70,8 +70,7 @@ onMounted(() => {
 
 <template>
   <div class="request-form-main">
-    <form @submit.prevent="" class="user-sent-answer-form-mobile" v-if="mobile">
-      <h2>Hello</h2>
+    <form @submit.prevent="" class="bg-red-500 flex flex-col gap-4" v-if="mobile">
       <UserHomeAnswerForm
         v-for="index in allRepairShopAnswers"
         :key="index._id"

@@ -27,8 +27,6 @@ const isConfirmDialog = ref(false)
 const inputsArray: { key: string; value: boolean }[] = [{ key: 'isMessageAnswer', value: false }]
 const messageArray: { message: string; name: string; date: string }[] = []
 
-const userName = localStorage.getItem('userName')
-
 const answerData = computed(() => {
   return {
     customerAnswer: messageAnswer.value,
@@ -81,6 +79,8 @@ onMounted(() => {
   )
   messageArray.push(...flattenedMessages)
   console.log(messageArray.length)
+
+  console.log('props.index:', props.index.customerMessage)
 })
 
 async function removeRequest() {
@@ -91,77 +91,9 @@ async function removeRequest() {
 </script>
 
 <template>
-  <h2>Hello</h2>
-  <!-- <div class="display-flex flex-dir-col margin-tp-16 m-width-100">
-    <p>{{ props.index.repairShopName }}</p>
-
-    <div class="user-sent-message-content-container">
-      <div class="user-sent-message-content-top-nav p-relative">
-        <p class="text-main font-text-light">
-          <span class="font-title-bold">Registreringsnummer: </span
-          >{{ props.index.registrationNumber }}
-        </p>
-        <button type="button" class="show-more-btn" @click="showMessageBox">
-          <fontAwesome :icon="['fas', 'chevron-down']" v-if="!isMessageBox" />
-          <fontAwesome :icon="['fas', 'chevron-up']" v-if="isMessageBox" />
-        </button>
-        <button
-          v-if="isMessageBox"
-          type="button"
-          class="margin-tp-4 remove-btn text-main display-flex text-main gap-8 align-items-center p-absolute"
-          @click="() => (isConfirmDialog = true)"
-        >
-          <fontAwesome :icon="['fas', 'trash']" />
-        </button>
-      </div>
-      <div class="width-100 margin-tp-32 display-flex flex-dir-col gap-4" v-if="isMessageBox">
-        <div
-          v-for="index in messageArray"
-          :key="index.date"
-          class="display-flex flex-dir-col gap-4 margin-bm-4 text-main font-text-light bg-third b-r-10"
-        >
-          <UserHomeMessages :index="index" :amount="messageArray"></UserHomeMessages>
-        </div>
-      </div>
-      <div class="width-100 margin-tp-8 margin-bm-8">
-        <textarea
-          v-if="isMessageBox"
-          name="message-input"
-          v-model="messageAnswer"
-          class="textarea-input h-300 margin-tp-8"
-          placeholder="Svar"
-          @input="checkInputDataAnswer"
-        ></textarea>
-      </div>
-    </div>
-    <label for="user-sent-priceOffer" class="margin-bm-4" v-if="isMessageBox">Prisförslag</label>
-    <input
-      v-if="isMessageBox"
-      type="text"
-      name="priceOffer"
-      :value="props.index.priceOffer === '' ? 'Ej angivet' : props.index.priceOffer"
-      maxlength="7"
-      class="text-input px-2 padding-10 margin-bm-32"
-      disabled
-    />
-
-    <button
-      v-if="isMessageBox"
-      type="submit"
-      :disabled="isBtnDisabled"
-      :class="{
-        'main-btn-disabled margin-bm-16': isBtnDisabled,
-        'main-btn w-full margin-bm-16': !isBtnDisabled
-      }"
-      @click="sendAnswer"
-    >
-      Skicka
-    </button>
+  <div
+    class="flex flex-col gap-2 w-full max-w-[350px] xl:max-w-[500px] rounded-lg p-3 border-main text-main mb-6"
+  >
+    <h2>{{ props.index.customerMessage }}</h2>
   </div>
-  <div class="line-inactive"></div> -->
-  <!-- <ConfirmDialog
-    :removeRequest="removeRequest"
-    :closeDialog="() => (isConfirmDialog = false)"
-    v-if="isConfirmDialog"
-  ></ConfirmDialog> -->
 </template>
